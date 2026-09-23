@@ -31,7 +31,7 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
   const status = ticket.status as SupportStatus
 
   return (
-    <div className="max-w-[860px]">
+    <div className="w-full">
       <div className="mb-6">
         <Link href="/dashboard/support" className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115]">← All tickets</Link>
       </div>

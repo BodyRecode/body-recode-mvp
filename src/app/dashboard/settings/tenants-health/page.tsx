@@ -77,7 +77,7 @@ export default async function TenantsHealthPage() {
 
   if (tenantsErr) {
     return (
-      <div className="max-w-[1200px]">
+      <div className="w-full">
         <PageHeader eyebrow="Settings · Tenants Health" title="Tenants Health" accent="amber" />
         <Card>
           <div className="text-[#8F2D2D] text-[13.5px]">Failed to load tenants: {tenantsErr.message}</div>
@@ -131,7 +131,7 @@ export default async function TenantsHealthPage() {
   }
 
   return (
-    <div className="max-w-[1240px]">
+    <div className="w-full">
       <div className="mb-4 flex items-center justify-between">
         <Link
           href="/dashboard/settings"

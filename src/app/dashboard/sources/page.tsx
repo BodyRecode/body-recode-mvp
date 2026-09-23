@@ -85,7 +85,7 @@ export default async function SourcesPage() {
   const unknownCount = (counts['unknown'] ?? 0) + (counts[''] ?? 0)
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Attribution"
         title="Lead Sources"

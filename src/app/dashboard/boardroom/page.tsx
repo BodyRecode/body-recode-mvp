@@ -59,7 +59,7 @@ const ROLES = [
 export default function BoardroomLanding() {
   const c = coach()
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Boardroom"
         title="Your executive team"

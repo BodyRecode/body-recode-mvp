@@ -13,7 +13,7 @@ export default function HermonySettings() {
   const yoga = getPreset('yoga-breath-forward')!
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Settings"
         title="Your studio configuration"

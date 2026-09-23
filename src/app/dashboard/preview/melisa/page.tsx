@@ -51,7 +51,7 @@ export default function HermonyHome() {
   const todayLabel = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={`Overview · ${todayLabel}`}
         title={`Good morning, ${HARMONY.founder}.`}

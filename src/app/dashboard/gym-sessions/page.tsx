@@ -184,7 +184,7 @@ export default function GymSessionsPage() {
   const program = state.programs[activeProgram]
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Templates"
         title="Gym Session Templates"

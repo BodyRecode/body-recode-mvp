@@ -28,7 +28,7 @@ export default async function WaitlistPage() {
 
   if (error) {
     return (
-      <div className="max-w-[1200px]">
+      <div className="w-full">
         <PageHeader
           eyebrow="Business Engine"
           title="Product Waitlist"
@@ -44,7 +44,7 @@ export default async function WaitlistPage() {
   const rows = (data ?? []) as WaitlistRow[]
 
   return (
-    <div className="max-w-[1200px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Business Engine"
         title="Product Waitlist"

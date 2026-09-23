@@ -51,7 +51,7 @@ export default async function PartnerBillingAdminPage() {
 
   if (error) {
     return (
-      <div className="max-w-[1100px]">
+      <div className="w-full">
         <PageHeader eyebrow="Admin" title="Partner billing" subtitle="Collective Partner billing state." />
         <div className="p-4 rounded-xl border border-[#E8C9C9] bg-[#FBF1F1] text-[#8A1919] text-[13.5px]">
           Error: {error.message}
@@ -88,7 +88,7 @@ export default async function PartnerBillingAdminPage() {
   }, 0)
 
   return (
-    <div className="max-w-[1200px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Admin · Partner billing"
         title="Collective Partner billing"

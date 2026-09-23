@@ -532,7 +532,7 @@ export default function GroupClassesPage() {
   const cls = CLASSES.find(c => c.id === activeClass)!
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Templates"
         title="Group Class Templates"

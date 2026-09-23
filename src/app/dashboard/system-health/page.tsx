@@ -62,7 +62,7 @@ export default async function SystemHealthPage({
   const red = accentColour('red')
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Diagnostics"
         title="System Health"

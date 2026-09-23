@@ -5,6 +5,7 @@ import ClientPageNav from '../client-page-nav'
 import { PageHeader } from '@/components/dashboard/ui'
 import { currentReadRow } from '@/lib/current-read'
 import { readinessLevel } from '@/lib/readiness-levels'
+import { BRAND } from '@/lib/brand-tokens'
 
 const phaseColour: Record<string, string> = {
   accumulation: 'text-[#FFFFFF] bg-[rgba(27,109,252,0.08)] border-[#2A2F39]',
@@ -29,6 +30,14 @@ const entryStateColour: Record<string, string> = {
 // The four ratings are NOT readiness and carry no colour. They used to be
 // painted in the Remediation and Attention colours, which taught the same amber
 // two meanings one box apart. Severity is weight now. See readiness-levels.
+/** Readiness is the one thing on this page that carries a colour. */
+function readinessInk(state: string) {
+  return state === 'Remediation' ? BRAND.remediationOnDark
+    : state === 'Optimisation' ? BRAND.optimisationOnDark
+    : state === 'Post-Optimisation' ? BRAND.postOptimisationOnDark
+    : BRAND.darkInk
+}
+
 const readinessTone: Record<string, string> = {
   quiet: 'bg-[#14171D] border-[#2A2F39] text-[#676D76]',
   normal: 'bg-[#14171D] border-[#4A4F57] text-[#C2C6CC]',
@@ -81,7 +90,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
   ] : []
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       <div className="min-w-0">
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
@@ -107,8 +116,12 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
             <div className="px-5 py-4">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p className="text-lg font-bold text-[#FAFAF8]">{cffs.body_state_classification}</p>
-                  <p className="text-[12.5px] text-[#8A9099] mt-0.5">Resolution: <span className="text-[#FAFAF8]">{cffs.resolution_state}</span></p>
+                  {/* Readiness carries its colour here too. Kade, 23 Sep: this
+                      block should read like the one on the client record. */}
+                  <p className="text-[34px] font-bold tracking-[-0.03em] leading-none" style={{ color: readinessInk(cffs.body_state_classification) }}>
+                    {cffs.body_state_classification}
+                  </p>
+                  <p className="text-[12.5px] text-[#8A9099] mt-2">Resolution: <span className="text-[#FAFAF8]">{cffs.resolution_state}</span></p>
                 </div>
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -344,7 +357,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
               {cffs && (
                 <div className="flex items-center justify-between text-[12.5px]">
                   <span className="text-[#8A9099]">Body State</span>
-                  <span className="text-[#FAFAF8] font-medium">{cffs.body_state_classification} · {cffs.resolution_state}</span>
+                  <span className="font-medium" style={{ color: readinessInk(cffs.body_state_classification) }}>{cffs.body_state_classification}</span><span className="text-[#FAFAF8] font-medium"> · {cffs.resolution_state}</span>
                 </div>
               )}
               {activeProgram && (

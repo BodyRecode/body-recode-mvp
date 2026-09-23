@@ -158,7 +158,7 @@ export default async function DashboardHomePage() {
   const paymentsOverdueCount = overdueClientNames.length
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={`Overview · ${todayLabel}`}
         title="Good morning, Kade."

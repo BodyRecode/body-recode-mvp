@@ -20,7 +20,7 @@ export default async function CooPage() {
   const snap = await getCooSnapshot()
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Boardroom · COO"
         title="Operations officer view"

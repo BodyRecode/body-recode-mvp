@@ -34,7 +34,7 @@ export default function BusinessHubPage() {
   }
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Business Engine"
         title="Business Hub"

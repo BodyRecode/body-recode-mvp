@@ -129,7 +129,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       {/* Header */}
       <div className="mb-8 flex items-start justify-between">
         <div>

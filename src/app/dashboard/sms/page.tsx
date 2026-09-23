@@ -59,7 +59,7 @@ export default async function SmsPulsePage() {
   const optInLeads = optInLeadsRes.count ?? 0
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Dashboard · SMS pulse"
         title="Speed-to-lead SMS"

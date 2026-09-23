@@ -453,7 +453,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   })
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full">
       <Link href="/dashboard/leads" className="inline-flex items-center gap-1 text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors mb-3">
         <ChevronLeft size={13} /> All Leads
       </Link>

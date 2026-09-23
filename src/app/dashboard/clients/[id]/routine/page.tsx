@@ -35,7 +35,7 @@ export default async function CoachRoutineEditorPage({
   const draftResolved = hasDraft ? resolveDailyRoutine(draftRaw) : null
 
   return (
-    <div className="max-w-[860px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
         title="Morning Reset + Evening Rhythm"

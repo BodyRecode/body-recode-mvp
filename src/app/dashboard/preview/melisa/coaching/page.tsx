@@ -19,7 +19,7 @@ export default function HermonyCoaching() {
   }
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Students"
         title="Active roster"

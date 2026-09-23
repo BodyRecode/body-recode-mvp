@@ -20,7 +20,7 @@ export default async function CmoPage() {
   const snap = await getCmoSnapshot()
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Boardroom · CMO"
         title="Marketing officer view"

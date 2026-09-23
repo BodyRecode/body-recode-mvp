@@ -93,7 +93,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
   const readIsForLatestCheck = !!read && !!latestCheck && read.progress_check_id === latestCheck.id
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
         title="Progress Read"

@@ -140,7 +140,7 @@ export default async function RrsSuggestionsDashboard() {
   const overallAcceptance = totalShown > 0 ? (totalAssigned / totalShown) * 100 : 0
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <Link
         href="/dashboard/system-health"
         className="inline-flex items-center gap-1 text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors mb-4"

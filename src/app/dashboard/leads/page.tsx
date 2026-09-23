@@ -96,7 +96,7 @@ export default async function LeadsPage({
   allLeads.forEach(l => { counts[l.status] = (counts[l.status] || 0) + 1 })
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Pipeline"
         title="Leads"

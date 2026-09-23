@@ -41,7 +41,7 @@ export default async function TenantSettingsPage({
   const inDbForFlag: TenantConfig | null = flagEnabled ? await loadTenantFromDb(tenantId) : null
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Settings"
         title="Tenant configuration"

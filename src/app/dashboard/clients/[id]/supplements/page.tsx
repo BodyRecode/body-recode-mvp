@@ -59,7 +59,7 @@ export default async function CoachSupplementsPage({
     : null
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
         title="Supplement stack"

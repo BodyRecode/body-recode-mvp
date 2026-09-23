@@ -49,7 +49,7 @@ export default async function ScorecardPage() {
   })
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="CEO Dashboard · Company Scorecard"
         title="The numbers that run the business."

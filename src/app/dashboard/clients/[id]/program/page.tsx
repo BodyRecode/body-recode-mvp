@@ -488,7 +488,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   ])
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
         title="Training Program"

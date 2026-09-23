@@ -86,7 +86,7 @@ const ASSET_GROUPS: AssetGroup[] = [
 
 export default function PreviewIndexPage() {
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Assets"
         title="Assets"

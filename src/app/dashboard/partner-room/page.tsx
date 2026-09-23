@@ -27,7 +27,7 @@ export default async function PartnerRoomPage() {
   }))
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Partner Room"
         title="Partner Room"

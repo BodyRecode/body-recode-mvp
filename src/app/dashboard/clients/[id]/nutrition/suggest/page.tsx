@@ -27,7 +27,7 @@ export default async function NutritionSuggestPage({ params }: { params: Promise
     .maybeSingle()
 
   return (
-    <div className="max-w-[980px]">
+    <div className="w-full">
       <div className="mb-8">
         <div className="flex items-center gap-2 text-[#8A9099] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>

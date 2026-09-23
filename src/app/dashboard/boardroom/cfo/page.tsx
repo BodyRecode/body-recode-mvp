@@ -22,7 +22,7 @@ export default async function CfoPage() {
   const p = products()
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Boardroom · CFO"
         title="Financial officer view"

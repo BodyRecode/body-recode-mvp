@@ -27,7 +27,7 @@ export default function HarmonyHome() {
 function Hero() {
   return (
     <section className="pt-24 pb-32 px-8 relative overflow-hidden">
-      <div className="max-w-[1240px] mx-auto relative">
+      <div className="w-full relative">
         {/* Subtle radial glow */}
         <div
           aria-hidden
@@ -135,7 +135,7 @@ function TrustBar() {
   const words = ['Practitioners not beginners', 'Trauma-informed', 'Anatomy-first', 'Yoga Australia registered', 'By assessment']
   return (
     <div className="border-y py-6 px-8" style={{ borderColor: H.border, backgroundColor: H.creamDeep }}>
-      <div className="max-w-[1240px] mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+      <div className="w-full flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
         {words.map((w, i) => (
           <span key={i} className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}>
             {w}
@@ -152,7 +152,7 @@ function TrustBar() {
 function FunnelStrip() {
   return (
     <section id="scorecard" className="py-28 px-8">
-      <div className="max-w-[900px] mx-auto text-center">
+      <div className="w-full text-center">
         <div
           className="inline-flex items-center gap-2 text-[10px] mb-8"
           style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
@@ -222,7 +222,7 @@ function TheMethod() {
   ]
   return (
     <section className="py-28 px-8" style={{ backgroundColor: H.creamDeep }}>
-      <div className="max-w-[1240px] mx-auto">
+      <div className="w-full">
         <div className="text-center mb-16">
           <div
             className="inline-flex items-center gap-2 text-[10px] mb-6"
@@ -295,7 +295,7 @@ function HowItWorks() {
   ]
   return (
     <section className="py-28 px-8">
-      <div className="max-w-[1240px] mx-auto">
+      <div className="w-full">
         <div className="mb-16">
           <div
             className="text-[10px] mb-4"
@@ -387,7 +387,7 @@ function Programmes() {
   ]
   return (
     <section id="programmes" className="py-28 px-8" style={{ backgroundColor: H.creamDeep }}>
-      <div className="max-w-[1240px] mx-auto">
+      <div className="w-full">
         <div className="text-center mb-14">
           <div
             className="inline-flex items-center gap-2 text-[10px] mb-6"
@@ -480,7 +480,7 @@ function SocialProof() {
   ]
   return (
     <section className="py-28 px-8">
-      <div className="max-w-[1240px] mx-auto">
+      <div className="w-full">
         <div className="mb-14">
           <div
             className="text-[10px] mb-4"
@@ -525,7 +525,7 @@ function SocialProof() {
 function AboutMelisa() {
   return (
     <section id="about" className="py-28 px-8" style={{ backgroundColor: H.creamDeep }}>
-      <div className="max-w-[1240px] mx-auto grid md:grid-cols-[1fr_1.2fr] gap-14 items-center">
+      <div className="w-full grid md:grid-cols-[1fr_1.2fr] gap-14 items-center">
         <div
           className="aspect-[4/5] rounded-sm border overflow-hidden relative"
           style={{ backgroundColor: H.terracottaSoft, borderColor: H.border }}
@@ -602,7 +602,7 @@ function FAQ() {
   ]
   return (
     <section className="py-28 px-8">
-      <div className="max-w-[900px] mx-auto">
+      <div className="w-full">
         <div className="text-center mb-14">
           <div
             className="text-[10px] mb-4"
@@ -650,7 +650,7 @@ function FAQ() {
 function FinalCTA() {
   return (
     <section className="py-28 px-8" style={{ backgroundColor: H.ink }}>
-      <div className="max-w-[820px] mx-auto text-center">
+      <div className="w-full text-center">
         <div
           className="inline-flex items-center gap-2 text-[10px] mb-8"
           style={{ fontFamily: H.mono, color: H.terracotta, letterSpacing: '0.24em' }}

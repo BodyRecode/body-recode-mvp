@@ -34,7 +34,7 @@ export default async function TenantsAdminPage() {
 
   if (error) {
     return (
-      <div className="max-w-[1100px]">
+      <div className="w-full">
         <PageHeader eyebrow="Admin" title="All tenants" subtitle="Multi-tenant registry across the platform." />
         <div className="p-4 rounded-xl border border-[#E8C9C9] bg-[#FBF1F1] text-[#8A1919] text-[13.5px]">
           Error loading tenants: {error.message}
@@ -46,7 +46,7 @@ export default async function TenantsAdminPage() {
   const tenants = (data ?? []) as TenantRow[]
 
   return (
-    <div className="max-w-[1200px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Admin"
         title="All tenants"

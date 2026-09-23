@@ -64,7 +64,7 @@ export default async function BoardPage() {
   }
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Boardroom · Board of Advisors"
         title="Steward · Operator · Coach"

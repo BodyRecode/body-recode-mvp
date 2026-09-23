@@ -54,7 +54,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
 
   if (eErr || !enrollment) {
     return (
-      <div className="max-w-[1100px]">
+      <div className="w-full">
         <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#8A9099] hover:text-[#FAFAF8] mb-3">
           <ArrowLeft className="w-3.5 h-3.5" />
           Back to Funnel
@@ -90,7 +90,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
   )
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#8A9099] hover:text-[#FAFAF8] mb-3">
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to Funnel

@@ -136,7 +136,7 @@ export default async function RecoveryRegulationPage() {
   const [folder12, msaRrs] = await Promise.all([loadFolder12Doctrine(), loadMsaRrsDoctrine()])
 
   return (
-    <div className="max-w-[1280px] mx-auto px-6 py-8">
+    <div className="w-full px-6 py-8">
       <PageHeader
         eyebrow="System Doctrine"
         title="Recovery and Regulation"

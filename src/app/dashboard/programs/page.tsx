@@ -94,7 +94,7 @@ export default async function DashboardProgramsPage() {
   const inPerson = items.filter(i => i.package_format === 'in_person').length
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="On the Floor"
         title="Programs"

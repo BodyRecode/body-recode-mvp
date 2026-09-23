@@ -75,7 +75,7 @@ export default async function NutritionEngineHealthPage({
   // Empty state — table doesn't exist or returned nothing.
   if (queryError && /relation .* does not exist|does not exist/i.test(queryError.message)) {
     return (
-      <div className="max-w-[1100px]">
+      <div className="w-full">
         <PageHeader
           eyebrow="Diagnostics · Engine"
           title="Nutrition Engine"
@@ -151,7 +151,7 @@ export default async function NutritionEngineHealthPage({
   }
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="w-full">
       <PageHeader
         eyebrow="Diagnostics · Engine"
         title="Nutrition Engine"
