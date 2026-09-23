@@ -53,9 +53,9 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Your reads</h1>
-          <p className="text-[#6E747D] text-[15px]">A read of how your body is currently organising itself. Updated when significant signals shift.</p>
+          <Link href={`/portal/${token}/resources`} className="text-[12.5px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
+          <h1 className="text-[34px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Your reads</h1>
+          <p className="text-[#6E747D] text-[16px]">A read of how your body is currently organising itself. Updated when significant signals shift.</p>
         </div>
 
         {(progressReads ?? []).length > 0 && (
@@ -72,10 +72,10 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className="text-[15px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">Progress Read</p>
+                      <p className="text-[16px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">Progress Read</p>
                       {i === 0 && <span className="text-[10px] font-bold text-[#0F1115] uppercase tracking-wider">Current</span>}
                     </div>
-                    <p className="text-[12px] text-[#6E747D] leading-relaxed">
+                    <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
                       {PUBLIC_STATE[r.body_state_classification] ? `Readiness: ${PUBLIC_STATE[r.body_state_classification]}. ` : ''}Written {issued(r.published_at!)}.
                     </p>
                   </div>
@@ -88,8 +88,8 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
 
         {published.length === 0 ? (
           <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#6E747D] text-[14px] mb-2">No readings yet</p>
-            <p className="text-[#9CA2AB] text-[12px] leading-relaxed">Your Foundational Read will appear here once it has been finalised. Future weekly reads will join it.</p>
+            <p className="text-[#6E747D] text-[13.5px] mb-2">No readings yet</p>
+            <p className="text-[#9CA2AB] text-[12.5px] leading-relaxed">Your Foundational Read will appear here once it has been finalised. Future weekly reads will join it.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -105,10 +105,10 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-[15px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">Foundational Read</p>
+                    <p className="text-[16px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">Foundational Read</p>
                     <span className="text-[10px] font-bold text-[#0F1115] uppercase tracking-wider">{(progressReads ?? []).length ? 'Your first read' : 'Current'}</span>
                   </div>
-                  <p className="text-[12px] text-[#6E747D] leading-relaxed">
+                  <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
                     {published[0].body_state_classification ? `Currently in ${published[0].body_state_classification}.` : ''} Issued {new Date(published[0].client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
                   </p>
                 </div>
@@ -118,7 +118,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
 
             {published.length > 1 && (
               <>
-                <p className="text-[11.5px] font-medium text-[#9CA2AB] mt-6 mb-2 px-1">Earlier readings</p>
+                <p className="text-[11px] font-medium text-[#9CA2AB] mt-6 mb-2 px-1">Earlier readings</p>
                 {published.slice(1).map(r => (
                   <div
                     key={r.id}
@@ -129,8 +129,8 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                         <FileText size={16} className="text-[#9CA2AB]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-semibold text-[#6E747D] mb-1">Foundational Read</p>
-                        <p className="text-[12px] text-[#9CA2AB] leading-relaxed">
+                        <p className="text-[13.5px] font-semibold text-[#6E747D] mb-1">Foundational Read</p>
+                        <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed">
                           {r.body_state_classification ? `${r.body_state_classification}. ` : ''}Issued {new Date(r.client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
                         </p>
                         <p className="text-[11px] text-[#9CA2AB] mt-1">Archived</p>

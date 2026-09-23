@@ -71,7 +71,7 @@ export default function PortalReadingDownload({
       >
         <Link
           href={backHref}
-          className="inline-flex items-center gap-1 text-[12px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
+          className="inline-flex items-center gap-1 text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           style={{ fontFamily: SCREEN_FONT }}
         >
           <ChevronLeft size={13} /> Back to portal

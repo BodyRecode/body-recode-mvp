@@ -6,11 +6,11 @@ export default function PortalEndedPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAF8] px-6">
       <div className="max-w-md text-center">
-        <h1 className="text-lg font-semibold text-[#0F1115]">This portal is closed</h1>
-        <p className="mt-3 text-sm text-[#6E747D] leading-relaxed">
+        <h1 className="text-[20px] font-semibold text-[#0F1115]">This portal is closed</h1>
+        <p className="mt-3 text-[13.5px] text-[#6E747D] leading-relaxed">
           Your coaching engagement has ended, so your plans and readings are no longer available here.
         </p>
-        <p className="mt-3 text-sm text-[#6E747D] leading-relaxed">
+        <p className="mt-3 text-[13.5px] text-[#6E747D] leading-relaxed">
           Your records are retained securely. If you need a copy of anything, or you would like to pick
           things back up, email{' '}
           <a href="mailto:kade@bodyrecode.au" className="text-[#0F1115] hover:underline">kade@bodyrecode.au</a>.

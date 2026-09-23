@@ -83,7 +83,7 @@ export default async function PortalCheckinDetail({
             <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-widest text-[#0F1115]">Body Recode read</p>
               {feedback.email_sent_at && (
-                <p className="text-[11.5px] text-[#9CA2AB]">
+                <p className="text-[11px] text-[#9CA2AB]">
                   Sent {new Date(feedback.email_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </p>
               )}
@@ -92,21 +92,21 @@ export default async function PortalCheckinDetail({
               <Section title="Interpretation" body={feedback.interpretation} />
               {feedback.reframe && <Section title="Reframe" body={feedback.reframe} />}
               <Section title="This week, hold this" body={feedback.next_focus} accent />
-              <p className="text-sm text-[#4A4F57] leading-relaxed border-t border-[#E4E4E0] pt-4">
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed border-t border-[#E4E4E0] pt-4">
                 Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.
               </p>
             </div>
           </div>
         ) : (
           <div className="mb-10 rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] px-5 py-4">
-            <p className="text-[12px] font-medium text-[#9CA2AB]">Body Recode read</p>
-            <p className="mt-2 text-sm text-[#6E747D]">Your read for this check-in is not ready yet. You will receive an email when it is.</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB]">Body Recode read</p>
+            <p className="mt-2 text-[13.5px] text-[#6E747D]">Your read for this check-in is not ready yet. You will receive an email when it is.</p>
           </div>
         )}
 
       <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] px-5 py-5">
-        <p className="text-[12px] font-medium text-[#9CA2AB] mb-3">Your responses</p>
-        <p className="text-sm text-[#6E747D] leading-relaxed">
+        <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Your responses</p>
+        <p className="text-[13.5px] text-[#6E747D] leading-relaxed">
           Your full {answeredCount}-response check-in is in your coach's view. If you want to see your own answers again, your coach can share them.
         </p>
       </div>
@@ -118,7 +118,7 @@ function Section({ title, body, accent }: { title: string; body: string; accent?
   return (
     <div>
       <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>{title}</p>
-      <div className="text-sm text-[#4A4F57] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+      <div className="text-[13.5px] text-[#4A4F57] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

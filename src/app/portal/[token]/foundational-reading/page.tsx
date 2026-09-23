@@ -53,13 +53,13 @@ export default async function PortalFoundationalReadingPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-8 text-center">
-          <p className="text-[#0F1115] text-lg font-semibold mb-2">Foundational Read not yet available</p>
-          <p className="text-[#6E747D] text-sm mb-6">
+          <p className="text-[#0F1115] text-[20px] font-semibold mb-2">Foundational Read not yet available</p>
+          <p className="text-[#6E747D] text-[13.5px] mb-6">
             Your read will appear here once it has been finalised and shared with you.
           </p>
           <Link
             href={`/portal/${token}`}
-            className="inline-flex items-center gap-1.5 text-[12px] text-[#0F1115] hover:text-[#6E747D] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[12.5px] text-[#0F1115] hover:text-[#6E747D] transition-colors"
           >
             <ChevronLeft size={13} /> Back to portal
           </Link>

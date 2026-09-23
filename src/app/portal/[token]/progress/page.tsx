@@ -55,7 +55,7 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
     >
       {!baseline ? (
           <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#9CA2AB] text-sm">No measurements recorded yet.</p>
+            <p className="text-[#9CA2AB] text-[13.5px]">No measurements recorded yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -63,7 +63,7 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
             <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
               <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between">
                 <p className="text-[12.5px] font-medium text-[#9CA2AB]">Starting point</p>
-                <p className="text-xs text-[#9CA2AB]">{new Date(baseline.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                <p className="text-[12.5px] text-[#9CA2AB]">{new Date(baseline.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
               </div>
               <div className="grid grid-cols-4 divide-x divide-[#E4E4E0]">
                 {[
@@ -73,8 +73,8 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                   { label: 'Chest', value: baseline.chest_cm, unit: 'cm' },
                 ].map(m => (
                   <div key={m.label} className="px-4 py-3 text-center">
-                    <p className="text-xs text-[#9CA2AB] mb-1">{m.label}</p>
-                    <p className="text-sm font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
+                    <p className="text-[12.5px] text-[#9CA2AB] mb-1">{m.label}</p>
+                    <p className="text-[13.5px] font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
                   </div>
                 ))}
               </div>
@@ -87,7 +87,7 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                   <p className="text-[12.5px] font-medium text-[#9CA2AB]">
                     {b.re_capture_week ? `Week ${b.re_capture_week} re-capture` : 'Re-capture'}
                   </p>
-                  <p className="text-xs text-[#9CA2AB]">{new Date(b.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                  <p className="text-[12.5px] text-[#9CA2AB]">{new Date(b.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                 </div>
                 <div className="grid grid-cols-4 divide-x divide-[#E4E4E0]">
                   {[
@@ -97,10 +97,10 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                     { label: 'Chest', value: b.chest_cm, base: baseline.chest_cm, unit: 'cm' },
                   ].map(m => (
                     <div key={m.label} className="px-4 py-3 text-center">
-                      <p className="text-xs text-[#9CA2AB] mb-1">{m.label}</p>
-                      <p className="text-sm font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
+                      <p className="text-[12.5px] text-[#9CA2AB] mb-1">{m.label}</p>
+                      <p className="text-[13.5px] font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
                       {diff(m.value, m.base) && (
-                        <p className={`text-xs mt-0.5 font-medium ${diffColour(m.value, m.base)}`}>{diff(m.value, m.base)}</p>
+                        <p className={`text-[12.5px] mt-0.5 font-medium ${diffColour(m.value, m.base)}`}>{diff(m.value, m.base)}</p>
                       )}
                     </div>
                   ))}
@@ -108,7 +108,7 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
               </div>
             )) : (
               <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF]/50 p-5 text-center">
-                <p className="text-[#9CA2AB] text-sm">Re-capture measurements will appear here every 6–8 weeks.</p>
+                <p className="text-[#9CA2AB] text-[13.5px]">Re-capture measurements will appear here every 6–8 weeks.</p>
               </div>
             )}
         </div>

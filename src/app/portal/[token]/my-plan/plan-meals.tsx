@@ -78,8 +78,8 @@ export default function PlanMeals({
               className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[#FAFAF8] transition-colors"
             >
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#0F1115]">{meal.meal_name}</p>
-                <p className="text-xs text-[#9CA2AB] mt-0.5">{meal.timing}{totalCals ? ` · ${totalCals} kcal` : ''}</p>
+                <p className="text-[13.5px] font-bold text-[#0F1115]">{meal.meal_name}</p>
+                <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{meal.timing}{totalCals ? ` · ${totalCals} kcal` : ''}</p>
               </div>
               <svg
                 className={`w-4 h-4 text-[#9CA2AB] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -94,19 +94,19 @@ export default function PlanMeals({
                 <div className="px-5 py-3 border-b border-[#E4E4E0]/60">
                   <div className="flex gap-3">
                     <div className="text-center">
-                      <p className="text-sm font-bold text-[#0F1115]">{meal.protein_g}g</p>
-                      <p className="text-xs text-[#9CA2AB]">Protein</p>
+                      <p className="text-[13.5px] font-bold text-[#0F1115]">{meal.protein_g}g</p>
+                      <p className="text-[12.5px] text-[#9CA2AB]">Protein</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-bold text-[#0F1115]">{meal.carb_g}g</p>
-                      <p className="text-xs text-[#9CA2AB]">Carbs</p>
+                      <p className="text-[13.5px] font-bold text-[#0F1115]">{meal.carb_g}g</p>
+                      <p className="text-[12.5px] text-[#9CA2AB]">Carbs</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-bold text-[#0F1115]">{meal.fat_g}g</p>
-                      <p className="text-xs text-[#9CA2AB]">Fat</p>
+                      <p className="text-[13.5px] font-bold text-[#0F1115]">{meal.fat_g}g</p>
+                      <p className="text-[12.5px] text-[#9CA2AB]">Fat</p>
                     </div>
                   </div>
-                  <p className="text-[11.5px] text-[#9CA2AB] mt-2 tabular-nums">
+                  <p className="text-[11px] text-[#9CA2AB] mt-2 tabular-nums">
                     P {pp}% · C {cp}% · F {fp}%
                   </p>
                 </div>
@@ -116,7 +116,7 @@ export default function PlanMeals({
                       {meal.foods.map((food, fi) => {
                         const f = normalizeFood(food)
                         return (
-                          <li key={fi} className="text-xs text-[#6E747D] flex items-start justify-between gap-3">
+                          <li key={fi} className="text-[12.5px] text-[#6E747D] flex items-start justify-between gap-3">
                             <div className="flex items-start gap-2 flex-1 min-w-0">
                               <span className="text-[#9CA2AB] shrink-0">·</span>
                               <span>{f.name}</span>
@@ -128,7 +128,7 @@ export default function PlanMeals({
                         )
                       })}
                     </ul>
-                    {meal.notes && <p className="text-xs text-[#9CA2AB] mt-2 italic">{meal.notes}</p>}
+                    {meal.notes && <p className="text-[12.5px] text-[#9CA2AB] mt-2 italic">{meal.notes}</p>}
 
                     {/* Accepted supplements taken with THIS meal. */}
                     {(() => {
@@ -138,10 +138,10 @@ export default function PlanMeals({
                       if (withMeal.length === 0) return null
                       return (
                         <div className="mt-3 pt-3 border-t border-[#EDEDEA]">
-                          <p className="text-[10.5px] uppercase tracking-wide text-[#9CA2AB] mb-1.5">Take with this meal</p>
+                          <p className="text-[11px] uppercase tracking-wide text-[#9CA2AB] mb-1.5">Take with this meal</p>
                           <ul className="space-y-1">
                             {withMeal.map(sup => (
-                              <li key={sup.substance_slug} className="text-xs text-[#6E747D] flex items-start gap-2">
+                              <li key={sup.substance_slug} className="text-[12.5px] text-[#6E747D] flex items-start gap-2">
                                 <span className="text-[#9CA2AB] shrink-0">·</span>
                                 <span>
                                   {sup.name ?? sup.substance_slug}

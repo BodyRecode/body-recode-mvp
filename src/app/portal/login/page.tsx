@@ -44,7 +44,7 @@ export default async function PortalLoginPage({
         </div>
         {errorMessage && (
           <div className="mb-6 bg-[#FBF1F1] border border-[#E8C9C9] rounded-xl px-4 py-3">
-            <p className="text-sm text-[#8F2D2D]">{errorMessage}</p>
+            <p className="text-[13.5px] text-[#8F2D2D]">{errorMessage}</p>
           </div>
         )}
         <LoginForm redirect={redirectTo} />

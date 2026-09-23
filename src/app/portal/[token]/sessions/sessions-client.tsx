@@ -99,10 +99,10 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
           {recentlyBooked.map(slot => (
             <div key={slot} className="rounded-xl border border-[#DCDCD7] bg-[#F2F2EF] px-4 py-3 flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#0F1115]">{formatSlotFull(slot)}</p>
-                <p className="text-xs text-[#9CA2AB] mt-0.5">Confirmation email sent</p>
+                <p className="text-[13.5px] font-medium text-[#0F1115]">{formatSlotFull(slot)}</p>
+                <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">Confirmation email sent</p>
               </div>
-              <span className="text-xs font-bold text-[#0F1115] bg-[#F2F2EF] px-2.5 py-1 rounded-full">Booked</span>
+              <span className="text-[12.5px] font-bold text-[#0F1115] bg-[#F2F2EF] px-2.5 py-1 rounded-full">Booked</span>
             </div>
           ))}
         </div>
@@ -111,15 +111,15 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
       {!open ? (
         <button
           onClick={handleOpen}
-          className="w-full rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-4 text-sm font-medium text-[#4A4F57] hover:border-[#0F1115]/40 hover:text-[#0F1115] transition-colors text-left"
+          className="w-full rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-4 text-[13.5px] font-medium text-[#4A4F57] hover:border-[#0F1115]/40 hover:text-[#0F1115] transition-colors text-left"
         >
           View available times →
         </button>
       ) : loading ? (
-        <div className="text-center py-8 text-[#9CA2AB] text-sm">Loading available times...</div>
+        <div className="text-center py-8 text-[#9CA2AB] text-[13.5px]">Loading available times...</div>
       ) : days.length === 0 ? (
         <div className="rounded-2xl border border-[#E4E4E0] p-5">
-          <p className="text-sm text-[#6E747D]">No available times right now. Contact your coach directly.</p>
+          <p className="text-[13.5px] text-[#6E747D]">No available times right now. Contact your coach directly.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -131,7 +131,7 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
                   <button
                     key={slot}
                     onClick={() => setSelected(slot)}
-                    className={`px-4 py-2.5 text-sm font-medium rounded-lg border transition-colors ${
+                    className={`px-4 py-2.5 text-[13.5px] font-medium rounded-lg border transition-colors ${
                       selected === slot
                         ? 'border-[#0F1115] bg-[#F2F2EF] text-[#0F1115]'
                         : 'border-[#E4E4E0] text-[#4A4F57] hover:border-[#0F1115] hover:text-[#0F1115] hover:bg-[#F2F2EF]'
@@ -144,12 +144,12 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
             </div>
           ))}
 
-          {error && <p className="text-sm text-[#8F2D2D]">{error}</p>}
+          {error && <p className="text-[13.5px] text-[#8F2D2D]">{error}</p>}
 
           <button
             onClick={handleBook}
             disabled={!selected || submitting}
-            className="w-full py-3.5 rounded-xl bg-[#0F1115] text-white text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#0F1115] transition-colors"
+            className="w-full py-3.5 rounded-xl bg-[#0F1115] text-white text-[13.5px] font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#0F1115] transition-colors"
           >
             {submitting ? 'Booking...' : selected ? `Book ${formatSlotTime(selected)}` : 'Select a time'}
           </button>

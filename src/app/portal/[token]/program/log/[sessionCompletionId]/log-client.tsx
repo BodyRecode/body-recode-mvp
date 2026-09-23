@@ -379,12 +379,12 @@ export default function LogClient(props: Props) {
       {prep.length > 0 && (
         <section className="rounded-xl border border-[#EDEDEA] bg-[#FAFAF8] p-4">
           <div className="flex items-baseline justify-between gap-3 mb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#4A4F57]">Movement prep</h2>
-            <span className="text-xs text-[#6E747D]">
+            <h2 className="text-[13.5px] font-bold uppercase tracking-wider text-[#4A4F57]">Movement prep</h2>
+            <span className="text-[12.5px] text-[#6E747D]">
               {prepDone.size}/{prep.length} done
             </span>
           </div>
-          <p className="text-xs text-[#6E747D] mb-3">
+          <p className="text-[12.5px] text-[#6E747D] mb-3">
             Do these before your first working set. They are part of the session, not a warm-up you can skip.
           </p>
           <ul className="space-y-1.5">
@@ -411,7 +411,7 @@ export default function LogClient(props: Props) {
                     >
                       ✓
                     </span>
-                    <span className={`text-sm ${done ? 'text-[#9CA2AB] line-through' : 'text-[#4A4F57]'}`}>
+                    <span className={`text-[13.5px] ${done ? 'text-[#9CA2AB] line-through' : 'text-[#4A4F57]'}`}>
                       {item}
                     </span>
                   </button>
@@ -425,7 +425,7 @@ export default function LogClient(props: Props) {
       {/* Sets are working sets. Without this line "3 sets" is ambiguous, and a
           beginner reads it as three sets total and starts cold on their
           heaviest lift of the day. */}
-      <p className="text-xs text-[#6E747D] leading-relaxed">
+      <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
         The sets below are <strong className="text-[#4A4F57]">working sets</strong> at the
         prescribed effort. Warm-up and ramp-up sets are extra, and you do not log them.
       </p>
@@ -445,16 +445,16 @@ export default function LogClient(props: Props) {
           >
             {/* Exercise header */}
             <div className="mb-3">
-              {ex.block_label && <p className="text-[11.5px] text-[#9CA2AB] mb-1">{ex.block_label}</p>}
+              {ex.block_label && <p className="text-[11px] text-[#9CA2AB] mb-1">{ex.block_label}</p>}
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-base font-bold text-[#0F1115]">{ex.prescribed_exercise_name}</h3>
+                <h3 className="text-[16px] font-bold text-[#0F1115]">{ex.prescribed_exercise_name}</h3>
                 {prBadges[ex.prescribed_exercise_name] && (
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-[#0F1115] bg-[#F2F2EF] border border-[#0F1115]/30 rounded-full px-2 py-0.5">
                     ▲ New best · {prBadges[ex.prescribed_exercise_name]}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-[#6E747D] mt-0.5">
+              <p className="text-[12.5px] text-[#6E747D] mt-0.5">
                 {ex.prescribed_sets ?? '?'} × {ex.prescribed_reps ?? '?'}
                 {ex.prescribed_rpe != null ? ` @ RPE ${ex.prescribed_rpe}` : ''}
                 {ex.prescribed_rest ? ` · ${ex.prescribed_rest}` : ''}
@@ -463,17 +463,17 @@ export default function LogClient(props: Props) {
                 const lt = props.lastTime?.[ex.prescribed_exercise_name]
                 if (!lt || lt.sets.length === 0) return null
                 return (
-                  <p className="text-xs text-[#0F1115] mt-1.5 leading-relaxed">
+                  <p className="text-[12.5px] text-[#0F1115] mt-1.5 leading-relaxed">
                     <span className="font-semibold">Last time:</span> {formatSets(lt.sets)}
                     {lt.when ? <span className="text-[#9CA2AB]"> · {relativeWhen(lt.when)}</span> : null}
                   </p>
                 )
               })()}
-              {ex.prescribed_notes && <p className="text-xs text-[#6E747D] mt-1.5 leading-relaxed">{ex.prescribed_notes}</p>}
+              {ex.prescribed_notes && <p className="text-[12.5px] text-[#6E747D] mt-1.5 leading-relaxed">{ex.prescribed_notes}</p>}
             </div>
 
             {/* Substitution toggle */}
-            <div className="mb-3 text-xs">
+            <div className="mb-3 text-[12.5px]">
               <label className="flex items-center gap-2 text-[#6E747D] cursor-pointer">
                 <input
                   type="checkbox"
@@ -494,7 +494,7 @@ export default function LogClient(props: Props) {
                     disabled={isCompleted}
                     onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], subName: e.target.value } }))}
                     onBlur={() => saveExerciseMeta(ex.id)}
-                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
+                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
                   />
                   <input
                     type="text"
@@ -503,7 +503,7 @@ export default function LogClient(props: Props) {
                     disabled={isCompleted}
                     onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], subReason: e.target.value } }))}
                     onBlur={() => saveExerciseMeta(ex.id)}
-                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
+                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
                   />
                 </div>
               )}
@@ -517,7 +517,7 @@ export default function LogClient(props: Props) {
                 if (!s) return null
                 return (
                   <div key={n} className="grid grid-cols-[28px_1fr_1fr_1fr_36px] gap-1.5 items-center">
-                    <span className="text-xs text-[#9CA2AB] tabular-nums text-center">{n}</span>
+                    <span className="text-[12.5px] text-[#9CA2AB] tabular-nums text-center">{n}</span>
                     <input
                       type="text"
                       inputMode="text"
@@ -525,7 +525,7 @@ export default function LogClient(props: Props) {
                       value={s.weight}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], weight: e.target.value, saved: false, prefilled: false } }))}
-                      className={`w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-sm text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums ${s.prefilled ? 'text-[#9CA2AB]' : 'text-[#0F1115]'}`}
+                      className={`w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-[13.5px] text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums ${s.prefilled ? 'text-[#9CA2AB]' : 'text-[#0F1115]'}`}
                     />
                     <input
                       type="number"
@@ -534,7 +534,7 @@ export default function LogClient(props: Props) {
                       value={s.reps}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], reps: e.target.value, saved: false, prefilled: false } }))}
-                      className={`w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-sm text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums ${s.prefilled ? 'text-[#9CA2AB]' : 'text-[#0F1115]'}`}
+                      className={`w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-[13.5px] text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums ${s.prefilled ? 'text-[#9CA2AB]' : 'text-[#0F1115]'}`}
                     />
                     <input
                       type="number"
@@ -543,13 +543,13 @@ export default function LogClient(props: Props) {
                       value={s.rpe}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], rpe: e.target.value, saved: false } }))}
-                      className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-sm text-[#0F1115] text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums"
+                      className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2 py-2.5 text-[13.5px] text-[#0F1115] text-center placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] tabular-nums"
                     />
                     <button
                       type="button"
                       onClick={() => saveSet(ex.id, n)}
                       disabled={isCompleted || s.saving}
-                      className={`h-9 rounded-lg text-xs font-bold transition-colors ${
+                      className={`h-9 rounded-lg text-[12.5px] font-bold transition-colors ${
                         s.saved
                           ? 'bg-[#EDEDEA] text-[#0F1115] border border-[#DCDCD7]'
                           : 'bg-[#E4E4E0] text-[#6E747D] hover:bg-[#0F1115] border border-[#E4E4E0]'
@@ -577,7 +577,7 @@ export default function LogClient(props: Props) {
               onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], notes: e.target.value } }))}
               onBlur={() => saveExerciseMeta(ex.id)}
               rows={2}
-              className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] resize-none"
+              className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] resize-none"
             />
             {exState?.error && <p className="mt-1 text-[11px] text-[#8F2D2D]">{exState.error}</p>}
           </div>
@@ -586,14 +586,14 @@ export default function LogClient(props: Props) {
 
       {/* Session-level notes + complete button */}
       <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-4">
-        <p className="text-[11.5px] text-[#9CA2AB] mb-2">Session notes (optional)</p>
+        <p className="text-[11px] text-[#9CA2AB] mb-2">Session notes (optional)</p>
         <textarea
           placeholder="Anything you want Kade to know about this session as a whole?"
           value={sessionNotes}
           disabled={isCompleted}
           onChange={e => setSessionNotes(e.target.value)}
           rows={3}
-          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] resize-none"
+          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] resize-none"
         />
       </div>
 
@@ -602,12 +602,12 @@ export default function LogClient(props: Props) {
           type="button"
           onClick={handleComplete}
           disabled={completing}
-          className="w-full py-4 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-sm rounded-2xl transition-colors disabled:opacity-50"
+          className="w-full py-4 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-[13.5px] rounded-2xl transition-colors disabled:opacity-50"
         >
           {completing ? 'Saving…' : 'Mark session complete'}
         </button>
       )}
-      {completeError && <p className="text-xs text-[#8F2D2D] text-center">{completeError}</p>}
+      {completeError && <p className="text-[12.5px] text-[#8F2D2D] text-center">{completeError}</p>}
 
       {/* Rest timer: fixed bar at the bottom. Only on a live session. The
           spacer keeps the last button clear of the fixed bar. */}

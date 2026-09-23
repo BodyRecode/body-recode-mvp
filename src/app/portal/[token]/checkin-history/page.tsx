@@ -43,7 +43,7 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
     >
       {!checkins || checkins.length === 0 ? (
           <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#9CA2AB] text-sm">No check-ins submitted yet.</p>
+            <p className="text-[#9CA2AB] text-[13.5px]">No check-ins submitted yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -65,12 +65,12 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-sm text-[#0F1115] font-medium">Form {c.form_type}</p>
+                        <p className="text-[13.5px] text-[#0F1115] font-medium">Form {c.form_type}</p>
                         {feedbackSet.has(c.id) && (
                           <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F1115] bg-[#F2F2EF] border border-[#DCDCD7] rounded px-1.5 py-0.5">Coach response</span>
                         )}
                       </div>
-                      <p className="text-xs text-[#9CA2AB] ml-3 shrink-0">
+                      <p className="text-[12.5px] text-[#9CA2AB] ml-3 shrink-0">
                         {new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </Link>

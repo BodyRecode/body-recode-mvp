@@ -130,12 +130,12 @@ export default function MessageThread({
               : 'Write a reply...'
           }
           rows={5}
-          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-3 py-3 text-[14px] text-[#0F1115] placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#0F1115] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-3 py-3 text-[13.5px] text-[#0F1115] placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#0F1115] leading-relaxed resize-y"
         />
         <p className="text-[11px] text-[#9CA2AB] mt-2">{body.length}/5000 characters</p>
 
         {error && (
-          <div className="mt-3 bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12px] text-[#8A5514]">
+          <div className="mt-3 bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5514]">
             {error}
           </div>
         )}
@@ -143,7 +143,7 @@ export default function MessageThread({
         <button
           type="submit"
           disabled={!body.trim() || sending}
-          className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#0F1115] text-[#FFFFFF] text-[14px] font-bold py-3 rounded-xl hover:bg-[#000000] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#0F1115] text-[#FFFFFF] text-[13.5px] font-bold py-3 rounded-xl hover:bg-[#000000] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
           {sending ? 'Sending...' : 'Send message'}
@@ -162,7 +162,7 @@ export default function MessageThread({
               }
             >
               <div className="flex items-center justify-between mb-1.5">
-                <p className="text-[11.5px] font-medium text-[#9CA2AB]">
+                <p className="text-[11px] font-medium text-[#9CA2AB]">
                   {m.sender === 'coach' ? coachFirstName : firstName}
                 </p>
                 <p className="text-[10px] text-[#9CA2AB]">{when(m.created_at)}</p>
@@ -172,7 +172,7 @@ export default function MessageThread({
                   {anchorChipLabel(m.anchor_kind, m.anchor_label)}
                 </p>
               )}
-              <p className="text-[14px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{m.body}</p>
               {/* Delivery confirmation on the client's newest message, shown
                   only while it is the last thing in the thread. The anxiety it
                   answers is "did that even send", not "has he read it" — a read

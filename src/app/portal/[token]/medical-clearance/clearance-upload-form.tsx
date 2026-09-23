@@ -82,7 +82,7 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
       <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Upload completed form</p>
       {missingFile && (
         <div className="mb-4 border-l-2 border-[#8F2D2D] bg-[#FBF1F1] rounded-r-2xl px-4 py-3">
-          <p className="text-[#8F2D2D] text-sm font-medium">Please upload your completed clearance form before submitting.</p>
+          <p className="text-[#8F2D2D] text-[13.5px] font-medium">Please upload your completed clearance form before submitting.</p>
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -104,30 +104,30 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
           {optimising ? (
             <div className="flex items-center gap-3 px-4">
               <div className="w-5 h-5 border-2 border-[#0F1115] border-t-transparent rounded-full animate-spin" />
-              <span className="text-[#6E747D] text-sm">Optimising photo...</span>
+              <span className="text-[#6E747D] text-[13.5px]">Optimising photo...</span>
             </div>
           ) : file ? (
             <div className="text-center px-4">
-              <p className="text-sm font-semibold text-[#0F1115] mb-1">{file.name}</p>
-              <p className="text-xs text-[#9CA2AB]">{(file.size / 1024 / 1024).toFixed(2)} MB · tap to change</p>
+              <p className="text-[13.5px] font-semibold text-[#0F1115] mb-1">{file.name}</p>
+              <p className="text-[12.5px] text-[#9CA2AB]">{(file.size / 1024 / 1024).toFixed(2)} MB · tap to change</p>
             </div>
           ) : (
             <div className="text-center px-4">
               <svg className={`w-8 h-8 mx-auto mb-2 ${missingFile ? 'text-[#8F2D2D]' : 'text-[#9CA2AB]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
-              <p className={`text-sm ${missingFile ? 'text-[#8F2D2D]' : 'text-[#6E747D]'}`}>Tap to upload photo or PDF</p>
-              <p className="text-xs text-[#9CA2AB] mt-1">Photos are optimised automatically. PDFs must be under 4 MB.</p>
+              <p className={`text-[13.5px] ${missingFile ? 'text-[#8F2D2D]' : 'text-[#6E747D]'}`}>Tap to upload photo or PDF</p>
+              <p className="text-[12.5px] text-[#9CA2AB] mt-1">Photos are optimised automatically. PDFs must be under 4 MB.</p>
             </div>
           )}
         </label>
 
-        {error && <p className="text-[#8F2D2D] text-sm">{error}</p>}
+        {error && <p className="text-[#8F2D2D] text-[13.5px]">{error}</p>}
 
         <button
           type="submit"
           disabled={uploading}
-          className="w-full bg-[#0F1115] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full bg-[#0F1115] text-white text-[13.5px] font-bold py-4 rounded-2xl hover:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {uploading ? 'Uploading…' : 'Submit completed form'}
         </button>

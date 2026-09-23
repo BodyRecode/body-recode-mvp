@@ -60,8 +60,8 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
               className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[#FAFAF8] transition-colors"
             >
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#0F1115]">{session.day_label}</p>
-                <p className="text-xs text-[#9CA2AB] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
+                <p className="text-[13.5px] font-bold text-[#0F1115]">{session.day_label}</p>
+                <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
               </div>
               <svg
                 className={`w-4 h-4 text-[#9CA2AB] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -75,7 +75,7 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
               <div className="border-t border-[#E4E4E0]">
                 {/* Movement prep */}
                 {/* "3 sets" is ambiguous without this. See program-prompt SETS ARE WORKING SETS. */}
-                <p className="text-xs text-[#6E747D] mb-3">
+                <p className="text-[12.5px] text-[#6E747D] mb-3">
                   Sets shown are working sets. Warm-up sets are extra.
                 </p>
                 {session.movement_prep && session.movement_prep.length > 0 && (
@@ -83,7 +83,7 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
                     <p className="text-[12.5px] font-semibold text-[#9CA2AB] mb-2">Movement Preparation</p>
                     <ul className="space-y-1">
                       {session.movement_prep.map((item, i) => (
-                        <li key={i} className="text-xs text-[#6E747D] flex gap-2">
+                        <li key={i} className="text-[12.5px] text-[#6E747D] flex gap-2">
                           <span className="text-[#9CA2AB] shrink-0">·</span>
                           <span>{item}</span>
                         </li>
@@ -95,17 +95,17 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
                 {/* Blocks */}
                 {session.blocks.map((block, bi) => (
                   <div key={bi} className="px-5 py-3 border-b border-[#E4E4E0]/40 last:border-0">
-                    <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">{block.block_label}</p>
+                    <p className="text-[12.5px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">{block.block_label}</p>
                     <div className="space-y-3">
                       {block.exercises.map((ex, ei) => (
                         <div key={ei} className="flex flex-col gap-1">
-                          <p className="text-sm font-semibold text-[#0F1115]">{ex.exercise_name}</p>
+                          <p className="text-[13.5px] font-semibold text-[#0F1115]">{ex.exercise_name}</p>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-xs bg-[#E4E4E0] text-[#4A4F57] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
-                            {ex.rpe && <span className="text-xs bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
-                            {ex.rest && <span className="text-xs bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
+                            <span className="text-[12.5px] bg-[#E4E4E0] text-[#4A4F57] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
+                            {ex.rpe && <span className="text-[12.5px] bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
+                            {ex.rest && <span className="text-[12.5px] bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
                           </div>
-                          {ex.notes && <p className="text-xs text-[#9CA2AB] leading-relaxed">{ex.notes}</p>}
+                          {ex.notes && <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed">{ex.notes}</p>}
                         </div>
                       ))}
                     </div>

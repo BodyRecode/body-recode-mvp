@@ -51,9 +51,9 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Practical guides</h1>
-          <p className="text-[#6E747D] text-[15px]">Short, actionable. Read once, reference often.</p>
+          <Link href={`/portal/${token}/resources`} className="text-[12.5px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
+          <h1 className="text-[34px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Practical guides</h1>
+          <p className="text-[#6E747D] text-[16px]">Short, actionable. Read once, reference often.</p>
         </div>
 
         <div className="space-y-3">
@@ -70,8 +70,8 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
                     <Icon size={16} className="text-[#0F1115]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#0F1115] mb-1 group-hover:text-[#0F1115] transition-colors">{g.title}</p>
-                    <p className="text-[12px] text-[#6E747D] leading-relaxed">{g.desc}</p>
+                    <p className="text-[16px] font-semibold text-[#0F1115] mb-1 group-hover:text-[#0F1115] transition-colors">{g.title}</p>
+                    <p className="text-[12.5px] text-[#6E747D] leading-relaxed">{g.desc}</p>
                   </div>
                   <ArrowUpRight size={14} className="text-[#9CA2AB] group-hover:text-[#0F1115] transition-colors shrink-0 mt-2" />
                 </div>

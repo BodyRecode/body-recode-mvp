@@ -80,22 +80,22 @@ export default function FeedbackForm({
       <div className="bg-[#FFFFFF] border border-[#DCDCD7] rounded-2xl p-6">
         <div className="flex items-center gap-2.5 mb-3">
           <Check size={16} className="text-[#0F1115]" />
-          <p className="text-[14px] font-bold text-[#0F1115] uppercase tracking-widest">Thanks</p>
+          <p className="text-[13.5px] font-bold text-[#0F1115] uppercase tracking-widest">Thanks</p>
         </div>
-        <p className="text-[14px] text-[#0F1115] leading-relaxed mb-4">
+        <p className="text-[13.5px] text-[#0F1115] leading-relaxed mb-4">
           Got it. Kade reads every one of these and uses them to shape what we build next. If your
           note needs a reply you will hear back directly.
         </p>
         <div className="flex gap-3">
           <button
             onClick={() => { setSubmitted(false); router.refresh() }}
-            className="text-[12px] font-medium px-3 py-1.5 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#0F1115] hover:bg-[#F2F2EF] hover:text-[#0F1115] transition-colors"
+            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#0F1115] hover:bg-[#F2F2EF] hover:text-[#0F1115] transition-colors"
           >
             Send another
           </button>
           <Link
             href={`/portal/${portalToken}`}
-            className="text-[12px] font-semibold px-3 py-1.5 bg-[#0F1115] text-[#FFFFFF] rounded-lg hover:bg-[#000000] transition-colors"
+            className="text-[12.5px] font-semibold px-3 py-1.5 bg-[#0F1115] text-[#FFFFFF] rounded-lg hover:bg-[#000000] transition-colors"
           >
             Back to portal
           </Link>
@@ -108,7 +108,7 @@ export default function FeedbackForm({
     <div className="space-y-6">
       {/* Category */}
       <div>
-        <p className="text-[11.5px] font-medium text-[#6E747D] mb-3">
+        <p className="text-[11px] font-medium text-[#6E747D] mb-3">
           What is this about
         </p>
         <div className="space-y-2">
@@ -131,11 +131,11 @@ export default function FeedbackForm({
                       selected ? 'border-[#0F1115] bg-[#0F1115]' : 'border-[#9CA2AB]'
                     }`}
                   />
-                  <p className={`text-[14px] font-semibold ${selected ? 'text-[#0F1115]' : 'text-[#0F1115]'}`}>
+                  <p className={`text-[13.5px] font-semibold ${selected ? 'text-[#0F1115]' : 'text-[#0F1115]'}`}>
                     {opt.label}
                   </p>
                 </div>
-                <p className="text-[12px] text-[#9CA2AB] leading-relaxed mt-1.5 ml-[22px]">
+                <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed mt-1.5 ml-[22px]">
                   {opt.hint}
                 </p>
               </button>
@@ -146,7 +146,7 @@ export default function FeedbackForm({
 
       {/* Body */}
       <div>
-        <p className="text-[11.5px] font-medium text-[#6E747D] mb-2">
+        <p className="text-[11px] font-medium text-[#6E747D] mb-2">
           Tell us more
         </p>
         <textarea
@@ -155,7 +155,7 @@ export default function FeedbackForm({
           placeholder="The more specific the better. What did you do, what did you expect, what actually happened, or what would make this better for you."
           rows={8}
           maxLength={MAX_LEN + 200}
-          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-[14px] text-[#0F1115] placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-[13.5px] text-[#0F1115] placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
         />
         <div className="flex items-center justify-between mt-2">
           <p className="text-[11px] text-[#9CA2AB]">
@@ -169,7 +169,7 @@ export default function FeedbackForm({
       </div>
 
       {error && (
-        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2.5 text-[12px] text-[#8A5514]">
+        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2.5 text-[12.5px] text-[#8A5514]">
           {error}
         </div>
       )}
@@ -177,7 +177,7 @@ export default function FeedbackForm({
       <button
         onClick={submit}
         disabled={submitting || tooShort || tooLong}
-        className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#0F1115] hover:bg-[#000000] text-[#FFFFFF] font-bold text-[14px] rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#0F1115] hover:bg-[#000000] text-[#FFFFFF] font-bold text-[13.5px] rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {submitting ? <Loader2 size={14} className="animate-spin" /> : null}
         {submitting ? 'Sending…' : 'Send to Kade'}

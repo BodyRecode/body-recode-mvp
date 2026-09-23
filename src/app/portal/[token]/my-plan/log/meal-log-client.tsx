@@ -151,11 +151,11 @@ export default function MealLogClient({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-lg font-semibold text-[#0F1115] mb-1">Logged{firstName ? `, ${firstName}` : ''}.</p>
-        <p className="text-[#6E747D] text-sm mb-6">Today&apos;s meals are saved. You can update them any time today.</p>
+        <p className="text-[20px] font-semibold text-[#0F1115] mb-1">Logged{firstName ? `, ${firstName}` : ''}.</p>
+        <p className="text-[#6E747D] text-[13.5px] mb-6">Today&apos;s meals are saved. You can update them any time today.</p>
         <button
           onClick={() => router.push(backHref)}
-          className="text-sm font-semibold text-white bg-[#0F1115] px-6 py-2.5 rounded-xl hover:bg-[#000000] transition-colors"
+          className="text-[13.5px] font-semibold text-white bg-[#0F1115] px-6 py-2.5 rounded-xl hover:bg-[#000000] transition-colors"
         >
           Back to plan
         </button>
@@ -165,7 +165,7 @@ export default function MealLogClient({
 
   return (
     <div className="space-y-5">
-      <p className="text-xs text-[#9CA2AB]">{loggedCount} of {meals.length} meals logged today</p>
+      <p className="text-[12.5px] text-[#9CA2AB]">{loggedCount} of {meals.length} meals logged today</p>
 
       <div className="space-y-3">
         {meals.map(m => {
@@ -174,8 +174,8 @@ export default function MealLogClient({
           return (
             <div key={m.meal_number} className="rounded-2xl border border-[#E4E4E0] bg-white p-4">
               <div className="flex items-baseline justify-between gap-2 mb-3">
-                <p className="text-sm font-bold text-[#0F1115]">{m.meal_name}</p>
-                {m.timing && <p className="text-xs text-[#9CA2AB]">{m.timing}</p>}
+                <p className="text-[13.5px] font-bold text-[#0F1115]">{m.meal_name}</p>
+                {m.timing && <p className="text-[12.5px] text-[#9CA2AB]">{m.timing}</p>}
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {OUTCOMES.map(o => (
@@ -183,7 +183,7 @@ export default function MealLogClient({
                     key={o.value}
                     type="button"
                     onClick={() => setOutcome(m, o.value)}
-                    className={`py-2.5 rounded-xl border text-xs font-semibold transition-colors ${outcomeClass(e?.outcome === o.value, o.value)}`}
+                    className={`py-2.5 rounded-xl border text-[12.5px] font-semibold transition-colors ${outcomeClass(e?.outcome === o.value, o.value)}`}
                   >
                     {o.label}
                   </button>
@@ -196,7 +196,7 @@ export default function MealLogClient({
                   onChange={ev => setNote(m, ev.target.value)}
                   onBlur={() => e.outcome && postMeal(m, e.outcome, e.note)}
                   placeholder={e.outcome === 'swapped' ? 'What did you have instead? (optional)' : 'Anything to note? (optional)'}
-                  className="mt-2 w-full bg-white border border-[#E4E4E0] rounded-xl px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
+                  className="mt-2 w-full bg-white border border-[#E4E4E0] rounded-xl px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#DCDCD7]"
                 />
               )}
             </div>
@@ -214,7 +214,7 @@ export default function MealLogClient({
                 key={h.value}
                 type="button"
                 onClick={() => { setHunger(h.value); postDay({ hungerSignal: h.value }) }}
-                className={`py-2.5 rounded-xl border text-xs font-semibold transition-colors ${hunger === h.value ? 'border-[#0F1115] bg-[#F2F2EF] text-[#0F1115]' : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'}`}
+                className={`py-2.5 rounded-xl border text-[12.5px] font-semibold transition-colors ${hunger === h.value ? 'border-[#0F1115] bg-[#F2F2EF] text-[#0F1115]' : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'}`}
               >
                 {h.label}
               </button>
@@ -229,7 +229,7 @@ export default function MealLogClient({
                 key={s.value}
                 type="button"
                 onClick={() => { setSatisfaction(s.value); postDay({ satisfactionSignal: s.value }) }}
-                className={`py-2.5 rounded-xl border text-xs font-semibold transition-colors ${satisfaction === s.value ? 'border-[#0F1115] bg-[#F2F2EF] text-[#0F1115]' : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'}`}
+                className={`py-2.5 rounded-xl border text-[12.5px] font-semibold transition-colors ${satisfaction === s.value ? 'border-[#0F1115] bg-[#F2F2EF] text-[#0F1115]' : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'}`}
               >
                 {s.label}
               </button>
@@ -244,21 +244,21 @@ export default function MealLogClient({
             onBlur={() => postDay({ overallNote: overallNote || null })}
             rows={2}
             placeholder="e.g. big appetite after training, ran out of time for meal 4"
-            className="w-full bg-white border border-[#E4E4E0] rounded-xl px-3 py-2 text-xs text-[#0F1115] placeholder-[#9CA2AB] resize-none focus:outline-none focus:border-[#DCDCD7]"
+            className="w-full bg-white border border-[#E4E4E0] rounded-xl px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] resize-none focus:outline-none focus:border-[#DCDCD7]"
           />
         </div>
       </div>
 
       {error && (
         <div className="bg-[#FBF1F1] border border-[#E8C9C9] rounded-xl px-4 py-3">
-          <p className="text-sm text-[#8F2D2D]">{error}</p>
+          <p className="text-[13.5px] text-[#8F2D2D]">{error}</p>
         </div>
       )}
 
       <button
         onClick={handleDone}
         disabled={saving}
-        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:opacity-50 text-white font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:opacity-50 text-white font-bold text-[13.5px] rounded-2xl transition-colors"
       >
         {saving ? 'Saving…' : 'Done for today'}
       </button>

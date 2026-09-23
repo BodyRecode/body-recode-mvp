@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 import PortalSignOutButton from './portal-sign-out-button'
 import { brand, coach } from '@/config/tenant'
+import { BrandMark } from '@/components/brand-mark'
 
 export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?: string | null } = {}) {
   const pathname = usePathname()
@@ -18,14 +19,13 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
   const defaultHomeHref = isPortalRoute && token ? `/portal/${token}` : null
   const homeHref = explicitHomeHref !== undefined ? explicitHomeHref : defaultHomeHref
 
-  const logo = (
-    <img
-      src={`${t.marketingDomain}${t.logoUrlLight}`}
-      width="170"
-      alt={t.name}
-      style={{ display: 'block' }}
-    />
-  )
+  // THE RETIRED MARK WAS ON EVERY PAGE OF THE PORTAL, not just the sign-in: a
+  // remote image of the old helix with "decode, rewire, rebuild" under it, a
+  // tagline that stopped being the positioning months ago. It was also a
+  // network request to another domain on every single page load, for a logo.
+  // The drawn mark is local and is the same one the rest of the product uses.
+  // 23 Sep 2026.
+  const logo = <BrandMark tone="dark" size="sm" name={t.name} />
 
   return (
     <>
@@ -50,7 +50,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
         {isPortalRoute && token ? (
           <Link
             href={`/portal/${token}/message`}
-            className="text-xs text-[#6E747D] hover:text-[#0F1115] transition-colors"
+            className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
             Questions? <span className="font-semibold text-[#0F1115]">Message {c.firstName} →</span>
           </Link>
@@ -59,7 +59,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
             href={`https://wa.me/${c.whatsAppNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[#6E747D] hover:text-[#0F1115] transition-colors"
+            className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
             Questions? Message {c.firstName} on WhatsApp →
           </a>

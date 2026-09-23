@@ -92,9 +92,9 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}`} className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to portal</Link>
-          <h1 className="text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Resources</h1>
-          <p className="text-[#6E747D] text-[15px]">Everything you need beyond your weekly check-ins and program.</p>
+          <Link href={`/portal/${token}`} className="text-[12.5px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to portal</Link>
+          <h1 className="text-[34px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">Resources</h1>
+          <p className="text-[#6E747D] text-[16px]">Everything you need beyond your weekly check-ins and program.</p>
         </div>
 
         <div className="space-y-3">
@@ -112,14 +112,14 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className="text-[15px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">{card.title}</p>
+                      <p className="text-[16px] font-semibold text-[#0F1115] group-hover:text-[#0F1115] transition-colors">{card.title}</p>
                       {!!card.badge && card.badge > 0 && (
                         <span className="text-[10px] font-bold text-[#FFFFFF] bg-[#0F1115] rounded-full px-2 py-0.5 leading-none">
                           {card.badge} new
                         </span>
                       )}
                     </div>
-                    <p className="text-[12px] text-[#6E747D] leading-relaxed">{card.description}</p>
+                    <p className="text-[12.5px] text-[#6E747D] leading-relaxed">{card.description}</p>
                   </div>
                   <ArrowUpRight size={14} className="text-[#9CA2AB] group-hover:text-[#0F1115] transition-colors shrink-0 mt-2" />
                 </div>
@@ -129,7 +129,7 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
         </div>
 
         <p
-          className="text-[11.5px] text-[#9CA2AB] mt-10 text-center"
+          className="text-[11px] text-[#9CA2AB] mt-10 text-center"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
           {brand().name} · client portal

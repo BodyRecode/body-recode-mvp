@@ -66,7 +66,7 @@ export default async function BloodReadingPage({
         <Section title="What to watch" body={reading.bp_what_to_watch} accent />
       </div>
 
-      <p className="mt-6 text-xs text-[#9CA2AB] leading-relaxed">
+      <p className="mt-6 text-[12.5px] text-[#9CA2AB] leading-relaxed">
         This is a coaching read, not medical advice. For anything on the medical side, your GP is the right person.
       </p>
     </PortalPageShell>
@@ -77,7 +77,7 @@ function Section({ title, body, accent }: { title: string; body: string; accent?
   return (
     <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5">
       <p className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${accent ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>{title}</p>
-      <div className="text-sm text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
+      <div className="text-[13.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

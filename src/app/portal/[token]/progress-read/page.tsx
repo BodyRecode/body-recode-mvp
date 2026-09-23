@@ -54,8 +54,8 @@ export default async function PortalProgressReadPage({ params, searchParams }: {
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center px-6 py-12">
         {back}
         <div className="w-full max-w-md border border-[#E4E4E0] rounded-2xl p-8 text-center">
-          <p className="text-[#0F1115] text-lg font-semibold mb-2">Your Progress Read is not ready yet</p>
-          <p className="text-[#6E747D] text-sm">It will appear here once your coach has written it from your Progress Check.</p>
+          <p className="text-[#0F1115] text-[20px] font-semibold mb-2">Your Progress Read is not ready yet</p>
+          <p className="text-[#6E747D] text-[13.5px]">It will appear here once your coach has written it from your Progress Check.</p>
         </div>
       </div>
     )

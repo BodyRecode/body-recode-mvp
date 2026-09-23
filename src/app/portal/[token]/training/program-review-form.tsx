@@ -82,11 +82,11 @@ export default function ProgramReviewForm({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-lg font-semibold text-[#0F1115] mb-1">Review submitted</p>
-        <p className="text-[#6E747D] text-sm mb-6">Your coach will see this when they review your program.</p>
+        <p className="text-[20px] font-semibold text-[#0F1115] mb-1">Review submitted</p>
+        <p className="text-[#6E747D] text-[13.5px] mb-6">Your coach will see this when they review your program.</p>
         <button
           onClick={() => router.push(`/portal/${token}`)}
-          className="text-sm font-semibold text-white bg-[#0F1115] px-6 py-2.5 rounded-xl hover:bg-[#000000] transition-colors"
+          className="text-[13.5px] font-semibold text-white bg-[#0F1115] px-6 py-2.5 rounded-xl hover:bg-[#000000] transition-colors"
         >
           Back to portal
         </button>
@@ -97,14 +97,14 @@ export default function ProgramReviewForm({
   return (
     <div className="space-y-5">
       {lastReviewAt && (
-        <p className="text-xs text-[#9CA2AB]">
+        <p className="text-[12.5px] text-[#9CA2AB]">
           Last reviewed {new Date(lastReviewAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
       )}
 
       <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl px-4 py-3">
-        <p className="text-xs text-[#9CA2AB]">Current block</p>
-        <p className="text-sm font-semibold text-[#0F1115] mt-0.5">{blockName}</p>
+        <p className="text-[12.5px] text-[#9CA2AB]">Current block</p>
+        <p className="text-[13.5px] font-semibold text-[#0F1115] mt-0.5">{blockName}</p>
       </div>
 
       {/* Adherence */}
@@ -125,7 +125,7 @@ export default function ProgramReviewForm({
               </svg>
             )}
           </div>
-          <p className={`text-sm font-medium ${adherenceConfirmed ? 'text-[#6E747D]' : 'text-[#6E747D]'}`}>
+          <p className={`text-[13.5px] font-medium ${adherenceConfirmed ? 'text-[#6E747D]' : 'text-[#6E747D]'}`}>
             Yes - I completed my sessions as programmed
           </p>
         </button>
@@ -153,8 +153,8 @@ export default function ProgramReviewForm({
                 )}
               </div>
               <div>
-                <p className={`text-sm font-medium ${signalCategories.includes(opt.value) ? 'text-[#6E747D]' : 'text-[#4A4F57]'}`}>{opt.label}</p>
-                <p className="text-xs text-[#9CA2AB] mt-0.5">{opt.desc}</p>
+                <p className={`text-[13.5px] font-medium ${signalCategories.includes(opt.value) ? 'text-[#6E747D]' : 'text-[#4A4F57]'}`}>{opt.label}</p>
+                <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{opt.desc}</p>
               </div>
             </button>
           ))}
@@ -163,7 +163,7 @@ export default function ProgramReviewForm({
 
       {/* Direction */}
       <div id="f-direction" className="scroll-mt-24">
-        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-[#8F2D2D]' : 'text-[#9CA2AB]'}`}>Overall - how is training going?</p>
+        <p className={`text-[12.5px] font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-[#8F2D2D]' : 'text-[#9CA2AB]'}`}>Overall - how is training going?</p>
         <div className="grid grid-cols-3 gap-2">
           {([
             { value: 'progress', label: 'Making progress' },
@@ -176,7 +176,7 @@ export default function ProgramReviewForm({
                 setDirection(opt.value)
                 if (missing.has('direction')) setMissing(prev => { const n = new Set(prev); n.delete('direction'); return n })
               }}
-              className={`px-3 py-3 rounded-2xl border text-sm font-semibold transition-colors ${
+              className={`px-3 py-3 rounded-2xl border text-[13.5px] font-semibold transition-colors ${
                 direction === opt.value
                   ? directionColour[opt.value]
                   : missing.has('direction')
@@ -188,7 +188,7 @@ export default function ProgramReviewForm({
             </button>
           ))}
         </div>
-        {missing.has('direction') && <p className="text-[#8F2D2D] text-xs mt-2 font-medium">Please select an option.</p>}
+        {missing.has('direction') && <p className="text-[#8F2D2D] text-[12.5px] mt-2 font-medium">Please select an option.</p>}
       </div>
 
       {/* Notes */}
@@ -199,20 +199,20 @@ export default function ProgramReviewForm({
           onChange={e => setSignalsNoted(e.target.value)}
           rows={3}
           placeholder="e.g. left knee was sore on squats, energy was low Thursday..."
-          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl px-4 py-3 text-sm text-[#0F1115] placeholder-[#9CA2AB] resize-none focus:outline-none focus:border-[#DCDCD7]"
+          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl px-4 py-3 text-[13.5px] text-[#0F1115] placeholder-[#9CA2AB] resize-none focus:outline-none focus:border-[#DCDCD7]"
         />
       </div>
 
       {error && (
         <div className="bg-[#FBF1F1] border border-[#E8C9C9] rounded-xl px-4 py-3">
-          <p className="text-sm text-[#8F2D2D]">{error}</p>
+          <p className="text-[13.5px] text-[#8F2D2D]">{error}</p>
         </div>
       )}
 
       <button
         onClick={handleSubmit}
         disabled={submitting}
-        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:bg-[#E4E4E0] disabled:text-[#9CA2AB] text-white font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:bg-[#E4E4E0] disabled:text-[#9CA2AB] text-white font-bold text-[13.5px] rounded-2xl transition-colors"
       >
         {submitting ? 'Submitting...' : 'Submit Review'}
       </button>

@@ -71,7 +71,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
     >
       {!program ? (
           <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#9CA2AB] text-sm">No active training program yet. Your coach will set this up for you.</p>
+            <p className="text-[#9CA2AB] text-[13.5px]">No active training program yet. Your coach will set this up for you.</p>
           </div>
         ) : (
           <div className="space-y-5">
@@ -79,7 +79,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
                 "Log today's meals" on the nutrition plan. */}
             <Link
               href={`/portal/${token}/program/log`}
-              className="block w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+              className="block w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-[13.5px] rounded-2xl text-center transition-colors"
             >
               Log a session →
             </Link>
@@ -117,16 +117,16 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
             {/* Legacy client_note - shown only when no Program Reading has been published yet */}
             {!programReadingPublished && program.client_note && (
               <div className="bg-[#F2F2EF] border border-[#DCDCD7] rounded-2xl px-5 py-4">
-                <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">About this block</p>
-                <p className="text-sm text-[#4A4F57] leading-relaxed">{program.client_note}</p>
+                <p className="text-[12.5px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">About this block</p>
+                <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{program.client_note}</p>
               </div>
             )}
 
             {/* Conditioning / cardio prescription (interim field until the conditioning modality) */}
             {program.conditioning && (
               <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl px-5 py-4">
-                <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">Conditioning / Cardio</p>
-                <p className="text-sm text-[#4A4F57] leading-relaxed whitespace-pre-line">{program.conditioning}</p>
+                <p className="text-[12.5px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">Conditioning / Cardio</p>
+                <p className="text-[13.5px] text-[#4A4F57] leading-relaxed whitespace-pre-line">{program.conditioning}</p>
               </div>
             )}
 
@@ -134,23 +134,23 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
             <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-lg font-bold text-[#0F1115]">{program.block_name}</p>
-                  <p className="text-xs text-[#9CA2AB] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
+                  <p className="text-[20px] font-bold text-[#0F1115]">{program.block_name}</p>
+                  <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
                 </div>
                 {program.current_direction && (
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#6E747D] bg-[#E4E4E0] border-[#E4E4E0]'}`}>
+                  <span className={`text-[12.5px] font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#6E747D] bg-[#E4E4E0] border-[#E4E4E0]'}`}>
                     {directionLabel[program.current_direction] ?? program.current_direction}
                   </span>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#9CA2AB] mb-0.5">Sessions / week</p>
-                  <p className="text-sm font-semibold text-[#0F1115]">{program.training_frequency}x</p>
+                  <p className="text-[12.5px] text-[#9CA2AB] mb-0.5">Sessions / week</p>
+                  <p className="text-[13.5px] font-semibold text-[#0F1115]">{program.training_frequency}x</p>
                 </div>
                 <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#9CA2AB] mb-0.5">Block length</p>
-                  <p className="text-sm font-semibold text-[#0F1115]">{program.week_duration} weeks</p>
+                  <p className="text-[12.5px] text-[#9CA2AB] mb-0.5">Block length</p>
+                  <p className="text-[13.5px] font-semibold text-[#0F1115]">{program.week_duration} weeks</p>
                 </div>
               </div>
             </div>

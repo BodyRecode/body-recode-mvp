@@ -77,10 +77,10 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-[#0F1115]">Your blood test request — for your GP</p>
-                    <p className="text-xs text-[#6E747D] mt-0.5">A list of the markers to discuss, prepared for you. Opens as a PDF you can print or save — take it to your appointment.</p>
+                    <p className="text-[13.5px] font-medium text-[#0F1115]">Your blood test request — for your GP</p>
+                    <p className="text-[12.5px] text-[#6E747D] mt-0.5">A list of the markers to discuss, prepared for you. Opens as a PDF you can print or save — take it to your appointment.</p>
                   </div>
-                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Open →</span>
+                  <span className="text-[12.5px] font-bold text-[#0F1115] ml-4 shrink-0">Open →</span>
                 </div>
               </a>
             )}
@@ -91,10 +91,10 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-[#4A4F57]">Understanding your baseline bloodwork</p>
-                    <p className="text-xs text-[#9CA2AB] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
+                    <p className="text-[13.5px] font-medium text-[#4A4F57]">Understanding your baseline bloodwork</p>
+                    <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
                   </div>
-                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
+                  <span className="text-[12.5px] font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
                 </div>
               </Link>
             )}
@@ -126,24 +126,24 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-[#0F1115] mb-1">Blood panel · {dateLabel}</p>
-                        <p className="text-xs text-[#6E747D] leading-relaxed">Your coach has written up what this means for your coaching.</p>
+                        <p className="text-[13.5px] font-semibold text-[#0F1115] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-[12.5px] text-[#6E747D] leading-relaxed">Your coach has written up what this means for your coaching.</p>
                       </div>
-                      <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Read →</span>
+                      <span className="text-[12.5px] font-bold text-[#0F1115] ml-4 shrink-0">Read →</span>
                     </div>
                   </Link>
                 ) : (
                   <div key={panel.id} className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF]/60 p-5">
                     <div className="flex items-center justify-between gap-4">
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-[#4A4F57] mb-1">Blood panel · {dateLabel}</p>
-                        <p className="text-xs text-[#9CA2AB] leading-relaxed">
+                        <p className="text-[13.5px] font-semibold text-[#4A4F57] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed">
                           {panel.status === 'failed'
                             ? 'We had trouble reading this file. Your coach has been notified and may ask for a clearer copy.'
                             : 'Received. Your coach is reviewing it. You will see their write-up here once it is ready.'}
                         </p>
                       </div>
-                      <span className="text-[11.5px] font-medium text-[#9CA2AB] ml-4 shrink-0">
+                      <span className="text-[11px] font-medium text-[#9CA2AB] ml-4 shrink-0">
                         {panel.status === 'failed' ? 'Needs a clearer copy' : 'In review'}
                       </span>
                     </div>

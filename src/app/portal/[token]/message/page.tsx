@@ -56,11 +56,11 @@ export default async function MessageCoachPage({
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">
+          <Link href={`/portal/${token}/resources`} className="text-[12.5px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to resources</Link>
+          <h1 className="text-[34px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mt-4 mb-2">
             Messages
           </h1>
-          <p className="text-[#6E747D] text-[15px] leading-relaxed">
+          <p className="text-[#6E747D] text-[16px] leading-relaxed">
             Your conversation with {coachFirstName}, all in one place. Ask anything, any time. Replies land here and you will get an email the moment one arrives.
           </p>
         </div>

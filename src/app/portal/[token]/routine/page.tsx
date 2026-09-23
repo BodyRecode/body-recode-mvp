@@ -63,8 +63,8 @@ function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: Dai
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-[#0F1115] leading-tight">{sequence.title}</h2>
-          <p className="text-[13px] text-[#6E747D] mt-1">{sequence.tagline}</p>
+          <h2 className="text-[20px] font-semibold text-[#0F1115] leading-tight">{sequence.title}</h2>
+          <p className="text-[13.5px] text-[#6E747D] mt-1">{sequence.tagline}</p>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: Dai
               <span className="w-6 h-6 rounded-full bg-[#0F1115]/10 text-[#0F1115] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {i + 1}
               </span>
-              <p className="text-[14px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
+              <p className="text-[13.5px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
             </li>
           ))}
         </ol>
@@ -83,7 +83,7 @@ function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: Dai
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
           <div className="mt-5 pt-4 border-t border-[#E4E4E0]">
             <p className="text-[10px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">A note from your coach</p>
-            <p className="text-[13px] text-[#6E747D] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
+            <p className="text-[13.5px] text-[#6E747D] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
           </div>
         )}
       </div>
