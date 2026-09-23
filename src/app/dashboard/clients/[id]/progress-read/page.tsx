@@ -7,6 +7,7 @@ import { productTierForScope } from '@/lib/coach-tier'
 import { requireCoachScope } from '@/lib/coach-scope'
 import { PageHeader } from '@/components/dashboard/ui'
 import { readPatternLabel } from '@/lib/pattern-doctrine'
+import { BRAND } from '@/lib/brand-tokens'
 import type { LintFinding } from '@/lib/reading-lint'
 import GenerateProgressReadButton from './generate-progress-read-button'
 import ProgressReadActions from './progress-read-actions'
@@ -32,6 +33,14 @@ import ProgressReadActions from './progress-read-actions'
  * specifically about what the client receives.
  */
 const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+
+/** Readiness names carry their locked colour. Nothing else on this page does. */
+function readinessColourOnDark(state: string) {
+  return state === 'Remediation' ? BRAND.remediationOnDark
+    : state === 'Optimisation' ? BRAND.optimisationOnDark
+    : state === 'Post-Optimisation' ? BRAND.postOptimisationOnDark
+    : BRAND.darkInk
+}
 const HER_SECTIONS: Array<[string, string]> = [
   ['headline', 'Headline'],
   ['where_you_are_now', 'Where you are now'],
@@ -149,8 +158,14 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
             <div className="px-6 pt-5 pb-5 grid grid-cols-1 sm:grid-cols-3 gap-5 border-b border-[#2A2F39]">
               <div>
                 <p className="text-[11px] font-medium text-[#676D76] mb-1.5">Readiness</p>
-                <p className="text-[16px] font-bold text-[#FAFAF8]">
-                  {read.previous_body_state ?? 'Unknown'} → {read.body_state_classification}
+                {/* The one place on this page colour is spent, because readiness is
+                    the one thing on it that the colours were locked to mean. WHERE IT
+                    CAME FROM STAYS GREY: two readiness colours either side of an arrow
+                    read as two facts rather than as movement toward one. */}
+                <p className="text-[16px] font-bold">
+                  <span style={{ color: BRAND.darkInkSoft }}>{read.previous_body_state ?? 'Unknown'}</span>
+                  <span style={{ color: BRAND.darkInkFaint }}> → </span>
+                  <span style={{ color: readinessColourOnDark(read.body_state_classification) }}>{read.body_state_classification}</span>
                 </p>
                 <p className="text-[12.5px] text-[#8A9099]">
                   <span className="capitalize">{read.state_direction}</span>{read.state_clamped ? ' · held to one step by the rules' : ''}
