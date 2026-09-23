@@ -9,13 +9,17 @@
  * awkward" in the box beside it. Kade, 23 Sep 2026: the four ratings were never
  * meant to carry a colour, only a name.
  *
- * THE NAMES ARE NOT INVENTED. They are the rubric's own words for the three
- * levels (src/lib/cffs-prompt.ts):
- *   Green — "no meaningful constraint in this domain. Not excellent, just not limiting."
- *   Amber — "a real constraint is present and would shape how you load this person,
- *            but it is not the binding limit on everything."
- *   Red   — "this domain is the binding constraint. Until it moves, progress in the
- *            others is capped by it."
+ * THE NAMES ARE ONE IDEA AT THREE STRENGTHS, and the idea is the only question
+ * the rating answers: is this thing holding them back, and is it the worst one.
+ *   Green — Not limiting
+ *   Amber — Limiting
+ *   Red   — Main limit
+ *
+ * A FIRST ATTEMPT USED THE RUBRIC'S OWN WORDS, Clear / Limiting / Binding, and
+ * Kade could not read them: "i dont get these and i dont know why the names
+ * changed". Binding is a legal word. Language that is precise inside a scoring
+ * rubric is not automatically language that works as a label, and nobody should
+ * have to be taught a word to read their own dashboard.
  *
  * THE STORED VALUE IS UNCHANGED, deliberately. It is what every rule downstream
  * counts, what the reassessment triggers compare, and what sits on every
@@ -31,15 +35,19 @@
 
 export type ReadinessLevelTone = 'quiet' | 'normal' | 'strong'
 
+const NOT_LIMITING = { label: 'Not limiting', tone: 'quiet' as ReadinessLevelTone, meaning: 'Not holding anything back right now.' }
+const LIMITING = { label: 'Limiting', tone: 'normal' as ReadinessLevelTone, meaning: 'Holding them back enough to shape how much is asked of them, but it is not the worst one.' }
+const MAIN_LIMIT = { label: 'Main limit', tone: 'strong' as ReadinessLevelTone, meaning: 'The one holding everything else back. Until this moves, the other three cannot go far.' }
+
 const LEVELS: Record<string, { label: string; tone: ReadinessLevelTone; meaning: string }> = {
-  Green: { label: 'Clear', tone: 'quiet', meaning: 'Not limiting anything right now.' },
-  Amber: { label: 'Limiting', tone: 'normal', meaning: 'A real constraint that should shape how much is asked, but not the ceiling on everything.' },
-  Red: { label: 'Binding', tone: 'strong', meaning: 'The ceiling. Until this moves, progress everywhere else is capped by it.' },
+  Green: NOT_LIMITING,
+  Amber: LIMITING,
+  Red: MAIN_LIMIT,
   // Accepts the names themselves, so a surface can be pointed at either and a
   // future change to what is stored does not break every screen at once.
-  Clear: { label: 'Clear', tone: 'quiet', meaning: 'Not limiting anything right now.' },
-  Limiting: { label: 'Limiting', tone: 'normal', meaning: 'A real constraint that should shape how much is asked, but not the ceiling on everything.' },
-  Binding: { label: 'Binding', tone: 'strong', meaning: 'The ceiling. Until this moves, progress everywhere else is capped by it.' },
+  'Not limiting': NOT_LIMITING,
+  Limiting: LIMITING,
+  'Main limit': MAIN_LIMIT,
 }
 
 const UNKNOWN = { label: 'Not rated', tone: 'quiet' as ReadinessLevelTone, meaning: 'No rating on record for this domain.' }

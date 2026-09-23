@@ -65,11 +65,11 @@ const SECTIONS: Array<{ title: string; blocks: Block[] }> = [
     title: 'The four ratings',
     blocks: [
       {
-        heading: 'Clear, Limiting, Binding',
+        heading: 'Not limiting, Limiting, Main limit',
         body: [
           'Alongside readiness, four things are rated separately: how much work they can absorb right now, how reliably their week allows training and eating to happen, their stress and recovery state, and how consistently they do what is agreed when the week allows it.',
-          'Each is one of three. Clear means it is not limiting anything. Limiting means a real constraint is there and it should shape how much is asked, but it is not the ceiling. Binding means it IS the ceiling: until it moves, progress in the other three is capped by it.',
-          'Normally only one is Binding. If three are, that tells you nothing about where to start, and it is worth saying so.',
+          'Each one answers a single question, which is whether that thing is holding them back. Not limiting means it is not. Limiting means it is, enough to shape how much you ask of them. Main limit means it is the one holding everything else back, and until it moves the other three cannot go far.',
+          'Normally only one is the main limit. If three are, that tells you nothing about where to start, and it is worth saying so.',
         ],
         note: 'These four carry no colour, deliberately. Colour on this system means readiness, and these are not readiness.',
       },
