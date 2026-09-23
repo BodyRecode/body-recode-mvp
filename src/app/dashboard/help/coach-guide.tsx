@@ -168,6 +168,14 @@ const SECTIONS: Array<{ title: string; blocks: Block[] }> = [
         ],
       },
       {
+        heading: 'Testimonials',
+        body: [
+          'On a client\'s file there is an ask for a few lines about how it has gone. They write it and choose how they want to be named, or decline without writing anything, and what they write lands on your Testimonials page already carrying their permission and their choice of name.',
+          'It asks once. Nothing chases them, which is deliberate: a compliment somebody had to be asked for twice is not one you would want to put in front of a prospect.',
+        ],
+        note: 'There is no button that publishes anything anywhere. You copy it out and place it yourself, because a quote going live on a misclick is somebody\'s real words.',
+      },
+      {
         heading: 'If something is wrong',
         body: [
           'Use the button in the bottom corner of any page. It sends the page you were on with it, which saves a round of questions. Anything you have reported, and where it got to, is under Support.',
