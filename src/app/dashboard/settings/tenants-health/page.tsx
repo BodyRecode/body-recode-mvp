@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { listAuthUsers } from '@/lib/auth-users'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -87,12 +88,15 @@ export default async function TenantsHealthPage() {
 
   const rows = tenants ?? []
 
-  // 2. Coach auth last_sign_in_at
-  const { data: authList } = await admin.auth.admin.listUsers({ perPage: 200 })
+  // 2. Coach auth last_sign_in_at.
+  //
+  // 23 Sep 2026: this asked for one page and never checked whether the request
+  // failed. When it did, the map came back empty and EVERY tenant rendered as
+  // never having signed in. A health page that quietly reports the worst case
+  // as a fact is worse than one that admits it could not look.
+  const { users: authUsers, unreadablePages } = await listAuthUsers(admin)
   const lastLoginByUserId = new Map<string, string | null>()
-  for (const u of authList?.users ?? []) {
-    lastLoginByUserId.set(u.id, u.last_sign_in_at ?? null)
-  }
+  for (const u of authUsers) lastLoginByUserId.set(u.id, u.lastSignInAt)
 
   // 3. Active client counts + tenant_domains
   const activeCountsByCoach = new Map<string, number>()
@@ -149,6 +153,18 @@ export default async function TenantsHealthPage() {
         subtitle="Kade-only overview of every provisioned partner tenant. One row per tenant, load-bearing signals at a glance."
         accent="teal"
       />
+
+      {unreadablePages > 0 && (
+        <div
+          className="rounded-xl px-4 py-3 mb-5 text-[13.5px] leading-relaxed"
+          style={{ background: '#1A1214', border: '1px solid #4A2222', color: '#D4817E' }}
+        >
+          <b>Sign-in dates on this page are incomplete.</b> {unreadablePages} page
+          {unreadablePages === 1 ? '' : 's'} of the login list could not be read, so a tenant shown as never
+          having signed in may simply be in the part that failed. This usually means one account holds an
+          unreadable value, such as a ban recorded as &ldquo;forever&rdquo; rather than a date.
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         <StatMini label="Tenants" value={stats.total} sub={`${rows.length} provisioned`} />

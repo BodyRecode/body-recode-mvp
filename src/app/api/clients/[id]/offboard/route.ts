@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { findAuthUserByEmail } from '@/lib/auth-users'
 import { offboardClient, type EndReason } from '@/lib/offboard-client'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 
@@ -34,21 +35,37 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
 
   // Ban the portal login. Separate from offboardClient because it touches
   // auth.users, which the admin client reaches through a different surface.
+  //
+  // 23 Sep 2026: this used to ask for ONE page of logins and never check
+  // whether the request failed, so when the listing broke it reported "no auth
+  // account found" and moved on. That reads like a fact and was a failure, and
+  // it meant a client could be offboarded with their login left open.
+  //
+  // The ban is now a BACKSTOP rather than the gate: the portal checks ended_at
+  // in its layout and in middleware for every API route. It stays because
+  // every gate checked on 23 September turned out to be partially applied, and
+  // a second line costs nothing.
+  //
   let loginBanned = false
+  let banDetail: string | undefined
   try {
     const { data: client } = await admin.from('clients').select('email').eq('id', id).maybeSingle()
-    if (client?.email) {
-      const { data: users } = await admin.auth.admin.listUsers()
-      const match = users?.users?.find(u => (u.email ?? '').toLowerCase() === client.email!.toLowerCase())
+    if (!client?.email) {
+      banDetail = 'no email on file'
+    } else {
+      const match = await findAuthUserByEmail(admin, client.email)
       if (match) {
         await admin.auth.admin.updateUserById(match.id, { ban_duration: '876000h' }) // 100 years
         loginBanned = true
+      } else {
+        banDetail = 'they never made a portal login'
       }
     }
   } catch (err) {
-    console.error('[offboard] login ban failed:', err instanceof Error ? err.message : err)
+    banDetail = err instanceof Error ? err.message : String(err)
+    console.error('[offboard] login ban failed:', banDetail)
   }
-  result.steps.push({ step: 'Portal login banned', done: loginBanned, detail: loginBanned ? undefined : 'no auth account found' })
+  result.steps.push({ step: 'Portal login banned', done: loginBanned, detail: banDetail })
 
   return NextResponse.json(result)
 }
