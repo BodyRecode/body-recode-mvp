@@ -3,7 +3,7 @@ import { requireCoachScope, coachFilter } from '@/lib/coach-scope'
 import { WeekStrip } from '@/components/dashboard/week-strip'
 import { buildWeekStrips } from '@/lib/week-strip-data'
 import Link from 'next/link'
-import { formatDate, readinessPillStyle, getReadinessColour } from '@/lib/utils'
+import { formatDate, readinessPillStyle, readinessMarkStyle } from '@/lib/utils'
 import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
 import { resolveCurrentBodyState, latestReScore } from '@/lib/body-state-current'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -539,7 +539,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       client.latestCfws.exposure_readiness_regulation,
                       client.latestCfws.exposure_readiness_behaviour,
                     ].map((r, i) => (
-                      <div key={i} className="w-2 h-2 rounded-full" style={getReadinessColour(r)} />
+                      <div key={i} className="w-2 h-2 rounded-full" style={readinessMarkStyle(r)} />
                     ))}
                   </div>
                 )}

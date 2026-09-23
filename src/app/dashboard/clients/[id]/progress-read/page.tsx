@@ -11,6 +11,7 @@ import { BRAND } from '@/lib/brand-tokens'
 import type { LintFinding } from '@/lib/reading-lint'
 import GenerateProgressReadButton from './generate-progress-read-button'
 import ProgressReadActions from './progress-read-actions'
+import { readinessLevel } from '@/lib/readiness-levels'
 
 /**
  * The Progress Read, coach view (Progress Read spec v2.4). One generation, two
@@ -184,10 +185,25 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
               </div>
               <div>
                 <p className="text-[11px] font-medium text-[#676D76] mb-1.5">Four readiness ratings</p>
-                <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed">
-                  Capacity {read.exposure_readiness_capacity} · Schedule {read.exposure_readiness_schedule}<br />
-                  Regulation {read.exposure_readiness_regulation} · Behaviour {read.exposure_readiness_behaviour}
-                </p>
+                {/* Named, not coloured. Clear / Limiting / Binding are the rubric's
+                    own words for the three levels; the stored value is unchanged. */}
+                <div className="space-y-1">
+                  {([['Capacity', read.exposure_readiness_capacity],
+                     ['Schedule', read.exposure_readiness_schedule],
+                     ['Regulation', read.exposure_readiness_regulation],
+                     ['Behaviour', read.exposure_readiness_behaviour]] as Array<[string, string]>).map(([label, v]) => {
+                    const lvl = readinessLevel(v)
+                    return (
+                      <p key={label} className="text-[12.5px] leading-snug" style={{ color: BRAND.darkInkSoft }}>
+                        {label}{' '}
+                        <span style={{
+                          color: lvl.tone === 'quiet' ? BRAND.darkInkFaint : BRAND.darkInk,
+                          fontWeight: lvl.tone === 'strong' ? 700 : 500,
+                        }}>{lvl.label}</span>
+                      </p>
+                    )
+                  })}
+                </div>
               </div>
             </div>
             <div className="px-6 py-3.5 flex items-center justify-between gap-4 flex-wrap">

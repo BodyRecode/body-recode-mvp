@@ -4,6 +4,7 @@ import PrintTrigger from './print-trigger'
 import { brand } from "@/config/tenant";
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
+import { readinessLevel } from '@/lib/readiness-levels'
 
 const TEAL = '#0F1115'
 const TEAL_HOVER = '#242932'
@@ -44,18 +45,12 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
     { label: 'Behaviour', value: cffs.exposure_readiness_behaviour },
   ]
 
-  const readinessColour: Record<string, string> = {
-    Green: '#000000',
-    Amber: '#B06E1F',
-    Red: '#8F2D2D',
-    Unknown: '#9CA2AB',
-  }
-  const readinessBg: Record<string, string> = {
-    Green: '#F2F2EF',
-    Amber: '#FDF8F1',
-    Red: '#FBF1F1',
-    Unknown: '#FAFAF8',
-  }
+  // THESE FOUR ARE NOT READINESS AND CARRY NO COLOUR. They were painted in the
+  // Remediation and Attention colours on a document a client receives, so a red
+  // block beside "Regulation" read as a verdict on the person. Named instead,
+  // in the rubric's own words, with severity carried by weight.
+  const levelInk = (v: string) => (readinessLevel(v).tone === 'quiet' ? '#9CA2AB' : '#0F1115')
+  const levelWeight = (v: string) => (readinessLevel(v).tone === 'strong' ? 800 : 600)
 
   const generatedDate = new Date(cffs.generated_at).toLocaleDateString('en-AU', {
     day: 'numeric', month: 'long', year: 'numeric',
@@ -224,14 +219,14 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                   <div
                     key={item.label}
                     style={{
-                      background: readinessBg[item.value] || SOFT,
+                      background: SOFT,
                       padding: '14px 16px',
-                      borderLeft: `3px solid ${readinessColour[item.value] || '#9CA2AB'}`,
+                      borderLeft: `3px solid ${levelInk(item.value)}`,
                       borderRadius: 4,
                     }}
                   >
-                    <p style={{ fontSize: 13, fontWeight: 800, color: readinessColour[item.value] || '#9CA2AB', marginBottom: 4 }}>
-                      {item.value}
+                    <p style={{ fontSize: 13, fontWeight: levelWeight(item.value), color: levelInk(item.value), marginBottom: 4 }}>
+                      {readinessLevel(item.value).label}
                     </p>
                     <p style={{ fontSize: 10, fontWeight: 600, color: '#9CA2AB', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                       {item.label}

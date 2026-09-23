@@ -1,6 +1,7 @@
 import { BRAND } from './brand-tokens'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { readinessLevel } from './readiness-levels'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -131,11 +132,20 @@ export const LEAD_SOURCES = [
  * They now come from the palette rather than from Tailwind's defaults, which
  * were louder than anything else on a screen whose only colour is a readiness.
  */
-export function getReadinessColour(status: string): React.CSSProperties {
-  const c =
-    status === 'Green' ? BRAND.postOptimisation
-    : status === 'Amber' ? BRAND.remediation
-    : status === 'Red' ? BRAND.attention
-    : BRAND.noReading
-  return { background: c }
+/**
+ * A mark for one of the four readiness ratings.
+ *
+ * THIS USED TO RETURN THE READINESS PALETTE — Green to Post-Optimisation, Amber
+ * to Remediation, Red to Attention — so a rating on schedule was painted the
+ * exact colour that means "a safety gate has fired" everywhere else. Kade,
+ * 23 Sep 2026: these four were never meant to carry colour, only a name.
+ *
+ * Filled and solid is the binding constraint, filled and soft is a real
+ * constraint, hollow is clear. No hue, because these are not readiness.
+ */
+export function readinessMarkStyle(status: string | null | undefined): React.CSSProperties {
+  const tone = readinessLevel(status).tone
+  if (tone === 'strong') return { background: BRAND.darkInk }
+  if (tone === 'normal') return { background: BRAND.darkInkSoft }
+  return { background: 'transparent', border: `1px solid ${BRAND.darkLine}` }
 }

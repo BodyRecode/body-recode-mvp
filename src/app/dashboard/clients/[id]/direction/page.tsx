@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ClientPageNav from '../client-page-nav'
 import { PageHeader } from '@/components/dashboard/ui'
 import { currentReadRow } from '@/lib/current-read'
+import { readinessLevel } from '@/lib/readiness-levels'
 
 const phaseColour: Record<string, string> = {
   accumulation: 'text-[#FFFFFF] bg-[rgba(27,109,252,0.08)] border-[#2A2F39]',
@@ -25,10 +26,13 @@ const entryStateColour: Record<string, string> = {
   recovery_reset: 'text-[#D4817E] bg-[#1A1214] border-[#4A2222]',
 }
 
-const readinessColour: Record<string, string> = {
-  Green: 'bg-[#14171D] border-[#6FA98B] text-[#C2C6CC]',
-  Amber: 'bg-[#1A1E26] border-[#E0A254] text-[#E0A254]',
-  Red: 'bg-[#1A1214] border-[#D4817E] text-[#D4817E]',
+// The four ratings are NOT readiness and carry no colour. They used to be
+// painted in the Remediation and Attention colours, which taught the same amber
+// two meanings one box apart. Severity is weight now. See readiness-levels.
+const readinessTone: Record<string, string> = {
+  quiet: 'bg-[#14171D] border-[#2A2F39] text-[#676D76]',
+  normal: 'bg-[#14171D] border-[#4A4F57] text-[#C2C6CC]',
+  strong: 'bg-[#1A1E26] border-[#FAFAF8] text-[#FAFAF8] font-semibold',
 }
 
 const blockStatusStyle: Record<string, string> = {
@@ -109,8 +113,8 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {readinessItems.map(item => (
-                  <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${readinessColour[item.value] || 'bg-[#1A1E26] border-[#2A2F39] text-[#8A9099]'}`}>
-                    <p className="text-[12.5px] font-medium mb-0.5">{item.value}</p>
+                  <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${readinessTone[readinessLevel(item.value).tone]}`}>
+                    <p className="text-[12.5px] mb-0.5">{readinessLevel(item.value).label}</p>
                     <p className="text-[10px] text-[#8A9099]">{item.label}</p>
                   </div>
                 ))}

@@ -135,7 +135,7 @@ THIS IS A PROGRESS READ, NOT A FIRST READ (Progress Read spec v2.4). Everything 
 
 5. FOR_HER IS WRITTEN TO HER. Second person, plain words, the voice of a coach who knows her. It holds only findings: headline, where she is now, what changed, what held, her pattern and why, what the photos and measurements show, what is holding things back, tensions and trade-offs. NEVER in for_her: confidence levels, competing reads, what to watch for, risk flags, capacity constraints, non-directives, operating rules, or any suspicion about her reporting. The test: if getting it wrong in the other direction would hurt her, it is coach-only.
 
-6. HER VOCABULARY. Never use in for_her: Green, Amber or Red as rating words, CFFS, Remediation, Optimisation, Post-Optimisation, Indeterminate, cluster, convergence, competing read, Fat Map zone codes. Say readiness rather than body state; her readiness words are Depleted, Transitioning and Ready. For no clear pattern, say no single pattern stands out yet and what would show it. ${PATTERN_HORMONE_GUARDRAIL}
+6. HER VOCABULARY. Never use in for_her: Green, Amber or Red as rating words, nor their coach-facing names Clear, Limiting or Binding, CFFS, Remediation, Optimisation, Post-Optimisation, Indeterminate, cluster, convergence, competing read, Fat Map zone codes. Say readiness rather than body state; her readiness words are Depleted, Transitioning and Ready. For no clear pattern, say no single pattern stands out yet and what would show it. ${PATTERN_HORMONE_GUARDRAIL}
 
 7. A CHANGED PATTERN IS THE READ LEARNING, NOT THE FIRST READ BEING WRONG. With twelve more weeks of evidence the picture is clearer; say that. Never say or imply the earlier read was a mistake.
 
@@ -278,7 +278,7 @@ ${PROGRESS_OUTPUT_ADDITIONS}${CFFS_OUTPUT_SCHEMA}`,
     const flat = (v: unknown): string => typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).map(flat).join(' ') : ''
     const plain = her.readiness_in_plain_words as Record<string, unknown> | undefined
     if (!plain || typeof plain !== 'object' || !['capacity', 'schedule', 'regulation', 'behaviour'].every(k => typeof plain[k] === 'string' && (plain[k] as string).trim())) return 'for_her.readiness_in_plain_words missing a rating'
-    const leak = flat(her).match(INTERNAL_VOCABULARY) ?? flat(her).match(/\b(Green|Amber|Red)\b/)
+    const leak = flat(her).match(INTERNAL_VOCABULARY) ?? flat(her).match(/\b(Green|Amber|Red|Limiting|Binding)\b/)
     if (leak) return `for_her uses internal vocabulary ("${leak[0]}")`
     // The sex gate, in code.
     if (sexAtBirth === 'Male' && c.pattern_classification === 'Estrogen-Shift') return 'Estrogen-Shift returned for a client recorded male at birth'

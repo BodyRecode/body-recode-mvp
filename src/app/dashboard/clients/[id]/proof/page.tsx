@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireCoachScope, assertOwnsClient } from '@/lib/coach-scope'
 import ProofActions from './proof-actions'
+import { readinessLevel } from '@/lib/readiness-levels'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Twelve weeks', robots: { index: false, follow: false } }
@@ -97,8 +98,12 @@ export default async function ProofPage({
     ['Behaviour', read.exposure_readiness_behaviour],
   ] as Array<[string, string | null]>
 
-  const dot = (v: string | null) =>
-    v === 'Green' ? '#2B5E45' : v === 'Amber' ? '#B06E1F' : v === 'Red' ? '#8F2D2D' : '#DCDCD7'
+  // No hue on these four. They are not readiness, and this page gets handed to a
+  // client, so a red mark beside "Regulation" reads as a verdict on them.
+  const levelInk = (v: string | null) => {
+    const t = readinessLevel(v).tone
+    return { color: t === 'quiet' ? '#9CA2AB' : '#0F1115', fontWeight: t === 'strong' ? 700 : 500 }
+  }
 
   const Col = ({ label, when, state }: { label: string; when: string | null; state: string | null }) => (
     <div className="flex-1 min-w-0">
@@ -153,9 +158,9 @@ export default async function ProofPage({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {signals.map(([label, v]) => (
               <div key={label}>
-                <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: dot(v) }} />
-                <div className="text-[13.5px] font-semibold text-[#0F1115] mt-2">{label}</div>
-                <div className="text-[12.5px] text-[#6E747D]">{v && v !== 'Unknown' ? v : 'Not read'}</div>
+                <div className="text-[13.5px] font-semibold text-[#0F1115]">{label}</div>
+                <div className="text-[12.5px] mt-1" style={levelInk(v)}>{readinessLevel(v).label}</div>
+                <div className="text-[11px] text-[#9CA2AB] mt-1 leading-snug">{readinessLevel(v).meaning}</div>
               </div>
             ))}
           </div>

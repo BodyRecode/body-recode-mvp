@@ -10,7 +10,7 @@ import { ChevronLeft, ChevronRight, ArrowRight, CheckCircle2, Activity, RefreshC
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
-import { formatDate, readinessPillStyle, getReadinessColour } from '@/lib/utils'
+import { formatDate, readinessPillStyle, readinessMarkStyle } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 import { GlanceCard, flagsPill, type GlancePill } from '@/components/glance-card'
@@ -69,6 +69,7 @@ import { boneFlagFromScreen, BONE_REFERRAL_SENTENCE } from '@/lib/bone-protocol'
 import { ironFlag, IRON_REFERRAL_SENTENCE, IRON_TIER_TIMEFRAME, type IronScreen } from '@/lib/iron-gate'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
+import { readinessLevel } from '@/lib/readiness-levels'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -548,8 +549,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Status strip + one "next step" (2026-07-12 client-file redesign, safest-first
           slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
       {(() => {
-        const dot = (v?: string | null) =>
-          v === 'Green' ? 'bg-[#6FA98B]' : v === 'Amber' ? 'bg-[#E0A254]' : v === 'Red' ? 'bg-[#D4817E]' : 'bg-[#2A2F39]'
+        // NO HUE. These four are not readiness, and they were borrowing the
+        // readiness and Attention colours, so the same amber meant two things a
+        // few pixels apart. A filled mark is a constraint, hollow is clear.
+        const mark = (v?: string | null) => {
+          const t = readinessLevel(v).tone
+          return t === 'strong' ? 'bg-[#FAFAF8]' : t === 'normal' ? 'bg-[#8A9099]' : 'bg-transparent border border-[#4A4F57]'
+        }
         const READY = [
           { label: 'Capacity', v: activeCffs?.exposure_readiness_capacity as string | null | undefined },
           { label: 'Schedule', v: activeCffs?.exposure_readiness_schedule as string | null | undefined },
@@ -614,8 +620,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     four unrelated chips, so the four sit in a single control. */}
                 <span className="inline-flex items-center gap-3 text-[11px] text-[#8A9099] pl-2.5 pr-3 py-[3px] rounded-full border border-[#2A2F39] bg-[linear-gradient(180deg,#14171D,#0B0D10)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
                   {READY.map(r => (
-                    <span key={r.label} className="inline-flex items-center gap-1.5" title={r.v ? `${r.label}: ${r.v}` : `${r.label}: not read yet`}>
-                      <span className={`w-[7px] h-[7px] rounded-full ${dot(r.v)}`} /> {r.label}
+                    <span key={r.label} className="inline-flex items-center gap-1.5" title={`${r.label}: ${readinessLevel(r.v).label}. ${readinessLevel(r.v).meaning}`}>
+                      <span className={`w-[7px] h-[7px] rounded-full ${mark(r.v)}`} /> {r.label}
                     </span>
                   ))}
                 </span>
@@ -1377,17 +1383,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <div className="grid grid-cols-2 gap-2">
                   {readinessItems.map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-[#14171D] border-[#6FA98B]' :
-                      item.value === 'Amber' ? 'bg-[#1A1E26] border-[#E0A254]' :
-                      item.value === 'Red' ? 'bg-[#1A1214] border-[#D4817E]' :
-                      'bg-[#1A1E26] border-[#2A2F39]'
+                      readinessLevel(item.value).tone === 'strong' ? 'bg-[#1A1E26] border-[#FAFAF8]' :
+                      readinessLevel(item.value).tone === 'normal' ? 'bg-[#14171D] border-[#4A4F57]' :
+                      'bg-[#14171D] border-[#2A2F39]'
                     }`}>
-                      <p className={`text-xs font-bold mb-0.5 ${
-                        item.value === 'Green' ? 'text-[#C2C6CC]' :
-                        item.value === 'Amber' ? 'text-[#E0A254]' :
-                        item.value === 'Red' ? 'text-[#D4817E]' :
-                        'text-[#8A9099]'
-                      }`}>{item.value}</p>
+                      <p className={`text-xs mb-0.5 ${
+                        readinessLevel(item.value).tone === 'strong' ? 'font-bold text-[#FAFAF8]' :
+                        readinessLevel(item.value).tone === 'normal' ? 'font-semibold text-[#C2C6CC]' :
+                        'font-medium text-[#676D76]'
+                      }`}>{readinessLevel(item.value).label}</p>
                       <p className="text-[10px] text-[#676D76] font-medium">{item.label}</p>
                     </div>
                   ))}
@@ -1876,17 +1880,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
                   ].map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-[#14171D] border-[#6FA98B]' :
-                      item.value === 'Amber' ? 'bg-[#1A1E26] border-[#E0A254]' :
-                      item.value === 'Red' ? 'bg-[#1A1214] border-[#D4817E]' :
-                      'bg-[#1A1E26] border-[#2A2F39]'
+                      readinessLevel(item.value).tone === 'strong' ? 'bg-[#1A1E26] border-[#FAFAF8]' :
+                      readinessLevel(item.value).tone === 'normal' ? 'bg-[#14171D] border-[#4A4F57]' :
+                      'bg-[#14171D] border-[#2A2F39]'
                     }`}>
-                      <p className={`text-xs font-bold mb-0.5 ${
-                        item.value === 'Green' ? 'text-[#C2C6CC]' :
-                        item.value === 'Amber' ? 'text-[#E0A254]' :
-                        item.value === 'Red' ? 'text-[#D4817E]' :
-                        'text-[#8A9099]'
-                      }`}>{item.value}</p>
+                      <p className={`text-xs mb-0.5 ${
+                        readinessLevel(item.value).tone === 'strong' ? 'font-bold text-[#FAFAF8]' :
+                        readinessLevel(item.value).tone === 'normal' ? 'font-semibold text-[#C2C6CC]' :
+                        'font-medium text-[#676D76]'
+                      }`}>{readinessLevel(item.value).label}</p>
                       <p className="text-[10px] text-[#676D76] font-medium">{item.label}</p>
                     </div>
                   ))}
