@@ -46,25 +46,25 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
 
   return (
     <div className="space-y-3">
-      <p className="text-[12.5px] font-medium text-[#98A0AD]">Sessions</p>
+      <p className="text-[12.5px] font-medium text-[#9CA2AB]">Sessions</p>
       {sessions.map((session, si) => {
         const isOpen = open.has(si)
         const count = exerciseCount(session)
         return (
-          <div key={si} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
+          <div key={si} className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
             {/* Header — tap to expand */}
             <button
               type="button"
               onClick={() => toggle(si)}
               aria-expanded={isOpen}
-              className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[#FAFAF7] transition-colors"
+              className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[#FAFAF8] transition-colors"
             >
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#141821]">{session.day_label}</p>
-                <p className="text-xs text-[#98A0AD] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
+                <p className="text-sm font-bold text-[#0F1115]">{session.day_label}</p>
+                <p className="text-xs text-[#9CA2AB] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
               </div>
               <svg
-                className={`w-4 h-4 text-[#98A0AD] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-[#9CA2AB] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -72,19 +72,19 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
             </button>
 
             {isOpen && (
-              <div className="border-t border-[#E8EAEE]">
+              <div className="border-t border-[#E4E4E0]">
                 {/* Movement prep */}
                 {/* "3 sets" is ambiguous without this. See program-prompt SETS ARE WORKING SETS. */}
-                <p className="text-xs text-[#666D7A] mb-3">
+                <p className="text-xs text-[#6E747D] mb-3">
                   Sets shown are working sets. Warm-up sets are extra.
                 </p>
                 {session.movement_prep && session.movement_prep.length > 0 && (
-                  <div className="px-5 py-3 border-b border-[#E8EAEE]/60">
-                    <p className="text-[12.5px] font-semibold text-[#98A0AD] mb-2">Movement Preparation</p>
+                  <div className="px-5 py-3 border-b border-[#E4E4E0]/60">
+                    <p className="text-[12.5px] font-semibold text-[#9CA2AB] mb-2">Movement Preparation</p>
                     <ul className="space-y-1">
                       {session.movement_prep.map((item, i) => (
-                        <li key={i} className="text-xs text-[#666D7A] flex gap-2">
-                          <span className="text-[#98A0AD] shrink-0">·</span>
+                        <li key={i} className="text-xs text-[#6E747D] flex gap-2">
+                          <span className="text-[#9CA2AB] shrink-0">·</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -94,18 +94,18 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
 
                 {/* Blocks */}
                 {session.blocks.map((block, bi) => (
-                  <div key={bi} className="px-5 py-3 border-b border-[#E8EAEE]/40 last:border-0">
-                    <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">{block.block_label}</p>
+                  <div key={bi} className="px-5 py-3 border-b border-[#E4E4E0]/40 last:border-0">
+                    <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">{block.block_label}</p>
                     <div className="space-y-3">
                       {block.exercises.map((ex, ei) => (
                         <div key={ei} className="flex flex-col gap-1">
-                          <p className="text-sm font-semibold text-[#141821]">{ex.exercise_name}</p>
+                          <p className="text-sm font-semibold text-[#0F1115]">{ex.exercise_name}</p>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-xs bg-[#E8EAEE] text-[#43474F] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
-                            {ex.rpe && <span className="text-xs bg-[#E8EAEE] text-[#666D7A] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
-                            {ex.rest && <span className="text-xs bg-[#E8EAEE] text-[#666D7A] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
+                            <span className="text-xs bg-[#E4E4E0] text-[#4A4F57] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
+                            {ex.rpe && <span className="text-xs bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
+                            {ex.rest && <span className="text-xs bg-[#E4E4E0] text-[#6E747D] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
                           </div>
-                          {ex.notes && <p className="text-xs text-[#98A0AD] leading-relaxed">{ex.notes}</p>}
+                          {ex.notes && <p className="text-xs text-[#9CA2AB] leading-relaxed">{ex.notes}</p>}
                         </div>
                       ))}
                     </div>

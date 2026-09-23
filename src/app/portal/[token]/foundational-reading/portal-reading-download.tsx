@@ -55,7 +55,7 @@ export default function PortalReadingDownload({
         background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #E8EAEE',
+        borderBottom: '1px solid #E4E4E0',
       }}
     >
       <div
@@ -71,21 +71,21 @@ export default function PortalReadingDownload({
       >
         <Link
           href={backHref}
-          className="inline-flex items-center gap-1 text-[12px] text-[#666D7A] hover:text-[#141821] transition-colors"
+          className="inline-flex items-center gap-1 text-[12px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           style={{ fontFamily: SCREEN_FONT }}
         >
           <ChevronLeft size={13} /> Back to portal
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {error && (
-            <span style={{ fontSize: 11, color: '#DC2626', fontFamily: SCREEN_FONT }}>{error}</span>
+            <span style={{ fontSize: 11, color: '#8F2D2D', fontFamily: SCREEN_FONT }}>{error}</span>
           )}
           <button
             onClick={downloadPdf}
             disabled={downloading}
             className="inline-flex items-center gap-2 transition-colors"
             style={{
-              background: downloading ? '#1056D6' : '#1B6DFC',
+              background: downloading ? '#000000' : '#0F1115',
               color: '#FFFFFF',
               border: 'none',
               padding: '8px 16px',

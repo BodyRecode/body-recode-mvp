@@ -67,9 +67,9 @@ export default async function MedicationsReadingPage({
 
 function Section({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
-    <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${accent ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>{title}</p>
-      <div className="text-sm text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</div>
+    <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5">
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${accent ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>{title}</p>
+      <div className="text-sm text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

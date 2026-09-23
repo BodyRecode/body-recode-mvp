@@ -66,35 +66,35 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
     >
       {(gpRequestUrl || showBloodworkGuide) && (
         <div className="mb-8">
-          <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Before you start</p>
+          <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Before you start</p>
           <div className="space-y-3">
             {gpRequestUrl && (
               <a
                 href={gpRequestUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block rounded-2xl border border-[#1B6DFC] bg-[#EFF5FE] p-5 hover:bg-[#DDE9FD] transition-colors"
+                className="block rounded-2xl border border-[#0F1115] bg-[#F2F2EF] p-5 hover:bg-[#EDEDEA] transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-[#141821]">Your blood test request — for your GP</p>
-                    <p className="text-xs text-[#666D7A] mt-0.5">A list of the markers to discuss, prepared for you. Opens as a PDF you can print or save — take it to your appointment.</p>
+                    <p className="text-sm font-medium text-[#0F1115]">Your blood test request — for your GP</p>
+                    <p className="text-xs text-[#6E747D] mt-0.5">A list of the markers to discuss, prepared for you. Opens as a PDF you can print or save — take it to your appointment.</p>
                   </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Open →</span>
                 </div>
               </a>
             )}
             {showBloodworkGuide && (
               <Link
                 href={`/portal/${token}/guides/baseline-bloodwork`}
-                className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
+                className="block rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 hover:border-[#0F1115]/40 hover:bg-[#F2F2EF] transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-[#43474F]">Understanding your baseline bloodwork</p>
-                    <p className="text-xs text-[#98A0AD] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
+                    <p className="text-sm font-medium text-[#4A4F57]">Understanding your baseline bloodwork</p>
+                    <p className="text-xs text-[#9CA2AB] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
                   </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
                 </div>
               </Link>
             )}
@@ -104,14 +104,14 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
 
       <BloodworkChoice token={token} arranged={!!client.bloodwork_arranged_at} hasUpload={list.length > 0} />
 
-      <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 mb-8">
-          <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Upload results</p>
+      <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 mb-8">
+          <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Upload results</p>
           <BloodUploadForm clientId={client.id} />
         </div>
 
         {list.length > 0 && (
           <div>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Your uploads</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Your uploads</p>
             <div className="space-y-3">
               {list.map(panel => {
                 const dateLabel = panel.collected_on
@@ -122,28 +122,28 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
                   <Link
                     key={panel.id}
                     href={`/portal/${token}/bloods/${panel.id}`}
-                    className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
+                    className="block rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 hover:border-[#0F1115]/40 hover:bg-[#F2F2EF] transition-colors"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-[#141821] mb-1">Blood panel · {dateLabel}</p>
-                        <p className="text-xs text-[#666D7A] leading-relaxed">Your coach has written up what this means for your coaching.</p>
+                        <p className="text-sm font-semibold text-[#0F1115] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-xs text-[#6E747D] leading-relaxed">Your coach has written up what this means for your coaching.</p>
                       </div>
-                      <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Read →</span>
+                      <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Read →</span>
                     </div>
                   </Link>
                 ) : (
-                  <div key={panel.id} className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/60 p-5">
+                  <div key={panel.id} className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF]/60 p-5">
                     <div className="flex items-center justify-between gap-4">
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-[#43474F] mb-1">Blood panel · {dateLabel}</p>
-                        <p className="text-xs text-[#98A0AD] leading-relaxed">
+                        <p className="text-sm font-semibold text-[#4A4F57] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-xs text-[#9CA2AB] leading-relaxed">
                           {panel.status === 'failed'
                             ? 'We had trouble reading this file. Your coach has been notified and may ask for a clearer copy.'
                             : 'Received. Your coach is reviewing it. You will see their write-up here once it is ready.'}
                         </p>
                       </div>
-                      <span className="text-[11.5px] font-medium text-[#98A0AD] ml-4 shrink-0">
+                      <span className="text-[11.5px] font-medium text-[#9CA2AB] ml-4 shrink-0">
                         {panel.status === 'failed' ? 'Needs a clearer copy' : 'In review'}
                       </span>
                     </div>

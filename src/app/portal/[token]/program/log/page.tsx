@@ -120,16 +120,16 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
       title="Log this week"
       description={
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-full px-2.5 py-0.5">
-            Week <span className="text-[#141821] font-semibold">{blockWeek}</span> of {program.week_duration}
+          <span className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-full px-2.5 py-0.5">
+            Week <span className="text-[#0F1115] font-semibold">{blockWeek}</span> of {program.week_duration}
           </span>
           {blockEndingSoon && (
-            <span className="bg-[#FDF6E9] border border-[#F1DEB8] text-[#A96A12] rounded-full px-2.5 py-0.5">
+            <span className="bg-[#FDF8F1] border border-[#EADCC4] text-[#B06E1F] rounded-full px-2.5 py-0.5">
               Block ending in {daysLeft === 0 ? 'today' : `${daysLeft} day${daysLeft === 1 ? '' : 's'}`}
             </span>
           )}
           {blockEnded && (
-            <span className="bg-[#FDF6E9] border border-[#F1DEB8] text-[#A96A12] rounded-full px-2.5 py-0.5">
+            <span className="bg-[#FDF8F1] border border-[#EADCC4] text-[#B06E1F] rounded-full px-2.5 py-0.5">
               {blockOverrun
                 ? 'Block complete · keep logging, sessions count to the final week'
                 : 'Block complete · awaiting reassessment'}
@@ -140,20 +140,20 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
     >
       {/* Momentum: block-completion arc + fully-logged-week streak */}
       {momentum.blockTotal > 0 && (
-        <div className="mb-6 rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-4">
+        <div className="mb-6 rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[11.5px] font-medium text-[#666D7A]">This block</p>
+            <p className="text-[11.5px] font-medium text-[#6E747D]">This block</p>
             {momentum.streakWeeks >= 2 && (
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-[#EFF5FE] border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F1115] bg-[#F2F2EF] border border-[#0F1115]/30 rounded-full px-2 py-0.5">
                 {momentum.streakWeeks} weeks fully logged
               </span>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 rounded-full bg-[#E8EAEE] overflow-hidden">
-              <div className="h-full bg-[#1B6DFC] transition-[width] duration-500" style={{ width: `${momentumPct}%` }} />
+            <div className="flex-1 h-2 rounded-full bg-[#E4E4E0] overflow-hidden">
+              <div className="h-full bg-[#0F1115] transition-[width] duration-500" style={{ width: `${momentumPct}%` }} />
             </div>
-            <p className="text-xs font-semibold text-[#141821] tabular-nums whitespace-nowrap">
+            <p className="text-xs font-semibold text-[#0F1115] tabular-nums whitespace-nowrap">
               {momentum.loggedThisBlock} / {momentum.blockTotal} logged
             </p>
           </div>
@@ -162,10 +162,10 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
       {/* Today's session callout - canonical card, Signal Blue accent, no gradient */}
       {todaySessionIndex >= 0 && (
-        <div className="mb-6 rounded-2xl border border-[#1B6DFC] bg-[#EFF5FE] p-5">
-          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Today · {today}</p>
-          <h2 className="text-xl font-bold text-[#141821] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
-          <p className="text-sm text-[#666D7A] mb-4">
+        <div className="mb-6 rounded-2xl border border-[#0F1115] bg-[#F2F2EF] p-5">
+          <p className="text-[10px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">Today · {today}</p>
+          <h2 className="text-xl font-bold text-[#0F1115] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
+          <p className="text-sm text-[#6E747D] mb-4">
             {prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}
           </p>
           <StartSessionButton
@@ -181,7 +181,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
       )}
 
         {/* All sessions for this week */}
-        <p className="text-[11.5px] text-[#666D7A] font-semibold mb-3">All sessions, week {blockWeek}</p>
+        <p className="text-[11.5px] text-[#6E747D] font-semibold mb-3">All sessions, week {blockWeek}</p>
         <div className="space-y-2">
           {prescribedSessions.map((s, idx) => {
             const completion = completionByIndex.get(idx)
@@ -191,24 +191,24 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
                 key={idx}
                 className={`bg-[#FFFFFF] border rounded-2xl p-4 ${
                   completion?.status === 'completed'
-                    ? 'border-[#1B6DFC]/60'
+                    ? 'border-[#0F1115]/60'
                     : completion?.status === 'in_progress'
-                      ? 'border-[#E5C98F]'
+                      ? 'border-[#EADCC4]'
                       : isToday
-                        ? 'border-[#1B6DFC]/40'
-                        : 'border-[#E8EAEE]'
+                        ? 'border-[#0F1115]/40'
+                        : 'border-[#E4E4E0]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-3 mb-1">
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-[#141821]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
-                    <p className="text-xs text-[#666D7A]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
+                    <p className="text-sm font-bold text-[#0F1115]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
+                    <p className="text-xs text-[#6E747D]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                   </div>
                   {completion?.status === 'completed' && (
-                    <span className="text-[10px] uppercase tracking-widest text-[#1B6DFC] shrink-0">Completed</span>
+                    <span className="text-[10px] uppercase tracking-widest text-[#0F1115] shrink-0">Completed</span>
                   )}
                   {completion?.status === 'in_progress' && (
-                    <span className="text-[11.5px] text-[#A96A12] shrink-0">In progress</span>
+                    <span className="text-[11.5px] text-[#B06E1F] shrink-0">In progress</span>
                   )}
                 </div>
                 <StartSessionButton

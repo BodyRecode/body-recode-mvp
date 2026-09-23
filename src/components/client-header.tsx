@@ -29,7 +29,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
 
   return (
     <>
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#ECEEF2] px-5 py-4 flex items-center justify-between print:hidden">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#E4E4E0] px-5 py-4 flex items-center justify-between print:hidden">
         {homeHref ? (
           <Link href={homeHref} aria-label="Back to portal home" className="block">
             {logo}
@@ -46,20 +46,20 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
 
           Pre-portal routes (e.g. /baseline/[token]) have no thread to send to,
           so those keep the WhatsApp fallback. */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-[#ECEEF2] px-5 py-3 text-center print:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-[#E4E4E0] px-5 py-3 text-center print:hidden">
         {isPortalRoute && token ? (
           <Link
             href={`/portal/${token}/message`}
-            className="text-xs text-[#999999] hover:text-[#1B6DFC] transition-colors"
+            className="text-xs text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
-            Questions? <span className="font-semibold text-[#1B6DFC]">Message {c.firstName} →</span>
+            Questions? <span className="font-semibold text-[#0F1115]">Message {c.firstName} →</span>
           </Link>
         ) : (
           <a
             href={`https://wa.me/${c.whatsAppNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[#999999] hover:text-blue-500 transition-colors"
+            className="text-xs text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
             Questions? Message {c.firstName} on WhatsApp →
           </a>

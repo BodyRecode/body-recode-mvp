@@ -64,6 +64,11 @@ const ROOTS = [
   'src/components/LogoutButton.tsx',
   'src/app/login',
   'src/lib/coach-today.ts',
+  // THE CLIENT PORTAL, joining one page at a time. Every colour in it is on the
+  // palette as of 23 Sep, but the type is not yet on the scale, and a check that
+  // always fails is a check everybody turns off. A portal page joins this list
+  // the day BOTH are true for it.
+  'src/app/portal/login',
 ]
 const PALETTE_FILE = 'src/lib/brand-tokens.ts'
 

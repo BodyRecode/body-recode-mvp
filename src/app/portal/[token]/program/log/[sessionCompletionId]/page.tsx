@@ -107,7 +107,7 @@ export default async function PortalLogSessionPage({
       eyebrow={`Week ${session.week_number_in_block}`}
       title={`${session.day_label}${session.session_name ? ` · ${session.session_name}` : ''}`}
       description={session.status === 'completed' && session.completed_at
-        ? <span className="text-[#1B6DFC]">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</span>
+        ? <span className="text-[#0F1115]">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</span>
         : undefined}
     >
       <LogClient

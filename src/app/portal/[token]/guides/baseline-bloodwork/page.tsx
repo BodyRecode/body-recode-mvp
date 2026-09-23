@@ -85,19 +85,19 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
   ]
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}/bloods`} className="text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors">← Back to health markers</Link>
+          <Link href={`/portal/${token}/bloods`} className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors">← Back to health markers</Link>
           <p
-            className="text-[10px] font-bold text-[#1B6DFC] uppercase mt-4 mb-3"
+            className="text-[10px] font-bold text-[#0F1115] uppercase mt-4 mb-3"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.18em' }}
           >
             Health Education
           </p>
-          <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mb-3">Understanding your baseline bloodwork</h1>
-          <p className="text-[#666D7A] text-[15px] leading-relaxed">
+          <h1 className="text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] mb-3">Understanding your baseline bloodwork</h1>
+          <p className="text-[#6E747D] text-[15px] leading-relaxed">
             A comprehensive baseline blood panel is one of the highest-leverage things you can do for your long-term health. This guide walks through what a comprehensive panel covers and what each marker measures, so you can follow the conversation with your doctor and understand your results when they come back.
           </p>
         </div>
@@ -108,35 +108,35 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
             href={signed.signedUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-4 rounded-2xl border border-[#1B6DFC] bg-[#EFF5FE] p-5 hover:bg-[#DDE9FD] transition-colors mb-8"
+            className="group flex items-center gap-4 rounded-2xl border border-[#0F1115] bg-[#F2F2EF] p-5 hover:bg-[#EDEDEA] transition-colors mb-8"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#1B6DFC] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#0F1115] flex items-center justify-center shrink-0">
               <Download size={16} className="text-[#FFFFFF]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[15px] font-semibold text-[#141821] mb-0.5 group-hover:text-[#1B6DFC] transition-colors">Download the guide (PDF)</p>
-              <p className="text-[12px] text-[#666D7A] leading-relaxed">Read it before your appointment so you understand what is being measured and why.</p>
+              <p className="text-[15px] font-semibold text-[#0F1115] mb-0.5 group-hover:text-[#0F1115] transition-colors">Download the guide (PDF)</p>
+              <p className="text-[12px] text-[#6E747D] leading-relaxed">Read it before your appointment so you understand what is being measured and why.</p>
             </div>
           </a>
         ) : (
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 mb-8">
-            <p className="text-[13px] text-[#666D7A]">Download link temporarily unavailable. Message your coach and they can send you the PDF directly.</p>
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 mb-8">
+            <p className="text-[13px] text-[#6E747D]">Download link temporarily unavailable. Message your coach and they can send you the PDF directly.</p>
           </div>
         )}
 
         {/* Table of contents */}
         <div className="mb-8">
           <p
-            className="text-[11.5px] font-medium text-[#98A0AD] mb-3"
+            className="text-[11.5px] font-medium text-[#9CA2AB] mb-3"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.18em' }}
           >
             What is in the guide
           </p>
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] overflow-hidden">
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] overflow-hidden">
             {commonSections.map((s, i) => (
               <div
                 key={s}
-                className={`px-5 py-3 text-[13px] text-[#43474F] ${i < commonSections.length - 1 ? 'border-b border-[#E8EAEE]' : ''}`}
+                className={`px-5 py-3 text-[13px] text-[#4A4F57] ${i < commonSections.length - 1 ? 'border-b border-[#E4E4E0]' : ''}`}
               >
                 {s}
               </div>
@@ -145,19 +145,19 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
         </div>
 
         {/* Explicit non-medical framing */}
-        <div className="rounded-2xl border border-[#E8EAEE] bg-[#FAFAFA] p-5 mb-8">
+        <div className="rounded-2xl border border-[#E4E4E0] bg-[#FAFAF8] p-5 mb-8">
           <p
-            className="text-[11.5px] font-medium text-[#98A0AD] mb-2"
+            className="text-[11.5px] font-medium text-[#9CA2AB] mb-2"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.18em' }}
           >
             Read this first
           </p>
-          <p className="text-[13px] text-[#666D7A] leading-relaxed">
+          <p className="text-[13px] text-[#6E747D] leading-relaxed">
             This is general health education prepared to help you have a better conversation with your doctor. It is not medical advice, not personalised to your specific situation, and not a substitute for a consultation with a registered medical practitioner. Clinical decisions - what to test, how to interpret results, what to do next - sit with your GP or specialist.
           </p>
         </div>
 
-        <p className="text-[12px] text-[#98A0AD] italic leading-relaxed">
+        <p className="text-[12px] text-[#9CA2AB] italic leading-relaxed">
           Once your results come back, share them with your coach. Your baseline shapes how your program evolves from here.
         </p>
 

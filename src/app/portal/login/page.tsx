@@ -1,5 +1,6 @@
 import LoginForm from './login-form'
 import { brand } from '@/config/tenant'
+import { BrandMark } from '@/components/brand-mark'
 
 export default async function PortalLoginPage({
   searchParams,
@@ -19,21 +20,31 @@ export default async function PortalLoginPage({
   const t = brand()
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115] flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-sm">
-        <div className="text-center mb-10">
-          <img
-            src={`${t.marketingDomain}${t.logoUrlLight}`}
-            width="280"
-            alt={t.name}
-            className="mx-auto mb-8"
-          />
-          <h1 className="text-2xl font-bold text-[#141821] mb-2">Client Portal</h1>
-          <p className="text-[#666D7A] text-sm">Sign in to your coaching portal.</p>
+        {/* THE RETIRED MARK WAS STILL HERE, and this is the first thing every
+            client sees. A remote PNG of the old helix with "decode, rewire,
+            rebuild" under it, a tagline that has not been the positioning for
+            months. The drawn mark is the same one the coach sign-in uses, it
+            needs no network request, and it cannot 404 the way logo-white.png
+            already does. 23 Sep 2026. */}
+        <div className="mb-9 flex justify-center">
+          <BrandMark tone="dark" size="lg" name={t.name} />
+        </div>
+        <div className="text-center mb-8">
+          <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#9CA2AB' }}>
+            Your portal
+          </p>
+          <h1 className="text-[34px] leading-[1.05] font-semibold tracking-[-0.03em] text-[#0F1115] mt-3">
+            Sign in
+          </h1>
+          <p className="text-[13.5px] text-[#6E747D] mt-3 leading-relaxed">
+            Your plan, your reads and everything you have sent us, in one place.
+          </p>
         </div>
         {errorMessage && (
-          <div className="mb-6 bg-[#FDEDED] border border-[#F5C9C9] rounded-xl px-4 py-3">
-            <p className="text-sm text-[#C82626]">{errorMessage}</p>
+          <div className="mb-6 bg-[#FBF1F1] border border-[#E8C9C9] rounded-xl px-4 py-3">
+            <p className="text-sm text-[#8F2D2D]">{errorMessage}</p>
           </div>
         )}
         <LoginForm redirect={redirectTo} />

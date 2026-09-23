@@ -104,17 +104,17 @@ export default function MessageThread({
 
   return (
     <div>
-      <form onSubmit={submit} className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
+      <form onSubmit={submit} className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5">
         {anchor && (
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-[11px] text-[#98A0AD]">Asking about</span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-[#1B6DFC] bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] rounded-full pl-2.5 pr-1.5 py-1">
+            <span className="text-[11px] text-[#9CA2AB]">Asking about</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-[#0F1115] bg-[#F2F2EF] border border-[#DCDCD7] rounded-full pl-2.5 pr-1.5 py-1">
               {anchorChipLabel(anchor.kind, anchor.label)}
               <button
                 type="button"
                 onClick={() => setAnchor(null)}
                 aria-label="Remove this topic"
-                className="text-[#1B6DFC] hover:text-[#141821] transition-colors"
+                className="text-[#0F1115] hover:text-[#0F1115] transition-colors"
               >
                 <X size={11} />
               </button>
@@ -130,12 +130,12 @@ export default function MessageThread({
               : 'Write a reply...'
           }
           rows={5}
-          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-3 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-3 py-3 text-[14px] text-[#0F1115] placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#0F1115] leading-relaxed resize-y"
         />
-        <p className="text-[11px] text-[#98A0AD] mt-2">{body.length}/5000 characters</p>
+        <p className="text-[11px] text-[#9CA2AB] mt-2">{body.length}/5000 characters</p>
 
         {error && (
-          <div className="mt-3 bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
+          <div className="mt-3 bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12px] text-[#8A5514]">
             {error}
           </div>
         )}
@@ -143,7 +143,7 @@ export default function MessageThread({
         <button
           type="submit"
           disabled={!body.trim() || sending}
-          className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[14px] font-bold py-3 rounded-xl hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#0F1115] text-[#FFFFFF] text-[14px] font-bold py-3 rounded-xl hover:bg-[#000000] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
           {sending ? 'Sending...' : 'Send message'}
@@ -157,29 +157,29 @@ export default function MessageThread({
               key={m.id}
               className={
                 m.sender === 'coach'
-                  ? 'rounded-2xl bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-4 py-3 mr-6'
-                  : 'rounded-2xl bg-[#F7F7F7] border border-[#E8EAEE] px-4 py-3 ml-6'
+                  ? 'rounded-2xl bg-[#F2F2EF] border border-[#DCDCD7] px-4 py-3 mr-6'
+                  : 'rounded-2xl bg-[#F2F2EF] border border-[#E4E4E0] px-4 py-3 ml-6'
               }
             >
               <div className="flex items-center justify-between mb-1.5">
-                <p className="text-[11.5px] font-medium text-[#98A0AD]">
+                <p className="text-[11.5px] font-medium text-[#9CA2AB]">
                   {m.sender === 'coach' ? coachFirstName : firstName}
                 </p>
-                <p className="text-[10px] text-[#98A0AD]">{when(m.created_at)}</p>
+                <p className="text-[10px] text-[#9CA2AB]">{when(m.created_at)}</p>
               </div>
               {m.anchor_kind && (
-                <p className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2">
+                <p className="inline-block text-[10px] font-medium text-[#0F1115] bg-[#FFFFFF] border border-[#DCDCD7] rounded-full px-2 py-0.5 mb-2">
                   {anchorChipLabel(m.anchor_kind, m.anchor_label)}
                 </p>
               )}
-              <p className="text-[14px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+              <p className="text-[14px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{m.body}</p>
               {/* Delivery confirmation on the client's newest message, shown
                   only while it is the last thing in the thread. The anxiety it
                   answers is "did that even send", not "has he read it" — a read
                   receipt would turn every normal gap before a reply into being
                   ignored. Once the coach answers, the reply is its own proof. */}
               {i === 0 && m.sender === 'client' && (
-                <p className="text-[11px] text-[#666D7A] mt-2 pt-2 border-t border-[#E8EAEE]">
+                <p className="text-[11px] text-[#6E747D] mt-2 pt-2 border-t border-[#E4E4E0]">
                   Sent. {coachFirstName} has been notified and will reply here.
                 </p>
               )}

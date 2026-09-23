@@ -203,11 +203,11 @@ export default function HealthDeclarationForm({
     router.push(`/portal/${portalToken}`)
   }
 
-  const errClass = (id: string) => missing.has(id) ? 'border-red-400' : 'border-[#E8EAEE]'
-  const errLabel = (id: string) => missing.has(id) ? 'text-[#C82626]' : 'text-[#43474F]'
+  const errClass = (id: string) => missing.has(id) ? 'border-[#E8C9C9]' : 'border-[#E4E4E0]'
+  const errLabel = (id: string) => missing.has(id) ? 'text-[#8F2D2D]' : 'text-[#4A4F57]'
   const errMessage = (id: string) =>
     missing.has(id) ? (
-      <p className="text-[#C82626] text-xs mt-2 font-medium">Please answer this question.</p>
+      <p className="text-[#8F2D2D] text-xs mt-2 font-medium">Please answer this question.</p>
     ) : null
 
   const yesNoButton = (id: string, current: YesNo, setter: (v: YesNo) => void, opt: 'Yes' | 'No') => {
@@ -220,10 +220,10 @@ export default function HealthDeclarationForm({
         onClick={() => { setter(opt.toLowerCase() as YesNo); clearMissing(id) }}
         className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors border-2 ${
           isSelected
-            ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-[#1B6DFC]'
+            ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-[#0F1115]'
             : hasError
-            ? 'bg-white text-[#43474F] border-[#EFAFAF]'
-            : 'bg-white text-[#43474F] border-[#E8EAEE] hover:border-[#B9D0FD]'
+            ? 'bg-white text-[#4A4F57] border-[#E8C9C9]'
+            : 'bg-white text-[#4A4F57] border-[#E4E4E0] hover:border-[#DCDCD7]'
         }`}
       >
         {opt}
@@ -238,9 +238,9 @@ export default function HealthDeclarationForm({
       description="This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely."
     >
       {validationMessage && (
-          <div className="mb-6 border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
-            <p className="text-[#C82626] text-sm font-medium">{validationMessage}</p>
-            <p className="text-[#C82626]/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+          <div className="mb-6 border-l-2 border-[#8F2D2D] bg-[#FBF1F1] rounded-r-2xl px-4 py-3">
+            <p className="text-[#8F2D2D] text-sm font-medium">{validationMessage}</p>
+            <p className="text-[#8F2D2D]/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
           </div>
         )}
 
@@ -248,18 +248,18 @@ export default function HealthDeclarationForm({
 
           {/* Section 1 - Personal Details */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Personal Details</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Personal Details</p>
             <div className="space-y-3">
-              <div className="bg-[#FFFFFF] rounded-xl border border-[#E8EAEE] px-4 py-3">
-                <p className="text-xs text-[#98A0AD] mb-1">Full Name</p>
-                <p className="text-sm text-[#43474F]">{clientName}</p>
+              <div className="bg-[#FFFFFF] rounded-xl border border-[#E4E4E0] px-4 py-3">
+                <p className="text-xs text-[#9CA2AB] mb-1">Full Name</p>
+                <p className="text-sm text-[#4A4F57]">{clientName}</p>
               </div>
               <div id="f-dob" className="scroll-mt-24">
                 <input
                   type="date"
                   value={dob}
                   onChange={e => { setDob(e.target.value); clearMissing('dob') }}
-                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${errClass('dob')}`}
+                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${errClass('dob')}`}
                   placeholder="Date of Birth"
                 />
                 <p className={`text-xs mt-1 ml-1 ${errLabel('dob')}`}>Date of Birth</p>
@@ -271,7 +271,7 @@ export default function HealthDeclarationForm({
                   value={phone}
                   onChange={e => { setPhone(e.target.value); clearMissing('phone') }}
                   placeholder="Mobile Number"
-                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${errClass('phone')}`}
+                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${errClass('phone')}`}
                 />
                 {errMessage('phone')}
               </div>
@@ -280,21 +280,21 @@ export default function HealthDeclarationForm({
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="Address (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD]"
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB]"
               />
               <input
                 type="text"
                 value={postcode}
                 onChange={e => setPostcode(e.target.value)}
                 placeholder="Postcode (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD]"
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB]"
               />
             </div>
           </section>
 
           {/* Section 2 - Emergency Contact */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Emergency Contact</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Emergency Contact</p>
             <div className="space-y-3">
               <div id="f-emergencyName" className="scroll-mt-24">
                 <input
@@ -302,7 +302,7 @@ export default function HealthDeclarationForm({
                   value={emergencyName}
                   onChange={e => { setEmergencyName(e.target.value); clearMissing('emergencyName') }}
                   placeholder="Full Name"
-                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${errClass('emergencyName')}`}
+                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${errClass('emergencyName')}`}
                 />
                 {errMessage('emergencyName')}
               </div>
@@ -312,7 +312,7 @@ export default function HealthDeclarationForm({
                   value={emergencyRelationship}
                   onChange={e => { setEmergencyRelationship(e.target.value); clearMissing('emergencyRelationship') }}
                   placeholder="Relationship (e.g. Partner, Parent)"
-                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${errClass('emergencyRelationship')}`}
+                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${errClass('emergencyRelationship')}`}
                 />
                 {errMessage('emergencyRelationship')}
               </div>
@@ -322,7 +322,7 @@ export default function HealthDeclarationForm({
                   value={emergencyPhone}
                   onChange={e => { setEmergencyPhone(e.target.value); clearMissing('emergencyPhone') }}
                   placeholder="Phone Number"
-                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${errClass('emergencyPhone')}`}
+                  className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${errClass('emergencyPhone')}`}
                 />
                 {errMessage('emergencyPhone')}
               </div>
@@ -331,7 +331,7 @@ export default function HealthDeclarationForm({
 
           {/* Section 3 - General Health */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">General Health</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">General Health</p>
             <div className="space-y-5">
               <div id="f-healthRating" className="scroll-mt-24">
                 <p className={`text-sm mb-3 ${errLabel('healthRating')}`}>How would you rate your general health?</p>
@@ -343,9 +343,9 @@ export default function HealthDeclarationForm({
                       <button key={r} type="button"
                         onClick={() => { setHealthRating(r); clearMissing('healthRating') }}
                         className={`py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors border-2 ${
-                          isSelected ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-[#1B6DFC]'
-                          : hasError ? 'bg-white text-[#43474F] border-[#EFAFAF]'
-                          : 'bg-white text-[#43474F] border-[#E8EAEE] hover:border-[#B9D0FD]'
+                          isSelected ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-[#0F1115]'
+                          : hasError ? 'bg-white text-[#4A4F57] border-[#E8C9C9]'
+                          : 'bg-white text-[#4A4F57] border-[#E4E4E0] hover:border-[#DCDCD7]'
                         }`}
                       >{r}</button>
                     )
@@ -366,42 +366,42 @@ export default function HealthDeclarationForm({
               {exercisedBefore === 'yes' && (
                 <textarea value={exerciseType} onChange={e => setExerciseType(e.target.value)}
                   placeholder="What type of exercise did you do?"
-                  className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={2} />
+                  className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={2} />
               )}
 
               <textarea value={exerciseEnjoy} onChange={e => setExerciseEnjoy(e.target.value)}
                 placeholder="Types of exercise you enjoy (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={2} />
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={2} />
 
               <textarea value={exerciseDislike} onChange={e => setExerciseDislike(e.target.value)}
                 placeholder="Types of exercise you dislike (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={2} />
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={2} />
             </div>
           </section>
 
           {/* Section 4 - Cardiovascular Screening */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-1">Cardiovascular & Respiratory Screening</p>
-            <p className="text-sm text-[#666D7A] mb-4">Tick any symptoms you currently experience or have experienced recently:</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-1">Cardiovascular & Respiratory Screening</p>
+            <p className="text-sm text-[#6E747D] mb-4">Tick any symptoms you currently experience or have experienced recently:</p>
             <div className="space-y-2">
               {CARDIO_SYMPTOMS.map(symptom => (
                 <label key={symptom} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#FFFFFF] transition-colors">
                   <input type="checkbox" checked={cardioSymptoms.includes(symptom)} onChange={() => toggleCardio(symptom)}
-                    className="mt-0.5 w-4 h-4 rounded accent-[#1B6DFC] flex-shrink-0" />
-                  <span className="text-sm text-[#43474F]">{symptom}</span>
+                    className="mt-0.5 w-4 h-4 rounded accent-[#0F1115] flex-shrink-0" />
+                  <span className="text-sm text-[#4A4F57]">{symptom}</span>
                 </label>
               ))}
               <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#FFFFFF] transition-colors">
                 <input type="checkbox" checked={cardioSymptoms.includes('None of the above')} onChange={() => toggleCardio('None of the above')}
-                  className="mt-0.5 w-4 h-4 rounded accent-[#1B6DFC] flex-shrink-0" />
-                <span className="text-sm text-[#43474F]">None of the above</span>
+                  className="mt-0.5 w-4 h-4 rounded accent-[#0F1115] flex-shrink-0" />
+                <span className="text-sm text-[#4A4F57]">None of the above</span>
               </label>
             </div>
           </section>
 
           {/* Section 5 - Medical History */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Medical History</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Medical History</p>
             <div className="space-y-5">
 
               <div id="f-illnessInjury" className="scroll-mt-24">
@@ -414,7 +414,7 @@ export default function HealthDeclarationForm({
                 {illnessInjury === 'yes' && (
                   <textarea value={illnessDetails} onChange={e => setIllnessDetails(e.target.value)}
                     placeholder="Please provide details..."
-                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={3} />
                 )}
               </div>
 
@@ -428,7 +428,7 @@ export default function HealthDeclarationForm({
                 {receivingTreatment === 'yes' && (
                   <textarea value={treatmentDetails} onChange={e => setTreatmentDetails(e.target.value)}
                     placeholder="Please provide details..."
-                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={3} />
                 )}
               </div>
 
@@ -442,7 +442,7 @@ export default function HealthDeclarationForm({
                 {onMedication === 'yes' && (
                   <textarea value={medicationList} onChange={e => setMedicationList(e.target.value)}
                     placeholder="Please list all medications..."
-                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={3} />
                 )}
               </div>
 
@@ -459,32 +459,32 @@ export default function HealthDeclarationForm({
 
           {/* Section 6 - Musculoskeletal */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Musculoskeletal Health</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Musculoskeletal Health</p>
             <div className="space-y-5">
               <textarea value={painAreas} onChange={e => setPainAreas(e.target.value)}
                 placeholder="Describe any current pain, injuries, or areas of concern (or write 'None')"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={3} />
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={3} />
 
               {painAreas && painAreas.toLowerCase() !== 'none' && painAreas.length > 2 && (
                 <>
                   <div>
-                    <p className="text-sm text-[#43474F] mb-3">Is this aggravated by exercise?</p>
+                    <p className="text-sm text-[#4A4F57] mb-3">Is this aggravated by exercise?</p>
                     <div className="flex gap-3">
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainAggravated(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
+                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-2 border-[#0F1115]' : 'bg-white text-[#4A4F57] border-2 border-[#E4E4E0] hover:border-[#DCDCD7]'}`}
                         >{opt}</button>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-[#43474F] mb-3">Are you currently receiving treatment for it?</p>
+                    <p className="text-sm text-[#4A4F57] mb-3">Are you currently receiving treatment for it?</p>
                     <div className="flex gap-3">
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainTreatment(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
+                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-2 border-[#0F1115]' : 'bg-white text-[#4A4F57] border-2 border-[#E4E4E0] hover:border-[#DCDCD7]'}`}
                         >{opt}</button>
                       ))}
                     </div>
@@ -496,7 +496,7 @@ export default function HealthDeclarationForm({
 
           {/* Section 7 - Lifestyle */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Lifestyle</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Lifestyle</p>
             <div className="space-y-5">
               <div id="f-alcohol" className="scroll-mt-24">
                 <p className={`text-sm mb-3 ${errLabel('alcohol')}`}>Do you drink alcohol?</p>
@@ -518,27 +518,27 @@ export default function HealthDeclarationForm({
 
               <textarea value={dietPattern} onChange={e => setDietPattern(e.target.value)}
                 placeholder="Describe your typical diet pattern (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={2} />
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={2} />
 
               <div>
-                <p className="text-sm text-[#43474F] mb-3">Rate your eating habits (1 = poor, 10 = excellent)</p>
+                <p className="text-sm text-[#4A4F57] mb-3">Rate your eating habits (1 = poor, 10 = excellent)</p>
                 <div className="grid grid-cols-5 gap-2">
                   {[1,2,3,4,5,6,7,8,9,10].map(n => (
                     <button key={n} type="button"
                       onClick={() => setEatingHabits(n)}
-                      className={`py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${eatingHabits === n ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
+                      className={`py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${eatingHabits === n ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-2 border-[#0F1115]' : 'bg-white text-[#4A4F57] border-2 border-[#E4E4E0] hover:border-[#DCDCD7]'}`}
                     >{n}</button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="text-sm text-[#43474F] mb-3">Do you need nutrition support?</p>
+                <p className="text-sm text-[#4A4F57] mb-3">Do you need nutrition support?</p>
                 <div className="flex gap-3">
                   {(['Yes', 'No'] as const).map(opt => (
                     <button key={opt} type="button"
                       onClick={() => setNutritionSupport(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
+                      className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-[rgba(15,17,21,0.06)] text-[#0F1115] font-medium border-2 border-[#0F1115]' : 'bg-white text-[#4A4F57] border-2 border-[#E4E4E0] hover:border-[#DCDCD7]'}`}
                     >{opt}</button>
                   ))}
                 </div>
@@ -548,16 +548,16 @@ export default function HealthDeclarationForm({
 
           {/* Section 8 - Barriers & Goals */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Barriers & Readiness</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Barriers & Readiness</p>
             <div className="space-y-5">
               <div>
-                <p className="text-sm text-[#43474F] mb-3">What barriers do you currently face? (select all that apply)</p>
+                <p className="text-sm text-[#4A4F57] mb-3">What barriers do you currently face? (select all that apply)</p>
                 <div className="space-y-2">
                   {BARRIERS.map(b => (
                     <label key={b} className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#FFFFFF] transition-colors">
                       <input type="checkbox" checked={barriers.includes(b)} onChange={() => toggleBarrier(b)}
-                        className="w-4 h-4 rounded accent-[#1B6DFC]" />
-                      <span className="text-sm text-[#43474F]">{b}</span>
+                        className="w-4 h-4 rounded accent-[#0F1115]" />
+                      <span className="text-sm text-[#4A4F57]">{b}</span>
                     </label>
                   ))}
                 </div>
@@ -565,15 +565,15 @@ export default function HealthDeclarationForm({
 
               <textarea value={healthGoals} onChange={e => setHealthGoals(e.target.value)}
                 placeholder="What are your health and performance goals for the next 3 months? (optional)"
-                className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] resize-none" rows={3} />
+                className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] resize-none" rows={3} />
 
               <div>
-                <p className="text-sm text-[#43474F] mb-3">List 3 actions you will take to improve your health: (optional)</p>
+                <p className="text-sm text-[#4A4F57] mb-3">List 3 actions you will take to improve your health: (optional)</p>
                 <div className="space-y-2">
                   {[[action1, setAction1], [action2, setAction2], [action3, setAction3]].map(([val, setter], i) => (
                     <input key={i} type="text" value={val as string} onChange={e => (setter as (v: string) => void)(e.target.value)}
                       placeholder={`Action ${i + 1}`}
-                      className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD]" />
+                      className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB]" />
                   ))}
                 </div>
               </div>
@@ -582,16 +582,16 @@ export default function HealthDeclarationForm({
 
           {/* Medical clearance notice */}
           {requiresClearance && (
-            <div className="bg-[#FDF6E9] border border-[#F1DEB8] rounded-xl p-4">
-              <p className="text-sm text-[#A96A12] font-semibold mb-1">Medical clearance required</p>
-              <p className="text-xs text-[#A96A12]/70">Based on your responses, your coach will request written clearance from your GP before training begins. This is a standard precautionary requirement.</p>
+            <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-xl p-4">
+              <p className="text-sm text-[#B06E1F] font-semibold mb-1">Medical clearance required</p>
+              <p className="text-xs text-[#B06E1F]/70">Based on your responses, your coach will request written clearance from your GP before training begins. This is a standard precautionary requirement.</p>
             </div>
           )}
 
           {/* Section 9 - Health Declaration */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-1">Health Declaration</p>
-            <p className="text-sm text-[#666D7A] mb-4">Please read and tick each statement to confirm your understanding:</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-1">Health Declaration</p>
+            <p className="text-sm text-[#6E747D] mb-4">Please read and tick each statement to confirm your understanding:</p>
             <div className="space-y-3">
               {[
                 { id: 'declaredHonest', state: declaredHonest, setter: setDeclaredHonest, text: 'I have completed this form honestly and to the best of my knowledge.' },
@@ -611,19 +611,19 @@ export default function HealthDeclarationForm({
                     id={`f-${id}`}
                     className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors scroll-mt-24 ${
                       state
-                        ? 'border-[#B5CFFC] bg-[#EFF5FE]'
+                        ? 'border-[#DCDCD7] bg-[#F2F2EF]'
                         : hasError
-                        ? 'border-red-400 bg-[#FDEDED]'
-                        : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#E8EAEE]'
+                        ? 'border-[#E8C9C9] bg-[#FBF1F1]'
+                        : 'border-[#E4E4E0] bg-[#FFFFFF] hover:border-[#E4E4E0]'
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={state}
                       onChange={e => { setter(e.target.checked); clearMissing(id) }}
-                      className="mt-0.5 w-4 h-4 rounded accent-[#1B6DFC] flex-shrink-0"
+                      className="mt-0.5 w-4 h-4 rounded accent-[#0F1115] flex-shrink-0"
                     />
-                    <span className={`text-sm leading-relaxed ${hasError ? 'text-[#C82626]' : 'text-[#43474F]'}`}>{text}</span>
+                    <span className={`text-sm leading-relaxed ${hasError ? 'text-[#8F2D2D]' : 'text-[#4A4F57]'}`}>{text}</span>
                   </label>
                 )
               })}
@@ -632,27 +632,27 @@ export default function HealthDeclarationForm({
 
           {/* Declaration */}
           <section>
-            <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Declaration</p>
-            <div id="f-declarationName" className={`bg-[#FFFFFF] rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-400' : 'border-[#E8EAEE]'}`}>
-              <p className={`text-sm ${missing.has('declarationName') ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
+            <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-4">Declaration</p>
+            <div id="f-declarationName" className={`bg-[#FFFFFF] rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-[#E8C9C9]' : 'border-[#E4E4E0]'}`}>
+              <p className={`text-sm ${missing.has('declarationName') ? 'text-[#8F2D2D]' : 'text-[#6E747D]'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
               <input
                 type="text"
                 value={declarationName}
                 onChange={e => { setDeclarationName(e.target.value); if (e.target.value.trim().length >= 3) clearMissing('declarationName') }}
                 placeholder="Type your full name"
-                className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#141821] outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${missing.has('declarationName') ? 'border-red-400' : 'border-[#E8EAEE]'}`}
+                className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#0F1115] outline-none focus:ring-2 focus:ring-[#0F1115]/50 placeholder-[#9CA2AB] border ${missing.has('declarationName') ? 'border-[#E8C9C9]' : 'border-[#E4E4E0]'}`}
               />
-              <p className="text-xs text-[#98A0AD]">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p className="text-xs text-[#9CA2AB]">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               {errMessage('declarationName')}
             </div>
           </section>
 
-        {error && <p className="text-[#C82626] text-sm">{error}</p>}
+        {error && <p className="text-[#8F2D2D] text-sm">{error}</p>}
 
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#1560E0] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full bg-[#0F1115] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {submitting ? 'Saving…' : 'Submit Health Declaration →'}
         </button>

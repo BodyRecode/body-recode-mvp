@@ -42,35 +42,35 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
       description="All your weekly check-in submissions."
     >
       {!checkins || checkins.length === 0 ? (
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#98A0AD] text-sm">No check-ins submitted yet.</p>
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#9CA2AB] text-sm">No check-ins submitted yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {Object.entries(grouped).map(([weekLabel, entries]) => (
-              <div key={weekLabel} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-[#E8EAEE]">
-                  <p className="text-[12.5px] font-medium text-[#98A0AD]">{weekLabel}</p>
+              <div key={weekLabel} className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-[#E4E4E0]">
+                  <p className="text-[12.5px] font-medium text-[#9CA2AB]">{weekLabel}</p>
                 </div>
-                <div className="divide-y divide-[#E8EAEE]/60">
+                <div className="divide-y divide-[#E4E4E0]/60">
                   {(entries || []).map((c) => (
                     <Link
                       key={c.id}
                       href={`/portal/${token}/checkin/${c.week_number}/${c.form_type.toLowerCase()}`}
-                      className="px-5 py-3 flex items-center justify-between hover:bg-[#E8EAEE]/40 transition-colors"
+                      className="px-5 py-3 flex items-center justify-between hover:bg-[#E4E4E0]/40 transition-colors"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-7 h-7 rounded-full bg-[#EFF5FE] border border-[#B5CFFC] flex items-center justify-center shrink-0">
-                          <svg className="w-3.5 h-3.5 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <div className="w-7 h-7 rounded-full bg-[#F2F2EF] border border-[#DCDCD7] flex items-center justify-center shrink-0">
+                          <svg className="w-3.5 h-3.5 text-[#0F1115]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-sm text-[#141821] font-medium">Form {c.form_type}</p>
+                        <p className="text-sm text-[#0F1115] font-medium">Form {c.form_type}</p>
                         {feedbackSet.has(c.id) && (
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-[#EFF5FE] border border-[#B5CFFC] rounded px-1.5 py-0.5">Coach response</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#0F1115] bg-[#F2F2EF] border border-[#DCDCD7] rounded px-1.5 py-0.5">Coach response</span>
                         )}
                       </div>
-                      <p className="text-xs text-[#98A0AD] ml-3 shrink-0">
+                      <p className="text-xs text-[#9CA2AB] ml-3 shrink-0">
                         {new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </Link>

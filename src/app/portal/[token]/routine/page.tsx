@@ -48,8 +48,8 @@ export default async function ClientRoutinePage({
       description="Two short sequences that hold everything else together — one to open the day, one to close it. Do them consistently before you worry about optimising anything else."
     >
       <div className="space-y-6">
-        <SequenceCard icon={<Sunrise size={18} className="text-[#1B6DFC]" />} sequence={routine.morning} />
-        <SequenceCard icon={<Moon size={18} className="text-[#1B6DFC]" />} sequence={routine.evening} />
+        <SequenceCard icon={<Sunrise size={18} className="text-[#0F1115]" />} sequence={routine.morning} />
+        <SequenceCard icon={<Moon size={18} className="text-[#0F1115]" />} sequence={routine.evening} />
       </div>
     </PortalPageShell>
   )
@@ -57,14 +57,14 @@ export default async function ClientRoutinePage({
 
 function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: DailySequence }) {
   return (
-    <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] overflow-hidden">
-      <div className="flex items-start gap-3 px-5 py-4 border-b border-[#E8EAEE]">
-        <div className="w-10 h-10 rounded-xl bg-[#1B6DFC]/10 flex items-center justify-center shrink-0 mt-0.5">
+    <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] overflow-hidden">
+      <div className="flex items-start gap-3 px-5 py-4 border-b border-[#E4E4E0]">
+        <div className="w-10 h-10 rounded-xl bg-[#0F1115]/10 flex items-center justify-center shrink-0 mt-0.5">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-[#141821] leading-tight">{sequence.title}</h2>
-          <p className="text-[13px] text-[#666D7A] mt-1">{sequence.tagline}</p>
+          <h2 className="text-lg font-semibold text-[#0F1115] leading-tight">{sequence.title}</h2>
+          <p className="text-[13px] text-[#6E747D] mt-1">{sequence.tagline}</p>
         </div>
       </div>
 
@@ -72,18 +72,18 @@ function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: Dai
         <ol className="space-y-2.5">
           {sequence.steps.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-[#1B6DFC]/10 text-[#1B6DFC] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-full bg-[#0F1115]/10 text-[#0F1115] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {i + 1}
               </span>
-              <p className="text-[14px] text-[#141821] leading-relaxed flex-1">{step}</p>
+              <p className="text-[14px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
             </li>
           ))}
         </ol>
 
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
-          <div className="mt-5 pt-4 border-t border-[#E8EAEE]">
-            <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">A note from your coach</p>
-            <p className="text-[13px] text-[#666D7A] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
+          <div className="mt-5 pt-4 border-t border-[#E4E4E0]">
+            <p className="text-[10px] font-bold text-[#0F1115] uppercase tracking-widest mb-2">A note from your coach</p>
+            <p className="text-[13px] text-[#6E747D] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
           </div>
         )}
       </div>

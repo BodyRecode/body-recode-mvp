@@ -51,13 +51,13 @@ export default async function PortalCheckinPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
+          <p className="text-xs font-bold tracking-widest text-[#0F1115] uppercase mb-6">
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#0F1115] uppercase">{brand().name}™</a>
           </p>
-          <h1 className="text-xl font-semibold text-[#141821] mb-2">Your program is being built</h1>
-          <p className="text-[#98A0AD] text-sm mb-4">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now.</p>
-          <p className="text-[#98A0AD] text-xs mb-8">We will let you know the moment your program is ready.</p>
-          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF] transition-colors">← Back to portal</a>
+          <h1 className="text-xl font-semibold text-[#0F1115] mb-2">Your program is being built</h1>
+          <p className="text-[#9CA2AB] text-sm mb-4">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now.</p>
+          <p className="text-[#9CA2AB] text-xs mb-8">We will let you know the moment your program is ready.</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#0F1115] hover:text-[#6E747D] transition-colors">← Back to portal</a>
         </div>
       </div>
     )
@@ -82,13 +82,13 @@ export default async function PortalCheckinPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
+          <p className="text-xs font-bold tracking-widest text-[#0F1115] uppercase mb-6">
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#0F1115] uppercase">{brand().name}™</a>
           </p>
-          <h1 className="text-xl font-semibold text-[#141821] mb-2">Window not open</h1>
-          <p className="text-[#98A0AD] text-sm mb-4">The check-in window opens <span className="text-[#141821]">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
-          <p className="text-[#98A0AD] text-xs mb-8">Next window opens {opensAt} (Brisbane)</p>
-          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF] transition-colors">← Back to portal</a>
+          <h1 className="text-xl font-semibold text-[#0F1115] mb-2">Window not open</h1>
+          <p className="text-[#9CA2AB] text-sm mb-4">The check-in window opens <span className="text-[#0F1115]">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
+          <p className="text-[#9CA2AB] text-xs mb-8">Next window opens {opensAt} (Brisbane)</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#0F1115] hover:text-[#6E747D] transition-colors">← Back to portal</a>
         </div>
       </div>
     )
@@ -137,17 +137,17 @@ export default async function PortalCheckinPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
+          <p className="text-xs font-bold tracking-widest text-[#0F1115] uppercase mb-6">
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#0F1115] uppercase">{brand().name}™</a>
           </p>
-          <div className="w-14 h-14 bg-[#FFFFFF] border border-[#E8EAEE] rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-[#FFFFFF] border border-[#E4E4E0] rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-[#0F1115]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-[#141821] mb-2">Already submitted</h1>
-          <p className="text-[#98A0AD] text-sm mb-8">Your check-in for this week has been received. Your coach will review it shortly.</p>
-          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF] transition-colors">← Back to portal</a>
+          <h1 className="text-xl font-semibold text-[#0F1115] mb-2">Already submitted</h1>
+          <p className="text-[#9CA2AB] text-sm mb-8">Your check-in for this week has been received. Your coach will review it shortly.</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#0F1115] hover:text-[#6E747D] transition-colors">← Back to portal</a>
         </div>
       </div>
     )

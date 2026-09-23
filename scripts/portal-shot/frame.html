@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<!--
+  A TRUE phone layout viewport, which Chrome headless will not give you.
+
+  --window-size sets the WINDOW, not the layout viewport: Chrome lays the page
+  out wide and the screenshot crops it, so a page that is perfectly fine looks
+  like it overflows. It cost two rounds of "fixing" a non-existent overflow on
+  10 Sep and nearly a third on 23 Sep, on the portal sign-in.
+
+  An iframe sized in CSS pixels is a real viewport, so what you see is what a
+  client sees.
+-->
+<head><style>html,body{margin:0;padding:0;overflow:hidden}iframe{border:0;display:block}</style></head>
+<body>
+  <iframe id="f" width="430" height="932"></iframe>
+  <script>document.getElementById('f').src = new URL(location.href).searchParams.get('u')</script>
+</body>
+</html>

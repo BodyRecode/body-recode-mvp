@@ -13,8 +13,8 @@ import { brand, coach } from '@/config/tenant'
 function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
   return (
     <div className="flex items-center gap-2.5 mb-4">
-      <span className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center text-[#1B6DFC]"><Icon size={16} strokeWidth={2.5} /></span>
-      <p className="text-[11px] font-semibold tracking-[0.1em] text-[#1B6DFC] uppercase">{text}</p>
+      <span className="w-8 h-8 rounded-lg bg-[#0F1115]/10 flex items-center justify-center text-[#0F1115]"><Icon size={16} strokeWidth={2.5} /></span>
+      <p className="text-[11px] font-semibold tracking-[0.1em] text-[#0F1115] uppercase">{text}</p>
     </div>
   )
 }
@@ -45,26 +45,26 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const clientEmail = (client.email ?? '').toLowerCase()
   if (userEmail !== clientEmail && !isCoachEmail(userEmail)) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-8">
+      <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115] flex flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-8">
           <img src={`${t.marketingDomain}${t.logoUrlLight}`} width="220" alt={t.name} className="mb-8" />
-          <h1 className="text-xl font-bold text-[#141821] mb-3">Wrong account signed in</h1>
-          <p className="text-sm text-[#666D7A] leading-relaxed mb-2">
+          <h1 className="text-xl font-bold text-[#0F1115] mb-3">Wrong account signed in</h1>
+          <p className="text-sm text-[#6E747D] leading-relaxed mb-2">
             This portal link belongs to a different account. You&apos;re currently signed in as{' '}
-            <span className="text-[#141821] font-medium">{user.email}</span>.
+            <span className="text-[#0F1115] font-medium">{user.email}</span>.
           </p>
-          <p className="text-sm text-[#666D7A] leading-relaxed mb-6">
+          <p className="text-sm text-[#6E747D] leading-relaxed mb-6">
             Sign out and sign in with the email address this link was sent to.
           </p>
           <form action="/portal/auth/signout" method="POST">
             <button
               type="submit"
-              className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white font-bold text-sm rounded-2xl transition-colors"
+              className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-sm rounded-2xl transition-colors"
             >
               Sign out and use a different email
             </button>
           </form>
-          <p className="mt-5 text-xs text-[#98A0AD] leading-relaxed">
+          <p className="mt-5 text-xs text-[#9CA2AB] leading-relaxed">
             Want to keep your other session open? Open this link in a private/incognito window instead.
           </p>
         </div>
@@ -505,20 +505,20 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   })()
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         {/* The one thing, at full size. Everything else is a line further down. */}
         <div
-          className="relative overflow-hidden rounded-[18px] px-7 pt-7 pb-6 mb-8 shadow-[0_14px_34px_rgba(11,31,51,0.28)]"
-          style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)' }}
+          className="relative overflow-hidden rounded-[18px] px-7 pt-7 pb-6 mb-8 shadow-[0_14px_34px_rgba(15,17,21,0.28)]"
+          style={{ background: 'linear-gradient(140deg, #0F1115 0%, #0F1115 100%)' }}
         >
           <div
             className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(15,17,21,0.10), transparent 70%)' }}
           />
           <div className="relative">
-            <p className="text-[11px] tracking-[0.12em] uppercase text-[#8FB4F5] mb-3">{nextUp.eyebrow}</p>
+            <p className="text-[11px] tracking-[0.12em] uppercase text-[#DCDCD7] mb-3">{nextUp.eyebrow}</p>
             <h1 className="text-[26px] font-semibold text-white tracking-[-0.03em] leading-[1.18] mb-2.5">
               {nextUp.headline}
             </h1>
@@ -526,7 +526,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             {nextUp.cta && (
               <Link
                 href={nextUp.cta.href}
-                className="block text-center mt-6 bg-[#1B6DFC] hover:bg-[#1056D6] text-white text-[15px] font-semibold py-4 rounded-xl transition-colors"
+                className="block text-center mt-6 bg-[#0F1115] hover:bg-[#000000] text-white text-[15px] font-semibold py-4 rounded-xl transition-colors"
               >
                 {nextUp.cta.label}
               </Link>
@@ -547,14 +547,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   key={task.id}
                   className={`rounded-2xl border p-4 transition-colors ${
                     task.done
-                      ? 'border-[#B5CFFC] bg-[#EFF5FE]'
+                      ? 'border-[#DCDCD7] bg-[#F2F2EF]'
                       : task.available
-                      ? 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#CFD4DC]'
-                      : 'border-[#E8EAEE] bg-[#FFFFFF]/50 opacity-50'
+                      ? 'border-[#E4E4E0] bg-[#FFFFFF] hover:border-[#DCDCD7]'
+                      : 'border-[#E4E4E0] bg-[#FFFFFF]/50 opacity-50'
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center ${task.done ? 'bg-[#1B6DFC]' : 'border-2 border-[#CFD4DC]'}`}>
+                    <div className={`w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center ${task.done ? 'bg-[#0F1115]' : 'border-2 border-[#DCDCD7]'}`}>
                       {task.done && (
                         <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -562,21 +562,21 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-semibold mb-0.5 ${task.done ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>{task.title}</p>
-                      <p className="text-xs text-[#98A0AD]">{task.description}</p>
+                      <p className={`text-sm font-semibold mb-0.5 ${task.done ? 'text-[#0F1115]' : 'text-[#0F1115]'}`}>{task.title}</p>
+                      <p className="text-xs text-[#9CA2AB]">{task.description}</p>
                       {!task.done && task.notice && (
-                        <p className="mt-2 text-xs text-[#A96A12]/80">{task.notice}</p>
+                        <p className="mt-2 text-xs text-[#B06E1F]/80">{task.notice}</p>
                       )}
                       {!task.done && task.available && task.href && !task.notice && (
                         <Link
                           href={task.href}
-                          className="inline-block mt-3 text-xs font-bold text-white bg-[#1B6DFC] px-4 py-2 rounded-xl hover:bg-[#1056D6] transition-colors"
+                          className="inline-block mt-3 text-xs font-bold text-white bg-[#0F1115] px-4 py-2 rounded-xl hover:bg-[#000000] transition-colors"
                         >
                           Start →
                         </Link>
                       )}
                       {!task.done && task.available && !task.href && !task.notice && (
-                        <p className="mt-2 text-xs text-[#98A0AD]">Your coach will send this link when ready.</p>
+                        <p className="mt-2 text-xs text-[#9CA2AB]">Your coach will send this link when ready.</p>
                       )}
                     </div>
                   </div>
@@ -594,18 +594,18 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <SectionLabel icon={MessageCircle} text={`New from ${coach().firstName}`} />
             <Link
               href={`/portal/${token}/message`}
-              className="block rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5 hover:border-[#1B6DFC]/60 transition-colors"
+              className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 hover:border-[#0F1115]/60 transition-colors"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">
+                  <p className="text-sm font-semibold text-[#0F1115] mb-1">
                     {unreadCoachReplies === 1 ? 'You have a new message' : `You have ${unreadCoachReplies} new messages`}
                   </p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">
+                  <p className="text-xs text-[#6E747D] leading-relaxed">
                     {coach().firstName} replied to you. Open the conversation to read it and reply.
                   </p>
                 </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Read →</span>
+                <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Read →</span>
               </div>
             </Link>
           </div>
@@ -619,16 +619,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <SectionLabel icon={MessageCircle} text="A quick follow-up from Kade" />
             <Link
               href={`/intake-supplement/${pendingSupplementary.token}`}
-              className="block rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5 hover:border-[#1B6DFC]/60 hover:bg-[#EFF5FE] transition-colors"
+              className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 hover:border-[#0F1115]/60 hover:bg-[#F2F2EF] transition-colors"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">A few follow-up questions</p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">
+                  <p className="text-sm font-semibold text-[#0F1115] mb-1">A few follow-up questions</p>
+                  <p className="text-xs text-[#6E747D] leading-relaxed">
                     A few new questions have been added since you completed your original intake. You will only be asked the ones you have not answered. A few minutes at most.
                   </p>
                 </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Start →</span>
+                <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">Start →</span>
               </div>
             </Link>
           </div>
@@ -641,47 +641,47 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             {latestProgressRead && (
               <Link
                 href={`/portal/${token}/progress-read`}
-                className="block rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5 hover:border-[#1B6DFC]/60 transition-colors mb-3"
+                className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 hover:border-[#0F1115]/60 transition-colors mb-3"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-[#141821] mb-1">Progress Read</p>
-                    <p className="text-xs text-[#666D7A] leading-relaxed">
+                    <p className="text-sm font-semibold text-[#0F1115] mb-1">Progress Read</p>
+                    <p className="text-xs text-[#6E747D] leading-relaxed">
                       What has moved since your last read, written {new Date(latestProgressRead.published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long' })}.
                     </p>
                   </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
                 </div>
               </Link>
             )}
             <Link
               href={`/portal/${token}/foundational-reading`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors mb-3"
+              className="block rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 hover:border-[#0F1115]/40 hover:bg-[#F2F2EF] transition-colors mb-3"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">Foundational Read</p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">
+                  <p className="text-sm font-semibold text-[#0F1115] mb-1">Foundational Read</p>
+                  <p className="text-xs text-[#6E747D] leading-relaxed">
                     A read of how your body is currently organising itself
                     {portalBodyState.label ? `, currently in ${portalBodyState.label}.` : '.'}
                   </p>
                 </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
               </div>
             </Link>
             {features.medicationsReading && client.medications_reading_published_at && (
               <Link
                 href={`/portal/${token}/medications-reading`}
-                className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
+                className="block rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5 hover:border-[#0F1115]/40 hover:bg-[#F2F2EF] transition-colors"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-[#141821] mb-1">Medications Read</p>
-                    <p className="text-xs text-[#666D7A] leading-relaxed">
+                    <p className="text-sm font-semibold text-[#0F1115] mb-1">Medications Read</p>
+                    <p className="text-xs text-[#6E747D] leading-relaxed">
                       What you&apos;re currently taking, why it matters for your coaching, and what we account for in your program and nutrition.
                     </p>
                   </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                  <span className="text-xs font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
                 </div>
               </Link>
             )}
@@ -699,10 +699,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             {pendingProgressCheck && (
               <Link
                 href={`/progress-check/${pendingProgressCheck.token}`}
-                className="block rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-3 hover:border-[#1B6DFC] transition-colors"
+                className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 mb-3 hover:border-[#0F1115] transition-colors"
               >
-                <p className="text-sm font-semibold text-[#141821] mb-1">Your Progress Check is ready</p>
-                <p className="text-xs text-[#666D7A] leading-relaxed">
+                <p className="text-sm font-semibold text-[#0F1115] mb-1">Your Progress Check is ready</p>
+                <p className="text-xs text-[#6E747D] leading-relaxed">
                   It is time to look at everything again. The questions from your intake, your
                   measurements and three photos, about 15 to 20 minutes, saved as you go. It is what
                   lets {coach().firstName} show you what has moved since your last read. →
@@ -710,85 +710,85 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               </Link>
             )}
             {!activeProgram ? (
-              <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
-                <p className="text-sm font-semibold text-[#141821] mb-1">Your program is being built</p>
-                <p className="text-xs text-[#666D7A] leading-relaxed">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now. We will let you know the moment your program is ready.</p>
+              <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5">
+                <p className="text-sm font-semibold text-[#0F1115] mb-1">Your program is being built</p>
+                <p className="text-xs text-[#6E747D] leading-relaxed">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now. We will let you know the moment your program is ready.</p>
               </div>
             ) : showCheckinDone ? (
-              <div className="rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5">
+              <div className="rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.25)]">
+                  <div className="w-7 h-7 rounded-full bg-[#0F1115] flex items-center justify-center flex-shrink-0 shadow-[0_1px_2px_rgba(15,17,21,0.28),inset_0_1px_0_rgba(255,255,255,0.25)]">
                     <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#1B6DFC]">Check-in done for this week</p>
-                    <p className="text-xs text-[#98A0AD] mt-0.5">Week {weekNumber} submitted. Your coach will review shortly.</p>
+                    <p className="text-sm font-semibold text-[#0F1115]">Check-in done for this week</p>
+                    <p className="text-xs text-[#9CA2AB] mt-0.5">Week {weekNumber} submitted. Your coach will review shortly.</p>
                   </div>
                 </div>
-                <div className="border-t border-[#DDE9FD] pt-3 flex items-center justify-between">
-                  <p className="text-xs text-[#98A0AD]">Next check-in opens {opensAt}.</p>
+                <div className="border-t border-[#EDEDEA] pt-3 flex items-center justify-between">
+                  <p className="text-xs text-[#9CA2AB]">Next check-in opens {opensAt}.</p>
                   {recentCheckins.length > 1 && (
-                    <p className="text-xs text-[#98A0AD]">{recentCheckins.length} week streak</p>
+                    <p className="text-xs text-[#9CA2AB]">{recentCheckins.length} week streak</p>
                   )}
                 </div>
               </div>
             ) : windowOpen ? (
               <Link
                 href={`/portal/${token}/checkin`}
-                className={`block rounded-2xl border p-5 transition-colors ${isClosingDay ? 'border-[#B7791F]/50 bg-[#B7791F]/5 hover:border-[#C08A2D]/60' : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE]'}`}
+                className={`block rounded-2xl border p-5 transition-colors ${isClosingDay ? 'border-[#B06E1F]/50 bg-[#B06E1F]/5 hover:border-[#B06E1F]/60' : 'border-[#E4E4E0] bg-[#FFFFFF] hover:border-[#0F1115]/40 hover:bg-[#F2F2EF]'}`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-[#141821] mb-1">Weekly check-in, Form {activeFormType}</p>
+                    <p className="text-sm font-semibold text-[#0F1115] mb-1">Weekly check-in, Form {activeFormType}</p>
                     {isClosingDay ? (
-                      <p className="text-xs text-[#A96A12] font-medium">Closes today at 6:30pm Brisbane time. Do it now.</p>
+                      <p className="text-xs text-[#B06E1F] font-medium">Closes today at 6:30pm Brisbane time. Do it now.</p>
                     ) : (
-                      <p className="text-xs text-[#666D7A]">Week {weekNumber} · Closes {closesAt}.</p>
+                      <p className="text-xs text-[#6E747D]">Week {weekNumber} · Closes {closesAt}.</p>
                     )}
                   </div>
-                  <span className={`text-xs font-bold ml-4 ${isClosingDay ? 'text-[#A96A12]' : 'text-[#1B6DFC]'}`}>Start →</span>
+                  <span className={`text-xs font-bold ml-4 ${isClosingDay ? 'text-[#B06E1F]' : 'text-[#0F1115]'}`}>Start →</span>
                 </div>
               </Link>
             ) : missedCheckin ? (
               <div className="space-y-3">
-                <div className="rounded-2xl border border-[#F5C9C9]/50 bg-[#FDEDED] p-5">
-                  <p className="text-sm font-semibold text-[#C82626] mb-1">You missed last week&apos;s check-in</p>
-                  <p className="text-xs text-[#C82626]/70">The window closed without a submission. Your coach won&apos;t have data for this week.</p>
+                <div className="rounded-2xl border border-[#E8C9C9]/50 bg-[#FBF1F1] p-5">
+                  <p className="text-sm font-semibold text-[#8F2D2D] mb-1">You missed last week&apos;s check-in</p>
+                  <p className="text-xs text-[#8F2D2D]/70">The window closed without a submission. Your coach won&apos;t have data for this week.</p>
                 </div>
-                <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4">
-                  <p className="text-xs text-[#98A0AD]">Next window opens {opensAt}.</p>
+                <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF]/50 p-4">
+                  <p className="text-xs text-[#9CA2AB]">Next window opens {opensAt}.</p>
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
+              <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full border border-[#E8EAEE] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
-                    <CalendarDays size={14} className="text-[#98A0AD]" />
+                  <div className="w-7 h-7 rounded-full border border-[#E4E4E0] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
+                    <CalendarDays size={14} className="text-[#9CA2AB]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#141821]">Check-in opens Friday 6:00 pm</p>
-                    <p className="text-xs text-[#666D7A] mt-0.5">Nothing to do until then. It stays open until Sunday 6:30 pm.</p>
+                    <p className="text-sm font-semibold text-[#0F1115]">Check-in opens Friday 6:00 pm</p>
+                    <p className="text-xs text-[#6E747D] mt-0.5">Nothing to do until then. It stays open until Sunday 6:30 pm.</p>
                   </div>
                 </div>
               </div>
             )}
             {!pendingProgressCheck && blockPhase && (
-              <div className="rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mt-3">
+              <div className="rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 mt-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full border border-[#B5CFFC] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
-                    <NotebookPen size={14} className="text-[#1B6DFC]" />
+                  <div className="w-7 h-7 rounded-full border border-[#DCDCD7] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
+                    <NotebookPen size={14} className="text-[#0F1115]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#141821]">
+                    <p className="text-sm font-semibold text-[#0F1115]">
                       {blockPhase === 'final_week'
                         ? 'Final week of this block'
                         : progressCheckUnlocked
                           ? 'Your Progress Check is coming'
                           : 'You have finished this block'}
                     </p>
-                    <p className="text-xs text-[#666D7A] mt-0.5 leading-relaxed">
+                    <p className="text-xs text-[#6E747D] mt-0.5 leading-relaxed">
                       {activeProgram?.block_name}.{' '}
                       {/* Three states, because "what am I waiting on" has three
                           different answers and telling her the wrong one is
@@ -810,7 +810,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {!allOnboardingDone && (
           <div className="mb-6">
             <SectionLabel icon={LayoutGrid} text="Your portal" />
-            <p className="text-xs text-[#98A0AD] leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
+            <p className="text-xs text-[#9CA2AB] leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
           </div>
         )}
 
@@ -821,21 +821,21 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <SectionLabel icon={MessageCircle} text="From your coach" />
             <div className="space-y-3">
               {latestProgramReview?.coach_notes && (
-                <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
+                <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest">Training</p>
-                    <p className="text-xs text-[#98A0AD]">{new Date(latestProgramReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
+                    <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest">Training</p>
+                    <p className="text-xs text-[#9CA2AB]">{new Date(latestProgramReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
                   </div>
-                  <p className="text-sm text-[#43474F] leading-relaxed">{latestProgramReview.coach_notes}</p>
+                  <p className="text-sm text-[#4A4F57] leading-relaxed">{latestProgramReview.coach_notes}</p>
                 </div>
               )}
               {latestNutritionReview?.coach_notes && (
-                <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
+                <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest">Nutrition</p>
-                    <p className="text-xs text-[#98A0AD]">{new Date(latestNutritionReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
+                    <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest">Nutrition</p>
+                    <p className="text-xs text-[#9CA2AB]">{new Date(latestNutritionReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
                   </div>
-                  <p className="text-sm text-[#43474F] leading-relaxed">{latestNutritionReview.coach_notes}</p>
+                  <p className="text-sm text-[#4A4F57] leading-relaxed">{latestNutritionReview.coach_notes}</p>
                 </div>
               )}
             </div>
@@ -853,8 +853,8 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             keeps its own block above. */}
         {allOnboardingDone && (
           <div className="mb-10">
-            <p className="text-[12.5px] text-[#98A0AD] mb-3">Everything else</p>
-            <div className="rounded-2xl border border-[#E8EAEE] overflow-hidden bg-white">
+            <p className="text-[12.5px] text-[#9CA2AB] mb-3">Everything else</p>
+            <div className="rounded-2xl border border-[#E4E4E0] overflow-hidden bg-white">
               {([
                 { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
                 // Every prescriptive link is gated on what HER COACH licenses.
@@ -878,12 +878,12 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <Link
                     key={i.href}
                     href={i.href}
-                    className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#EFF1F4] last:border-b-0 hover:bg-[#F7F9FC] transition-colors"
+                    className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#EDEDEA] last:border-b-0 hover:bg-[#F2F2EF] transition-colors"
                   >
-                    <span className="text-[15px] text-[#141821] min-w-0 truncate">{i.label}</span>
+                    <span className="text-[15px] text-[#0F1115] min-w-0 truncate">{i.label}</span>
                     <span className="flex items-center gap-2 shrink-0">
-                      {i.meta && <span className="text-[12.5px] text-[#98A0AD] truncate max-w-[130px]">{i.meta}</span>}
-                      <span className="text-[#CFD4DC]">&rsaquo;</span>
+                      {i.meta && <span className="text-[12.5px] text-[#9CA2AB] truncate max-w-[130px]">{i.meta}</span>}
+                      <span className="text-[#DCDCD7]">&rsaquo;</span>
                     </span>
                   </Link>
                 ))}

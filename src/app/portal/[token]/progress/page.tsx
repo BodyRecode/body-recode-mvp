@@ -21,11 +21,11 @@ function diff(current: number | null, baseline: number | null): string | null {
 }
 
 function diffColour(current: number | null, baseline: number | null, lowerIsBetter = true): string {
-  if (current === null || baseline === null) return 'text-[#98A0AD]'
+  if (current === null || baseline === null) return 'text-[#9CA2AB]'
   const d = current - baseline
-  if (d === 0) return 'text-[#98A0AD]'
+  if (d === 0) return 'text-[#9CA2AB]'
   const improved = lowerIsBetter ? d < 0 : d > 0
-  return improved ? 'text-[#1B6DFC]' : 'text-[#C82626]'
+  return improved ? 'text-[#0F1115]' : 'text-[#8F2D2D]'
 }
 
 export default async function PortalProgressPage({ params }: { params: Promise<{ token: string }> }) {
@@ -54,18 +54,18 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
       description="Measurements captured at key points throughout your coaching."
     >
       {!baseline ? (
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#98A0AD] text-sm">No measurements recorded yet.</p>
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#9CA2AB] text-sm">No measurements recorded yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {/* Baseline */}
-            <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
-              <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
-                <p className="text-[12.5px] font-medium text-[#98A0AD]">Starting point</p>
-                <p className="text-xs text-[#98A0AD]">{new Date(baseline.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+            <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between">
+                <p className="text-[12.5px] font-medium text-[#9CA2AB]">Starting point</p>
+                <p className="text-xs text-[#9CA2AB]">{new Date(baseline.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
               </div>
-              <div className="grid grid-cols-4 divide-x divide-[#E8EAEE]">
+              <div className="grid grid-cols-4 divide-x divide-[#E4E4E0]">
                 {[
                   { label: 'Weight', value: baseline.bodyweight_kg, unit: 'kg' },
                   { label: 'Waist', value: baseline.waist_cm, unit: 'cm' },
@@ -73,8 +73,8 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                   { label: 'Chest', value: baseline.chest_cm, unit: 'cm' },
                 ].map(m => (
                   <div key={m.label} className="px-4 py-3 text-center">
-                    <p className="text-xs text-[#98A0AD] mb-1">{m.label}</p>
-                    <p className="text-sm font-semibold text-[#141821]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
+                    <p className="text-xs text-[#9CA2AB] mb-1">{m.label}</p>
+                    <p className="text-sm font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
                   </div>
                 ))}
               </div>
@@ -82,14 +82,14 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
 
             {/* Re-captures */}
             {recaptures.length > 0 ? recaptures.map((b: Baseline) => (
-              <div key={b.id} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
-                  <p className="text-[12.5px] font-medium text-[#98A0AD]">
+              <div key={b.id} className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between">
+                  <p className="text-[12.5px] font-medium text-[#9CA2AB]">
                     {b.re_capture_week ? `Week ${b.re_capture_week} re-capture` : 'Re-capture'}
                   </p>
-                  <p className="text-xs text-[#98A0AD]">{new Date(b.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                  <p className="text-xs text-[#9CA2AB]">{new Date(b.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                 </div>
-                <div className="grid grid-cols-4 divide-x divide-[#E8EAEE]">
+                <div className="grid grid-cols-4 divide-x divide-[#E4E4E0]">
                   {[
                     { label: 'Weight', value: b.bodyweight_kg, base: baseline.bodyweight_kg, unit: 'kg' },
                     { label: 'Waist', value: b.waist_cm, base: baseline.waist_cm, unit: 'cm' },
@@ -97,8 +97,8 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                     { label: 'Chest', value: b.chest_cm, base: baseline.chest_cm, unit: 'cm' },
                   ].map(m => (
                     <div key={m.label} className="px-4 py-3 text-center">
-                      <p className="text-xs text-[#98A0AD] mb-1">{m.label}</p>
-                      <p className="text-sm font-semibold text-[#141821]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
+                      <p className="text-xs text-[#9CA2AB] mb-1">{m.label}</p>
+                      <p className="text-sm font-semibold text-[#0F1115]">{m.value ?? '-'}{m.value ? m.unit : ''}</p>
                       {diff(m.value, m.base) && (
                         <p className={`text-xs mt-0.5 font-medium ${diffColour(m.value, m.base)}`}>{diff(m.value, m.base)}</p>
                       )}
@@ -107,8 +107,8 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                 </div>
               </div>
             )) : (
-              <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-5 text-center">
-                <p className="text-[#98A0AD] text-sm">Re-capture measurements will appear here every 6–8 weeks.</p>
+              <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF]/50 p-5 text-center">
+                <p className="text-[#9CA2AB] text-sm">Re-capture measurements will appear here every 6–8 weeks.</p>
               </div>
             )}
         </div>

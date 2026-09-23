@@ -31,10 +31,10 @@ interface Session {
 }
 
 const directionColour: Record<string, string> = {
-  progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
-  rebuild: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
-  deload: 'text-[#1056D6] bg-[#EFF5FE] border-[#B5CFFC]',
+  progress: 'text-[#2B5E45] bg-[#2B5E45]/10 border-[#2B5E45]/30',
+  hold: 'text-[#B06E1F] bg-[#FDF8F1] border-[#EADCC4]',
+  rebuild: 'text-[#8F2D2D] bg-[#FBF1F1] border-[#E8C9C9]',
+  deload: 'text-[#000000] bg-[#F2F2EF] border-[#DCDCD7]',
 }
 
 const directionLabel: Record<string, string> = {
@@ -70,8 +70,8 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
       description="Your current training block."
     >
       {!program ? (
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#98A0AD] text-sm">No active training program yet. Your coach will set this up for you.</p>
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#9CA2AB] text-sm">No active training program yet. Your coach will set this up for you.</p>
           </div>
         ) : (
           <div className="space-y-5">
@@ -79,7 +79,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
                 "Log today's meals" on the nutrition plan. */}
             <Link
               href={`/portal/${token}/program/log`}
-              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+              className="block w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-sm rounded-2xl text-center transition-colors"
             >
               Log a session →
             </Link>
@@ -116,41 +116,41 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             {/* Legacy client_note - shown only when no Program Reading has been published yet */}
             {!programReadingPublished && program.client_note && (
-              <div className="bg-[#EFF5FE] border border-[#B5CFFC] rounded-2xl px-5 py-4">
-                <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">About this block</p>
-                <p className="text-sm text-[#43474F] leading-relaxed">{program.client_note}</p>
+              <div className="bg-[#F2F2EF] border border-[#DCDCD7] rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">About this block</p>
+                <p className="text-sm text-[#4A4F57] leading-relaxed">{program.client_note}</p>
               </div>
             )}
 
             {/* Conditioning / cardio prescription (interim field until the conditioning modality) */}
             {program.conditioning && (
-              <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4">
-                <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Conditioning / Cardio</p>
-                <p className="text-sm text-[#43474F] leading-relaxed whitespace-pre-line">{program.conditioning}</p>
+              <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-[#0F1115] uppercase tracking-widest mb-2">Conditioning / Cardio</p>
+                <p className="text-sm text-[#4A4F57] leading-relaxed whitespace-pre-line">{program.conditioning}</p>
               </div>
             )}
 
             {/* Block overview */}
-            <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
+            <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-lg font-bold text-[#141821]">{program.block_name}</p>
-                  <p className="text-xs text-[#98A0AD] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
+                  <p className="text-lg font-bold text-[#0F1115]">{program.block_name}</p>
+                  <p className="text-xs text-[#9CA2AB] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
                 </div>
                 {program.current_direction && (
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#666D7A] bg-[#E8EAEE] border-[#E8EAEE]'}`}>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#6E747D] bg-[#E4E4E0] border-[#E4E4E0]'}`}>
                     {directionLabel[program.current_direction] ?? program.current_direction}
                   </span>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#98A0AD] mb-0.5">Sessions / week</p>
-                  <p className="text-sm font-semibold text-[#141821]">{program.training_frequency}x</p>
+                <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
+                  <p className="text-xs text-[#9CA2AB] mb-0.5">Sessions / week</p>
+                  <p className="text-sm font-semibold text-[#0F1115]">{program.training_frequency}x</p>
                 </div>
-                <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#98A0AD] mb-0.5">Block length</p>
-                  <p className="text-sm font-semibold text-[#141821]">{program.week_duration} weeks</p>
+                <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
+                  <p className="text-xs text-[#9CA2AB] mb-0.5">Block length</p>
+                  <p className="text-sm font-semibold text-[#0F1115]">{program.week_duration} weeks</p>
                 </div>
               </div>
             </div>

@@ -12,12 +12,12 @@ import type { ReactNode } from 'react'
  *
  * Design tokens (do NOT diverge without a design-system update):
  * - bg: #FFFFFF (Pure White)
- * - text: #141821 (Graphite)
+ * - text: #0F1115 (Graphite)
  * - container: max-w-lg mx-auto px-6 py-10
  * - h1: text-[30px] font-extrabold tracking-tight leading-[1.1]
- * - eyebrow: text-[12.5px] text-[#1B6DFC], sentence case
- * - back link: text-[12px] text-[#98A0AD] hover:text-[#43474F]
- * - description: text-[15px] text-[#666D7A] leading-relaxed
+ * - eyebrow: text-[12.5px] text-[#0F1115], sentence case
+ * - back link: text-[12px] text-[#9CA2AB] hover:text-[#4A4F57]
+ * - description: text-[15px] text-[#6E747D] leading-relaxed
  * - bottom spacer: h-16
  *
  * The eyebrow was 10px bold uppercase monospace at 0.18em tracking (27 Aug:
@@ -50,7 +50,7 @@ export default function PortalPageShell({
 }) {
   const hasEyebrowAbove = Boolean(backHref || eyebrow)
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8 flex items-start justify-between gap-4">
@@ -58,25 +58,25 @@ export default function PortalPageShell({
             {backHref && (
               <Link
                 href={backHref}
-                className="text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors"
+                className="text-[12px] text-[#9CA2AB] hover:text-[#4A4F57] transition-colors"
               >
                 {backLabel}
               </Link>
             )}
             {eyebrow && (
-              <p className={`text-[12.5px] text-[#1B6DFC] mb-2.5 ${backHref ? 'mt-4' : ''}`}>
+              <p className={`text-[12.5px] text-[#0F1115] mb-2.5 ${backHref ? 'mt-4' : ''}`}>
                 {eyebrow}
               </p>
             )}
             <h1
-              className={`text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] ${
+              className={`text-[30px] font-extrabold text-[#0F1115] tracking-tight leading-[1.1] ${
                 eyebrow ? 'mb-3' : hasEyebrowAbove ? 'mt-4 mb-3' : 'mb-3'
               }`}
             >
               {title}
             </h1>
             {description && (
-              <div className="text-[#666D7A] text-[15px] leading-relaxed">{description}</div>
+              <div className="text-[#6E747D] text-[15px] leading-relaxed">{description}</div>
             )}
           </div>
           {headerRight && <div className="shrink-0 pt-4">{headerRight}</div>}

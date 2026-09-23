@@ -34,9 +34,9 @@ interface TrainingDayAdjustments {
 }
 
 const directionColour: Record<string, string> = {
-  progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
-  rebuild: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
+  progress: 'text-[#2B5E45] bg-[#2B5E45]/10 border-[#2B5E45]/30',
+  hold: 'text-[#B06E1F] bg-[#FDF8F1] border-[#EADCC4]',
+  rebuild: 'text-[#8F2D2D] bg-[#FBF1F1] border-[#E8C9C9]',
 }
 
 const directionLabel: Record<string, string> = {
@@ -119,8 +119,8 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
       description="Your current daily nutrition prescription."
     >
       {!plan ? (
-          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
-            <p className="text-[#98A0AD] text-sm">No active nutrition plan yet. Your coach will set this up for you.</p>
+          <div className="rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#9CA2AB] text-sm">No active nutrition plan yet. Your coach will set this up for you.</p>
           </div>
         ) : (
           <div className="space-y-5">
@@ -136,7 +136,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             {client.meal_logging_enabled && (
               <Link
                 href={`/portal/${token}/my-plan/log`}
-                className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+                className="block w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] text-white font-bold text-sm rounded-2xl text-center transition-colors"
               >
                 Log today&apos;s meals →
               </Link>
@@ -148,16 +148,16 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 Sits ABOVE the nutrition read so the client knows the
                 framing before reading the per-meal detail. */}
             {plan.transitional_override_active && (
-              <div className="bg-[#FDF6E9] border border-[#F1DEB8] rounded-2xl p-5">
-                <p className="text-[12px] font-medium text-[#A96A12] mb-2">Your plan right now</p>
-                <p className="text-sm text-[#141821] leading-relaxed">
+              <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-2xl p-5">
+                <p className="text-[12px] font-medium text-[#B06E1F] mb-2">Your plan right now</p>
+                <p className="text-sm text-[#0F1115] leading-relaxed">
                   You&apos;re at <span className="font-semibold tabular-nums">{plan.transitional_override_floor_kcal} kcal/day</span> for the next 2 weeks.{bridgeTargetKcal && bridgeStagesRemaining && bridgeStagesRemaining > 0 && (
                     <> From there we&apos;ll step you up gradually{bridgeNextStageKcal && bridgeNextStageKcal < bridgeTargetKcal ? <> (next stage: <span className="font-semibold tabular-nums">{bridgeNextStageKcal} kcal</span>)</> : ''} until you reach your full target of <span className="font-semibold tabular-nums">~{bridgeTargetKcal} kcal</span>{bridgeStagesRemaining > 1 ? <> in about {bridgeStagesRemaining * 2} weeks</> : ''}.</>
                   )}{bridgeTargetKcal && (!bridgeStagesRemaining || bridgeStagesRemaining === 0) && (
                     <> You&apos;re at the full target now.</>
                   )}
                 </p>
-                <p className="text-xs text-[#666D7A] mt-2 leading-relaxed">
+                <p className="text-xs text-[#6E747D] mt-2 leading-relaxed">
                   We build up your fuel in 2-week stages so your appetite has time to catch up. Eat all the portions listed. On hard appetite days, prioritise hitting your protein and skip the snack rather than cutting from main meals. We&apos;ll review together at each weekly check-in.
                 </p>
               </div>
@@ -179,27 +179,27 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             )}
 
             {/* Overview */}
-            <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
+            <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-lg font-bold text-[#141821]">{plan.plan_name}</p>
-                  <p className="text-xs text-[#98A0AD] mt-0.5 capitalize">{plan.entry_state?.replace(/_/g, ' ')}</p>
+                  <p className="text-lg font-bold text-[#0F1115]">{plan.plan_name}</p>
+                  <p className="text-xs text-[#9CA2AB] mt-0.5 capitalize">{plan.entry_state?.replace(/_/g, ' ')}</p>
                 </div>
                 {plan.current_direction && (
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[plan.current_direction] || 'text-[#666D7A] bg-[#E8EAEE] border-[#E8EAEE]'}`}>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[plan.current_direction] || 'text-[#6E747D] bg-[#E4E4E0] border-[#E4E4E0]'}`}>
                     {directionLabel[plan.current_direction] ?? plan.current_direction}
                   </span>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#98A0AD] mb-0.5">Meals / day</p>
-                  <p className="text-sm font-semibold text-[#141821]">{plan.meal_frequency}</p>
+                <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
+                  <p className="text-xs text-[#9CA2AB] mb-0.5">Meals / day</p>
+                  <p className="text-sm font-semibold text-[#0F1115]">{plan.meal_frequency}</p>
                 </div>
                 {plan.estimated_calorie_band && (
-                  <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5">
-                    <p className="text-xs text-[#98A0AD] mb-0.5">Calorie range</p>
-                    <p className="text-sm font-semibold text-[#141821]">{plan.estimated_calorie_band}</p>
+                  <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5">
+                    <p className="text-xs text-[#9CA2AB] mb-0.5">Calorie range</p>
+                    <p className="text-sm font-semibold text-[#0F1115]">{plan.estimated_calorie_band}</p>
                   </div>
                 )}
               </div>
@@ -209,17 +209,17 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             {plan.entry_state_summary && (() => {
               const summary = plan.entry_state_summary as EntryStateSummary
               return (
-                <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
-                  <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Current focus</p>
-                  <p className="text-sm font-semibold text-[#141821] mb-1">{summary.current_focus}</p>
-                  <p className="text-sm text-[#666D7A] leading-relaxed mb-4">{summary.what_this_means}</p>
+                <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
+                  <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Current focus</p>
+                  <p className="text-sm font-semibold text-[#0F1115] mb-1">{summary.current_focus}</p>
+                  <p className="text-sm text-[#6E747D] leading-relaxed mb-4">{summary.what_this_means}</p>
                   {summary.prioritise?.length > 0 && (
                     <div className="mb-3">
-                      <p className="text-xs font-semibold text-[#1B6DFC] mb-2">Prioritise</p>
+                      <p className="text-xs font-semibold text-[#0F1115] mb-2">Prioritise</p>
                       <ul className="space-y-1">
                         {summary.prioritise.map((item, i) => (
-                          <li key={i} className="text-xs text-[#666D7A] flex gap-2">
-                            <span className="text-[#1056D6] shrink-0">·</span>
+                          <li key={i} className="text-xs text-[#6E747D] flex gap-2">
+                            <span className="text-[#000000] shrink-0">·</span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -228,11 +228,11 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                   )}
                   {summary.avoid?.length > 0 && (
                     <div>
-                      <p className="text-xs font-semibold text-[#B7791F] mb-2">Avoid</p>
+                      <p className="text-xs font-semibold text-[#B06E1F] mb-2">Avoid</p>
                       <ul className="space-y-1">
                         {summary.avoid.map((item, i) => (
-                          <li key={i} className="text-xs text-[#666D7A] flex gap-2">
-                            <span className="text-[#A96A12] shrink-0">·</span>
+                          <li key={i} className="text-xs text-[#6E747D] flex gap-2">
+                            <span className="text-[#B06E1F] shrink-0">·</span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -254,33 +254,33 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
               const carbPct = Math.round((carbKcal / denom) * 100)
               const fatPct = 100 - proteinPct - carbPct
               return (
-                <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
-                  <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Daily totals</p>
-                  <p className="text-3xl font-bold text-[#141821] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-base font-normal text-[#98A0AD]">kcal</span></p>
+                <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
+                  <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Daily totals</p>
+                  <p className="text-3xl font-bold text-[#0F1115] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-base font-normal text-[#9CA2AB]">kcal</span></p>
                   <div className="mt-4">
-                    <div className="flex h-2 rounded-full overflow-hidden bg-[#E8EAEE]">
-                      <div style={{ width: `${proteinPct}%` }} className="bg-[#1B6DFC]" />
-                      <div style={{ width: `${carbPct}%` }} className="bg-[#B7791F]" />
-                      <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
+                    <div className="flex h-2 rounded-full overflow-hidden bg-[#E4E4E0]">
+                      <div style={{ width: `${proteinPct}%` }} className="bg-[#0F1115]" />
+                      <div style={{ width: `${carbPct}%` }} className="bg-[#B06E1F]" />
+                      <div style={{ width: `${fatPct}%` }} className="bg-[#9CA2AB]" />
                     </div>
                     <div className="flex justify-between mt-2 text-[11.5px] tabular-nums">
-                      <span className="text-[#1B6DFC]">P {proteinPct}%</span>
-                      <span className="text-[#A96A12]">C {carbPct}%</span>
-                      <span className="text-violet-300">F {fatPct}%</span>
+                      <span className="text-[#0F1115]">P {proteinPct}%</span>
+                      <span className="text-[#B06E1F]">C {carbPct}%</span>
+                      <span className="text-[#6E747D]">F {fatPct}%</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3 mt-4">
-                    <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5 text-center">
-                      <p className="text-sm font-bold text-[#141821] tabular-nums">{totals.protein_g}g</p>
-                      <p className="text-xs text-[#98A0AD] mt-0.5">Protein</p>
+                    <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-[#0F1115] tabular-nums">{totals.protein_g}g</p>
+                      <p className="text-xs text-[#9CA2AB] mt-0.5">Protein</p>
                     </div>
-                    <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5 text-center">
-                      <p className="text-sm font-bold text-[#141821] tabular-nums">{totals.carb_g}g</p>
-                      <p className="text-xs text-[#98A0AD] mt-0.5">Carbs</p>
+                    <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-[#0F1115] tabular-nums">{totals.carb_g}g</p>
+                      <p className="text-xs text-[#9CA2AB] mt-0.5">Carbs</p>
                     </div>
-                    <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2.5 text-center">
-                      <p className="text-sm font-bold text-[#141821] tabular-nums">{totals.fat_g}g</p>
-                      <p className="text-xs text-[#98A0AD] mt-0.5">Fat</p>
+                    <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-[#0F1115] tabular-nums">{totals.fat_g}g</p>
+                      <p className="text-xs text-[#9CA2AB] mt-0.5">Fat</p>
                     </div>
                   </div>
                 </div>
@@ -306,28 +306,28 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
               const hasAny = (['protein', 'carbohydrate', 'fat'] as const).some(c => (subs[c]?.length ?? 0) > 0)
               if (!hasAny) return null
               return (
-                <details className="group bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
+                <details className="group bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl overflow-hidden">
                   <summary className="px-5 py-4 flex items-center justify-between cursor-pointer list-none select-none">
                     <div>
-                      <p className="text-[12.5px] font-medium text-[#98A0AD]">Food swaps</p>
-                      <p className="text-xs text-[#666D7A] mt-0.5">Approved, macro-matched alternatives for each food.</p>
+                      <p className="text-[12.5px] font-medium text-[#9CA2AB]">Food swaps</p>
+                      <p className="text-xs text-[#6E747D] mt-0.5">Approved, macro-matched alternatives for each food.</p>
                     </div>
-                    <span className="text-[#98A0AD] text-sm transition-transform group-open:rotate-180">⌄</span>
+                    <span className="text-[#9CA2AB] text-sm transition-transform group-open:rotate-180">⌄</span>
                   </summary>
-                  <div className="px-5 pb-5 space-y-4 border-t border-[#E8EAEE] pt-4">
+                  <div className="px-5 pb-5 space-y-4 border-t border-[#E4E4E0] pt-4">
                     {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
                       (subs[cat]?.length ?? 0) > 0 && (
                         <div key={cat}>
-                          <p className="text-xs font-semibold text-[#1B6DFC] mb-2">{catLabel[cat]}</p>
+                          <p className="text-xs font-semibold text-[#0F1115] mb-2">{catLabel[cat]}</p>
                           <ul className="space-y-2">
                             {subs[cat]!.map((item, i) => {
                               const [base, ...rest] = item.split('↔')
                               const alts = rest.join('↔').trim()
                               return (
                                 <li key={i} className="text-xs leading-relaxed">
-                                  <span className="font-semibold text-[#141821]">{base.trim()}</span>
+                                  <span className="font-semibold text-[#0F1115]">{base.trim()}</span>
                                   {alts && (
-                                    <span className="text-[#666D7A]"> · swap for {alts}</span>
+                                    <span className="text-[#6E747D]"> · swap for {alts}</span>
                                   )}
                                 </li>
                               )
@@ -336,7 +336,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                         </div>
                       )
                     ))}
-                    <p className="text-[11px] text-[#98A0AD] leading-relaxed pt-1">
+                    <p className="text-[11px] text-[#9CA2AB] leading-relaxed pt-1">
                       Swaps keep your macros roughly the same. If your coach has recently hand-adjusted a meal, these may not reflect the latest change, so check with them if unsure.
                     </p>
                   </div>
@@ -348,25 +348,25 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             {plan.training_day_adjustments && (() => {
               const adj = plan.training_day_adjustments as TrainingDayAdjustments
               return (
-                <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
-                  <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Training day adjustments</p>
+                <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
+                  <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">Training day adjustments</p>
                   <div className="flex gap-3 mb-3">
                     {adj.carb_increase_g > 0 && (
-                      <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2">
-                        <p className="text-xs text-[#98A0AD]">Extra carbs</p>
-                        <p className="text-sm font-bold text-[#141821]">+{adj.carb_increase_g}g</p>
+                      <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2">
+                        <p className="text-xs text-[#9CA2AB]">Extra carbs</p>
+                        <p className="text-sm font-bold text-[#0F1115]">+{adj.carb_increase_g}g</p>
                       </div>
                     )}
                     {adj.fat_reduction_g > 0 && (
-                      <div className="bg-[#E8EAEE]/60 rounded-xl px-3 py-2">
-                        <p className="text-xs text-[#98A0AD]">Reduced fat</p>
-                        <p className="text-sm font-bold text-[#141821]">-{adj.fat_reduction_g}g</p>
+                      <div className="bg-[#E4E4E0]/60 rounded-xl px-3 py-2">
+                        <p className="text-xs text-[#9CA2AB]">Reduced fat</p>
+                        <p className="text-sm font-bold text-[#0F1115]">-{adj.fat_reduction_g}g</p>
                       </div>
                     )}
                   </div>
-                  {adj.timing_note && <p className="text-xs text-[#666D7A] leading-relaxed mb-2">{adj.timing_note}</p>}
+                  {adj.timing_note && <p className="text-xs text-[#6E747D] leading-relaxed mb-2">{adj.timing_note}</p>}
                   {adj.meals_affected?.length > 0 && (
-                    <p className="text-xs text-[#98A0AD]">Applies to: {adj.meals_affected.join(', ')}</p>
+                    <p className="text-xs text-[#9CA2AB]">Applies to: {adj.meals_affected.join(', ')}</p>
                   )}
                 </div>
               )
@@ -374,12 +374,12 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
             {/* Execution rules */}
             {Array.isArray(plan.execution_rules) && plan.execution_rules.length > 0 && (
-              <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-5">
-                <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">How to follow this plan</p>
+              <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
+                <p className="text-[12.5px] font-medium text-[#9CA2AB] mb-3">How to follow this plan</p>
                 <ul className="space-y-2">
                   {(plan.execution_rules as string[]).map((rule, i) => (
-                    <li key={i} className="text-xs text-[#666D7A] flex gap-2 leading-relaxed">
-                      <span className="text-[#1056D6] shrink-0 font-bold">{i + 1}.</span>
+                    <li key={i} className="text-xs text-[#6E747D] flex gap-2 leading-relaxed">
+                      <span className="text-[#000000] shrink-0 font-bold">{i + 1}.</span>
                       <span>{rule}</span>
                     </li>
                   ))}
@@ -389,12 +389,12 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
             {/* What not to change */}
             {Array.isArray(plan.what_not_to_change) && plan.what_not_to_change.length > 0 && (
-              <div className="bg-[#FDF6E9] border border-[#F1DEB8]/30 rounded-2xl p-5">
-                <p className="text-[12.5px] font-medium text-[#B7791F] mb-3">Do not change these</p>
+              <div className="bg-[#FDF8F1] border border-[#EADCC4]/30 rounded-2xl p-5">
+                <p className="text-[12.5px] font-medium text-[#B06E1F] mb-3">Do not change these</p>
                 <ul className="space-y-2">
                   {(plan.what_not_to_change as string[]).map((item, i) => (
-                    <li key={i} className="text-xs text-[#666D7A] flex gap-2 leading-relaxed">
-                      <span className="text-[#A96A12] shrink-0">·</span>
+                    <li key={i} className="text-xs text-[#6E747D] flex gap-2 leading-relaxed">
+                      <span className="text-[#B06E1F] shrink-0">·</span>
                       <span>{item}</span>
                     </li>
                   ))}
