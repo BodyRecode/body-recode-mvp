@@ -106,6 +106,19 @@ const SECTIONS: Array<{ title: string; blocks: Block[] }> = [
     ],
   },
   {
+    title: 'When a client leaves',
+    blocks: [
+      {
+        heading: 'They keep their read and nothing else',
+        body: [
+          'Ending someone does not delete them and does not lock them out. Their own read stays readable to them, because it is the thing they paid for and the thing they will come back to. Everything else closes: no plan, no check-ins, no messaging, and nothing new is produced for them.',
+          'They see a page saying plainly that their coaching has ended and what is still theirs to read.',
+        ],
+        note: 'If they come back, ending is reversible. Nothing is thrown away.',
+      },
+    ],
+  },
+  {
     title: 'What you can say, and what you cannot',
     blocks: [
       {
@@ -131,6 +144,13 @@ const SECTIONS: Array<{ title: string; blocks: Block[] }> = [
         body: [
           'Today is who needs you and why, in the order it would cost you to ignore them. All Clients is your whole book. Check Ins is the bench where you work through what has come in.',
           'Your Practice is about you rather than about one client: who is drifting away, and what your book is made of. The six marks beside each name are the last six weeks, filled where they answered.',
+        ],
+      },
+      {
+        heading: 'Twelve weeks on one page',
+        body: [
+          'On a client file there is a page that puts their whole twelve weeks in one place: where they started, where they are, and which way their readiness moved. It is built to be handed over or printed, so it is on paper rather than in the dark, and there is a version with the name removed for showing someone who is not a client yet.',
+          'It does not work the answer out again. It reads out what the system already concluded week by week, including where readiness held, because holding steady is a result rather than nothing happening.',
         ],
       },
       {
