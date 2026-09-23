@@ -22,6 +22,7 @@ import PackageManager from '@/components/package-manager'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import CopyLinkButton from './copy-link-button'
+import AskTestimonialButton from './ask-testimonial-button'
 import IssueLoginCodeButton from './issue-login-code-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
@@ -637,6 +638,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       >
                         Twelve weeks
                       </Link>
+                      {/* Beside the hand-over on purpose: showing somebody what
+                          happened and asking what they thought is one moment. */}
+                      <AskTestimonialButton clientId={client.id} clientName={client.name?.split(' ')[0] ?? 'them'} />
                     </div>
                   </div>
 

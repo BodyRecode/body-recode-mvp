@@ -75,6 +75,13 @@ async function main() {
     { name: 'client-facing read (id in the body)', path: '/api/generate-client-reading',      body: { client_id: victim.id, cffs_id: NOBODY } },
     { name: 'publish the read (id in the body)',   path: '/api/publish-client-reading',       body: { client_id: victim.id, cffs_id: NOBODY } },
     { name: 'program reading (id in the body)',    path: '/api/generate-program-reading',     body: { client_id: victim.id, program_id: NOBODY } },
+    // Added 23 Sep 2026 with the testimonial ask. This one SENDS AN EMAIL to a
+    // real person if it gets through, which is why it is probed here and
+    // deliberately NOT added to the control below: passing the control would
+    // mean emailing the test client every time anybody runs this. The control
+    // already proves the gate lets a coach reach their own client, and this
+    // route is held by the same path rule as the two above it.
+    { name: 'ask for a testimonial (id in the address)', path: `/api/clients/${victim.id}/request-testimonial`, body: {} },
   ]
 
   console.log(`\nSigned in as the test coach.`)

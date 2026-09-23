@@ -6,8 +6,11 @@ import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 import { readinessLevel } from '@/lib/readiness-levels'
 
-const TEAL = '#0F1115'
-const TEAL_HOVER = '#242932'
+// Named TEAL until 23 Sep 2026, when the values had already been graphite for a
+// day. A stale name is a trap: I read it, believed the retired brand colour was
+// still on a document a client receives, and told Kade so.
+const RULE = '#0F1115'
+const RULE_SOFT = '#242932'
 const INK = '#0F1115'
 const WHITE = '#ffffff'
 const PAGE_BG = '#FAFAF8'
@@ -83,7 +86,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt={brand().name} style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }} />
 
-          <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: RULE, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>
             Coach-Facing Foundational Synthesis
           </p>
           <h1 style={{ fontSize: 36, fontWeight: 800, color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 6 }}>
@@ -119,14 +122,14 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
           </div>
         </div>
 
-        {/* Teal accent bar */}
-        <div style={{ height: 4, background: `linear-gradient(90deg, ${TEAL} 0%, ${TEAL_HOVER} 50%, transparent 100%)` }} />
+        {/* The rule under the header */}
+        <div style={{ height: 4, background: `linear-gradient(90deg, ${RULE} 0%, ${RULE_SOFT} 50%, transparent 100%)` }} />
 
         <div style={{ background: PAGE_BG, padding: '48px 52px 64px' }}>
 
           {/* About this document */}
           <div style={{ background: INK, padding: '36px 40px', marginBottom: 40, borderRadius: 6 }}>
-            <p style={{ fontSize: 9, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>
+            <p style={{ fontSize: 9, fontWeight: 700, color: RULE, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>
               About This Document
             </p>
             <p style={{ fontSize: 17, fontWeight: 600, color: WHITE, lineHeight: 1.55, marginBottom: 20, letterSpacing: '-0.01em' }}>
@@ -156,7 +159,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                 {cffs.body_state_classification}
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 3, height: 14, background: TEAL, borderRadius: 2 }} />
+                <div style={{ width: 3, height: 14, background: RULE, borderRadius: 2 }} />
                 <p style={{ fontSize: 12, fontWeight: 500, color: '#6E747D' }}>
                   Resolution: <span style={{ fontWeight: 700, color: INK }}>{cffs.resolution_state}</span>
                 </p>
@@ -176,7 +179,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                   </p>
                   {cffs.pattern_confidence && cffs.pattern_classification !== INDETERMINATE && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                      <div style={{ width: 3, height: 14, background: TEAL, borderRadius: 2 }} />
+                      <div style={{ width: 3, height: 14, background: RULE, borderRadius: 2 }} />
                       <p style={{ fontSize: 12, fontWeight: 500, color: '#6E747D' }}>
                         Confidence: <span style={{ fontWeight: 700, color: INK, textTransform: 'capitalize' }}>{cffs.pattern_confidence}</span>
                       </p>
@@ -240,7 +243,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
 
           {/* Section divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '40px 0 32px' }}>
-            <div style={{ width: 28, height: 3, background: TEAL, borderRadius: 2 }} />
+            <div style={{ width: 28, height: 3, background: RULE, borderRadius: 2 }} />
             <p style={{ fontSize: 9, fontWeight: 700, color: '#9CA2AB', textTransform: 'uppercase', letterSpacing: '0.2em' }}>
               Interpretive Analysis
             </p>
@@ -261,7 +264,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
               }}
             >
               <div style={{ background: SOFT, borderBottom: `1px solid ${CARD_BORDER}`, padding: '16px 32px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                <span style={{ fontSize: 11, fontWeight: 800, color: TEAL, minWidth: 22, fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
+                <span style={{ fontSize: 11, fontWeight: 800, color: RULE, minWidth: 22, fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <p style={{ fontSize: 11, fontWeight: 700, color: INK, textTransform: 'uppercase', letterSpacing: '0.12em' }}>

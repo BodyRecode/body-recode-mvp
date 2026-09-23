@@ -63,6 +63,10 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   // testimonials and product opinion, which is OUR business rather than the
   // coach's. Kept at owner for Kade's own clients.
   { prefix: '/dashboard/feedback', tier: 'owner' },
+  // A coach's own testimonials, from their own clients. Coach tier, not owner:
+  // this exists FOR the pilot coach, it is the thing they have to hand over
+  // when somebody asks whether any of it works.
+  { prefix: '/dashboard/testimonials', tier: 'coach' },
   // Their own account and getting help.
   { prefix: '/dashboard/getting-started', tier: 'interpret' },
   { prefix: '/dashboard/help', tier: 'interpret' },

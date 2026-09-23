@@ -90,10 +90,15 @@ export async function sendConsentEmail(feedbackId: string): Promise<{ ok: true }
     }
   }
   if (!email && feedback.client_id) {
-    const { data: client } = await admin.from('clients').select('email, first_name').eq('id', feedback.client_id).single()
+    // `clients` has no first_name column, only name. Selecting it made Postgres
+    // reject the whole query, so a consent email for any CLIENT-sourced feedback
+    // row could never be sent and failed as "could not resolve recipient email".
+    // Found 23 Sep 2026 while building the coach testimonial ask, by running the
+    // select against the real database instead of trusting the code.
+    const { data: client } = await admin.from('clients').select('email, name').eq('id', feedback.client_id).single()
     if (client) {
       email = client.email
-      if (!firstName) firstName = client.first_name as string | null
+      if (!firstName) firstName = ((client.name as string | null) ?? '').split(' ')[0] || null
     }
   }
   if (!email) return { ok: false, error: 'could not resolve recipient email from lead_id or client_id' }
