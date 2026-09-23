@@ -117,6 +117,31 @@ for (const root of ROOTS) {
   }
 }
 
+/**
+ * THE FRAME, which the palette check cannot protect on its own.
+ *
+ * 23 September 2026. A blanket sweep of the owner pages re-swept the shell and
+ * INVERTED IT: the work surface faded to paper and the navigation went dark,
+ * on every page in the dashboard. Every colour involved was in the palette, so
+ * nothing above noticed. The rule being broken is not "which colours" but
+ * WHICH WAY ROUND, and that is the one thing a colour-membership check can
+ * never see.
+ *
+ * A tool is dark and the thing you navigate with is light. That is an
+ * invariant now, so it gets asserted rather than remembered.
+ */
+const shell = readFileSync('src/app/dashboard/shell.tsx', 'utf8')
+const railPaper = /background: 'linear-gradient\(180deg,#FAFAF8 0%,#F2F2EF 100%\)'/.test(shell)
+const panelDark = /background: 'linear-gradient\(180deg,#0B0D10,#0F1115 260px\)'/.test(shell)
+if (!railPaper || !panelDark) {
+  problems.push({
+    file: 'src/app/dashboard/shell.tsx', line: 1, what: 'the frame is inverted',
+    detail: !railPaper
+      ? 'the navigation rail is no longer paper'
+      : 'the work surface is no longer graphite',
+  })
+}
+
 if (problems.length === 0) {
   console.log('\nClean. Every colour is in the palette and every size is on the scale.\n')
   process.exit(0)
