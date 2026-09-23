@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import { createAdminClient } from '@/lib/supabase/admin'
 import ClientListColumn, { type ClientListEntry } from './client-list-column'
 import { coachFilter, requireCoachScope } from '@/lib/coach-scope'
@@ -37,6 +38,12 @@ export default async function ClientsLayout({ children }: { children: React.Reac
         : 'active'
     return { id: c.id, name: c.name || 'Unnamed client', status }
   })
+
+  // The proof artefact is shown to somebody who is not the coach, so it gets
+  // no client list beside it: those are other people's names.
+  const pathname = (await headers()).get('x-pathname') ?? ''
+  const onProof = /\/dashboard\/clients\/[^/]+\/proof(\/|$)/.test(pathname)
+  if (onProof) return <>{children}</>
 
   return (
     <div className="xl:grid xl:grid-cols-[244px_minmax(0,1fr)] xl:gap-7">

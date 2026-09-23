@@ -65,6 +65,20 @@ export default async function DashboardLayout({
   const badges = await getNavBadges(scope)
   const tenantBrand = brand()
 
+  /**
+   * The proof artefact is handed to somebody who is not the coach: a client on
+   * a phone, a prospect across a table. It gets no dashboard around it. A
+   * navigation rail, a coach's own email address and a list of their OTHER
+   * clients' names have no business in that frame, and the last of those is
+   * other people's names shown to whoever is looking at the screen.
+   *
+   * Everything above still runs, so it is gated exactly like any other page.
+   * Only the chrome is dropped.
+   */
+  if (/\/dashboard\/clients\/[^/]+\/proof(\/|$)/.test(pathname)) {
+    return <>{children}</>
+  }
+
   return (
     <>
       <DashboardShell

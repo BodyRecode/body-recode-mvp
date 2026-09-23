@@ -600,6 +600,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </span>
                 )}
                 {activeCffs.resolution_state && <Pill accent="ink">{activeCffs.resolution_state}</Pill>}
+                {/* The re-read as something to hand over, rather than something
+                    that only exists in here. Queued 21 Sep, built 23 Sep. */}
+                <Link
+                  href={`/dashboard/clients/${id}/proof`}
+                  className="text-[11px] font-bold uppercase px-2.5 py-[3px] rounded-full border"
+                  style={{ letterSpacing: '0.08em', color: '#C2C6CC', borderColor: '#2A2F39' }}
+                >
+                  Twelve weeks
+                </Link>
                 {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
                 {/* Readiness reads as one instrument with four needles, not as
                     four unrelated chips, so the four sit in a single control. */}
