@@ -234,8 +234,10 @@ export default function TodayDashboardPage() {
                 {timeSensitive.map(({ post, tr }) => (
                   <Row key={post.id}>
                     <div className="flex items-start gap-2 flex-wrap">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${tr.mins < 0 ? 'bg-[#1A1214] text-[#D4817E]' : tr.mins < 30 ? 'bg-[#1A1E26] text-[#E0A254]' : 'bg-[#1A1E26] text-[#FAFAF8]'}`}>{post.time}</span>
-                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-[#D4817E]' : 'text-[#8A9099]'}`}>{tr.label}</span>
+                      {/* Late reads as late because it is FILLED and the word says
+                           so, not because it is red. The four colours mean readiness. */}
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${tr.mins < 0 ? 'bg-[#FAFAF8] text-[#0F1115]' : tr.mins < 30 ? 'bg-[#2A2F39] text-[#FAFAF8]' : 'bg-[#1A1E26] text-[#8A9099]'}`}>{post.time}</span>
+                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-[#FAFAF8]' : 'text-[#8A9099]'}`}>{tr.label}</span>
                       <span className="text-[12.5px] text-[#8A9099]">{post.type}</span>
                     </div>
                     <p className="text-sm font-medium mt-1">{post.title}</p>
@@ -250,10 +252,10 @@ export default function TodayDashboardPage() {
                 {feedPosts.map(p => {
                   const status = p.posted_at ? 'posted' : p.scheduled_publish_at ? 'scheduled' : p.scheduled ? 'marked_scheduled' : 'pending'
                   const statusEl = status === 'posted'
-                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#6FA98B] bg-[#1A1E26] border border-[#6FA98B] px-2 py-0.5 rounded">✓ Posted</a>
+                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#8A9099] bg-[#1A1E26] border border-[#2A2F39] px-2 py-0.5 rounded">✓ Posted</a>
                     : status === 'scheduled' ? <span className="text-[12.5px] font-semibold text-[#FAFAF8] bg-[#1A1E26] border border-[#2A2F39] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
                     : status === 'marked_scheduled' ? <span className="text-[12.5px] font-semibold text-[#FAFAF8] bg-[#1A1E26] border border-[#2A2F39] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
-                    : <span className="text-[12.5px] font-semibold text-[#E0A254] bg-[#1A1E26] border border-[#4A3A22] px-2 py-0.5 rounded">Pending</span>
+                    : <span className="text-[12.5px] font-semibold text-[#FAFAF8] bg-[#2A2F39] border border-[#4A4F57] px-2 py-0.5 rounded">Pending</span>
                   return (
                     <Row key={p.id}>
                       <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -338,7 +340,7 @@ export default function TodayDashboardPage() {
                     <Row key={l.id}>
                       <div className="flex items-start gap-2">
                         {overdueDays > 0 && (
-                          <span className="text-[12.5px] font-medium text-[#D4817E] bg-[#1A1214] border border-[#D4817E] px-2 py-0.5 rounded shrink-0">
+                          <span className="text-[12.5px] font-bold text-[#0F1115] bg-[#FAFAF8] px-2 py-0.5 rounded shrink-0">
                             {overdueDays}d late
                           </span>
                         )}
@@ -400,7 +402,7 @@ export default function TodayDashboardPage() {
                 {decisionsToday.map((d, i) => (
                   <Row key={`today-${i}`}>
                     <div className="flex items-start gap-2">
-                      <span className="text-[12.5px] font-medium text-[#D4817E] bg-[#1A1214] border border-[#D4817E] px-2 py-0.5 rounded shrink-0">TODAY</span>
+                      <span className="text-[12.5px] font-bold text-[#0F1115] bg-[#FAFAF8] px-2 py-0.5 rounded shrink-0">TODAY</span>
                       <span className="text-sm text-[#FAFAF8]">{d}</span>
                     </div>
                   </Row>
@@ -488,7 +490,7 @@ function SaasBuildoutSection() {
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-[12.5px] font-medium text-[#6FA98B] bg-[#1A1E26] border border-[#6FA98B] px-2 py-0.5 rounded shrink-0">GATE</span>
+            <span className="text-[12.5px] font-bold text-[#0F1115] bg-[#FAFAF8] px-2 py-0.5 rounded shrink-0">GATE</span>
             <span className="text-sm font-semibold text-[#FAFAF8]">{gate.label ?? `Phase ${gate.id}`} complete — review before starting the next one</span>
           </div>
           <p className="text-[12.5px] text-[#8A9099] leading-relaxed ml-14">
@@ -513,8 +515,12 @@ function SaasBuildoutSection() {
 }
 
 function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementType; title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
-  const border = tone === 'urgent' ? 'border-[#D4817E]' : tone === 'success' ? 'border-[#6FA98B]' : 'border-[#2A2F39]'
-  const chip = tone === 'urgent' ? 'bg-[#8F2D2D]/10 text-[#D4817E]' : tone === 'success' ? 'bg-[#2B5E45]/10 text-[#6FA98B]' : 'bg-[#FAFAF8]/10 text-[#FAFAF8]'
+  // NO HUE ON TONE. Kade, 23 Sep: strip it. This page was spending the colour
+  // that means A SAFETY GATE HAS FIRED on "you owe somebody a follow-up", which
+  // is a queue position rather than a meaning. A section that wants attention
+  // gets a brighter edge and a filled icon; the words carry the rest.
+  const border = tone === 'urgent' ? 'border-[#4A4F57]' : 'border-[#2A2F39]'
+  const chip = tone === 'urgent' ? 'bg-[#FAFAF8] text-[#0F1115]' : 'bg-[#2A2F39] text-[#FAFAF8]'
   return (
     <div className={`bg-[#14171D] border ${border} rounded-xl p-4 sm:p-5 mb-4`}>
       <h2 className="text-[13.5px] font-semibold text-[#FAFAF8] tracking-[-0.015em] mb-3 flex items-center gap-2">
@@ -624,7 +630,7 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
       >
         {labelText}
       </button>
-      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-[#1A1E26] text-[#6FA98B] border-[#6FA98B]' : 'bg-[#1A1E26] text-[#8A9099] border-[#2A2F39] hover:bg-[#1A1E26]'}`}>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-[#2A2F39] text-[#FAFAF8] border-[#4A4F57]' : 'bg-[#1A1E26] text-[#8A9099] border-[#2A2F39] hover:bg-[#1A1E26]'}`}>
         {status === 'copied' ? '✓ Copied path' : 'Copy path'}
       </button>
     </div>
@@ -632,7 +638,8 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
 }
 
 function Metric({ label, value, sub, tone }: { label: string; value: string; sub: string; tone: 'urgent' | 'success' | 'default' }) {
-  const valueColor = tone === 'urgent' ? 'text-[#D4817E]' : tone === 'success' ? 'text-[#6FA98B]' : 'text-[#FAFAF8]'
+  // A number that wants you is BRIGHT, not red. A number at rest is quiet.
+  const valueColor = tone === 'urgent' ? 'text-[#FAFAF8]' : 'text-[#676D76]'
   return (
     <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
       <p className="text-[10px] font-medium text-[#8A9099] mb-1">{label}</p>
