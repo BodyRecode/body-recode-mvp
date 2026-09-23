@@ -45,7 +45,7 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
         <button
           onClick={() => setStatus('active')}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg border border-[#E5C98F] bg-white text-[#A96A12] hover:border-[#B7791F] hover:bg-[#FAEFD8] transition disabled:opacity-50 shrink-0"
+          className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg border border-[#E5C98F] bg-[#14171D] text-[#A96A12] hover:border-[#B7791F] hover:bg-[#FAEFD8] transition disabled:opacity-50 shrink-0"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           {loading ? 'Saving…' : 'Reactivate enrollment'}
@@ -58,16 +58,16 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
     <button
       onClick={() => setStatus('inactive')}
       disabled={loading}
-      className="group w-full flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-[#EFAFAF] hover:bg-[#FDEDED] transition disabled:opacity-50 text-left"
+      className="group w-full flex items-center justify-between rounded-xl border border-[#2A2F39] bg-[#14171D] p-4 hover:border-[#EFAFAF] hover:bg-[#FDEDED] transition disabled:opacity-50 text-left"
     >
       <div>
         <div className="flex items-center gap-2">
-          <Ban className="w-3.5 h-3.5 text-[#98A0AD] group-hover:text-[#C82626] transition" />
-          <p className="text-sm font-bold text-[#141821] group-hover:text-[#C82626] transition">
+          <Ban className="w-3.5 h-3.5 text-[#676D76] group-hover:text-[#D4817E] transition" />
+          <p className="text-sm font-bold text-[#FAFAF8] group-hover:text-[#D4817E] transition">
             {loading ? 'Saving…' : 'Deactivate enrollment'}
           </p>
         </div>
-        <p className="text-[12.5px] text-[#666D7A] mt-1">Retire a duplicate or mistaken sign-up. Reversible, deletes nothing.</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-1">Retire a duplicate or mistaken sign-up. Reversible, deletes nothing.</p>
       </div>
     </button>
   )

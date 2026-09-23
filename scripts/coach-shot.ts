@@ -60,8 +60,14 @@ const OUT = process.env.SHOT_OUT ?? '/tmp/coach-shot'
 
 async function main() {
   const path = process.argv[2] ?? '/dashboard/today'
+  const asOwner = process.argv.includes('--owner')
   const anon = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-  const { data: sess, error } = await anon.auth.signInWithPassword({ email: 'testcoach@bodyrecode.au', password: 'testcoach2026' })
+  const { data: sess, error } = asOwner
+    ? await (async () => {
+        const { data: link } = await admin.auth.admin.generateLink({ type: 'magiclink', email: 'kade@bodyrecode.au' })
+        return anon.auth.verifyOtp({ token_hash: link!.properties!.hashed_token, type: 'magiclink' })
+      })()
+    : await anon.auth.signInWithPassword({ email: 'testcoach@bodyrecode.au', password: 'testcoach2026' })
   if (error || !sess.session) { console.log(`Sign-in failed: ${error?.message}`); process.exit(1) }
   const cookie = `sb-${REF}-auth-token=base64-${Buffer.from(JSON.stringify(sess.session)).toString('base64')}`
 

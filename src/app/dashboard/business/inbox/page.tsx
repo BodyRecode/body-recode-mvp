@@ -39,18 +39,18 @@ export default async function InboxPage() {
   if (sorted.length === 0) {
     return (
       <div className="max-w-2xl">
-        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Inbox</h1>
-          <p className="text-[#666D7A] text-sm">One thread per contact - email history and outreach in one place</p>
+          <p className="text-[#8A9099] text-sm">One thread per contact - email history and outreach in one place</p>
         </div>
-        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
+        <div className="bg-[#1A1E26] border border-dashed border-[#2A2F39] rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-[#EFF1F4] rounded-xl">
-              <Mail size={24} className="text-[#666D7A]" strokeWidth={1.5} />
+            <div className="p-3 bg-[#1F242C] rounded-xl">
+              <Mail size={24} className="text-[#8A9099]" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-[#666D7A] text-sm font-medium mb-1">No contacts yet</p>
-          <p className="text-[#98A0AD] text-[12.5px]">Leads appear here as they come through your booking page or funnels</p>
+          <p className="text-[#8A9099] text-sm font-medium mb-1">No contacts yet</p>
+          <p className="text-[#676D76] text-[12.5px]">Leads appear here as they come through your booking page or funnels</p>
         </div>
       </div>
     )
@@ -58,9 +58,9 @@ export default async function InboxPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Inbox</h1>
-        <p className="text-[#666D7A] text-sm">{sorted.length} contacts</p>
+        <p className="text-[#8A9099] text-sm">{sorted.length} contacts</p>
       </div>
 
       <div className="space-y-px">
@@ -73,26 +73,26 @@ export default async function InboxPage() {
             <Link
               key={lead.id}
               href={`/dashboard/business/inbox/${lead.id}`}
-              className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] first:rounded-t-xl last:rounded-b-xl -mb-px px-4 py-3.5 hover:bg-[#EFF1F4]/50 transition-colors group"
+              className="flex items-center gap-4 bg-[#1A1E26] border border-[#2A2F39] first:rounded-t-xl last:rounded-b-xl -mb-px px-4 py-3.5 hover:bg-[#1F242C]/50 transition-colors group"
             >
-              <div className="w-8 h-8 rounded-full bg-[#EFF1F4] border border-[#E8EAEE] flex items-center justify-center shrink-0 text-[12.5px] font-medium text-[#666D7A] group-hover:border-[#B5CFFC] transition-colors">
+              <div className="w-8 h-8 rounded-full bg-[#1F242C] border border-[#2A2F39] flex items-center justify-center shrink-0 text-[12.5px] font-medium text-[#8A9099] group-hover:border-[#2A2F39] transition-colors">
                 {lead.name?.charAt(0)?.toUpperCase() ?? '?'}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <p className="text-sm font-medium text-[#141821] truncate">{lead.name}</p>
-                  <p className="text-[12.5px] text-[#98A0AD] truncate">{lead.email}</p>
+                  <p className="text-sm font-medium text-[#FAFAF8] truncate">{lead.name}</p>
+                  <p className="text-[12.5px] text-[#676D76] truncate">{lead.email}</p>
                 </div>
-                <p className="text-[12.5px] text-[#666D7A] truncate">{preview}</p>
+                <p className="text-[12.5px] text-[#8A9099] truncate">{preview}</p>
               </div>
 
               <div className="shrink-0 text-right">
                 {timeAgo && (
-                  <p className="text-[12.5px] text-[#98A0AD]">{timeAgo}</p>
+                  <p className="text-[12.5px] text-[#676D76]">{timeAgo}</p>
                 )}
                 {lead.eventCount > 0 && (
-                  <p className="text-[12.5px] text-[#141821] mt-0.5">{lead.eventCount} events</p>
+                  <p className="text-[12.5px] text-[#FAFAF8] mt-0.5">{lead.eventCount} events</p>
                 )}
               </div>
             </Link>

@@ -55,12 +55,12 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
   if (eErr || !enrollment) {
     return (
       <div className="max-w-[1100px]">
-        <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#666D7A] hover:text-[#141821] mb-3">
+        <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#8A9099] hover:text-[#FAFAF8] mb-3">
           <ArrowLeft className="w-3.5 h-3.5" />
           Back to Funnel
         </Link>
         <PageHeader eyebrow="Funnel" title="Participant not found" />
-        <div className="rounded-xl border border-[#F5C9C9] bg-[#FDEDED] p-4 text-sm text-[#C82626]">
+        <div className="rounded-xl border border-[#F5C9C9] bg-[#FDEDED] p-4 text-sm text-[#D4817E]">
           No enrollment exists for token <code>{token}</code>.
         </div>
       </div>
@@ -91,7 +91,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
 
   return (
     <div className="max-w-[1100px]">
-      <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#666D7A] hover:text-[#141821] mb-3">
+      <Link href="/dashboard/funnel" className="inline-flex items-center gap-1.5 text-sm text-[#8A9099] hover:text-[#FAFAF8] mb-3">
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to Funnel
       </Link>

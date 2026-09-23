@@ -51,8 +51,8 @@ const PATTERN_LABELS: Record<string, string> = {
 }
 
 const PATTERN_COLOURS: Record<string, string> = {
-  a: '#DC2626', b: '#B7791F', c: '#8b5cf6', d: '#1B6DFC',
-  'stress-stored': '#DC2626', 'metabolic-drift': '#B7791F', 'hormonal-shift': '#8b5cf6', 'system-overload': '#1B6DFC',
+  a: '#D4817E', b: '#B7791F', c: '#8b5cf6', d: '#FAFAF8',
+  'stress-stored': '#D4817E', 'metabolic-drift': '#B7791F', 'hormonal-shift': '#8b5cf6', 'system-overload': '#FAFAF8',
 }
 
 // SMS Minimal Pulse cadence — must mirror SMS_MORNING + SMS_AFTERNOON_BOOST
@@ -259,17 +259,17 @@ export default function ParticipantView({
       </div>
 
       {/* Day timeline progress bar */}
-      <div className="rounded-xl border border-[#E8EAEE] bg-white p-5 mb-6">
+      <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-medium text-[#666D7A]">Day-by-day progress</p>
-          <span className="text-[12.5px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#141821' }}>
+          <p className="text-[11px] font-medium text-[#8A9099]">Day-by-day progress</p>
+          <span className="text-[12.5px] font-medium" style={{ color: isComplete ? '#FAFAF8' : '#FAFAF8' }}>
             {isComplete ? 'Completed' : `Day ${currentDay} · ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go`}
           </span>
         </div>
-        <div className="relative h-2 bg-[#F4F6F9] rounded-full overflow-hidden mb-3">
+        <div className="relative h-2 bg-[#1A1E26] rounded-full overflow-hidden mb-3">
           <div
             className="absolute inset-y-0 left-0 rounded-full transition-all"
-            style={{ width: `${Math.round((currentDay / 14) * 100)}%`, background: '#1B6DFC' }}
+            style={{ width: `${Math.round((currentDay / 14) * 100)}%`, background: '#FAFAF8' }}
           />
         </div>
         <div className="flex justify-between">
@@ -280,10 +280,10 @@ export default function ParticipantView({
             return (
               <div key={d} className="flex flex-col items-center" style={{ width: '7.14%' }}>
                 <div
-                  className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-[#1B6DFC] ring-offset-1' : ''}`}
-                  style={{ background: isPast ? '#1B6DFC' : '#E8EAEE' }}
+                  className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-[#FAFAF8] ring-offset-1' : ''}`}
+                  style={{ background: isPast ? '#FAFAF8' : '#2A2F39' }}
                 />
-                <span className={`text-[10px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
+                <span className={`text-[10px] font-bold mt-1 ${isMilestone ? 'text-[#FAFAF8]' : 'text-[#676D76]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {d}
                 </span>
               </div>
@@ -295,17 +295,17 @@ export default function ParticipantView({
       {/* Check-In status */}
       <Section title="Body Decode Check-In">
         {quizCompleted ? (
-          <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
+          <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="inline-flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#1560E0]" />
+                <CheckCircle2 className="w-4 h-4 text-[#E4E4E0]" />
                 <span className="text-[12.5px] font-medium text-[#1056D6]">Completed</span>
               </div>
-              <span className="text-[12.5px] text-[#666D7A]">{fmtDate(enrollment.quiz_completed_at!)}</span>
+              <span className="text-[12.5px] text-[#8A9099]">{fmtDate(enrollment.quiz_completed_at!)}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <Stat label="Pattern" value={
-                <span style={{ color: enrollment.quiz_result ? (PATTERN_COLOURS[enrollment.quiz_result] ?? '#141821') : '#98A0AD' }}>
+                <span style={{ color: enrollment.quiz_result ? (PATTERN_COLOURS[enrollment.quiz_result] ?? '#FAFAF8') : '#676D76' }}>
                   {enrollment.quiz_result ? (PATTERN_LABELS[enrollment.quiz_result] ?? enrollment.quiz_result) : '-'}
                 </span>
               } />
@@ -314,14 +314,14 @@ export default function ParticipantView({
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-5">
+          <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] p-5">
             <div className="inline-flex items-center gap-2 mb-2">
-              {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-[#B7791F]" />}
-              <span className="text-[12.5px] font-medium" style={{ color: currentDay < 7 ? '#666D7A' : '#B7791F' }}>
+              {currentDay < 7 ? <Clock className="w-4 h-4 text-[#676D76]" /> : <AlertCircle className="w-4 h-4 text-[#B7791F]" />}
+              <span className="text-[12.5px] font-medium" style={{ color: currentDay < 7 ? '#8A9099' : '#B7791F' }}>
                 {currentDay < 7 ? 'Locked until Day 7' : 'Pending — Day 7+'}
               </span>
             </div>
-            <p className="text-sm text-[#666D7A]">
+            <p className="text-sm text-[#8A9099]">
               {currentDay < 7
                 ? `Check-In unlocks on Day 7. ${7 - currentDay} day${7 - currentDay === 1 ? '' : 's'} to go.`
                 : `Check-In is unlocked but not yet submitted. Late-takers who submit on Day 14+ receive the Body Decode Report immediately instead of the Day 7 progress email.`}
@@ -352,29 +352,29 @@ export default function ParticipantView({
 
       {/* Email audit */}
       <Section title="Email audit">
-        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Send</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Resend ID</th>
+              <tr className="bg-[#14171D] border-b border-[#2A2F39]">
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Send</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">When</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Resend ID</th>
               </tr>
             </thead>
             <tbody>
               {emailTimeline.map((item, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
-                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#141821]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
-                  <td className="px-4 py-3 text-[#141821]">{item.label}{item.note && <div className="text-[11px] text-[#666D7A] mt-1">{item.note}</div>}</td>
+                <tr key={i} className={i % 2 === 0 ? 'bg-[#14171D]' : 'bg-[#14171D]/50'}>
+                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#FAFAF8]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
+                  <td className="px-4 py-3 text-[#FAFAF8]">{item.label}{item.note && <div className="text-[11px] text-[#8A9099] mt-1">{item.note}</div>}</td>
                   <td className="px-4 py-3">
                     <StatusPill status={item.status} />
                   </td>
-                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">
+                  <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">
                     {item.sentAt ? fmtDate(item.sentAt) : fmtDate(item.scheduledFor.toISOString())}
                   </td>
-                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px] font-mono">
+                  <td className="px-4 py-3 text-[#8A9099] text-[12.5px] font-mono">
                     {item.resendId ? item.resendId.slice(0, 12) + '…' : '-'}
                   </td>
                 </tr>
@@ -386,32 +386,32 @@ export default function ParticipantView({
 
       {/* SMS audit */}
       <Section title={`SMS Minimal Pulse (17 messages${lead?.phone ? '' : ' · no phone on file'})`}>
-        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Window</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Title</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
-                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Scheduled</th>
+              <tr className="bg-[#14171D] border-b border-[#2A2F39]">
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Window</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Title</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Scheduled</th>
               </tr>
             </thead>
             <tbody>
               {smsTimeline.map((item, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
-                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#141821]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
-                  <td className="px-4 py-3 text-[12.5px] text-[#666D7A]">{item.window}</td>
-                  <td className="px-4 py-3 text-[#141821]">{item.label}</td>
+                <tr key={i} className={i % 2 === 0 ? 'bg-[#14171D]' : 'bg-[#14171D]/50'}>
+                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#FAFAF8]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
+                  <td className="px-4 py-3 text-[12.5px] text-[#8A9099]">{item.window}</td>
+                  <td className="px-4 py-3 text-[#FAFAF8]">{item.label}</td>
                   <td className="px-4 py-3">
                     <StatusPill status={item.status} />
                   </td>
-                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{fmtDate(item.scheduledFor.toISOString())}</td>
+                  <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">{fmtDate(item.scheduledFor.toISOString())}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="px-4 py-3 border-t border-[#E8EAEE] text-[11px] text-[#666D7A]">
+          <div className="px-4 py-3 border-t border-[#2A2F39] text-[11px] text-[#8A9099]">
             Note: Inngest SMS sends are not currently audited per-send in <code>lead_events</code>. The &quot;sent (inferred)&quot; status reflects what should have fired based on the participant&apos;s current day. Verify actual Twilio delivery in the Twilio console if needed.
           </div>
         </div>
@@ -420,23 +420,23 @@ export default function ParticipantView({
       {/* Raw lead events */}
       {events.length > 0 && (
         <Section title="Raw lead events (audit log)">
-          <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+          <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Type</th>
-                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Subject</th>
-                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
-                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Notes</th>
+                <tr className="bg-[#14171D] border-b border-[#2A2F39]">
+                  <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Type</th>
+                  <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Subject</th>
+                  <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">When</th>
+                  <th className="text-left text-[11px] font-medium text-[#8A9099] px-4 py-2.5">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 {events.map(e => (
                   <tr key={e.id}>
-                    <td className="px-4 py-3 text-[12.5px] font-mono text-[#141821]">{e.type}</td>
-                    <td className="px-4 py-3 text-[#141821] text-[12.5px]">{e.subject ?? '-'}</td>
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{fmtDate(e.sent_at)}</td>
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{e.notes ?? '-'}</td>
+                    <td className="px-4 py-3 text-[12.5px] font-mono text-[#FAFAF8]">{e.type}</td>
+                    <td className="px-4 py-3 text-[#FAFAF8] text-[12.5px]">{e.subject ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">{fmtDate(e.sent_at)}</td>
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">{e.notes ?? '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -451,7 +451,7 @@ export default function ParticipantView({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <h2 className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</h2>
+      <h2 className="text-[12.5px] font-medium text-[#8A9099] mb-3">{title}</h2>
       {children}
     </div>
   )
@@ -459,12 +459,12 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-[#E8EAEE] bg-white p-3.5">
+    <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] p-3.5">
       <div className="flex items-center gap-1.5 mb-1.5">
-        <Icon className="w-3 h-3 text-[#98A0AD]" />
-        <span className="text-[11px] font-medium text-[#666D7A]">{label}</span>
+        <Icon className="w-3 h-3 text-[#676D76]" />
+        <span className="text-[11px] font-medium text-[#8A9099]">{label}</span>
       </div>
-      <p className="text-sm text-[#141821] font-medium truncate">{value}</p>
+      <p className="text-sm text-[#FAFAF8] font-medium truncate">{value}</p>
     </div>
   )
 }
@@ -472,8 +472,8 @@ function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: stri
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[11px] font-medium text-[#666D7A] mb-1.5">{label}</p>
-      <p className="text-sm font-semibold text-[#141821]">{value}</p>
+      <p className="text-[11px] font-medium text-[#8A9099] mb-1.5">{label}</p>
+      <p className="text-sm font-semibold text-[#FAFAF8]">{value}</p>
     </div>
   )
 }
@@ -484,16 +484,16 @@ function ActionLink({ href, label, sub, external }: { href: string; label: strin
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      className="group flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-[#9CC0FB] hover:bg-[rgba(27,109,252,0.06)] transition"
+      className="group flex items-center justify-between rounded-xl border border-[#2A2F39] bg-[#14171D] p-4 hover:border-[#9CC0FB] hover:bg-[rgba(27,109,252,0.06)] transition"
     >
       <div>
         <div className="flex items-center gap-2">
-          <p className="text-sm font-bold text-[#141821]">{label}</p>
-          {external && <ExternalLink className="w-3 h-3 text-[#98A0AD]" />}
+          <p className="text-sm font-bold text-[#FAFAF8]">{label}</p>
+          {external && <ExternalLink className="w-3 h-3 text-[#676D76]" />}
         </div>
-        <p className="text-[12.5px] text-[#666D7A] mt-1">{sub}</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-1">{sub}</p>
       </div>
-      <ChevronRight className="w-4 h-4 text-[#98A0AD] group-hover:text-[#1560E0] transition" />
+      <ChevronRight className="w-4 h-4 text-[#676D76] group-hover:text-[#E4E4E0] transition" />
     </a>
   )
 }
@@ -502,10 +502,10 @@ function StatusPill({ status }: { status: string }) {
   const config: Record<string, { label: string; color: string; bg: string }> = {
     sent: { label: 'Sent', color: '#1056D6', bg: 'rgba(27,109,252,0.10)' },
     sent_inferred: { label: 'Sent (inferred)', color: '#1056D6', bg: 'rgba(27,109,252,0.06)' },
-    scheduled: { label: 'Scheduled', color: '#666D7A', bg: '#F5F5F5' },
-    overdue: { label: 'Overdue', color: '#DC2626', bg: 'rgba(220,38,38,0.08)' },
-    skipped: { label: 'Skipped', color: '#98A0AD', bg: '#F5F5F5' },
-    no_phone: { label: 'No phone', color: '#98A0AD', bg: '#F5F5F5' },
+    scheduled: { label: 'Scheduled', color: '#8A9099', bg: '#F5F5F5' },
+    overdue: { label: 'Overdue', color: '#D4817E', bg: 'rgba(220,38,38,0.08)' },
+    skipped: { label: 'Skipped', color: '#676D76', bg: '#F5F5F5' },
+    no_phone: { label: 'No phone', color: '#676D76', bg: '#F5F5F5' },
   }
   const c = config[status] ?? config.scheduled
   return (

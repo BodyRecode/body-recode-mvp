@@ -143,7 +143,7 @@ export default async function RrsSuggestionsDashboard() {
     <div className="max-w-[1100px]">
       <Link
         href="/dashboard/system-health"
-        className="inline-flex items-center gap-1 text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-4"
+        className="inline-flex items-center gap-1 text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors mb-4"
       >
         <ChevronLeft size={13} /> System Health
       </Link>
@@ -156,9 +156,9 @@ export default async function RrsSuggestionsDashboard() {
 
       {/* Empty state */}
       {totalShown === 0 && (
-        <div className="rounded-xl border border-dashed border-[#E8EAEE] bg-[#FBFCFD] px-6 py-10 text-center">
-          <p className="text-sm text-[#666D7A] leading-relaxed">
-            No suggestion events logged yet. The dashboard will populate as soon as a client is in an active RRS state and a coach opens their <Link href="/dashboard/clients" className="text-[#1B6DFC] underline">Recovery Protocols page</Link>.
+        <div className="rounded-xl border border-dashed border-[#2A2F39] bg-[#14171D] px-6 py-10 text-center">
+          <p className="text-sm text-[#8A9099] leading-relaxed">
+            No suggestion events logged yet. The dashboard will populate as soon as a client is in an active RRS state and a coach opens their <Link href="/dashboard/clients" className="text-[#FAFAF8] underline">Recovery Protocols page</Link>.
           </p>
         </div>
       )}
@@ -177,7 +177,7 @@ export default async function RrsSuggestionsDashboard() {
           {sbstRemovalStats.alerts_shown > 0 && (
             <div className="mb-8 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] px-5 py-4">
               <p className="text-[10px] font-medium text-[#A11D1D] mb-2">SBST removal follow-through (ns_overload)</p>
-              <p className="text-sm text-[#8A1919]">
+              <p className="text-sm text-[#D4817E]">
                 <span className="font-bold">{sbstRemovalStats.removals_confirmed}</span> of <span className="font-bold">{sbstRemovalStats.alerts_shown}</span> removal alerts actioned
                 <span className="ml-2 text-[13.5px] opacity-80">
                   ({sbstRemovalStats.alerts_shown > 0 ? Math.round((sbstRemovalStats.removals_confirmed / sbstRemovalStats.alerts_shown) * 100) : 0}%)
@@ -190,27 +190,27 @@ export default async function RrsSuggestionsDashboard() {
           )}
 
           {/* 30-day trend sparkline */}
-          <div className="mb-8 rounded-xl border border-[#E8EAEE] bg-white px-5 py-4">
-            <p className="text-[10px] font-medium text-[#666D7A] mb-3">30-day acceptance trend (assigned per day)</p>
+          <div className="mb-8 rounded-xl border border-[#2A2F39] bg-[#14171D] px-5 py-4">
+            <p className="text-[10px] font-medium text-[#8A9099] mb-3">30-day acceptance trend (assigned per day)</p>
             <TrendSparkline days={trendDays} data={dailyBuckets} />
           </div>
 
           {/* Per-state acceptance */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#141821] mb-3">Per-state acceptance</h2>
-            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+            <h2 className="text-sm font-semibold text-[#FAFAF8] mb-3">Per-state acceptance</h2>
+            <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <thead className="bg-[#14171D] border-b border-[#2A2F39]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">State</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Shown</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Dismissed</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Acceptance</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A] w-[110px]">SBST action</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">State</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Shown</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Assigned</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Dismissed</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Acceptance</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099] w-[110px]">SBST action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F4F6F9]">
+                <tbody className="divide-y divide-[#1A1E26]">
                   {sortedStates.map(state => {
                     const s = stateStats[state] ?? { shown: 0, assigned: 0, dismissed: 0, sbst_removed: 0 }
                     const rate = s.shown > 0 ? (s.assigned / s.shown) * 100 : null
@@ -219,17 +219,17 @@ export default async function RrsSuggestionsDashboard() {
                     return (
                       <tr key={state} className={s.shown === 0 ? 'opacity-50' : ''}>
                         <td className="px-4 py-2">
-                          <div className="text-[13.5px] text-[#141821]">{playbook.name}</div>
-                          <div className="text-[10px] text-[#666D7A] font-mono">{state}</div>
+                          <div className="text-[13.5px] text-[#FAFAF8]">{playbook.name}</div>
+                          <div className="text-[10px] text-[#8A9099] font-mono">{state}</div>
                         </td>
                         <td className="text-right px-4 py-2 text-[13.5px]">{s.shown}</td>
                         <td className="text-right px-4 py-2 text-[13.5px]">{s.assigned}</td>
                         <td className="text-right px-4 py-2 text-[13.5px]">{s.dismissed}</td>
                         <td className="text-right px-4 py-2 text-[13.5px] font-semibold">
-                          {rate === null ? <span className="text-[#98A0AD]">-</span> : `${rate.toFixed(0)}%`}
+                          {rate === null ? <span className="text-[#676D76]">-</span> : `${rate.toFixed(0)}%`}
                         </td>
                         <td className="text-right px-4 py-2 text-[10px]">
-                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-[#C82626] font-bold' : 'text-[#A96A12]'}>{sbstAction}</span> : <span className="text-[#98A0AD]">-</span>}
+                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-[#D4817E] font-bold' : 'text-[#A96A12]'}>{sbstAction}</span> : <span className="text-[#676D76]">-</span>}
                         </td>
                       </tr>
                     )
@@ -241,39 +241,39 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* Per-protocol pull rate */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#141821] mb-3">Per-protocol pull rate</h2>
-            <p className="text-[11px] text-[#666D7A] mb-3 leading-relaxed">
+            <h2 className="text-sm font-semibold text-[#FAFAF8] mb-3">Per-protocol pull rate</h2>
+            <p className="text-[11px] text-[#8A9099] mb-3 leading-relaxed">
               How often each suggested protocol gets one-click assigned vs skipped. Low-pull protocols are candidates to remove or move lower in priority in the state to protocol mapping.
             </p>
-            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+            <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <thead className="bg-[#14171D] border-b border-[#2A2F39]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Protocol</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Suggested</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Pull rate</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Suggested in states</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Protocol</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Suggested</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Assigned</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Pull rate</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Suggested in states</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F4F6F9]">
+                <tbody className="divide-y divide-[#1A1E26]">
                   {sortedProtocols.map(([slug, s]) => {
                     const rate = (s.assigned_count / s.suggested_count) * 100
                     const protocol = protocolBySlug(slug)
                     return (
                       <tr key={slug}>
                         <td className="px-4 py-2">
-                          <div className="text-[13.5px] text-[#141821]">{protocol?.name ?? slug}</div>
-                          <div className="text-[10px] text-[#666D7A] font-mono">{slug}</div>
+                          <div className="text-[13.5px] text-[#FAFAF8]">{protocol?.name ?? slug}</div>
+                          <div className="text-[10px] text-[#8A9099] font-mono">{slug}</div>
                         </td>
                         <td className="text-right px-4 py-2 text-[13.5px]">{s.suggested_count}</td>
                         <td className="text-right px-4 py-2 text-[13.5px]">{s.assigned_count}</td>
                         <td className="text-right px-4 py-2 text-[13.5px] font-semibold">
-                          <span className={rate === 0 ? 'text-[#C82626]' : rate < 30 ? 'text-[#A96A12]' : rate < 60 ? 'text-[#141821]' : 'text-[#177245]'}>
+                          <span className={rate === 0 ? 'text-[#D4817E]' : rate < 30 ? 'text-[#A96A12]' : rate < 60 ? 'text-[#FAFAF8]' : 'text-[#177245]'}>
                             {rate.toFixed(0)}%
                           </span>
                         </td>
-                        <td className="px-4 py-2 text-[11px] text-[#666D7A]">
+                        <td className="px-4 py-2 text-[11px] text-[#8A9099]">
                           {Array.from(s.suggested_in_states).join(', ')}
                         </td>
                       </tr>
@@ -286,38 +286,38 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* Recent activity */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#141821] mb-3">Recent suggestion events (last 20)</h2>
-            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+            <h2 className="text-sm font-semibold text-[#FAFAF8] mb-3">Recent suggestion events (last 20)</h2>
+            <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <thead className="bg-[#14171D] border-b border-[#2A2F39]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">When</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Client</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">State</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Action</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">When</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Client</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">State</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Action</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#8A9099]">Assigned</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F4F6F9]">
+                <tbody className="divide-y divide-[#1A1E26]">
                   {recent.map(r => {
                     const assignedProtocol = r.assigned_protocol_slug ? protocolBySlug(r.assigned_protocol_slug) : null
                     const clientName = clientNameById.get(r.client_id) ?? r.client_id.slice(0, 8)
                     return (
                       <tr key={r.id}>
-                        <td className="px-4 py-2 text-[11px] text-[#666D7A] font-mono">
+                        <td className="px-4 py-2 text-[11px] text-[#8A9099] font-mono">
                           {new Date(r.shown_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}
                         </td>
                         <td className="px-4 py-2 text-[12.5px]">
-                          <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-[#1B6DFC] hover:underline">{clientName}</Link>
+                          <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-[#FAFAF8] hover:underline">{clientName}</Link>
                         </td>
-                        <td className="px-4 py-2 text-[11px] font-mono text-[#141821]">{r.rrs_playbook_id}</td>
+                        <td className="px-4 py-2 text-[11px] font-mono text-[#FAFAF8]">{r.rrs_playbook_id}</td>
                         <td className="px-4 py-2 text-[11px]">
                           {r.action_taken === 'assigned' && <span className="text-[#177245] font-semibold">assigned</span>}
                           {r.action_taken === 'dismissed' && <span className="text-[#A96A12] font-semibold">dismissed</span>}
-                          {r.action_taken === 'sbst_removed' && <span className="text-[#C82626] font-semibold">sbst removed</span>}
-                          {!r.action_taken && <span className="text-[#98A0AD]">no action</span>}
+                          {r.action_taken === 'sbst_removed' && <span className="text-[#D4817E] font-semibold">sbst removed</span>}
+                          {!r.action_taken && <span className="text-[#676D76]">no action</span>}
                         </td>
-                        <td className="px-4 py-2 text-[11px] text-[#666D7A]">
+                        <td className="px-4 py-2 text-[11px] text-[#8A9099]">
                           {assignedProtocol?.name ?? (r.assigned_protocol_slug ?? '-')}
                         </td>
                       </tr>
@@ -337,11 +337,11 @@ function StatCard({ label, value, accent }: { label: string; value: string; acce
   const colour =
     accent === 'green' ? 'text-[#177245]' :
     accent === 'amber' ? 'text-[#A96A12]' :
-    accent === 'blue' ? 'text-[#1B6DFC]' :
-    'text-[#141821]'
+    accent === 'blue' ? 'text-[#FAFAF8]' :
+    'text-[#FAFAF8]'
   return (
-    <div className="rounded-xl border border-[#E8EAEE] bg-white px-4 py-3">
-      <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>
+    <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] px-4 py-3">
+      <p className="text-[10px] font-medium text-[#8A9099] mb-1">{label}</p>
       <p className={`text-2xl font-bold ${colour}`}>{value}</p>
     </div>
   )
@@ -375,24 +375,24 @@ function TrendSparkline({ days, data }: { days: string[]; data: Record<string, {
     <div className="flex items-center gap-6">
       <div className="flex-1">
         <svg viewBox={`0 0 ${width} ${height + 4}`} className="w-full h-16" preserveAspectRatio="none">
-          <polyline points={shownPoints} fill="none" stroke="#E8EAEE" strokeWidth="0.5" />
-          <polyline points={assignedPoints} fill="none" stroke="#1B6DFC" strokeWidth="0.6" />
+          <polyline points={shownPoints} fill="none" stroke="#2A2F39" strokeWidth="0.5" />
+          <polyline points={assignedPoints} fill="none" stroke="#FAFAF8" strokeWidth="0.6" />
         </svg>
-        <div className="flex items-center gap-3 mt-1 text-[10px] text-[#666D7A]">
-          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#E8EAEE]" /> shown</span>
-          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#1B6DFC]" /> assigned</span>
+        <div className="flex items-center gap-3 mt-1 text-[10px] text-[#8A9099]">
+          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#2A2F39]" /> shown</span>
+          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#FAFAF8]" /> assigned</span>
           <span className="ml-auto font-mono">{days[0]} to {days[days.length - 1]}</span>
         </div>
       </div>
       <div className="w-32 text-right">
-        <p className="text-[10px] font-medium text-[#666D7A]">30d acceptance</p>
-        <p className="text-2xl font-bold text-[#1B6DFC]">{windowRate.toFixed(0)}%</p>
+        <p className="text-[10px] font-medium text-[#8A9099]">30d acceptance</p>
+        <p className="text-2xl font-bold text-[#FAFAF8]">{windowRate.toFixed(0)}%</p>
         {trendDelta !== null && (
           <div className="text-[11px] mt-1 inline-flex items-center gap-1 font-mono">
             {trendDelta > 1 && <><TrendingUp size={11} className="text-[#177245]" /><span className="text-[#177245]">+{trendDelta.toFixed(0)}pt</span></>}
-            {trendDelta < -1 && <><TrendingDown size={11} className="text-[#C82626]" /><span className="text-[#C82626]">{trendDelta.toFixed(0)}pt</span></>}
-            {trendDelta >= -1 && trendDelta <= 1 && <><Minus size={11} className="text-[#666D7A]" /><span className="text-[#666D7A]">flat</span></>}
-            <span className="text-[#98A0AD] ml-1">vs prior 7d</span>
+            {trendDelta < -1 && <><TrendingDown size={11} className="text-[#D4817E]" /><span className="text-[#D4817E]">{trendDelta.toFixed(0)}pt</span></>}
+            {trendDelta >= -1 && trendDelta <= 1 && <><Minus size={11} className="text-[#8A9099]" /><span className="text-[#8A9099]">flat</span></>}
+            <span className="text-[#676D76] ml-1">vs prior 7d</span>
           </div>
         )}
       </div>

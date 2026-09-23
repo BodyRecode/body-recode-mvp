@@ -41,11 +41,11 @@ type StageGroup = {
 }
 
 const FUNNEL_TAG_META: Record<FunnelTag, { label: string; color: string; bg: string }> = {
-  'shared': { label: 'Shared entry · A + B', color: '#141821', bg: '#F5F5F5' },
-  'A':      { label: 'Funnel A · Direct 1:1', color: '#FFFFFF', bg: '#1B6DFC' },
-  'B':      { label: 'Funnel B · Product ladder', color: '#FFFFFF', bg: '#8b5cf6' },
-  'A+B':    { label: 'Funnels A + B converge', color: '#FFFFFF', bg: '#0A337A' },
-  'meta':   { label: 'Production / Strategy', color: '#FFFFFF', bg: '#666D7A' },
+  'shared': { label: 'Shared entry · A + B', color: '#FAFAF8', bg: '#F5F5F5' },
+  'A':      { label: 'Funnel A · Direct 1:1', color: '#14171D', bg: '#FAFAF8' },
+  'B':      { label: 'Funnel B · Product ladder', color: '#14171D', bg: '#8b5cf6' },
+  'A+B':    { label: 'Funnels A + B converge', color: '#14171D', bg: '#0A337A' },
+  'meta':   { label: 'Production / Strategy', color: '#14171D', bg: '#8A9099' },
 }
 
 // URL catalog. Each group is explicitly tagged Funnel A / Funnel B / shared
@@ -54,7 +54,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'Entry · Scorecard + $37 Body Decode Report',
     blurb: 'The single front door for both Funnel A and Funnel B. Lives on the performance domain; supporting APIs live in this repo.',
-    accent: '#141821',
+    accent: '#FAFAF8',
     funnel: 'shared',
     pages: [
       { name: 'Readiness Scorecard', url: `${brand().performanceDomain}/scorecard`, description: 'Canonical scorecard URL. State-routed result page CTAs.', external: true },
@@ -69,7 +69,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'Funnel A · Direct 1:1 coaching path',
     blurb: 'Scorecard → $37 Report → Zoom 1 → Foundational Read → Weekly subscription. Path A decline drops into the 3-email re-engagement + $97 12-Week State Program.',
-    accent: '#1B6DFC',
+    accent: '#FAFAF8',
     funnel: 'A',
     pages: [
       { name: 'Book a free call (Zoom 1 booking)', url: '/book', description: 'Funnel A entry point. Calendar booking page.' },
@@ -88,7 +88,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'Funnel B · Stage 1 · The Body Decode (FREE)',
     blurb: 'Her read is open the moment she finishes the questions; the five daily lessons walk her through it. The day gate paces the LESSONS, never the read.',
-    accent: '#1B6DFC',
+    accent: '#FAFAF8',
     funnel: 'B',
     pages: [
       { name: 'The Body Decode landing page', url: '/decode', description: 'Funnel B Stage 1. /challenge redirects here (cut over 24 Aug 2026).' },
@@ -100,7 +100,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'Funnel B · Stage 1 (RETIRED) · 14-Day Body Decode Challenge',
     blurb: 'Replaced by The Body Decode on 24 Aug 2026. Day 1 to Day 14 lost 14 of the 15 who cleared every form. The portal routes stay live so the 30 people who ran it keep their artefacts - nobody new enters here.',
-    accent: '#98A0AD',
+    accent: '#676D76',
     funnel: 'B',
     pages: [
       { name: 'Challenge portal home', url: '/challenge/{token}', description: 'Participant portal home. Past participants only.', tokenKind: 'challenge' },
@@ -248,7 +248,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'B-roll canvases · V2 IG Reels (Amanda HeyGen production)',
     blurb: 'Inset-card cutaways used in the June V2 reel pipeline. Each canvas pairs to a specific reel scene — Amanda screen-records the relevant zone in 9:16 portrait crop.',
-    accent: '#1B6DFC',
+    accent: '#FAFAF8',
     funnel: 'meta',
     pages: [
       { name: 'States Split · Depleted vs Transitioning', url: '/broll/states-split', description: 'Reel 1 S4. Two state cards side-by-side, generic demographic program struck through.' },
@@ -288,7 +288,7 @@ function CopyButton({ value }: { value: string }) {
           setTimeout(() => setCopied(false), 1200)
         })
       }}
-      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-[#666D7A] hover:text-[#1560E0] hover:bg-[rgba(27,109,252,0.06)] transition"
+      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-[#8A9099] hover:text-[#E4E4E0] hover:bg-[rgba(27,109,252,0.06)] transition"
       title="Copy URL"
     >
       {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -319,29 +319,29 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
   return (
     <div className="space-y-4 mt-2">
       {/* Active tokens summary */}
-      <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] px-4 py-3 text-[12.5px] text-[#666D7A] leading-relaxed">
-        <p className="font-bold text-[#141821] mb-2">Active tokens applied to {'{token}'} URLs:</p>
+      <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] px-4 py-3 text-[12.5px] text-[#8A9099] leading-relaxed">
+        <p className="font-bold text-[#FAFAF8] mb-2">Active tokens applied to {'{token}'} URLs:</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 font-mono text-[11px]">
-          <div>Challenge: <span className="text-[#141821]">{tokens.challenge ? tokens.challenge.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Blueprint: <span className="text-[#141821]">{tokens.blueprint ? tokens.blueprint.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Membership: <span className="text-[#141821]">{tokens.membership ? tokens.membership.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Portal (onboarding): <span className="text-[#141821]">{tokens.portalOnboarding ? tokens.portalOnboarding.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Check-in: <span className="text-[#141821]">{tokens.portalCheckin ? tokens.portalCheckin.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Baseline: <span className="text-[#141821]">{tokens.portalBaseline ? tokens.portalBaseline.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Intake (foundational): <span className="text-[#141821]">{tokens.intakeFoundational ? tokens.intakeFoundational.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Intake (supplementary): <span className="text-[#141821]">{tokens.intakeSupplementary ? tokens.intakeSupplementary.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Scorecard Report: <span className="text-[#141821]">{tokens.scorecardReport ? tokens.scorecardReport.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Challenge: <span className="text-[#FAFAF8]">{tokens.challenge ? tokens.challenge.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Blueprint: <span className="text-[#FAFAF8]">{tokens.blueprint ? tokens.blueprint.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Membership: <span className="text-[#FAFAF8]">{tokens.membership ? tokens.membership.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Portal (onboarding): <span className="text-[#FAFAF8]">{tokens.portalOnboarding ? tokens.portalOnboarding.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Check-in: <span className="text-[#FAFAF8]">{tokens.portalCheckin ? tokens.portalCheckin.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Baseline: <span className="text-[#FAFAF8]">{tokens.portalBaseline ? tokens.portalBaseline.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Intake (foundational): <span className="text-[#FAFAF8]">{tokens.intakeFoundational ? tokens.intakeFoundational.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Intake (supplementary): <span className="text-[#FAFAF8]">{tokens.intakeSupplementary ? tokens.intakeSupplementary.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Scorecard Report: <span className="text-[#FAFAF8]">{tokens.scorecardReport ? tokens.scorecardReport.slice(0, 14) + '…' : '—'}</span></div>
         </div>
       </div>
 
       {STAGES.map((group, gi) => {
         const isCollapsed = !!collapsed[gi]
         return (
-          <div key={gi} className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+          <div key={gi} className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
             {/* Group header */}
             <button
               onClick={() => toggle(gi)}
-              className="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-[#FBFCFD] transition"
+              className="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-[#14171D] transition"
             >
               <div className="flex items-start gap-3 flex-1 min-w-0">
                 <div className="w-1 h-12 rounded-full flex-shrink-0" style={{ background: group.accent }} />
@@ -349,19 +349,19 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <FunnelBadge funnel={group.funnel} />
                   </div>
-                  <h3 className="text-[16px] font-bold text-[#141821]">{group.stage}</h3>
-                  <p className="text-[12.5px] text-[#666D7A] mt-0.5 leading-snug">{group.blurb}</p>
+                  <h3 className="text-[16px] font-bold text-[#FAFAF8]">{group.stage}</h3>
+                  <p className="text-[12.5px] text-[#8A9099] mt-0.5 leading-snug">{group.blurb}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 pt-1 flex-shrink-0">
-                <span className="text-[11px] font-medium text-[#98A0AD]">{group.pages.length} page{group.pages.length === 1 ? '' : 's'}</span>
-                {isCollapsed ? <ChevronDown className="w-4 h-4 text-[#98A0AD]" /> : <ChevronUp className="w-4 h-4 text-[#98A0AD]" />}
+                <span className="text-[11px] font-medium text-[#676D76]">{group.pages.length} page{group.pages.length === 1 ? '' : 's'}</span>
+                {isCollapsed ? <ChevronDown className="w-4 h-4 text-[#676D76]" /> : <ChevronUp className="w-4 h-4 text-[#676D76]" />}
               </div>
             </button>
 
             {/* Pages */}
             {!isCollapsed && (
-              <div className="border-t border-[#E8EAEE]">
+              <div className="border-t border-[#2A2F39]">
                 {group.pages.map((page, pi) => {
                   const url = urlFor(page, tokens)
                   const fullForOpen = fullUrl(url)
@@ -371,19 +371,19 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                       href={fullForOpen}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 px-5 py-3 hover:bg-[rgba(27,109,252,0.06)]/40 transition border-b last:border-b-0 border-[#F4F6F9]"
+                      className="group flex items-start gap-3 px-5 py-3 hover:bg-[rgba(27,109,252,0.06)]/40 transition border-b last:border-b-0 border-[#1A1E26]"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-[13.5px] font-bold text-[#141821] group-hover:text-[#1056D6] transition truncate">{page.name}</p>
-                          {page.external && <ExternalLink className="w-3 h-3 text-[#98A0AD] flex-shrink-0" />}
+                          <p className="text-[13.5px] font-bold text-[#FAFAF8] group-hover:text-[#1056D6] transition truncate">{page.name}</p>
+                          {page.external && <ExternalLink className="w-3 h-3 text-[#676D76] flex-shrink-0" />}
                         </div>
-                        <p className="text-[11px] font-mono text-[#666D7A] truncate mt-0.5">{fullForOpen}</p>
-                        <p className="text-[11px] text-[#666D7A] mt-1 leading-snug">{page.description}</p>
+                        <p className="text-[11px] font-mono text-[#8A9099] truncate mt-0.5">{fullForOpen}</p>
+                        <p className="text-[11px] text-[#8A9099] mt-1 leading-snug">{page.description}</p>
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0 pt-1">
                         <CopyButton value={fullForOpen} />
-                        <span className="text-[11px] font-medium text-[#1560E0] opacity-0 group-hover:opacity-100 transition">Open</span>
+                        <span className="text-[11px] font-medium text-[#E4E4E0] opacity-0 group-hover:opacity-100 transition">Open</span>
                       </div>
                     </a>
                   )

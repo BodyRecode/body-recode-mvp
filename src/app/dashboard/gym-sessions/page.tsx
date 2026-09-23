@@ -17,7 +17,7 @@ const STATES = [
     id: 'depleted',
     label: 'Depleted',
     score: '5 - 8',
-    color: '#DC2626',
+    color: '#D4817E',
     bg: 'rgba(239,68,68,0.08)',
     border: 'rgba(239,68,68,0.25)',
     tagBg: 'rgba(239,68,68,0.12)',
@@ -129,7 +129,7 @@ const STATES = [
     id: 'ready',
     label: 'Ready',
     score: '12 - 15',
-    color: '#1B6DFC',
+    color: '#FAFAF8',
     bg: 'rgba(27,109,252,0.08)',
     border: 'rgba(27,109,252,0.25)',
     tagBg: 'rgba(27,109,252,0.12)',
@@ -201,7 +201,7 @@ export default function GymSessionsPage() {
               onClick={() => setActiveState(s.id)}
               style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
               className={`flex-1 py-3 px-4 rounded-xl border text-[13.5px] font-semibold transition-colors ${
-                active ? '' : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
+                active ? '' : 'border-[#2A2F39] bg-[#14171D] text-[#8A9099] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               <span className="block">{s.label}</span>
@@ -225,8 +225,8 @@ export default function GymSessionsPage() {
               onClick={() => setActiveProgram(p.id as ProgramType)}
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
-                  ? 'border-[#CFD4DC] text-[#141821] bg-[#EFF1F4]'
-                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
+                  ? 'border-[#2A2F39] text-[#FAFAF8] bg-[#1F242C]'
+                  : 'border-[#2A2F39] bg-[#14171D] text-[#8A9099] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               {p.label}
@@ -245,8 +245,8 @@ export default function GymSessionsPage() {
         <ScriptSection label="Warm-up - 3 min">
           {state.warmup.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
-              <p className="text-[13.5px] text-[#43474F]">{item}</p>
+              <div className="w-1 h-1 rounded-full bg-[#676D76] mt-2 shrink-0" />
+              <p className="text-[13.5px] text-[#C2C6CC]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -254,7 +254,7 @@ export default function GymSessionsPage() {
           {program.primer && (
             <div className="mb-2">
               <p
-                className="text-[10px] font-medium text-[#98A0AD] mb-2"
+                className="text-[10px] font-medium text-[#676D76] mb-2"
               >
                 Strength primer
               </p>
@@ -262,7 +262,7 @@ export default function GymSessionsPage() {
                 {program.primer.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
               </div>
               <p
-                className="text-[10px] font-medium text-[#98A0AD] mb-2"
+                className="text-[10px] font-medium text-[#676D76] mb-2"
               >
                 AMRAP
               </p>
@@ -272,14 +272,14 @@ export default function GymSessionsPage() {
             {program.exercises.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
           </div>
           {program.note && (
-            <p className="text-[12.5px] text-[#98A0AD] mt-3 italic">{program.note}</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3 italic">{program.note}</p>
           )}
         </ScriptSection>
         <ScriptSection label="Close - 2 min">
           {state.close.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
-              <p className="text-[13.5px] text-[#43474F]">{item}</p>
+              <div className="w-1 h-1 rounded-full bg-[#676D76] mt-2 shrink-0" />
+              <p className="text-[13.5px] text-[#C2C6CC]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -288,35 +288,35 @@ export default function GymSessionsPage() {
       {/* Handoff into the sit-down */}
       <ScriptCard label="Handoff into the sit-down">
         <div className="px-5 py-4">
-          <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
+          <p className="text-[10px] font-medium text-[#676D76] mb-2">
             Bridge from training → table
           </p>
-          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic">"{state.handoff}"</p>
+          <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed italic">"{state.handoff}"</p>
         </div>
       </ScriptCard>
 
       {/* Paths after the sit-down */}
       <ScriptCard label="After the sit-down · paths">
         {/* PATH C — proceeding now */}
-        <div className="px-5 py-4 border-b border-[#E8EAEE]">
+        <div className="px-5 py-4 border-b border-[#2A2F39]">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.12)] text-[#1B6DFC] border border-[#B5CFFC]"
+              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.12)] text-[#FAFAF8] border border-[#2A2F39]"
             >
               Path C
             </span>
             <p
-              className="text-[10px] font-medium text-[#666D7A]"
+              className="text-[10px] font-medium text-[#8A9099]"
             >
               Locking in now
             </p>
           </div>
-          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $297 Foundational Read. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 234 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
-          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Open the lead in <span className="text-[#666D7A]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send Foundational Read → Mark Complete. Stripe link goes to her instantly.</p>
+          <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $297 Foundational Read. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 234 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
+          <p className="text-[12.5px] text-[#676D76] leading-relaxed">Open the lead in <span className="text-[#8A9099]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send Foundational Read → Mark Complete. Stripe link goes to her instantly.</p>
         </div>
 
         {/* PATH B — needs time */}
-        <div className="px-5 py-4 border-b border-[#E8EAEE]">
+        <div className="px-5 py-4 border-b border-[#2A2F39]">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.12)] text-[#B7791F] border border-[#3a2e10]"
@@ -324,31 +324,31 @@ export default function GymSessionsPage() {
               Path B
             </span>
             <p
-              className="text-[10px] font-medium text-[#666D7A]"
+              className="text-[10px] font-medium text-[#8A9099]"
             >
               Needs time · most common
             </p>
           </div>
-          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
-          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
+          <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
+          <p className="text-[12.5px] text-[#676D76] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
         </div>
 
         {/* PATH A — out */}
         <div className="px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FFFFFF] text-[#666D7A] border border-[#E8EAEE]"
+              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#14171D] text-[#8A9099] border border-[#2A2F39]"
             >
               Path A
             </span>
             <p
-              className="text-[10px] font-medium text-[#666D7A]"
+              className="text-[10px] font-medium text-[#8A9099]"
             >
               Not the right fit
             </p>
           </div>
-          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
-          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
+          <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
+          <p className="text-[12.5px] text-[#676D76] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
         </div>
       </ScriptCard>
     </div>
@@ -358,15 +358,15 @@ export default function GymSessionsPage() {
 function ScriptCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="br-card overflow-hidden mb-4">
-      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E8EAEE]">
-        <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#2A2F39]">
+        <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8] shrink-0" />
         <p
-          className="text-[10px] font-medium text-[#141821]"
+          className="text-[10px] font-medium text-[#FAFAF8]"
         >
           {label}
         </p>
       </div>
-      <div className="divide-y divide-[#EFF1F4]">{children}</div>
+      <div className="divide-y divide-[#1F242C]">{children}</div>
     </div>
   )
 }
@@ -375,11 +375,11 @@ function ScriptSection({ label, sublabel, children }: { label: string; sublabel?
   return (
     <div className="px-5 py-4">
       <p
-        className="text-[10px] font-medium text-[#98A0AD] mb-2"
+        className="text-[10px] font-medium text-[#676D76] mb-2"
       >
         {label}
       </p>
-      {sublabel && <p className="text-[12.5px] text-[#98A0AD] mb-3">{sublabel}</p>}
+      {sublabel && <p className="text-[12.5px] text-[#676D76] mb-3">{sublabel}</p>}
       <div className="space-y-2">{children}</div>
     </div>
   )
@@ -389,9 +389,9 @@ function ExerciseCard({ ex }: { ex: Exercise }) {
   return (
     <div className="br-card px-3 py-3">
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-[13.5px] font-semibold text-[#141821]">{ex.name}</span>
+        <span className="text-[13.5px] font-semibold text-[#FAFAF8]">{ex.name}</span>
         <span
-          className="text-[11px] text-[#666D7A] shrink-0"
+          className="text-[11px] text-[#8A9099] shrink-0"
           style={{ fontFamily: MONO_FONT }}
         >
           {ex.detail}
@@ -399,10 +399,10 @@ function ExerciseCard({ ex }: { ex: Exercise }) {
       </div>
       <div className="space-y-1 mb-2">
         {ex.cues.map((cue, i) => (
-          <p key={i} className="text-[12.5px] text-[#666D7A]">→ {cue}</p>
+          <p key={i} className="text-[12.5px] text-[#8A9099]">→ {cue}</p>
         ))}
       </div>
-      <p className="text-[12.5px] text-[#98A0AD] italic">{ex.why}</p>
+      <p className="text-[12.5px] text-[#676D76] italic">{ex.why}</p>
     </div>
   )
 }

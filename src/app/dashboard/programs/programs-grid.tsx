@@ -100,13 +100,13 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
                 onClick={() => setFilter(f.id)}
                 className={`text-[12.5px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
                   active
-                    ? 'bg-[#EFF1F4] text-[#141821] border-[#CFD4DC]'
-                    : 'bg-transparent text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
+                    ? 'bg-[#1F242C] text-[#FAFAF8] border-[#2A2F39]'
+                    : 'bg-transparent text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
                 }`}
               >
                 {f.label}
                 <span
-                  className="ml-2 text-[10px] text-[#98A0AD]"
+                  className="ml-2 text-[10px] text-[#676D76]"
                 >
                   {count}
                 </span>
@@ -115,14 +115,14 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
           })}
         </div>
         <div className="relative w-full sm:w-64">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#98A0AD]" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#676D76]" />
           <input
             type="search"
             inputMode="search"
             placeholder="Search clients..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md pl-9 pr-3 py-2 text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-md pl-9 pr-3 py-2 text-[13.5px] text-[#FAFAF8] placeholder:text-[#676D76] focus:outline-none focus:border-[#2A2F39]"
           />
         </div>
       </div>
@@ -157,22 +157,22 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
 
   return (
     <Link href={href} className="block group">
-      <div className="relative br-card p-5 h-full transition-colors hover:border-[#CFD4DC] active:bg-[#EFF1F4]/40">
+      <div className="relative br-card p-5 h-full transition-colors hover:border-[#2A2F39] active:bg-[#1F242C]/40">
         <div
           className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
           style={{ background: accentBar.bar }}
         />
         <ArrowUpRight
           size={14}
-          className="absolute top-5 right-5 text-[#98A0AD] group-hover:text-[#666D7A] transition-colors"
+          className="absolute top-5 right-5 text-[#676D76] group-hover:text-[#8A9099] transition-colors"
         />
 
         <div className="mt-4 mb-3">
-          <p className="text-[16px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors leading-tight">
+          <p className="text-[16px] font-semibold text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors leading-tight">
             {item.client_name}
           </p>
           <p
-            className="text-[10px] text-[#666D7A] mt-1.5"
+            className="text-[10px] text-[#8A9099] mt-1.5"
           >
             {item.package_label}
           </p>
@@ -198,7 +198,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
               )}
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-[#98A0AD]">
+            <div className="flex items-center justify-between text-[11px] text-[#676D76]">
               <span>
                 {item.current_week != null ? (
                   <>Wk {item.current_week}{item.week_duration ? ` / ${item.week_duration}` : ''}</>
@@ -216,7 +216,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
             </div>
           </>
         ) : (
-          <p className="text-[13.5px] text-[#666D7A] leading-snug">
+          <p className="text-[13.5px] text-[#8A9099] leading-snug">
             No active program. Tap to open the macro plan and build one.
           </p>
         )}

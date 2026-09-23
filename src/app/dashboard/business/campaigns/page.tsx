@@ -39,7 +39,7 @@ export default async function CampaignsPage() {
       />
 
       {campaigns && campaigns.length > 0 ? (
-        <Card padding="none"><div className="divide-y divide-[#EFF1F4]">
+        <Card padding="none"><div className="divide-y divide-[#1F242C]">
           {campaigns.map(campaign => {
             const Icon = typeIcon[campaign.type as keyof typeof typeIcon] ?? Mail
             const cfg = statusConfig[campaign.status] ?? statusConfig.draft
@@ -47,20 +47,20 @@ export default async function CampaignsPage() {
               <Link
                 key={campaign.id}
                 href={`/dashboard/business/campaigns/${campaign.id}`}
-                className="flex items-center gap-3.5 p-4 hover:bg-[#F7F9FC] transition-colors group"
+                className="flex items-center gap-3.5 p-4 hover:bg-[#14171D] transition-colors group"
               >
                 <span
-                  className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center text-[#1B6DFC]"
-                  style={{ background: 'rgba(27,109,252,0.08)', boxShadow: 'inset 0 0 0 1px #B5CFFC' }}
+                  className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center text-[#FAFAF8]"
+                  style={{ background: 'rgba(27,109,252,0.08)', boxShadow: 'inset 0 0 0 1px #2A2F39' }}
                 >
                   <Icon size={14} />
                 </span>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
+                  <p className="text-sm font-medium text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">
                     {campaign.name}
                   </p>
-                  <p className="text-[12.5px] text-[#666D7A] mt-0.5">
+                  <p className="text-[12.5px] text-[#8A9099] mt-0.5">
                     {campaign.type.toUpperCase()}
                     {campaign.subject ? ` · ${campaign.subject}` : ''}
                     {campaign.recipient_count > 0 ? ` · ${campaign.recipient_count} recipients` : ''}
@@ -70,7 +70,7 @@ export default async function CampaignsPage() {
                 <div className="shrink-0 text-right">
                   <Pill accent={cfg.accent}>{cfg.label}</Pill>
                   {campaign.scheduled_at && campaign.status === 'scheduled' && (
-                    <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
+                    <p className="text-[12.5px] text-[#676D76] mt-0.5">
                       {new Date(campaign.scheduled_at).toLocaleDateString('en-AU', {
                         day: 'numeric', month: 'short',
                         hour: 'numeric', minute: '2-digit', hour12: true,
@@ -78,7 +78,7 @@ export default async function CampaignsPage() {
                     </p>
                   )}
                   {campaign.sent_at && (
-                    <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
+                    <p className="text-[12.5px] text-[#676D76] mt-0.5">
                       {new Date(campaign.sent_at).toLocaleDateString('en-AU', {
                         day: 'numeric', month: 'short',
                       })}

@@ -29,7 +29,7 @@ const TABS: { id: Tab; label: string }[] = [
 type StrategyDoc = { title: string; description: string; mdUrl: string; docxUrl: string; pdfUrl: string }
 const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[] = [
   {
-    label: 'Body Recode', dot: 'bg-[#1B6DFC]',
+    label: 'Body Recode', dot: 'bg-[#FAFAF8]',
     docs: [{
       title: 'Body Recode — Consumer Marketing Strategy',
       description: 'One doc: strategy (positioning, body-state doctrine, the scorecard → Challenge → Blueprint funnel) + the Content Engine (stop teaching, start reading — signature formats, pillars × formats, weekly rhythm, comment-to-DM personalised reads, first plays to test).',
@@ -39,7 +39,7 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
     }],
   },
   {
-    label: 'Personal Brand', dot: 'bg-violet-400',
+    label: 'Personal Brand', dot: 'bg-[#1A1E26]',
     docs: [{
       title: 'Kade Dunstone — Personal Brand Strategy',
       description: 'The @kade_dunstone_ personal brand: positioning, story, the four content pillars, cadence and launch sequence.',
@@ -49,7 +49,7 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
     }],
   },
   {
-    label: 'The Body Recode Collective', dot: 'bg-sky-400',
+    label: 'The Body Recode Collective', dot: 'bg-[#1A1E26]',
     docs: [{
       title: 'The Body Recode Collective — GTM & Content Strategy',
       description: 'The B2B licensing engine: positioning, demand-gen + waitlist posture, the Fit Scorecard funnel, five content pillars, the Emerging Coach lane, cadence and dependencies.',
@@ -68,9 +68,9 @@ type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'collective'
 type Platform = 'instagram' | 'facebook' | 'linkedin'
 
 const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
-  instagram: { label: 'Instagram', badge: 'bg-pink-500/15 text-pink-400 border-pink-500/25' },
-  facebook:  { label: 'Facebook',  badge: 'bg-[#1B6DFC]/15 text-[#1056D6] border-[#1B6DFC]/25' },
-  linkedin:  { label: 'LinkedIn',  badge: 'bg-sky-500/15 text-sky-400 border-sky-500/25' },
+  instagram: { label: 'Instagram', badge: 'bg-[#1A1E26]/15 text-[#C2C6CC] border-[#2A2F39]/25' },
+  facebook:  { label: 'Facebook',  badge: 'bg-[#FAFAF8]/15 text-[#1056D6] border-[#FAFAF8]/25' },
+  linkedin:  { label: 'LinkedIn',  badge: 'bg-[#1A1E26]/15 text-[#C2C6CC] border-[#2A2F39]/25' },
 }
 
 interface ScheduledPost {
@@ -121,21 +121,21 @@ function isCollabPost(p: { notes?: string }): boolean {
 
 const COLLAB_BADGE_CLASS = 'bg-[#B7791F]/15 text-[#A96A12] border-[#B7791F]/30'
 
-const AICM_BADGE_CLASS = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30'
+const AICM_BADGE_CLASS = 'bg-[#1A1E26]/10 text-[#C2C6CC] border-[#2A2F39]/30'
 
 const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; filter: string }> = {
-  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-[#1B6DFC]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#B5CFFC]' },
-  personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-700 border-violet-500/30' },
+  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-[#FAFAF8]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#FAFAF8] border-[#2A2F39]' },
+  personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-[#1A1E26]', filter: 'bg-[#1A1E26]/10 text-[#C2C6CC] border-[#2A2F39]/30' },
   ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-[#C08A2D]',  filter: 'bg-[#FDF6E9] text-[#A96A12] border-[#F1DEB8]' },
-  collective:     { label: 'The Collective', handle: 'bodyrecode.au/collective', dot: 'bg-sky-500',  filter: 'bg-sky-50 text-sky-700 border-sky-200' },
+  collective:     { label: 'The Collective', handle: 'bodyrecode.au/collective', dot: 'bg-[#1A1E26]',  filter: 'bg-[#1A1E26] text-[#C2C6CC] border-[#2A2F39]' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
-  authority:   { label: 'Authority',    color: '#1B6DFC', bg: 'rgba(27,109,252,0.12)',  border: 'rgba(27,109,252,0.3)' },
+  authority:   { label: 'Authority',    color: '#FAFAF8', bg: 'rgba(27,109,252,0.12)',  border: 'rgba(27,109,252,0.3)' },
   pattern:     { label: 'Pattern',      color: '#B7791F', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)' },
   contrarian:  { label: 'Contrarian',   color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)' },
   coach:       { label: 'Coach',        color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
-  diagnostic:  { label: 'Diagnostic',   color: '#DC2626', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
+  diagnostic:  { label: 'Diagnostic',   color: '#D4817E', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
   ad:          { label: 'Paid Ad',      color: '#60a5fa', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)' },
   prelaunch:   { label: 'Pre-Launch',   color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.3)' },
   thread:      { label: 'Thread',       color: '#e879f9', bg: 'rgba(232,121,249,0.12)', border: 'rgba(232,121,249,0.3)' },
@@ -144,25 +144,25 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
 }
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
-  prelaunch:         { label: 'Pre-Launch',      color: 'text-[#666D7A]' },
+  prelaunch:         { label: 'Pre-Launch',      color: 'text-[#8A9099]' },
   ads:               { label: 'Ads Launch',      color: 'text-[#1056D6]' },
   optimise:          { label: 'Optimise',        color: 'text-[#A96A12]' },
-  scale:             { label: 'Scale',           color: 'text-[#1B6DFC]' },
+  scale:             { label: 'Scale',           color: 'text-[#FAFAF8]' },
   evergreen:         { label: 'Evergreen',       color: 'text-[#177245]' },
-  ascension:         { label: 'Blueprint Drive', color: 'text-[#1560E0]' },
-  membership_launch: { label: 'Membership',      color: 'text-violet-600' },
-  collective:        { label: 'Collective',      color: 'text-teal-600' },
+  ascension:         { label: 'Blueprint Drive', color: 'text-[#E4E4E0]' },
+  membership_launch: { label: 'Membership',      color: 'text-[#C2C6CC]' },
+  collective:        { label: 'Collective',      color: 'text-[#C2C6CC]' },
   founder:           { label: 'Founder',         color: 'text-[#A96A12]' },
-  launch:            { label: 'Launch',          color: 'text-rose-600' },
-  personal:          { label: 'Personal',        color: 'text-orange-700' },
+  launch:            { label: 'Launch',          color: 'text-[#C2C6CC]' },
+  personal:          { label: 'Personal',        color: 'text-[#C2C6CC]' },
 }
 
 // Phase date ranges for calendar highlighting
 const PHASE_RANGES: { phase: CampaignPhase; start: string; end: string; topBorder: string }[] = [
-  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-[#666D7A]/60' },
-  { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-[#1B6DFC]/60' },
+  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-[#8A9099]/60' },
+  { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-[#FAFAF8]/60' },
   { phase: 'optimise',  start: '2026-05-07', end: '2026-05-23', topBorder: 'border-t-2 border-t-[#B7791F]/60' },
-  { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-[#1B6DFC]/60' },
+  { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-[#FAFAF8]/60' },
 ]
 
 function getPhaseForDate(ds: string): string {
@@ -179,16 +179,16 @@ function getFirstDayOfMonth(year: number, month: number) {
 
 function StrategyDocCard({ doc }: { doc: StrategyDoc }) {
   return (
-    <div className="p-3 rounded-xl border border-[#E8EAEE] bg-white hover:border-[#9CC0FB] transition-colors">
-      <div className="text-[13.5px] font-semibold text-[#141821] mb-1">{doc.title}</div>
-      <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">{doc.description}</p>
+    <div className="p-3 rounded-xl border border-[#2A2F39] bg-[#14171D] hover:border-[#9CC0FB] transition-colors">
+      <div className="text-[13.5px] font-semibold text-[#FAFAF8] mb-1">{doc.title}</div>
+      <p className="text-[11px] text-[#8A9099] leading-relaxed mb-2">{doc.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
         <a href={doc.pdfUrl} target="_blank" rel="noopener noreferrer"
-          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#E4E4E0] text-[#0B0D10] hover:bg-[#1056D6]">View .pdf</a>
         <a href={doc.mdUrl} target="_blank" rel="noopener noreferrer"
-          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">View .md</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1A1E26] text-[#FAFAF8] hover:bg-[#DDE9FD] hover:text-[#1056D6]">View .md</a>
         <a href={doc.docxUrl} download
-          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">Download .docx</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1A1E26] text-[#FAFAF8] hover:bg-[#DDE9FD] hover:text-[#1056D6]">Download .docx</a>
       </div>
     </div>
   )
@@ -198,7 +198,7 @@ function StrategyDocs() {
   return (
     <Card>
       <SectionLabel>Strategy Documents</SectionLabel>
-      <p className="text-sm text-[#666D7A] leading-relaxed mb-5">
+      <p className="text-sm text-[#8A9099] leading-relaxed mb-5">
         The full written strategy for each brand, as a designed PDF (share-ready), the editable Word version, and the raw markdown. Each PDF is branded to its own brand.
       </p>
       <div className="space-y-6">
@@ -206,7 +206,7 @@ function StrategyDocs() {
           <div key={group.label}>
             <div className="flex items-center gap-2 mb-2">
               <span className={`w-2 h-2 rounded-full ${group.dot}`} />
-              <p className="text-[12.5px] font-medium text-[#666D7A]">{group.label}</p>
+              <p className="text-[12.5px] font-medium text-[#8A9099]">{group.label}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {group.docs.map(doc => <StrategyDocCard key={doc.pdfUrl} doc={doc} />)}
@@ -344,7 +344,7 @@ function ContentCalendar() {
     setShowForm(true)
   }
 
-  if (loading) return <div className="text-sm text-[#666D7A] py-8 text-center">Loading calendar...</div>
+  if (loading) return <div className="text-sm text-[#8A9099] py-8 text-center">Loading calendar...</div>
 
   const filteredSelectedPosts = selected
     ? posts.filter(p =>
@@ -355,9 +355,9 @@ function ContentCalendar() {
     : []
 
   const platformChipStyles: Record<Platform, { label: string; dot: string; filter: string }> = {
-    instagram: { label: 'Instagram', dot: 'bg-pink-400',   filter: 'bg-pink-500/10 text-pink-400 border-pink-500/30' },
-    facebook:  { label: 'Facebook',  dot: 'bg-[#1B6DFC]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#B5CFFC]' },
-    linkedin:  { label: 'LinkedIn',  dot: 'bg-[#9CC0FB]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#B5CFFC]' },
+    instagram: { label: 'Instagram', dot: 'bg-[#1A1E26]',   filter: 'bg-[#1A1E26]/10 text-[#C2C6CC] border-[#2A2F39]/30' },
+    facebook:  { label: 'Facebook',  dot: 'bg-[#FAFAF8]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#2A2F39]' },
+    linkedin:  { label: 'LinkedIn',  dot: 'bg-[#9CC0FB]',   filter: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#2A2F39]' },
   }
 
   return (
@@ -366,13 +366,13 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setBrandFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-[#E8EAEE] text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-[#2A2F39] text-[#FAFAF8] border-[#2A2F39]' : 'text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8]'}`}
         >All brands</button>
         {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
           <button
             key={k}
             onClick={() => setBrandFilter(k)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8]'}`}
           >
             <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
             {s.label}
@@ -384,13 +384,13 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setPlatformFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-[#E8EAEE] text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-[#2A2F39] text-[#FAFAF8] border-[#2A2F39]' : 'text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8]'}`}
         >All platforms</button>
         {(Object.entries(platformChipStyles) as [Platform, typeof platformChipStyles[Platform]][]).map(([k, s]) => (
           <button
             key={k}
             onClick={() => setPlatformFilter(k)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === k ? s.filter : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === k ? s.filter : 'text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8]'}`}
           >
             <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
             {s.label}
@@ -416,22 +416,22 @@ function ContentCalendar() {
       {/* Calendar */}
       <Card>
         <div className="flex items-center justify-between mb-4">
-          <button onClick={prevMonth} className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors text-lg">‹</button>
-          <p className="text-sm font-semibold text-[#141821]">{monthName}</p>
-          <button onClick={nextMonth} className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors text-lg">›</button>
+          <button onClick={prevMonth} className="p-1.5 text-[#8A9099] hover:text-[#FAFAF8] transition-colors text-lg">‹</button>
+          <p className="text-sm font-semibold text-[#FAFAF8]">{monthName}</p>
+          <button onClick={nextMonth} className="p-1.5 text-[#8A9099] hover:text-[#FAFAF8] transition-colors text-lg">›</button>
         </div>
 
         {/* Phase legend strip */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 pb-3 border-b border-[#E8EAEE]">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 pb-3 border-b border-[#2A2F39]">
           {PHASE_RANGES.map(r => {
             const style = PHASE_STYLES[r.phase]
             const start = new Date(r.start + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
             const end = r.phase === 'scale' ? 'onwards' : new Date(r.end + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
             return (
               <div key={r.phase} className="flex items-center gap-1.5">
-                <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-[#EFF1F4]`} />
+                <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-[#1F242C]`} />
                 <span className={`text-xs ${style.color}`}>{style.label}</span>
-                <span className="text-[12.5px] text-[#141821]">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
+                <span className="text-[12.5px] text-[#FAFAF8]">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
               </div>
             )
           })}
@@ -440,15 +440,15 @@ function ContentCalendar() {
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-1">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-            <div key={d} className="text-center text-[10px] font-semibold text-[#98A0AD] py-1">{d}</div>
+            <div key={d} className="text-center text-[10px] font-semibold text-[#676D76] py-1">{d}</div>
           ))}
         </div>
 
         {/* Days grid */}
-        <div className="grid grid-cols-7 gap-px bg-[#EFF1F4]">
+        <div className="grid grid-cols-7 gap-px bg-[#1F242C]">
           {/* Empty cells for first day - Monday-first: Sun(0)→6, Mon(1)→0, Tue(2)→1... */}
           {Array.from({ length: (firstDay + 6) % 7 }).map((_, i) => (
-            <div key={`empty-${i}`} className="bg-[#FBFCFD] min-h-[80px]" />
+            <div key={`empty-${i}`} className="bg-[#14171D] min-h-[80px]" />
           ))}
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1
@@ -460,9 +460,9 @@ function ContentCalendar() {
               <div
                 key={day}
                 onClick={() => { const newDs = isSelected ? null : ds; setSelected(newDs); const firstPost = newDs ? posts.filter(p => p.date === newDs)[0] ?? null : null; setActivePost(firstPost) }}
-                className={`bg-[#FBFCFD] min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-[#F4F6F9] ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-[#1B6DFC] ring-inset' : ''}`}
+                className={`bg-[#14171D] min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-[#1A1E26] ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-[#FAFAF8] ring-inset' : ''}`}
               >
-                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-[#1B6DFC] text-[#FBFCFD]' : 'text-[#666D7A]'}`}>
+                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-[#FAFAF8] text-[#14171D]' : 'text-[#8A9099]'}`}>
                   {day}
                 </div>
                 <div className="space-y-0.5">
@@ -473,16 +473,16 @@ function ContentCalendar() {
                     return (
                       <div key={p.id} className={`text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1 ${p.scheduled ? 'opacity-50 line-through decoration-1' : ''}`} style={{ color: s.color, background: s.bg }}>
                         <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
-                        {isAicmPost(p) && <span className="inline-block w-1 h-1 rounded-full shrink-0 bg-indigo-400" />}
+                        {isAicmPost(p) && <span className="inline-block w-1 h-1 rounded-full shrink-0 bg-[#1A1E26]" />}
                         {isCollabPost(p) && <Handshake size={10} strokeWidth={2.5} className="shrink-0 text-[#A96A12]" />}
-                        {p.scheduled && <span className="text-[#1B6DFC] shrink-0">✓</span>}
+                        {p.scheduled && <span className="text-[#FAFAF8] shrink-0">✓</span>}
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
                         <span className={`shrink-0 text-[10px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
                       </div>
                     )
                   })}
-                  {dayPosts.length > 3 && <div className="text-[10px] text-[#98A0AD]">+{dayPosts.length - 3} more</div>}
+                  {dayPosts.length > 3 && <div className="text-[10px] text-[#676D76]">+{dayPosts.length - 3} more</div>}
                 </div>
               </div>
             )
@@ -494,18 +494,18 @@ function ContentCalendar() {
       {selected && (
         <Card>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-[#141821]">
+            <p className="text-sm font-semibold text-[#FAFAF8]">
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
               onClick={() => { const b = brandFilter !== 'all' ? brandFilter : 'body_recode'; setForm({ type: 'authority', phase: 'prelaunch', brand: b, platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'], caption: b === 'body_recode' ? `\n\n${BR_IG_FOOTER}` : undefined }); setEditId(null); setShowForm(true) }}
-              className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors font-medium"
+              className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors font-medium"
             >
               + Add post
             </button>
           </div>
           {filteredSelectedPosts.length === 0 ? (
-            <p className="text-sm text-[#98A0AD]">Nothing scheduled. Click &ldquo;+ Add post&rdquo; to schedule something.</p>
+            <p className="text-sm text-[#676D76]">Nothing scheduled. Click &ldquo;+ Add post&rdquo; to schedule something.</p>
           ) : (
             <div className="space-y-2">
               {filteredSelectedPosts.map(p => {
@@ -523,15 +523,15 @@ function ContentCalendar() {
                         {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-medium text-[#141821]">{p.title}</p>
-                        <span className="text-[12.5px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
+                        <p className="text-sm font-medium text-[#FAFAF8]">{p.title}</p>
+                        <span className="text-[12.5px] font-semibold text-[#FAFAF8] bg-[rgba(27,109,252,0.08)] border border-[#FAFAF8]/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
                         {p.posted_at && (
                           <a
                             href={p.ig_post_url ?? '#'}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={e => e.stopPropagation()}
-                            className="text-[12.5px] font-semibold text-[#177245] bg-[#EDF8F1] border border-green-300 px-2 py-0.5 rounded-full shrink-0 hover:bg-[#D8EFE1] transition-colors"
+                            className="text-[12.5px] font-semibold text-[#177245] bg-[#EDF8F1] border border-[#2A2F39] px-2 py-0.5 rounded-full shrink-0 hover:bg-[#D8EFE1] transition-colors"
                             title={`Posted ${new Date(p.posted_at).toLocaleString('en-AU')}${p.ig_post_url ? ' - click to open' : ''}`}
                           >
                             ✓ Posted
@@ -555,21 +555,21 @@ function ContentCalendar() {
                         )}
                         {!p.posted_at && p.publish_error && (
                           <span
-                            className="text-[12.5px] font-semibold text-[#C82626] bg-[#FDEDED] border border-[#EFAFAF] px-2 py-0.5 rounded-full shrink-0"
+                            className="text-[12.5px] font-semibold text-[#D4817E] bg-[#FDEDED] border border-[#EFAFAF] px-2 py-0.5 rounded-full shrink-0"
                             title={p.publish_error}
                           >
                             ✗ Publish error
                           </span>
                         )}
                       </div>
-                      {p.caption && <p className="text-[12.5px] text-[#666D7A] mt-1 line-clamp-2">{p.caption}</p>}
+                      {p.caption && <p className="text-[12.5px] text-[#8A9099] mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
                     <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
-                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-[#1B6DFC]/15 text-[#1B6DFC] border-[#9CC0FB]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#B5CFFC]'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
+                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-[#FAFAF8]/15 text-[#FAFAF8] border-[#9CC0FB]' : 'text-[#8A9099] border-[#2A2F39] hover:text-[#FAFAF8] hover:border-[#2A2F39]'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
                         {p.scheduled ? '✓ Scheduled' : 'Schedule'}
                       </button>
-                      <button onClick={() => startEdit(p)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors px-2 py-1">Edit</button>
-                      <button onClick={() => deletePost(p.id)} className="text-[12.5px] text-[#666D7A] hover:text-[#C82626] transition-colors px-2 py-1">Delete</button>
+                      <button onClick={() => startEdit(p)} className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors px-2 py-1">Edit</button>
+                      <button onClick={() => deletePost(p.id)} className="text-[12.5px] text-[#8A9099] hover:text-[#D4817E] transition-colors px-2 py-1">Delete</button>
                     </div>
                   </div>
                 )
@@ -601,18 +601,18 @@ function ContentCalendar() {
                   <span className="text-[12.5px] font-medium px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
                   {(() => { const pl = PLATFORM_STYLES[(activePost.platform ?? 'instagram') as Platform]; return <span className={`text-xs px-2 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
-                  <span className="text-[12.5px] text-[#98A0AD]">{dateLabel}</span>
-                  <span className="text-[12.5px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
+                  <span className="text-[12.5px] text-[#676D76]">{dateLabel}</span>
+                  <span className="text-[12.5px] font-semibold text-[#FAFAF8] bg-[rgba(27,109,252,0.08)] border border-[#FAFAF8]/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
                 </div>
-                <p className="text-base font-semibold text-[#141821]">{activePost.title}</p>
+                <p className="text-base font-semibold text-[#FAFAF8]">{activePost.title}</p>
               </div>
               <div className="flex items-center gap-2">
                 <PostToIgButton post={activePost} onPublished={(updated) => {
                   setPosts(ps => sortPosts(ps.map(p => p.id === updated.id ? { ...p, ...updated } : p)))
                   setActivePost({ ...activePost, ...updated })
                 }} />
-                <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors">Edit</button>
-                <button onClick={() => setActivePost(null)} className="text-[#666D7A] hover:text-[#141821] transition-colors text-xl leading-none">×</button>
+                <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors">Edit</button>
+                <button onClick={() => setActivePost(null)} className="text-[#8A9099] hover:text-[#FAFAF8] transition-colors text-xl leading-none">×</button>
               </div>
             </div>
 
@@ -624,7 +624,7 @@ function ContentCalendar() {
               {isCarousel ? (
                 // Carousel - multiple slides
                 <div className="space-y-3">
-                  <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">{graphicUrls.length} slides - download each</p>
+                  <p className="text-[12.5px] font-medium text-[#8A9099] mb-1">{graphicUrls.length} slides - download each</p>
                   {graphicUrls.map((url: string, i: number) => {
                     const dlName = `${activePost.title.replace(/\s+/g, '-').toLowerCase()}-slide-${i + 1}`
                     const dlUrl = `${url}${url.includes('?') ? '&' : '?'}download=1&filename=${encodeURIComponent(dlName)}`
@@ -633,11 +633,11 @@ function ContentCalendar() {
                       <a
                         href={dlUrl}
                         download={`${dlName}.png`}
-                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-[#EFF1F4] hover:bg-[#E8EAEE] border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
+                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-[#1F242C] hover:bg-[#2A2F39] border border-[#2A2F39] rounded-lg text-[12.5px] font-medium text-[#FAFAF8] transition-colors"
                       >
                         ↓ Slide {i + 1}
                       </a>
-                      <div className="rounded-xl overflow-hidden bg-[#FBFCFD] border border-[#E8EAEE]" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '225px' }}>
+                      <div className="rounded-xl overflow-hidden bg-[#14171D] border border-[#2A2F39]" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '225px' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={url} alt={`Slide ${i + 1}`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
@@ -653,13 +653,13 @@ function ContentCalendar() {
                     <a
                       href={dlUrl}
                       download={`${dlName}.png`}
-                      className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-[#EFF1F4] hover:bg-[#E8EAEE] border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
+                      className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-[#1F242C] hover:bg-[#2A2F39] border border-[#2A2F39] rounded-lg text-[12.5px] font-medium text-[#FAFAF8] transition-colors"
                     >
                       ↓ Download graphic
                     </a>
                   )
                 })()}
-                <div className="rounded-xl overflow-hidden bg-[#FBFCFD] border border-[#E8EAEE]" style={{ aspectRatio: previewAspect, position: 'relative', minHeight: '350px' }}>
+                <div className="rounded-xl overflow-hidden bg-[#14171D] border border-[#2A2F39]" style={{ aspectRatio: previewAspect, position: 'relative', minHeight: '350px' }}>
                   {isSingleGraphic ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={graphicUrls[0]} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -667,11 +667,11 @@ function ContentCalendar() {
                     <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
                       {activePost.graphic ? (
                         <>
-                          <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Graphic Brief</p>
-                          <p className="text-sm text-[#666D7A] leading-relaxed">{activePost.graphic}</p>
+                          <p className="text-[12.5px] font-medium text-[#8A9099] mb-3">Graphic Brief</p>
+                          <p className="text-sm text-[#8A9099] leading-relaxed">{activePost.graphic}</p>
                         </>
                       ) : (
-                        <p className="text-sm text-[#141821]">No graphic set</p>
+                        <p className="text-sm text-[#FAFAF8]">No graphic set</p>
                       )}
                     </div>
                   )}
@@ -691,9 +691,9 @@ function ContentCalendar() {
                         <span className="text-[12.5px] font-medium">@</span>
                       </div>
                       <div>
-                        <p className="text-[12.5px] font-semibold text-[#141821]">{bd.handle}</p>
+                        <p className="text-[12.5px] font-semibold text-[#FAFAF8]">{bd.handle}</p>
                         <div className="flex items-center gap-1.5">
-                          <p className="text-[12.5px] text-[#98A0AD]">{bd.label}</p>
+                          <p className="text-[12.5px] text-[#676D76]">{bd.label}</p>
                           {isAicmPost(activePost) && <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
                           {isCollabPost(activePost) && <span className={`inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded border font-medium ${COLLAB_BADGE_CLASS}`}><Handshake size={10} strokeWidth={2.5} /> Collab</span>}
                         </div>
@@ -703,28 +703,28 @@ function ContentCalendar() {
                 })()}
 
                 {activePost.caption ? (
-                  <div className="bg-[#FBFCFD] br-card p-4">
+                  <div className="bg-[#14171D] br-card p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-[12.5px] font-medium text-[#98A0AD]">Caption</p>
+                      <p className="text-[12.5px] font-medium text-[#676D76]">Caption</p>
                       <button
                         onClick={() => {
                           const full = [activePost.caption, activePost.notes].filter(Boolean).join('\n\n')
                           navigator.clipboard.writeText(full)
                         }}
-                        className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors font-medium"
+                        className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors font-medium"
                       >Copy all</button>
                     </div>
-                    <p className="text-sm text-[#141821] leading-relaxed whitespace-pre-line">{activePost.caption}</p>
+                    <p className="text-sm text-[#FAFAF8] leading-relaxed whitespace-pre-line">{activePost.caption}</p>
                     {activePost.notes && (
-                      <p className="text-[12.5px] text-[#666D7A] mt-3 pt-3 border-t border-[#E8EAEE] leading-relaxed">{activePost.notes}</p>
+                      <p className="text-[12.5px] text-[#8A9099] mt-3 pt-3 border-t border-[#2A2F39] leading-relaxed">{activePost.notes}</p>
                     )}
                   </div>
                 ) : (
-                  <div className="bg-[#FBFCFD] border border-[#E8EAEE]/40 border-dashed rounded-xl p-5 text-center">
-                    <p className="text-sm text-[#98A0AD] mb-1">No caption written yet.</p>
+                  <div className="bg-[#14171D] border border-[#2A2F39]/40 border-dashed rounded-xl p-5 text-center">
+                    <p className="text-sm text-[#676D76] mb-1">No caption written yet.</p>
                     <button
                       onClick={() => { setActivePost(null); startEdit(activePost) }}
-                      className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+                      className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors"
                     >Add caption →</button>
                   </div>
                 )}
@@ -737,44 +737,44 @@ function ContentCalendar() {
       {/* Add/Edit form */}
       {showForm && (
         <Card>
-          <p className="text-sm font-semibold text-[#141821] mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
+          <p className="text-sm font-semibold text-[#FAFAF8] mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
           <div className="space-y-3">
             <div className="grid grid-cols-5 gap-3">
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Brand</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Brand</label>
                 <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => syncFooter(f, { brand: e.target.value as Brand }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]">
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]">
                   {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Platform</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Platform</label>
                 <select value={form.platform ?? 'instagram'} onChange={e => setForm(f => syncFooter(f, { platform: e.target.value as Platform }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]">
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]">
                   {(Object.entries(PLATFORM_STYLES) as [Platform, typeof PLATFORM_STYLES[Platform]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Date</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Date</label>
                 <input type="date" value={form.date ?? ''} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]" />
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]" />
               </div>
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Post Time</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Post Time</label>
                 <input type="time" value={form.time ?? '07:00'} onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]" />
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]" />
               </div>
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Content Type</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Content Type</label>
                 <select value={form.type ?? 'authority'} onChange={e => {
                   const t = e.target.value as PostType
                   setForm(f => ({ ...f, type: t, time: f.time && f.time !== POST_TYPE_DEFAULT_TIMES[f.type as PostType] ? f.time : POST_TYPE_DEFAULT_TIMES[t] }))
                 }}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]">
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]">
                   {(Object.entries(POST_TYPE_STYLES) as [PostType, typeof POST_TYPE_STYLES[PostType]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
@@ -783,46 +783,46 @@ function ContentCalendar() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Campaign Phase</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Campaign Phase</label>
                 <select value={form.phase ?? 'prelaunch'} onChange={e => setForm(f => ({ ...f, phase: e.target.value as CampaignPhase }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]">
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]">
                   {(Object.entries(PHASE_STYLES) as [CampaignPhase, typeof PHASE_STYLES[CampaignPhase]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[12.5px] text-[#666D7A] mb-1">Post Title</label>
+                <label className="block text-[12.5px] text-[#8A9099] mb-1">Post Title</label>
                 <input type="text" value={form.title ?? ''} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                   placeholder="e.g. Three body states carousel"
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]" />
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]" />
               </div>
             </div>
             <div>
-              <label className="block text-[12.5px] text-[#666D7A] mb-1">Graphic Brief</label>
+              <label className="block text-[12.5px] text-[#8A9099] mb-1">Graphic Brief</label>
               <input type="text" value={form.graphic ?? ''} onChange={e => setForm(f => ({ ...f, graphic: e.target.value }))}
                 placeholder="e.g. Insight card. Label: The Real Problem. Text: Your body isn't broken."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]" />
+                className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]" />
             </div>
             <div>
-              <label className="block text-[12.5px] text-[#666D7A] mb-1">Caption</label>
+              <label className="block text-[12.5px] text-[#8A9099] mb-1">Caption</label>
               <textarea rows={6} value={form.caption ?? ''} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))}
                 placeholder="Write the full post caption here..."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] resize-none" />
+                className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] resize-none" />
             </div>
             <div>
-              <label className="block text-[12.5px] text-[#666D7A] mb-1">Hashtags (optional)</label>
+              <label className="block text-[12.5px] text-[#8A9099] mb-1">Hashtags (optional)</label>
               <input type="text" value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                 placeholder="#bodyrecode #bodystate ..."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]" />
+                className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]" />
             </div>
             <div className="flex items-center gap-2">
               <button onClick={savePost} disabled={!form.date || !form.title || saving}
-                className="bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors">
+                className="bg-[#FAFAF8] hover:bg-[#E4E4E0] disabled:opacity-50 text-[#14171D] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
               <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
-                className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors">
+                className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors">
                 Cancel
               </button>
             </div>
@@ -835,7 +835,7 @@ function ContentCalendar() {
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-[#F4F6F9] br-card p-5 ${className}`}>
+    <div className={`bg-[#1A1E26] br-card p-5 ${className}`}>
       {children}
     </div>
   )
@@ -843,25 +843,25 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] font-medium text-[#666D7A] mb-3">{children}</p>
+    <p className="text-[11px] font-medium text-[#8A9099] mb-3">{children}</p>
   )
 }
 
 function Heading({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm font-semibold text-[#141821] mb-1">{children}</p>
+  return <p className="text-sm font-semibold text-[#FAFAF8] mb-1">{children}</p>
 }
 
 function Body({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={`text-sm text-[#666D7A] leading-relaxed${className ? ` ${className}` : ''}`}>{children}</p>
+  return <p className={`text-sm text-[#8A9099] leading-relaxed${className ? ` ${className}` : ''}`}>{children}</p>
 }
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'amber' | 'red' | 'violet' | 'stone' }) {
   const colors = {
-    teal: 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#1B6DFC]/20',
+    teal: 'bg-[rgba(27,109,252,0.08)] text-[#FAFAF8] border-[#FAFAF8]/20',
     amber: 'bg-[#FDF6E9] text-[#A96A12] border-[#B7791F]/20',
-    red: 'bg-[#FDEDED] text-[#C82626] border-[#DC2626]/20',
-    violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
-    stone: 'bg-[#EFF1F4] text-[#666D7A] border-[#E8EAEE]',
+    red: 'bg-[#FDEDED] text-[#D4817E] border-[#D4817E]/20',
+    violet: 'bg-[#1A1E26]/10 text-[#C2C6CC] border-[#2A2F39]/20',
+    stone: 'bg-[#1F242C] text-[#8A9099] border-[#2A2F39]',
   }
   return (
     <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${colors[color]}`}>{children}</span>
@@ -872,8 +872,8 @@ function BulletList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-1.5">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-2 text-sm text-[#666D7A]">
-          <span className="text-[#1B6DFC] mt-0.5 shrink-0">-</span>
+        <li key={i} className="flex items-start gap-2 text-sm text-[#8A9099]">
+          <span className="text-[#FAFAF8] mt-0.5 shrink-0">-</span>
           <span>{item}</span>
         </li>
       ))}
@@ -894,7 +894,7 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
         setTimeout(() => setCopied(false), 1500)
       }}
       className={`text-[11px] font-medium px-2 py-0.5 rounded transition-colors ${
-        copied ? 'bg-[#1B6DFC] text-[#FBFCFD]' : 'bg-[#EFF1F4] text-[#666D7A] hover:bg-[#E8EAEE]'
+        copied ? 'bg-[#FAFAF8] text-[#14171D]' : 'bg-[#1F242C] text-[#8A9099] hover:bg-[#2A2F39]'
       }`}
     >
       {copied ? 'Copied' : (label ?? 'Copy')}
@@ -1429,12 +1429,12 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
         setErrorMsg(e instanceof Error ? e.message : 'Network error.')
       }
     }
-    if (errorMsg) return <span className="text-[12.5px] text-[#C82626] font-semibold" title={errorMsg}>✗ {errorMsg.slice(0, 40)}</span>
+    if (errorMsg) return <span className="text-[12.5px] text-[#D4817E] font-semibold" title={errorMsg}>✗ {errorMsg.slice(0, 40)}</span>
     return (
       <button
         onClick={toggleMarked}
         title={isMarked ? 'Mark this post as not yet scheduled' : 'Mark this post as scheduled (you scheduled it manually in IG / Meta Business Suite / etc)'}
-        className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border border-[#9CC0FB] hover:bg-[#DDE9FD]' : 'bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821]'}`}
+        className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border border-[#9CC0FB] hover:bg-[#DDE9FD]' : 'bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8]'}`}
       >
         {isMarked ? <><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Marked scheduled</> : 'Mark as scheduled'}
       </button>
@@ -1463,7 +1463,7 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
   // is never the same claim as "it went out". Only posted_at means published.
   if (post.scheduled_publish_at && new Date(post.scheduled_publish_at) > new Date()) {
     const when = new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-    return <span className="text-[12.5px] font-semibold text-[#1560E0]"><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled {when}</span>
+    return <span className="text-[12.5px] font-semibold text-[#E4E4E0]"><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled {when}</span>
   }
   const overdue = post.scheduled_publish_at && !post.posted_at
     ? new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
@@ -1500,13 +1500,13 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
     }
   }
 
-  if (status === 'publishing') return <span className="text-[12.5px] font-semibold text-[#1560E0]">Publishing...</span>
-  if (status === 'scheduling') return <span className="text-[12.5px] font-semibold text-[#1560E0]">Scheduling...</span>
+  if (status === 'publishing') return <span className="text-[12.5px] font-semibold text-[#E4E4E0]">Publishing...</span>
+  if (status === 'scheduling') return <span className="text-[12.5px] font-semibold text-[#E4E4E0]">Scheduling...</span>
   if (status === 'error') {
     return (
       <div className="flex flex-col gap-1 items-end">
-        <span className="text-[12.5px] text-[#C82626] font-semibold max-w-xs text-right" title={errorMsg ?? ''}>✗ {errorMsg?.slice(0, 60)}{(errorMsg?.length ?? 0) > 60 ? '...' : ''}</span>
-        <button onClick={() => publish(false)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] underline">retry</button>
+        <span className="text-[12.5px] text-[#D4817E] font-semibold max-w-xs text-right" title={errorMsg ?? ''}>✗ {errorMsg?.slice(0, 60)}{(errorMsg?.length ?? 0) > 60 ? '...' : ''}</span>
+        <button onClick={() => publish(false)} className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] underline">retry</button>
       </div>
     )
   }
@@ -1521,14 +1521,14 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
       <button
         onClick={() => publish(false)}
         title="Publish to Instagram immediately"
-        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#1B6DFC] hover:bg-[#1560E0] text-white rounded transition-colors"
+        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#0B0D10] rounded transition-colors"
       >
         Post now
       </button>
       <button
         onClick={() => publish(true)}
         title="Hand the post to Meta with the scheduled date+time. Meta publishes it automatically. Requires ≥10min in the future."
-        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] rounded transition-colors"
+        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8] rounded transition-colors"
       >
         Schedule
       </button>
@@ -1542,44 +1542,44 @@ function WaveStatusCard() {
   useEffect(() => {
     fetch('/api/challenge/wave-status').then(r => r.json()).then(d => { setData(d); setLoading(false) }).catch(() => setLoading(false))
   }, [])
-  if (loading) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-[#666D7A]">Loading...</p></Card>
-  if (!data) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-[#666D7A]">Could not load.</p></Card>
+  if (loading) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-[#8A9099]">Loading...</p></Card>
+  if (!data) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-[#8A9099]">Could not load.</p></Card>
   if (data.isEvergreen) {
     return (
       <Card className="border-[#22A05A]/30 bg-[#22A05A]/5">
         <SectionLabel>Wave Status · Evergreen</SectionLabel>
-        <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mt-1">Open enrolment</p>
-        <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed">All capped waves complete. Doors stay open - no cap, no cohort, evergreen as locked in the original spec.</p>
+        <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em] mt-1">Open enrolment</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-2 leading-relaxed">All capped waves complete. Doors stay open - no cap, no cohort, evergreen as locked in the original spec.</p>
       </Card>
     )
   }
   const cap = data.current.cap ?? 0
   const pct = cap > 0 ? Math.min(100, (data.taken / cap) * 100) : 0
-  const accent = data.isFull ? 'border-[#DC2626]/40 bg-[#DC2626]/5' : pct > 70 ? 'border-[#B7791F]/40 bg-[#B7791F]/5' : 'border-[#1B6DFC]/30 bg-[#1B6DFC]/5'
-  const dot = data.isFull ? 'bg-[#DC2626]' : pct > 70 ? 'bg-[#B7791F]' : 'bg-[#1B6DFC]'
+  const accent = data.isFull ? 'border-[#D4817E]/40 bg-[#D4817E]/5' : pct > 70 ? 'border-[#B7791F]/40 bg-[#B7791F]/5' : 'border-[#FAFAF8]/30 bg-[#FAFAF8]/5'
+  const dot = data.isFull ? 'bg-[#D4817E]' : pct > 70 ? 'bg-[#B7791F]' : 'bg-[#FAFAF8]'
   return (
     <Card className={accent}>
       <div className="flex items-center justify-between mb-3">
         <SectionLabel>Wave {data.current.number} · {data.current.label}</SectionLabel>
-        <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#141821]">
+        <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#FAFAF8]">
           <span className={`w-2 h-2 rounded-full ${dot}`} />
           {data.isFull ? 'FULL' : 'Open'}
         </span>
       </div>
       <div className="flex items-baseline justify-between mb-2">
-        <p className="text-[34px] font-semibold text-[#141821] tracking-[-0.035em]">{data.taken}<span className="text-base font-medium text-[#666D7A]"> / {cap}</span></p>
-        <p className="text-[12.5px] text-[#666D7A]">{data.remaining} spots left</p>
+        <p className="text-[34px] font-semibold text-[#FAFAF8] tracking-[-0.035em]">{data.taken}<span className="text-base font-medium text-[#8A9099]"> / {cap}</span></p>
+        <p className="text-[12.5px] text-[#8A9099]">{data.remaining} spots left</p>
       </div>
-      <div className="w-full h-2 bg-[#EFF1F4] rounded-full overflow-hidden">
-        <div className={`h-full rounded-full transition-all duration-300 ${data.isFull ? 'bg-[#DC2626]' : 'bg-[#1B6DFC]'}`} style={{ width: `${pct}%` }} />
+      <div className="w-full h-2 bg-[#1F242C] rounded-full overflow-hidden">
+        <div className={`h-full rounded-full transition-all duration-300 ${data.isFull ? 'bg-[#D4817E]' : 'bg-[#FAFAF8]'}`} style={{ width: `${pct}%` }} />
       </div>
       {data.isFull && data.nextWave && (
-        <p className="text-[12.5px] text-[#141821] mt-3 leading-relaxed">
-          <strong>Wave {data.current.number} is full.</strong> Set <code className="text-[12.5px] bg-[#EFF1F4] px-1.5 py-0.5 rounded">CHALLENGE_CURRENT_WAVE={data.nextWave.number}</code> in Vercel + redeploy to open <strong>{data.nextWave.label}</strong> ({data.nextWave.number === 4 ? 'evergreen' : `${CHALLENGE_WAVES_CLIENT.find(w => w.number === data.nextWave!.number)?.cap ?? '?'} spots`}). Then fire the wave-{data.nextWave.number} broadcast email via <code className="text-[12.5px] bg-[#EFF1F4] px-1.5 py-0.5 rounded">scripts/launch-day-waitlist-email.ts --live --wave={data.nextWave.number}</code>.
+        <p className="text-[12.5px] text-[#FAFAF8] mt-3 leading-relaxed">
+          <strong>Wave {data.current.number} is full.</strong> Set <code className="text-[12.5px] bg-[#1F242C] px-1.5 py-0.5 rounded">CHALLENGE_CURRENT_WAVE={data.nextWave.number}</code> in Vercel + redeploy to open <strong>{data.nextWave.label}</strong> ({data.nextWave.number === 4 ? 'evergreen' : `${CHALLENGE_WAVES_CLIENT.find(w => w.number === data.nextWave!.number)?.cap ?? '?'} spots`}). Then fire the wave-{data.nextWave.number} broadcast email via <code className="text-[12.5px] bg-[#1F242C] px-1.5 py-0.5 rounded">scripts/launch-day-waitlist-email.ts --live --wave={data.nextWave.number}</code>.
         </p>
       )}
       {!data.isFull && (
-        <p className="text-[12.5px] text-[#666D7A] mt-3 leading-relaxed">Real urgency, not fake. When this fills, /challenge auto-shows the waitlist for {data.nextWave?.label ?? 'the next wave'}.</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-3 leading-relaxed">Real urgency, not fake. When this fills, /challenge auto-shows the waitlist for {data.nextWave?.label ?? 'the next wave'}.</p>
       )}
     </Card>
   )
@@ -1617,37 +1617,37 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
     : `${brand().marketingDomain}/challenge?utm_source=meta&utm_campaign=funnelb_broad_r1&utm_content=${ad.slug}`
   const [open, setOpen] = useState(false)
   return (
-    <div className="br-card overflow-hidden bg-white">
-      <a href={ad.img} target="_blank" rel="noopener noreferrer" className="block bg-[#F4F6F9] border-b border-[#E8EAEE] hover:opacity-90 transition-opacity" style={{ aspectRatio: '4 / 5' }} title="Open full size">
+    <div className="br-card overflow-hidden bg-[#14171D]">
+      <a href={ad.img} target="_blank" rel="noopener noreferrer" className="block bg-[#1A1E26] border-b border-[#2A2F39] hover:opacity-90 transition-opacity" style={{ aspectRatio: '4 / 5' }} title="Open full size">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={ad.img} alt={ad.short} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
       </a>
       <div className="p-3 space-y-2.5 text-[12.5px]">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] font-medium text-[#666D7A]">{ad.short}</span>
-          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : ad.layer === 'variety' ? 'Format test' : 'Layer 2'}</span>
+          <span className="text-[10px] font-medium text-[#8A9099]">{ad.short}</span>
+          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-[#FAFAF8]/10 text-[#1056D6]' : 'bg-[#1F242C] text-[#FAFAF8]'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : ad.layer === 'variety' ? 'Format test' : 'Layer 2'}</span>
           <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.audience}</span>
         </div>
 
-        <div className="pt-1.5 border-t border-[#E8EAEE] space-y-2">
+        <div className="pt-1.5 border-t border-[#2A2F39] space-y-2">
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Headline</p><CopyButton value={ad.headline} /></div>
-            <p className="text-[#141821] font-semibold leading-snug">{ad.headline}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Headline</p><CopyButton value={ad.headline} /></div>
+            <p className="text-[#FAFAF8] font-semibold leading-snug">{ad.headline}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Primary text</p><CopyButton value={ad.primaryText} /></div>
-            <div className={`text-[#141821] leading-relaxed whitespace-pre-line ${open ? '' : 'line-clamp-4'}`}>{ad.primaryText}</div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Primary text</p><CopyButton value={ad.primaryText} /></div>
+            <div className={`text-[#FAFAF8] leading-relaxed whitespace-pre-line ${open ? '' : 'line-clamp-4'}`}>{ad.primaryText}</div>
             <button onClick={() => setOpen(o => !o)} className="mt-1 text-[11px] font-medium text-[#1056D6] hover:text-[#0A46B2]">{open ? 'Show less' : 'Show all'}</button>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Link description</p><CopyButton value={ad.description} /></div>
-            <p className="text-[#141821]">{ad.description}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Link description</p><CopyButton value={ad.description} /></div>
+            <p className="text-[#FAFAF8]">{ad.description}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Destination URL</p><CopyButton value={url} /></div>
-            <p className="text-[#141821] break-all text-[11px] leading-relaxed">{url}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Destination URL</p><CopyButton value={url} /></div>
+            <p className="text-[#FAFAF8] break-all text-[11px] leading-relaxed">{url}</p>
           </div>
-          <div className="flex items-center justify-between"><p className="text-[10px] font-medium text-[#666D7A]">CTA button</p><span className="text-[#141821] font-semibold">Learn More</span></div>
+          <div className="flex items-center justify-between"><p className="text-[10px] font-medium text-[#8A9099]">CTA button</p><span className="text-[#FAFAF8] font-semibold">Learn More</span></div>
         </div>
       </div>
     </div>
@@ -1657,39 +1657,39 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
 function ColdAdCard({ ad }: { ad: ColdAd }) {
   const url = destinationUrl(ad.slug)
   return (
-    <div className="br-card overflow-hidden bg-[#FBFCFD]">
+    <div className="br-card overflow-hidden bg-[#14171D]">
       {/* Image preview */}
-      <div className="bg-[#F4F6F9] border-b border-[#E8EAEE]" style={{ aspectRatio: '4 / 5' }}>
+      <div className="bg-[#1A1E26] border-b border-[#2A2F39]" style={{ aspectRatio: '4 / 5' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`/creative/${ad.slug}.png`} alt={ad.hook} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </div>
       {/* Metadata */}
       <div className="p-3 space-y-2.5 text-[12.5px]">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] font-medium text-[#666D7A]">{ad.slug.split('-')[0].toUpperCase()} {ad.slug.split('-').slice(1).join(' ')}</span>
-          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.format === 'Photo' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.format}</span>
+          <span className="text-[10px] font-medium text-[#8A9099]">{ad.slug.split('-')[0].toUpperCase()} {ad.slug.split('-').slice(1).join(' ')}</span>
+          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.format === 'Photo' ? 'bg-[#FAFAF8]/10 text-[#1056D6]' : 'bg-[#1F242C] text-[#FAFAF8]'}`}>{ad.format}</span>
           {ad.photo && <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.photo}</span>}
         </div>
-        <p className="text-[#141821] font-semibold leading-snug">&ldquo;{ad.hook}&rdquo;</p>
+        <p className="text-[#FAFAF8] font-semibold leading-snug">&ldquo;{ad.hook}&rdquo;</p>
 
-        <div className="pt-1.5 border-t border-[#E8EAEE] space-y-2">
+        <div className="pt-1.5 border-t border-[#2A2F39] space-y-2">
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Primary text</p><CopyButton value={ad.primaryText} /></div>
-            <p className="text-[#141821] leading-relaxed">{ad.primaryText}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Primary text</p><CopyButton value={ad.primaryText} /></div>
+            <p className="text-[#FAFAF8] leading-relaxed">{ad.primaryText}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Headline</p><CopyButton value={ad.headline} /></div>
-            <p className="text-[#141821]">{ad.headline}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Headline</p><CopyButton value={ad.headline} /></div>
+            <p className="text-[#FAFAF8]">{ad.headline}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Description</p><CopyButton value={ad.description} /></div>
-            <p className="text-[#141821]">{ad.description}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Description</p><CopyButton value={ad.description} /></div>
+            <p className="text-[#FAFAF8]">{ad.description}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Destination URL</p><CopyButton value={url} /></div>
-            <p className="text-[#141821] break-all text-[11px] leading-relaxed">{url}</p>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#8A9099]">Destination URL</p><CopyButton value={url} /></div>
+            <p className="text-[#FAFAF8] break-all text-[11px] leading-relaxed">{url}</p>
           </div>
-          <div className="flex items-center justify-between"><p className="text-[10px] font-medium text-[#666D7A]">CTA button</p><span className="text-[#141821] font-semibold">Learn More</span></div>
+          <div className="flex items-center justify-between"><p className="text-[10px] font-medium text-[#8A9099]">CTA button</p><span className="text-[#FAFAF8] font-semibold">Learn More</span></div>
         </div>
       </div>
     </div>
@@ -1704,33 +1704,33 @@ function PostBlock({ number, title, day, format, graphic, caption, hashtags }: {
     <Card>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-full bg-[#EFF1F4] border border-[#E8EAEE] flex items-center justify-center text-[12.5px] font-medium text-[#666D7A] shrink-0">{number}</div>
+          <div className="w-7 h-7 rounded-full bg-[#1F242C] border border-[#2A2F39] flex items-center justify-center text-[12.5px] font-medium text-[#8A9099] shrink-0">{number}</div>
           <div>
-            <p className="text-sm font-semibold text-[#141821]">{title}</p>
+            <p className="text-sm font-semibold text-[#FAFAF8]">{title}</p>
             <div className="flex items-center gap-2 mt-1">
               <Tag color="stone">{day}</Tag>
               <Tag color="stone">{format}</Tag>
             </div>
           </div>
         </div>
-        <button onClick={() => setExpanded(e => !e)} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors font-medium shrink-0">
+        <button onClick={() => setExpanded(e => !e)} className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors font-medium shrink-0">
           {expanded ? 'Hide' : 'View copy'}
         </button>
       </div>
       {expanded && (
         <div className="mt-4 space-y-3">
-          <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-            <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Graphic</p>
-            <p className="text-[12.5px] text-[#666D7A]">{graphic}</p>
+          <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
+            <p className="text-[11px] font-medium text-[#676D76] mb-1">Graphic</p>
+            <p className="text-[12.5px] text-[#8A9099]">{graphic}</p>
           </div>
-          <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-            <p className="text-[11px] font-medium text-[#98A0AD] mb-2">Caption</p>
-            <p className="text-sm text-[#141821] leading-relaxed whitespace-pre-line">{caption}</p>
+          <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
+            <p className="text-[11px] font-medium text-[#676D76] mb-2">Caption</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed whitespace-pre-line">{caption}</p>
           </div>
           {hashtags && (
-            <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-              <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Hashtags</p>
-              <p className="text-[12.5px] text-[#666D7A]">{hashtags}</p>
+            <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
+              <p className="text-[11px] font-medium text-[#676D76] mb-1">Hashtags</p>
+              <p className="text-[12.5px] text-[#8A9099]">{hashtags}</p>
             </div>
           )}
         </div>
@@ -1744,10 +1744,10 @@ type PostStatus = 'not_started' | 'drafted' | 'scheduled' | 'published'
 const POST_STATUS_CYCLE: PostStatus[] = ['not_started', 'drafted', 'scheduled', 'published']
 
 const POST_STATUS_CONFIG: Record<PostStatus, { label: string; color: string; bg: string; border: string }> = {
-  not_started: { label: 'Not Started', color: 'text-[#666D7A]',  bg: 'bg-[#EFF1F4]/50',    border: 'border-[#E8EAEE]' },
+  not_started: { label: 'Not Started', color: 'text-[#8A9099]',  bg: 'bg-[#1F242C]/50',    border: 'border-[#2A2F39]' },
   drafted:     { label: 'Drafted',     color: 'text-[#A96A12]',  bg: 'bg-[#FDF6E9]',    border: 'border-[#F1DEB8]' },
-  scheduled:   { label: 'Scheduled',   color: 'text-[#1056D6]',   bg: 'bg-[rgba(27,109,252,0.08)]',     border: 'border-[#B5CFFC]' },
-  published:   { label: 'Published',   color: 'text-[#1B6DFC]',   bg: 'bg-[rgba(27,109,252,0.08)]',     border: 'border-[#B5CFFC]' },
+  scheduled:   { label: 'Scheduled',   color: 'text-[#1056D6]',   bg: 'bg-[rgba(27,109,252,0.08)]',     border: 'border-[#2A2F39]' },
+  published:   { label: 'Published',   color: 'text-[#FAFAF8]',   bg: 'bg-[rgba(27,109,252,0.08)]',     border: 'border-[#2A2F39]' },
 }
 
 const PRELAUNCH_POSTS = [
@@ -1798,19 +1798,19 @@ export default function StrategyPage() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Marketing Strategy</h1>
-        <p className="text-[#666D7A] text-sm">The complete acquisition system for Body Recode Performance Coaching.</p>
+        <p className="text-[#8A9099] text-sm">The complete acquisition system for Body Recode Performance Coaching.</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 mb-6 border-b border-[#E8EAEE] pb-0 overflow-x-auto">
+      <div className="flex items-center gap-1 mb-6 border-b border-[#2A2F39] pb-0 overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors -mb-px ${
               tab === t.id
-                ? 'border-[#1B6DFC] text-[#1B6DFC]'
-                : 'border-transparent text-[#666D7A] hover:text-[#141821]'
+                ? 'border-[#FAFAF8] text-[#FAFAF8]'
+                : 'border-transparent text-[#8A9099] hover:text-[#FAFAF8]'
             }`}
           >
             {t.label}
@@ -1823,7 +1823,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card>
             <SectionLabel>Mission</SectionLabel>
-            <p className="text-lg font-semibold text-[#141821] leading-snug mb-2">Interpretation before prescription.</p>
+            <p className="text-lg font-semibold text-[#FAFAF8] leading-snug mb-2">Interpretation before prescription.</p>
             <Body>Social media is not the funnel - it feeds the funnel through two doors by post type: doctrine/engagement posts → the scorecard (&quot;find your state&quot;); Challenge promo posts → the Challenge landing page. The scorecard reads their state and routes them - both doors converge on the Challenge.</Body>
           </Card>
 
@@ -1832,46 +1832,46 @@ export default function StrategyPage() {
             <SectionLabel>The Funnel — two paths off the Scorecard</SectionLabel>
             <div className="space-y-3">
               <div>
-                <p className="text-[11px] font-medium text-[#1560E0] mb-1.5">Funnel B — primary (consumer)</p>
+                <p className="text-[11px] font-medium text-[#E4E4E0] mb-1.5">Funnel B — primary (consumer)</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {['Content / Ad', 'Door 1 Scorecard  ·  Door 2 Challenge', '14-Day Challenge', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
                     <div key={step} className="flex items-center gap-2">
-                      <div className="bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-lg px-3 py-1.5 text-[12.5px] font-medium text-[#1056D6]">{step}</div>
-                      {i < arr.length - 1 && <span className="text-[#98A0AD] text-[12.5px]">→</span>}
+                      <div className="bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] rounded-lg px-3 py-1.5 text-[12.5px] font-medium text-[#1056D6]">{step}</div>
+                      {i < arr.length - 1 && <span className="text-[#676D76] text-[12.5px]">→</span>}
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-[11px] font-medium text-[#666D7A] mb-1.5">Funnel A — higher-intent coaching path</p>
+                <p className="text-[11px] font-medium text-[#8A9099] mb-1.5">Funnel A — higher-intent coaching path</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   {['Scorecard', 'Performance Check-In', 'Zoom Consult', '1:1 Coaching $299–409/wk'].map((step, i, arr) => (
                     <div key={step} className="flex items-center gap-2">
-                      <div className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] font-medium text-[#141821]">{step}</div>
-                      {i < arr.length - 1 && <span className="text-[#98A0AD] text-[12.5px]">→</span>}
+                      <div className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-1.5 text-[12.5px] font-medium text-[#FAFAF8]">{step}</div>
+                      {i < arr.length - 1 && <span className="text-[#676D76] text-[12.5px]">→</span>}
                     </div>
                   ))}
                 </div>
               </div>
-              <p className="text-[12.5px] text-[#666D7A]"><strong className="text-[#141821]">Two doors, both routed by the scorecard:</strong> doctrine/engagement content → <strong>standalone scorecard</strong> (&quot;find your state&quot;, low friction) → routes most into the Challenge; Challenge promo content → <strong>Challenge landing page</strong> → sign-up → the scorecard runs as the Day-0 in-portal gate. Both feed Funnel B; coaching-ready leads flagged into Funnel A.</p>
+              <p className="text-[12.5px] text-[#8A9099]"><strong className="text-[#FAFAF8]">Two doors, both routed by the scorecard:</strong> doctrine/engagement content → <strong>standalone scorecard</strong> (&quot;find your state&quot;, low friction) → routes most into the Challenge; Challenge promo content → <strong>Challenge landing page</strong> → sign-up → the scorecard runs as the Day-0 in-portal gate. Both feed Funnel B; coaching-ready leads flagged into Funnel A.</p>
             </div>
           </Card>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Primary Channels</SectionLabel>
-              <p className="text-[#141821] font-semibold">Instagram + LinkedIn</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">IG 5×/wk (scorecard funnel, Meta ads). LinkedIn 1-2×/wk (executive reframe, no ads).</p>
+              <p className="text-[#FAFAF8] font-semibold">Instagram + LinkedIn</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">IG 5×/wk (scorecard funnel, Meta ads). LinkedIn 1-2×/wk (executive reframe, no ads).</p>
             </Card>
             <Card>
               <SectionLabel>Posting Frequency</SectionLabel>
-              <p className="text-[#141821] font-semibold">5× IG + 1-2× LI</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">IG: 3 graphics/carousels + 2 reels. LinkedIn: short essays Tue/Thu morning.</p>
+              <p className="text-[#FAFAF8] font-semibold">5× IG + 1-2× LI</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">IG: 3 graphics/carousels + 2 reels. LinkedIn: short essays Tue/Thu morning.</p>
             </Card>
             <Card>
               <SectionLabel>Ad Budget</SectionLabel>
-              <p className="text-[#141821] font-semibold">$25 → $75/day AUD</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">Meta only (Option D ramp: $25/day wk 1-2, then $75/day). LinkedIn stays organic.</p>
+              <p className="text-[#FAFAF8] font-semibold">$25 → $75/day AUD</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">Meta only (Option D ramp: $25/day wk 1-2, then $75/day). LinkedIn stays organic.</p>
             </Card>
           </div>
 
@@ -1880,33 +1880,33 @@ export default function StrategyPage() {
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                 {[
-                  { label: 'Front door', value: 'Scorecard', note: 'Free (both funnels)', color: 'text-[#141821]' },
-                  { label: 'Funnel B (primary)', value: 'Challenge → Blueprint', note: 'Free → $97 → Membership', color: 'text-[#1B6DFC]' },
-                  { label: 'Funnel A (coaching)', value: '$297 → $299–409/wk', note: 'Zoom → 1:1', color: 'text-[#1B6DFC]' },
+                  { label: 'Front door', value: 'Scorecard', note: 'Free (both funnels)', color: 'text-[#FAFAF8]' },
+                  { label: 'Funnel B (primary)', value: 'Challenge → Blueprint', note: 'Free → $97 → Membership', color: 'text-[#FAFAF8]' },
+                  { label: 'Funnel A (coaching)', value: '$297 → $299–409/wk', note: 'Zoom → 1:1', color: 'text-[#FAFAF8]' },
                   { label: 'A upsell', value: '$37 Report', note: 'On the coaching path', color: 'text-[#A96A12]' },
-                  { label: 'A downsell', value: '$97 Self-guided', note: 'Zoom decline (≠ Blueprint)', color: 'text-violet-700' },
+                  { label: 'A downsell', value: '$97 Self-guided', note: 'Zoom decline (≠ Blueprint)', color: 'text-[#C2C6CC]' },
                 ].map(item => (
-                  <div key={item.label} className="bg-[#EFF1F4]/50 border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-center">
-                    <p className="text-[12.5px] text-[#666D7A] mb-1">{item.label}</p>
+                  <div key={item.label} className="bg-[#1F242C]/50 border border-[#2A2F39] rounded-lg px-3 py-2.5 text-center">
+                    <p className="text-[12.5px] text-[#8A9099] mb-1">{item.label}</p>
                     <p className={`text-sm font-semibold ${item.color}`}>{item.value}</p>
-                    <p className="text-[12.5px] text-[#98A0AD] mt-0.5">{item.note}</p>
+                    <p className="text-[12.5px] text-[#676D76] mt-0.5">{item.note}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-[#EFF1F4]/30 border border-[#E8EAEE]/50 rounded-lg px-4 py-3">
-                <p className="text-[12.5px] font-medium text-[#666D7A] mb-2">LTV Optimisation - 2x to 3x Upgrade</p>
+              <div className="bg-[#1F242C]/30 border border-[#2A2F39]/50 rounded-lg px-4 py-3">
+                <p className="text-[12.5px] font-medium text-[#8A9099] mb-2">LTV Optimisation - 2x to 3x Upgrade</p>
                 <div className="grid sm:grid-cols-3 gap-3 text-sm">
                   <div>
-                    <p className="text-[#666D7A] text-[12.5px] font-semibold mb-1">When</p>
-                    <p className="text-[#141821] text-[12.5px]">Week 8+ on 2x package. Client recovering well, consistently completing sessions, body state progressing.</p>
+                    <p className="text-[#8A9099] text-[12.5px] font-semibold mb-1">When</p>
+                    <p className="text-[#FAFAF8] text-[12.5px]">Week 8+ on 2x package. Client recovering well, consistently completing sessions, body state progressing.</p>
                   </div>
                   <div>
-                    <p className="text-[#666D7A] text-[12.5px] font-semibold mb-1">The offer</p>
-                    <p className="text-[#141821] text-[12.5px]">Move from 2 to 3 sessions per week. $299 → $409/week. Same check-ins, same interpretation. More training contact, faster compounding.</p>
+                    <p className="text-[#8A9099] text-[12.5px] font-semibold mb-1">The offer</p>
+                    <p className="text-[#FAFAF8] text-[12.5px]">Move from 2 to 3 sessions per week. $299 → $409/week. Same check-ins, same interpretation. More training contact, faster compounding.</p>
                   </div>
                   <div>
-                    <p className="text-[#666D7A] text-[12.5px] font-semibold mb-1">How</p>
-                    <p className="text-[#141821] text-[12.5px]">Use the Upgrade Companion (linked from client profile). Raise it in a regular session. Data-led, not sales-led.</p>
+                    <p className="text-[#8A9099] text-[12.5px] font-semibold mb-1">How</p>
+                    <p className="text-[#FAFAF8] text-[12.5px]">Use the Upgrade Companion (linked from client profile). Raise it in a regular session. Data-led, not sales-led.</p>
                   </div>
                 </div>
               </div>
@@ -1918,17 +1918,17 @@ export default function StrategyPage() {
             <div className="flex items-center gap-2 mb-2"><Tag color="teal">Performance Coaching</Tag></div>
             <Heading>Ongoing Acquisition</Heading>
             <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Two channels feeding the same scorecard: Instagram (consumer funnel, Meta ads) and LinkedIn (executive reframe, organic only). Both attributed separately in the CRM.</Body>
-            <p className="text-[12.5px] text-[#141821] mt-3"><strong className="text-[#141821]">Audience reality:</strong> 100% of paying clients classify as Remediation / Depleted by CFFS. Strategy is calibrated to 4 Depleted-leaning archetypes - see <strong className="text-[#141821]">Positioning tab</strong>.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-3"><strong className="text-[#FAFAF8]">Audience reality:</strong> 100% of paying clients classify as Remediation / Depleted by CFFS. Strategy is calibrated to 4 Depleted-leaning archetypes - see <strong className="text-[#FAFAF8]">Positioning tab</strong>.</p>
           </Card>
 
           <Card>
             <SectionLabel>What to Ignore Right Now</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {['TikTok', 'YouTube', 'Twitter / X', 'Podcasts', 'Email newsletters'].map(p => (
-                <span key={p} className="text-[12.5px] text-[#98A0AD] bg-[#EFF1F4]/50 border border-[#E8EAEE] px-2.5 py-1 rounded-full line-through">{p}</span>
+                <span key={p} className="text-[12.5px] text-[#676D76] bg-[#1F242C]/50 border border-[#2A2F39] px-2.5 py-1 rounded-full line-through">{p}</span>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">Two channels done well outperform five done badly. Lock Instagram + LinkedIn + Meta ads first.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">Two channels done well outperform five done badly. Lock Instagram + LinkedIn + Meta ads first.</p>
           </Card>
         </div>
       )}
@@ -1938,15 +1938,15 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-[#B7791F]/30 bg-[#B7791F]/5">
             <SectionLabel>Audience Reality</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3"><strong className="text-[#A96A12]">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
-            <p className="text-sm text-[#141821] leading-relaxed">Full persona doc: <code className="text-[#141821] text-[12.5px] bg-[#EFF1F4] px-1 rounded">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3"><strong className="text-[#A96A12]">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed">Full persona doc: <code className="text-[#FAFAF8] text-[12.5px] bg-[#1F242C] px-1 rounded">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
           </Card>
 
-          <Card className="border-[#DC2626]/30 bg-[#DC2626]/5">
+          <Card className="border-[#D4817E]/30 bg-[#D4817E]/5">
             <SectionLabel>The Scorecard Underestimates Depletion</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-2"><strong className="text-[#C82626]">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3"><strong className="text-[#141821]">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base - discipline hides depletion in self-reporting.</p>
-            <p className="text-sm text-[#141821] leading-relaxed"><strong className="text-[#141821]">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-2"><strong className="text-[#D4817E]">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3"><strong className="text-[#FAFAF8]">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base - discipline hides depletion in self-reporting.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed"><strong className="text-[#FAFAF8]">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
           </Card>
 
           <Card>
@@ -1999,10 +1999,10 @@ export default function StrategyPage() {
                 },
               ].map(a => {
                 const colorMap = {
-                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-700',   badgeBg: 'bg-teal-500/15 border-teal-500/40' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700', badgeBg: 'bg-violet-500/15 border-violet-500/40' },
+                  teal:   { border: 'border-[#2A2F39]/30',   bg: 'bg-[#1A1E26]/5',   accent: 'text-[#C2C6CC]',   badgeBg: 'bg-[#1A1E26]/15 border-[#2A2F39]/40' },
+                  violet: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]', badgeBg: 'bg-[#1A1E26]/15 border-[#2A2F39]/40' },
                   amber:  { border: 'border-[#B7791F]/30',  bg: 'bg-[#B7791F]/5',  accent: 'text-[#A96A12]',  badgeBg: 'bg-[#B7791F]/15 border-[#B7791F]/40' },
-                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-700', badgeBg: 'bg-orange-500/15 border-orange-500/40' },
+                  orange: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]', badgeBg: 'bg-[#1A1E26]/15 border-[#2A2F39]/40' },
                 }[a.color]
                 return (
                   <div key={a.num} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
@@ -2010,26 +2010,26 @@ export default function StrategyPage() {
                       <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-70`}>{a.num}</span>
                       <p className={`text-sm font-semibold ${colorMap.accent}`}>{a.title}</p>
                       <span className={`text-[11px] font-medium border px-2 py-0.5 rounded-full ${colorMap.accent} ${colorMap.badgeBg}`}>{a.badge}</span>
-                      <span className="text-[11px] text-[#666D7A] italic">{a.pattern}</span>
+                      <span className="text-[11px] text-[#8A9099] italic">{a.pattern}</span>
                     </div>
                     <div className="space-y-1.5 text-[13.5px]">
-                      <p><span className="text-[#141821] font-medium text-[11px]">Who: </span><span className="text-[#141821]">{a.who}</span></p>
-                      <p><span className="text-[#141821] font-medium text-[11px]">Presenting: </span><span className="text-[#141821]">{a.presenting}</span></p>
-                      <p><span className="text-[#141821] font-medium text-[11px]">Self-story: </span><span className="text-[#141821]">{a.selfStory}</span></p>
-                      <p><span className="text-[#141821] font-medium text-[11px]">Channel: </span><span className="text-[#141821]">{a.channel}</span></p>
+                      <p><span className="text-[#FAFAF8] font-medium text-[11px]">Who: </span><span className="text-[#FAFAF8]">{a.who}</span></p>
+                      <p><span className="text-[#FAFAF8] font-medium text-[11px]">Presenting: </span><span className="text-[#FAFAF8]">{a.presenting}</span></p>
+                      <p><span className="text-[#FAFAF8] font-medium text-[11px]">Self-story: </span><span className="text-[#FAFAF8]">{a.selfStory}</span></p>
+                      <p><span className="text-[#FAFAF8] font-medium text-[11px]">Channel: </span><span className="text-[#FAFAF8]">{a.channel}</span></p>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <div className="mt-4 p-3 bg-[#EFF1F4] rounded-lg border border-[#E8EAEE]">
-              <p className="text-[12.5px] text-[#141821]"><strong className="text-[#141821]">On the watch list:</strong> The Ex-Athlete Founder (Insulin-Drift, male). Not yet seen in gym. May appear as the LinkedIn/founder audience grows. Don\'t target in primary content/ads until volume justifies it.</p>
+            <div className="mt-4 p-3 bg-[#1F242C] rounded-lg border border-[#2A2F39]">
+              <p className="text-[12.5px] text-[#FAFAF8]"><strong className="text-[#FAFAF8]">On the watch list:</strong> The Ex-Athlete Founder (Insulin-Drift, male). Not yet seen in gym. May appear as the LinkedIn/founder audience grows. Don\'t target in primary content/ads until volume justifies it.</p>
             </div>
           </Card>
 
           <Card>
             <SectionLabel>The Core Problem You Solve</SectionLabel>
-            <p className="text-base font-semibold text-[#141821] mb-2">People are being prescribed to before they have been interpreted.</p>
+            <p className="text-base font-semibold text-[#FAFAF8] mb-2">People are being prescribed to before they have been interpreted.</p>
             <Body>Every trainer, program, and app tells them what to do before reading what their body is actually doing. The problem is not effort. Nobody has read the body first. Body Recode fixes that.</Body>
           </Card>
 
@@ -2045,9 +2045,9 @@ export default function StrategyPage() {
                 { a: 'Forward-thinking', b: 'not abstract' },
               ].map(({ a, b }) => (
                 <div key={a} className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-[#141821]">{a}</span>
-                  <span className="text-[#98A0AD] text-sm">-</span>
-                  <span className="text-sm text-[#666D7A]">{b}</span>
+                  <span className="text-sm font-semibold text-[#FAFAF8]">{a}</span>
+                  <span className="text-[#676D76] text-sm">-</span>
+                  <span className="text-sm text-[#8A9099]">{b}</span>
                 </div>
               ))}
             </div>
@@ -2064,18 +2064,18 @@ export default function StrategyPage() {
                 { n: '4', label: 'Prescription Without Interpretation', desc: 'The fundamental flaw in mainstream fitness. Being told what to do before anyone has read what the body is actually doing.' },
                 { n: '5', label: 'The Intelligent Approach', desc: 'What reading the body first actually looks like. The Body Recode system as the solution - interpretation before prescription.' },
               ].map(({ n, label, desc }) => (
-                <div key={n} className="flex items-start gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <span className="text-sm font-bold text-[#1B6DFC] w-5 shrink-0 mt-0.5">{n}</span>
+                <div key={n} className="flex items-start gap-3 p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <span className="text-sm font-bold text-[#FAFAF8] w-5 shrink-0 mt-0.5">{n}</span>
                   <div>
-                    <p className="text-sm font-semibold text-[#141821] mb-1">{label}</p>
-                    <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{desc}</p>
+                    <p className="text-sm font-semibold text-[#FAFAF8] mb-1">{label}</p>
+                    <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-4 p-3 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-lg">
+            <div className="mt-4 p-3 bg-[#FAFAF8]/5 border border-[#FAFAF8]/20 rounded-lg">
               <p className="text-[10px] font-medium text-[#1056D6] mb-1">LinkedIn channel</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-[#141821]">State over Discipline</strong>, <strong className="text-[#141821]">The Effort Trap</strong>, <strong className="text-[#141821]">Physiology and Decision-Making</strong>, <strong className="text-[#141821]">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for the full breakdown.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-[#FAFAF8]">State over Discipline</strong>, <strong className="text-[#FAFAF8]">The Effort Trap</strong>, <strong className="text-[#FAFAF8]">Physiology and Decision-Making</strong>, <strong className="text-[#FAFAF8]">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for the full breakdown.</p>
             </div>
           </Card>
 
@@ -2088,15 +2088,15 @@ export default function StrategyPage() {
                 { label: 'CTA rule - Instagram', value: 'One CTA per post, matched to type: doctrine → "find your state, take the scorecard" (standalone scorecard); Challenge promo → "join the free 14-day Challenge". One job per post.' },
                 { label: 'CTA rule - LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
               ].map(({ label, value }) => (
-                <div key={label} className="flex items-start gap-3 py-2 border-b border-[#E8EAEE] last:border-0">
-                  <span className="text-[12.5px] text-[#666D7A] w-44 shrink-0 mt-0.5">{label}</span>
-                  <span className="text-sm text-[#141821]">{value}</span>
+                <div key={label} className="flex items-start gap-3 py-2 border-b border-[#2A2F39] last:border-0">
+                  <span className="text-[12.5px] text-[#8A9099] w-44 shrink-0 mt-0.5">{label}</span>
+                  <span className="text-sm text-[#FAFAF8]">{value}</span>
                 </div>
               ))}
             </div>
           </Card>
 
-          <Card className="border-[#DC2626]/20 bg-[#DC2626]/5">
+          <Card className="border-[#D4817E]/20 bg-[#D4817E]/5">
             <SectionLabel>Never Say or Do</SectionLabel>
             <BulletList items={[
               '"Crush it", "no excuses", "grind", "hustle" - no fitness clichés',
@@ -2119,10 +2119,10 @@ export default function StrategyPage() {
                 { n: '5', label: 'Momentum', desc: 'End with clarity or direction' },
               ].map(({ n, label, desc }) => (
                 <div key={n} className="flex items-start gap-3">
-                  <span className="text-[12.5px] font-medium text-[#1B6DFC] w-4 shrink-0 mt-0.5">{n}</span>
+                  <span className="text-[12.5px] font-medium text-[#FAFAF8] w-4 shrink-0 mt-0.5">{n}</span>
                   <div>
-                    <span className="text-sm font-semibold text-[#141821]">{label} </span>
-                    <span className="text-sm text-[#666D7A]">- {desc}</span>
+                    <span className="text-sm font-semibold text-[#FAFAF8]">{label} </span>
+                    <span className="text-sm text-[#8A9099]">- {desc}</span>
                   </div>
                 </div>
               ))}
@@ -2132,20 +2132,20 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>The 3 Body States (Public-Facing Language)</SectionLabel>
             <div className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#DC2626]/20">
+              <div className="flex items-start gap-3 p-3 bg-[#14171D] rounded-lg border border-[#D4817E]/20">
                 <Tag color="red">Depleted</Tag>
                 <Body>Body in protection mode. Cortisol elevated, metabolism suppressed. Adding more training makes this worse. Score: 5–8.</Body>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#B7791F]/20">
+              <div className="flex items-start gap-3 p-3 bg-[#14171D] rounded-lg border border-[#B7791F]/20">
                 <Tag color="amber">Transitioning</Tag>
                 <Body>Mixed signals. Has capacity but not consistent. Something is blocking the response. Score: 9–11.</Body>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#1B6DFC]/20">
+              <div className="flex items-start gap-3 p-3 bg-[#14171D] rounded-lg border border-[#FAFAF8]/20">
                 <Tag color="teal">Ready</Tag>
                 <Body>Biology in a position to respond. If results aren&apos;t happening at this score, the issue is in the prescription. Score: 12–15.</Body>
               </div>
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">Note: Remediation / Optimisation / Post-Optimisation are CFFS-only terms. Use Depleted / Transitioning / Ready in all public-facing content.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">Note: Remediation / Optimisation / Post-Optimisation are CFFS-only terms. Use Depleted / Transitioning / Ready in all public-facing content.</p>
           </Card>
         </div>
       )}
@@ -2153,78 +2153,78 @@ export default function StrategyPage() {
       {/* ── CONTENT SYSTEM ── */}
       {tab === 'content' && (
         <div className="space-y-4">
-          <Card className="border-pink-500/30 bg-pink-500/5">
+          <Card className="border-[#2A2F39]/30 bg-[#1A1E26]/5">
             <SectionLabel>Instagram Content System</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed">Everything in this tab is the <strong className="text-[#141821]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed">Everything in this tab is the <strong className="text-[#FAFAF8]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           {/* Added 2026-08-14. The dashboard had zero mention of the pillars or
               the readiness vocabulary while the strategy doc had moved to v2.5. */}
           <Card className="border-[#22A05A]/40 bg-[#22A05A]/5">
             <SectionLabel>Two Pillars · Neurowellness &amp; Readiness <span className="text-[#177245]">(v2.5, 14 Aug)</span></SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
-              Across <strong>86 scorecards</strong>, <strong className="text-[#141821]">Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections. Training Response (2.06) is the best.</strong> The thing these women work hardest at is the least broken thing about them.
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
+              Across <strong>86 scorecards</strong>, <strong className="text-[#FAFAF8]">Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections. Training Response (2.06) is the best.</strong> The thing these women work hardest at is the least broken thing about them.
             </p>
-            <div className="p-3 bg-white border border-[#22A05A]/30 rounded-lg mb-3">
+            <div className="p-3 bg-[#14171D] border border-[#22A05A]/30 rounded-lg mb-3">
               <p className="text-[10px] font-medium text-[#177245] mb-1.5">The spine line</p>
-              <p className="text-base font-semibold text-[#141821] leading-snug italic">&ldquo;Capacity is fine. Regulation is gone.&rdquo;</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-2">Training response is <em>capacity</em>. Sleep + stress load are <em>regulation</em>. Proven on our own data, nothing borrowed.</p>
+              <p className="text-base font-semibold text-[#FAFAF8] leading-snug italic">&ldquo;Capacity is fine. Regulation is gone.&rdquo;</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-2">Training response is <em>capacity</em>. Sleep + stress load are <em>regulation</em>. Proven on our own data, nothing borrowed.</p>
             </div>
-            <p className="text-sm text-[#141821] leading-relaxed mb-2"><strong className="text-[#141821]">Airtime, per batch of ten: six neurowellness, three readiness, one metabolic.</strong> The metabolic one is a disqualifier, not a claim &mdash; insulin is one in twenty-five of the profiles we have run.</p>
-            <ul className="text-sm text-[#141821] space-y-1.5 mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-2"><strong className="text-[#FAFAF8]">Airtime, per batch of ten: six neurowellness, three readiness, one metabolic.</strong> The metabolic one is a disqualifier, not a claim &mdash; insulin is one in twenty-five of the profiles we have run.</p>
+            <ul className="text-sm text-[#FAFAF8] space-y-1.5 mb-3">
               <li><strong>Neurowellness</strong> &mdash; sleep, stress load, regulation. The biggest lane.</li>
-              <li><strong>Readiness</strong> &mdash; the frame, not a third topic. Already computed in <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">readiness-monitor.ts</code>.</li>
+              <li><strong>Readiness</strong> &mdash; the frame, not a third topic. Already computed in <code className="text-[12.5px] bg-[#1A1E26] px-1 rounded">readiness-monitor.ts</code>.</li>
               <li><strong>Menopause is the population, not a pillar.</strong> It runs through both lanes.</li>
             </ul>
-            <div className="p-3 bg-white border border-[#22A05A]/30 rounded-lg">
+            <div className="p-3 bg-[#14171D] border border-[#22A05A]/30 rounded-lg">
               <p className="text-[10px] font-medium text-[#177245] mb-1.5">Say readiness outward</p>
-              <p className="text-sm text-[#141821]">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Readiness Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
+              <p className="text-sm text-[#FAFAF8]">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Readiness Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
             </div>
           </Card>
 
           <Card className="border-[#B7791F]/40 bg-[#B7791F]/5">
             <SectionLabel>Numbers · how we are allowed to quote them</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
-              The positioning is <strong>they cite, we measure</strong>. That only holds if our numbers survive being checked. <strong className="text-[#141821]">There are two sample sizes and they are not interchangeable.</strong>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
+              The positioning is <strong>they cite, we measure</strong>. That only holds if our numbers survive being checked. <strong className="text-[#FAFAF8]">There are two sample sizes and they are not interchangeable.</strong>
             </p>
-            <ul className="text-sm text-[#141821] space-y-1.5 mb-3">
+            <ul className="text-sm text-[#FAFAF8] space-y-1.5 mb-3">
               <li><strong>n=88</strong> body state split (Transitioning 51 / Depleted 31 / Ready 18) &mdash; publish exactly. Strongest number we own.</li>
               <li><strong>n=86</strong> section scores &mdash; publish exactly. Second strongest.</li>
               <li><strong>n=27</strong> pattern split, sex, age, fat storage &mdash; <strong className="text-[#A96A12]">ratios only</strong>.</li>
             </ul>
-            <p className="text-sm text-[#141821] leading-relaxed mb-2">The pattern split is 13/10/3/1 out of 27 people. Quoting &ldquo;48%&rdquo; off that is over-precise and will move. Say <em>roughly half</em>, <em>about a third</em>, <em>one in twenty-five</em>. <strong>Ratios survive a growing sample. Decimals don&rsquo;t.</strong></p>
-            <p className="text-sm text-[#141821] leading-relaxed">Re-run <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">scripts/state-of-the-data.ts</code> before every batch, and never label a card with an n belonging to a different question.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-2">The pattern split is 13/10/3/1 out of 27 people. Quoting &ldquo;48%&rdquo; off that is over-precise and will move. Say <em>roughly half</em>, <em>about a third</em>, <em>one in twenty-five</em>. <strong>Ratios survive a growing sample. Decimals don&rsquo;t.</strong></p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed">Re-run <code className="text-[12.5px] bg-[#1A1E26] px-1 rounded">scripts/state-of-the-data.ts</code> before every batch, and never label a card with an n belonging to a different question.</p>
           </Card>
 
-          <Card className="border-purple-500/40 bg-purple-500/5">
-            <SectionLabel>Stories · one a day, not three <span className="text-purple-700">(revised 14 Aug)</span></SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+          <Card className="border-[#2A2F39]/40 bg-[#1A1E26]/5">
+            <SectionLabel>Stories · one a day, not three <span className="text-[#C2C6CC]">(revised 14 Aug)</span></SectionLabel>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               The slate ran <strong>3/day for six weeks &mdash; 170 stories &mdash; and views fell.</strong> Instagram ranks stories on completion, so every story is a chance to be tapped past. Three a day of feed restatements teaches both the algorithm and the reader to skip.
             </p>
-            <ul className="text-sm text-[#141821] space-y-1.5 mb-3">
+            <ul className="text-sm text-[#FAFAF8] space-y-1.5 mb-3">
               <li><strong>One a day</strong>, and nothing in a story repeats that day&rsquo;s feed post.</li>
               <li><strong>Bottom third of every card left empty for a sticker.</strong> A poll or question gives a reason to stop and tap &mdash; taps are the completion signal that recovers ranking.</li>
               <li>Stickers do <strong>not</strong> reach ManyChat (story-reply automation unbuilt). The tap is the value, not the reply.</li>
               <li>Phone-manual &mdash; the Graph API strips link stickers, polls and countdowns. 1/day cuts uploads from 21 a week to 7.</li>
             </ul>
-            <p className="text-sm text-[#141821]">Diary reminders come off the live webcal feed with a 5-minute alarm; the alert carries the line and the sticker to add.</p>
+            <p className="text-sm text-[#FAFAF8]">Diary reminders come off the live webcal feed with a 5-minute alarm; the alert carries the line and the sticker to add.</p>
           </Card>
 
-          <Card className="border-[#1B6DFC]/40 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/40 bg-[#FAFAF8]/5">
             <SectionLabel>Doctrine · One Message, Obsessively Repeated</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               Brands are built by becoming known for ONE thing. Variety of message is <em>not</em> authority. Variety of <strong>expression</strong> on the same message is authority. ~1% of any given audience has actually seen a previous post; even they forget within days. The instinct to vary the topic is the instinct that prevents brand recognition from forming.
             </p>
-            <div className="p-3 bg-white border border-[#1B6DFC]/30 rounded-lg mb-3">
-              <p className="text-[10px] font-medium text-[#1B6DFC] mb-1.5">The ONE Body Recode message</p>
-              <p className="text-base font-semibold text-[#141821] leading-snug italic">
+            <div className="p-3 bg-[#14171D] border border-[#FAFAF8]/30 rounded-lg mb-3">
+              <p className="text-[10px] font-medium text-[#FAFAF8] mb-1.5">The ONE Body Recode message</p>
+              <p className="text-base font-semibold text-[#FAFAF8] leading-snug italic">
                 "It's a state problem, not a discipline / training / nutrition / willpower problem. Read the state first, then prescribe."
               </p>
             </div>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed mb-1.5">
-              <strong className="text-[#141821]">How to apply across every surface:</strong>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed mb-1.5">
+              <strong className="text-[#FAFAF8]">How to apply across every surface:</strong>
             </p>
-            <ul className="text-[12.5px] text-[#141821] leading-relaxed space-y-1 list-disc pl-5">
+            <ul className="text-[12.5px] text-[#FAFAF8] leading-relaxed space-y-1 list-disc pl-5">
               <li>Vary the entry (hook, archetype, signal). Always land on the state-first frame.</li>
               <li>Don't draft a post that ends without it. Different door, same room.</li>
               <li>Stop optimising for topic novelty. Optimise for the 100th way to say the same thing.</li>
@@ -2235,46 +2235,46 @@ export default function StrategyPage() {
 
           <Card className="border-[#22A05A]/30 bg-[#22A05A]/5">
             <SectionLabel>Content Engine · Stop Teaching, Start Reading</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               Engagement comes from self-recognition, not information. Every post should make someone <strong>feel seen</strong>, <strong>prove you can read them</strong>, or hand them a <strong>result about themselves</strong> - never just explain a concept. Lead with the feeling in their words, name the state, then interpret. Write sharp enough to catch the high performer who self-scores &quot;fine, just stuck&quot; but is clinically Depleted.
             </p>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed mb-1.5"><strong className="text-[#141821]">Signature formats, mapped into the 5 post types below:</strong></p>
-            <ul className="text-[12.5px] text-[#141821] leading-relaxed space-y-1 list-disc pl-5">
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed mb-1.5"><strong className="text-[#FAFAF8]">Signature formats, mapped into the 5 post types below:</strong></p>
+            <ul className="text-[12.5px] text-[#FAFAF8] leading-relaxed space-y-1 list-disc pl-5">
               <li><strong>Authority</strong> → State of the Data (your real scorecard patterns) · Receipts of the Read (screenshots of &quot;you nailed it&quot;, not before/afters)</li>
               <li><strong>Pattern Recognition</strong> → What Your ___ Says (cravings / 3pm crash / sleep) · The Scenario (named-character self-recognition)</li>
               <li><strong>Coach Perspective</strong> → React to DMs · Receipts</li>
               <li><strong>Contrarian</strong> → The Autopsy (dismantle a viral piece of wrong advice)</li>
               <li><strong>Diagnostic / Funnel</strong> → The Read (&quot;drop your 3 symptoms, I&apos;ll name your state&quot;) · The Prediction Flex · comment-to-DM personalised read</li>
             </ul>
-            <p className="text-[12.5px] text-[#666D7A] mt-2">Full detail in <strong className="text-[#1056D6]">Strategy Docs → Body Recode</strong> (Part II). Same 5 types, same archetype rotation - the formats just give each a sharper, repeatable shape.</p>
-            <div className="mt-3 p-3 bg-white border border-[#22A05A]/30 rounded-lg">
+            <p className="text-[12.5px] text-[#8A9099] mt-2">Full detail in <strong className="text-[#1056D6]">Strategy Docs → Body Recode</strong> (Part II). Same 5 types, same archetype rotation - the formats just give each a sharper, repeatable shape.</p>
+            <div className="mt-3 p-3 bg-[#14171D] border border-[#22A05A]/30 rounded-lg">
               <p className="text-[10px] font-medium text-[#177245] mb-1.5">Two doors + the Challenge promo layer</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">CTA by post type: <strong>doctrine/engagement → &quot;find your state&quot; (scorecard)</strong>; <strong>Challenge promo → &quot;join the free 14-day Challenge&quot;</strong>. Run ~1 explicit Challenge-promo post/week (rotating angles: what it is / what you get / who it&apos;s for / proof / why now / objection-kill), with a heavier burst when a wave opens. Typical week = 4 doctrine + 1 promo.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">CTA by post type: <strong>doctrine/engagement → &quot;find your state&quot; (scorecard)</strong>; <strong>Challenge promo → &quot;join the free 14-day Challenge&quot;</strong>. Run ~1 explicit Challenge-promo post/week (rotating angles: what it is / what you get / who it&apos;s for / proof / why now / objection-kill), with a heavier burst when a wave opens. Typical week = 4 doctrine + 1 promo.</p>
             </div>
           </Card>
 
-          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/30 bg-[#FAFAF8]/5">
             <SectionLabel>Stories · Daily Rhythm + Weekly Blueprint Beat</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               ~3 IG Stories/day carry the doctrine in short form (hook · pattern spotlight · quote · inside-the-challenge · photo overlay). Their link sticker points to the <strong>free Challenge</strong> - stories are cold / top-of-funnel, so they feed the Challenge entry, not the paid product.
             </p>
-            <div className="p-3 bg-white border border-[#1B6DFC]/30 rounded-lg">
-              <p className="text-[10px] font-medium text-[#1560E0] mb-1.5">Weekly Blueprint beat (added Jul 2026)</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">One story/week (Thursday, 5pm) drives the <strong>warm</strong> audience to <strong>bodyrecode.au/blueprint</strong> rather than the Challenge - the story-level expression of &quot;August = Blueprint drive.&quot; Keeps cold traffic on the free Challenge (per the evergreen ladder, Blueprint is warm-only) while giving Blueprint a consistent organic beat. Posting-reminder link stickers route automatically: Blueprint → /blueprint, every other story → /challenge.</p>
+            <div className="p-3 bg-[#14171D] border border-[#FAFAF8]/30 rounded-lg">
+              <p className="text-[10px] font-medium text-[#E4E4E0] mb-1.5">Weekly Blueprint beat (added Jul 2026)</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">One story/week (Thursday, 5pm) drives the <strong>warm</strong> audience to <strong>bodyrecode.au/blueprint</strong> rather than the Challenge - the story-level expression of &quot;August = Blueprint drive.&quot; Keeps cold traffic on the free Challenge (per the evergreen ladder, Blueprint is warm-only) while giving Blueprint a consistent organic beat. Posting-reminder link stickers route automatically: Blueprint → /blueprint, every other story → /challenge.</p>
             </div>
           </Card>
 
-          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/30 bg-[#FAFAF8]/5">
             <SectionLabel>Comment-to-DM Lead Mechanic</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               The lead-capture layer: a post says <strong>&quot;comment KEYWORD and I&apos;ll send you X&quot;</strong> → ManyChat auto-replies on the comment + DMs the asset → warms them → funnels to the scorecard / Challenge. The giveaway is a <strong>personalised micro-read or a real one-pager</strong>, never a generic PDF. <strong>Cadence: 1-2 comment-to-DM posts/week</strong> (inside the 5x/week, on a scenario hook - not extra load).
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-[12.5px]">
-                <thead><tr className="text-[#666D7A] text-left border-b border-[#1B6DFC]/20">
+                <thead><tr className="text-[#8A9099] text-left border-b border-[#FAFAF8]/20">
                   <th className="py-1.5 pr-3 font-semibold">Keyword</th><th className="py-1.5 pr-3 font-semibold">Lead magnet</th><th className="py-1.5 font-semibold">Funnels to</th>
                 </tr></thead>
-                <tbody className="text-[#141821]">
+                <tbody className="text-[#FAFAF8]">
                   {[
                     { k: 'STATE', m: 'The 3-State Cheat Sheet (Depleted / Transitioning / Ready)', f: 'Scorecard → Field Guide' },
                     { k: 'DRIFT', m: 'The Insulin-Drift Checklist (7 signs)', f: 'Scorecard → Challenge' },
@@ -2282,16 +2282,16 @@ export default function StrategyPage() {
                     { k: 'STUCK', m: 'Eat Less, Gain More? (protection-mode one-pager)', f: 'Challenge' },
                     { k: 'RESET', m: 'The Stress-Stored Reset (mini cortisol wind-down)', f: 'Sleep Reset ($19)' },
                   ].map(r => (
-                    <tr key={r.k} className="border-b border-[#E8EAEE]/60 last:border-0">
-                      <td className="py-1.5 pr-3 font-mono font-bold text-[#1B6DFC]">{r.k}</td>
+                    <tr key={r.k} className="border-b border-[#2A2F39]/60 last:border-0">
+                      <td className="py-1.5 pr-3 font-mono font-bold text-[#FAFAF8]">{r.k}</td>
                       <td className="py-1.5 pr-3">{r.m}</td>
-                      <td className="py-1.5 text-[#666D7A]">{r.f}</td>
+                      <td className="py-1.5 text-[#8A9099]">{r.f}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-[12.5px] text-[#666D7A] mt-2.5">Built: ManyChat automation + the 5 assets exist. Keyword flows + public replies live in <strong className="text-[#1B6DFC]">comment-to-dm-asset-map-v1.md</strong>. The delivery truck is ready - this just schedules the cargo (1-2 posts/week).</p>
+            <p className="text-[12.5px] text-[#8A9099] mt-2.5">Built: ManyChat automation + the 5 assets exist. Keyword flows + public replies live in <strong className="text-[#FAFAF8]">comment-to-dm-asset-map-v1.md</strong>. The delivery truck is ready - this just schedules the cargo (1-2 posts/week).</p>
           </Card>
 
           <Card>
@@ -2299,29 +2299,29 @@ export default function StrategyPage() {
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
             <div className="space-y-2">
               {[
-                { temp: 'Cold', colour: 'text-[#1056D6]', bg: 'bg-[#5390FF]/5 border-[#5390FF]/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
+                { temp: 'Cold', colour: 'text-[#1056D6]', bg: 'bg-[#C2C6CC]/5 border-[#C2C6CC]/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
                 { temp: 'Warm', colour: 'text-[#A96A12]', bg: 'bg-[#C08A2D]/5 border-[#F1DEB8]', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA - link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
-                { temp: 'Hot', colour: 'text-[#C82626]', bg: 'bg-red-400/5 border-[#F5C9C9]', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
+                { temp: 'Hot', colour: 'text-[#D4817E]', bg: 'bg-[#1A1E26]/5 border-[#F5C9C9]', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
               ].map(row => (
                 <div key={row.temp} className={`p-3 rounded-lg border ${row.bg}`}>
                   <div className="flex items-center justify-between mb-1">
                     <span className={`text-[12.5px] font-mediumr ${row.colour}`}>{row.temp}</span>
-                    <span className="text-[12.5px] text-[#666D7A]">{row.ratio}</span>
+                    <span className="text-[12.5px] text-[#8A9099]">{row.ratio}</span>
                   </div>
-                  <p className="text-sm text-[#141821] leading-relaxed mb-1">{row.desc}</p>
-                  <p className="text-[12.5px] text-[#666D7A]">Post types: {row.types}</p>
+                  <p className="text-sm text-[#FAFAF8] leading-relaxed mb-1">{row.desc}</p>
+                  <p className="text-[12.5px] text-[#8A9099]">Post types: {row.types}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-3 p-3 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-lg">
-              <p className="text-[12.5px] text-[#1B6DFC] font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1.5">Secondary: LinkedIn (executive reframe, organic only, slow-burn). Same scorecard, separate attribution.</p>
+            <div className="mt-3 p-3 bg-[#FAFAF8]/5 border border-[#FAFAF8]/20 rounded-lg">
+              <p className="text-[12.5px] text-[#FAFAF8] font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1.5">Secondary: LinkedIn (executive reframe, organic only, slow-burn). Same scorecard, separate attribution.</p>
             </div>
           </Card>
 
           <Card className="border-[#B7791F]/30 bg-[#B7791F]/5">
             <SectionLabel>Per-post measurement ladder · diagnose where it broke</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-3">
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-3">
               Conversion is downstream of reach. Before blaming the caption or CTA, find which gate the post failed at. Fix the <strong>earliest broken step</strong> - don&apos;t rewrite the CTA on a post nobody saw.
             </p>
             <div className="space-y-2">
@@ -2357,23 +2357,23 @@ export default function StrategyPage() {
                   source: 'Supabase `leads` table · Vercel analytics',
                 },
               ].map(row => (
-                <div key={row.gate} className="p-3 bg-white rounded-lg border border-[#F1DEB8]">
+                <div key={row.gate} className="p-3 bg-[#14171D] rounded-lg border border-[#F1DEB8]">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] font-medium text-[#A96A12]">{row.gate}</span>
-                    <span className="text-sm font-bold text-[#141821]">{row.label}</span>
-                    <span className="text-[12.5px] text-[#98A0AD]">·</span>
-                    <span className="text-[12.5px] text-[#666D7A]">{row.metric}</span>
+                    <span className="text-sm font-bold text-[#FAFAF8]">{row.label}</span>
+                    <span className="text-[12.5px] text-[#676D76]">·</span>
+                    <span className="text-[12.5px] text-[#8A9099]">{row.metric}</span>
                   </div>
-                  <p className="text-[12.5px] text-[#C82626] font-medium mb-1">If: {row.bad}</p>
-                  <p className="text-[12.5px] text-[#141821] leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Diagnose:</strong> ${row.diagnose}` }} />
-                  <p className="text-[12.5px] text-[#666D7A] leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Likely cause:</strong> ${row.cause}` }} />
+                  <p className="text-[12.5px] text-[#D4817E] font-medium mb-1">If: {row.bad}</p>
+                  <p className="text-[12.5px] text-[#FAFAF8] leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Diagnose:</strong> ${row.diagnose}` }} />
+                  <p className="text-[12.5px] text-[#8A9099] leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Likely cause:</strong> ${row.cause}` }} />
                   <p className="text-[12.5px] text-[#1056D6] font-medium leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Fix:</strong> ${row.fix}` }} />
-                  <p className="text-[10px] text-[#98A0AD] italic">Source: {row.source}</p>
+                  <p className="text-[10px] text-[#676D76] italic">Source: {row.source}</p>
                 </div>
               ))}
             </div>
             <div className="mt-3 p-3 bg-[#FAEFD8]/40 rounded-lg border border-[#F1DEB8]">
-              <p className="text-[12.5px] text-[#141821]">
+              <p className="text-[12.5px] text-[#FAFAF8]">
                 <strong>Healthy benchmark for the V2 reel pipeline:</strong> &gt;2K views, &gt;50 link clicks, &gt;5 Scorecard starts per reel. Multiply the format that hits this. Kill what underperforms two reels in a row.
               </p>
             </div>
@@ -2381,7 +2381,7 @@ export default function StrategyPage() {
 
           <Card>
             <SectionLabel>Weekly Structure</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] mb-3">Each non-Sunday slot rotates across the 4 archetypes week to week, so every archetype sees themselves at least once per fortnight. Sunday Diagnostic always targets the dominant archetype (Stressed Executive Woman) since it\'s the conversion-driving slot.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mb-3">Each non-Sunday slot rotates across the 4 archetypes week to week, so every archetype sees themselves at least once per fortnight. Sunday Diagnostic always targets the dominant archetype (Stressed Executive Woman) since it\'s the conversion-driving slot.</p>
             <div className="space-y-2">
               {[
                 { day: 'Monday', type: 'Authority', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Carousel (5–7 slides) or short video', cta: 'None' },
@@ -2390,13 +2390,13 @@ export default function StrategyPage() {
                 { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', archetype: 'Rotate 1→4', format: 'Talking video or photo card', cta: 'Soft' },
                 { day: 'Sunday', type: 'Challenge Promo (Door 2)', temp: 'Hot', archetype: '01 Stressed Exec', format: 'Graphic card or reel', cta: 'Hard - join the free 14-day Challenge' },
               ].map(row => (
-                <div key={row.day} className="grid grid-cols-6 gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE] text-[12.5px]">
-                  <div><p className="text-[#98A0AD] mb-0.5">Day</p><p className="font-semibold text-[#141821]">{row.day}</p></div>
-                  <div><p className="text-[#98A0AD] mb-0.5">Type</p><p className="font-medium text-[#1B6DFC]">{row.type}</p></div>
-                  <div><p className="text-[#98A0AD] mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-[#C82626]' : row.temp === 'Warm' ? 'text-[#A96A12]' : 'text-[#1056D6]'}>{row.temp}</p></div>
-                  <div><p className="text-[#98A0AD] mb-0.5">Archetype</p><p className="font-medium text-[#141821]">{row.archetype}</p></div>
-                  <div><p className="text-[#98A0AD] mb-0.5">Format</p><p className="text-[#666D7A]">{row.format}</p></div>
-                  <div><p className="text-[#98A0AD] mb-0.5">CTA</p><p className="text-[#666D7A]">{row.cta}</p></div>
+                <div key={row.day} className="grid grid-cols-6 gap-3 p-3 bg-[#14171D] rounded-lg border border-[#2A2F39] text-[12.5px]">
+                  <div><p className="text-[#676D76] mb-0.5">Day</p><p className="font-semibold text-[#FAFAF8]">{row.day}</p></div>
+                  <div><p className="text-[#676D76] mb-0.5">Type</p><p className="font-medium text-[#FAFAF8]">{row.type}</p></div>
+                  <div><p className="text-[#676D76] mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-[#D4817E]' : row.temp === 'Warm' ? 'text-[#A96A12]' : 'text-[#1056D6]'}>{row.temp}</p></div>
+                  <div><p className="text-[#676D76] mb-0.5">Archetype</p><p className="font-medium text-[#FAFAF8]">{row.archetype}</p></div>
+                  <div><p className="text-[#676D76] mb-0.5">Format</p><p className="text-[#8A9099]">{row.format}</p></div>
+                  <div><p className="text-[#676D76] mb-0.5">CTA</p><p className="text-[#8A9099]">{row.cta}</p></div>
                 </div>
               ))}
             </div>
@@ -2408,7 +2408,7 @@ export default function StrategyPage() {
               day: 'Monday',
               color: 'teal' as const,
               temp: 'Cold',
-              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#5390FF]/20',
+              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#C2C6CC]/20',
               tempDesc: 'Unaware → Problem aware',
               goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently." No CTA - plant the idea.',
               topics: [
@@ -2428,7 +2428,7 @@ export default function StrategyPage() {
               day: 'Wednesday',
               color: 'amber' as const,
               temp: 'Cold',
-              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#5390FF]/20',
+              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#C2C6CC]/20',
               tempDesc: 'Unaware → Problem aware',
               goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement. Soft CTA at most - "does this sound familiar?"',
               topics: [
@@ -2467,7 +2467,7 @@ export default function StrategyPage() {
               day: 'Tuesday (5th post)',
               color: 'amber' as const,
               temp: 'Cold / Warm',
-              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#5390FF]/20',
+              tempColor: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#C2C6CC]/20',
               tempDesc: 'Unaware → Problem aware (challenges existing belief)',
               goal: 'Challenge the standard fitness narrative. Make people question what they\'ve been told. Highest share potential. No direct CTA - let the idea do the work.',
               topics: [
@@ -2485,7 +2485,7 @@ export default function StrategyPage() {
               day: 'Sunday',
               color: 'red' as const,
               temp: 'Hot',
-              tempColor: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
+              tempColor: 'text-[#D4817E] bg-[#FDEDED] border-[#F5C9C9]',
               tempDesc: 'Solution aware → Ready to act',
               goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post. Hard CTA - link in bio.',
               topics: [
@@ -2501,17 +2501,17 @@ export default function StrategyPage() {
             <Card key={ct.type}>
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <Tag color={ct.color}>{ct.type}</Tag>
-                <span className="text-[12.5px] text-[#98A0AD]">{ct.day}</span>
+                <span className="text-[12.5px] text-[#676D76]">{ct.day}</span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${ct.tempColor}`}>{ct.temp} - {ct.tempDesc}</span>
               </div>
               <Body>{ct.goal}</Body>
               <div className="mt-4">
-                <p className="text-[12.5px] font-semibold text-[#666D7A] mb-2">Post Ideas</p>
+                <p className="text-[12.5px] font-semibold text-[#8A9099] mb-2">Post Ideas</p>
                 <BulletList items={ct.topics} />
               </div>
-              <div className="mt-4 p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Format</p>
-                <p className="text-[12.5px] text-[#666D7A]">{ct.format}</p>
+              <div className="mt-4 p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[12.5px] font-semibold text-[#8A9099] mb-1">Format</p>
+                <p className="text-[12.5px] text-[#8A9099]">{ct.format}</p>
               </div>
             </Card>
           ))}
@@ -2563,18 +2563,18 @@ export default function StrategyPage() {
                 },
               ].map(a => {
                 const colorMap = {
-                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-700' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700' },
+                  teal:   { border: 'border-[#2A2F39]/30',   bg: 'bg-[#1A1E26]/5',   accent: 'text-[#C2C6CC]' },
+                  violet: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]' },
                   amber:  { border: 'border-[#B7791F]/30',  bg: 'bg-[#B7791F]/5',  accent: 'text-[#A96A12]' },
-                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-700' },
+                  orange: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]' },
                 }[a.color]
                 return (
                   <div key={a.arch} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
                     <p className={`text-sm font-semibold mb-2 ${colorMap.accent}`}>{a.arch}</p>
                     <ul className="space-y-1.5">
                       {a.hooks.map((h, i) => (
-                        <li key={i} className="text-[13.5px] text-[#141821] leading-relaxed flex gap-2">
-                          <span className="text-[#666D7A] shrink-0">·</span>
+                        <li key={i} className="text-[13.5px] text-[#FAFAF8] leading-relaxed flex gap-2">
+                          <span className="text-[#8A9099] shrink-0">·</span>
                           {h}
                         </li>
                       ))}
@@ -2583,7 +2583,7 @@ export default function StrategyPage() {
                 )
               })}
             </div>
-            <p className="text-[12.5px] text-[#141821] mt-3">Weekly rotation: archetype 1 → 2 → 3 → 4, then back to 1. Stressed Executive Woman gets the additional Sunday Diagnostic slot since she\'s the dominant audience.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-3">Weekly rotation: archetype 1 → 2 → 3 → 4, then back to 1. Stressed Executive Woman gets the additional Sunday Diagnostic slot since she\'s the dominant audience.</p>
           </Card>
 
           <Card>
@@ -2597,11 +2597,11 @@ export default function StrategyPage() {
                 { type: 'Ad reel (talking head)', effort: 'Medium', tool: 'iPhone + tripod in gym. 15–30 sec.' },
                 { type: 'AI avatar reel (variation)', effort: 'Low', tool: 'ElevenLabs + HeyGen via Content Engine' },
               ].map(row => (
-                <div key={row.type} className="flex items-center justify-between gap-4 py-2 border-b border-[#E8EAEE] last:border-0 text-sm">
-                  <span className="text-[#141821]">{row.type}</span>
+                <div key={row.type} className="flex items-center justify-between gap-4 py-2 border-b border-[#2A2F39] last:border-0 text-sm">
+                  <span className="text-[#FAFAF8]">{row.type}</span>
                   <div className="flex items-center gap-3 shrink-0">
                     <Tag color={row.effort === 'Low' ? 'teal' : 'amber'}>{row.effort} effort</Tag>
-                    <span className="text-[12.5px] text-[#666D7A] hidden sm:block">{row.tool}</span>
+                    <span className="text-[12.5px] text-[#8A9099] hidden sm:block">{row.tool}</span>
                   </div>
                 </div>
               ))}
@@ -2614,9 +2614,9 @@ export default function StrategyPage() {
       {tab === 'prelaunch' && (
         <div className="space-y-4">
 
-          <Card className="border-[#E8EAEE] bg-[#F4F6F9]/60">
+          <Card className="border-[#2A2F39] bg-[#1A1E26]/60">
             <SectionLabel>Historical Reference</SectionLabel>
-            <p className="text-sm text-[#666D7A] leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-[#141821]">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running. <strong className="text-[#A96A12]">Note:</strong> the sample-caption CTAs here predate the two-door model - the current rule is CTA by post type (doctrine → scorecard, promo → Challenge; see Overview / Content System).</p>
+            <p className="text-sm text-[#8A9099] leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-[#FAFAF8]">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running. <strong className="text-[#A96A12]">Note:</strong> the sample-caption CTAs here predate the two-door model - the current rule is CTA by post type (doctrine → scorecard, promo → Challenge; see Overview / Content System).</p>
           </Card>
 
           {/* Tracker */}
@@ -2628,13 +2628,13 @@ export default function StrategyPage() {
                 <div className="flex items-center justify-between mb-4">
                   <SectionLabel>Pre-Launch Tracker</SectionLabel>
                   <div className="flex items-center gap-2">
-                    <div className="w-32 h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
+                    <div className="w-32 h-1.5 bg-[#1F242C] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#1B6DFC] rounded-full transition-all duration-300"
+                        className="h-full bg-[#FAFAF8] rounded-full transition-all duration-300"
                         style={{ width: `${(publishedCount / PRELAUNCH_POSTS.length) * 100}%` }}
                       />
                     </div>
-                    <span className="text-[12.5px] text-[#666D7A]">{publishedCount}/{PRELAUNCH_POSTS.length}</span>
+                    <span className="text-[12.5px] text-[#8A9099]">{publishedCount}/{PRELAUNCH_POSTS.length}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -2642,13 +2642,13 @@ export default function StrategyPage() {
                     const status = postStatuses[p.id] ?? 'not_started'
                     const cfg = POST_STATUS_CONFIG[status]
                     return (
-                      <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
+                      <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-[#14171D] border border-[#2A2F39]">
                         <div className="shrink-0 w-24">
-                          <p className="text-[#141821] text-[12.5px] font-medium">{p.date}</p>
-                          <p className="text-[#98A0AD] text-[12.5px]">{p.day}</p>
+                          <p className="text-[#FAFAF8] text-[12.5px] font-medium">{p.date}</p>
+                          <p className="text-[#676D76] text-[12.5px]">{p.day}</p>
                         </div>
-                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]' : 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#5390FF]/20'}`}>{p.temp}</span>
-                        <span className="text-[#141821] text-sm flex-1">{p.title}</span>
+                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-[#D4817E] bg-[#FDEDED] border-[#F5C9C9]' : 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#C2C6CC]/20'}`}>{p.temp}</span>
+                        <span className="text-[#FAFAF8] text-sm flex-1">{p.title}</span>
                         <button
                           onClick={() => cycleStatus(p.id)}
                           className={`text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${cfg.bg} ${cfg.color} ${cfg.border}`}
@@ -2660,8 +2660,8 @@ export default function StrategyPage() {
                   })}
                 </div>
                 {allDone && (
-                  <div className="mt-3 p-3 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-lg">
-                    <p className="text-[12.5px] text-[#1B6DFC] font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
+                  <div className="mt-3 p-3 bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] rounded-lg">
+                    <p className="text-[12.5px] text-[#FAFAF8] font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
                   </div>
                 )}
               </Card>
@@ -2679,15 +2679,15 @@ export default function StrategyPage() {
                 { post: 'Post 4', temp: 'Cold', desc: 'The three states - educate. Still no CTA.' },
                 { post: 'Post 5', temp: 'Hot', desc: 'Scorecard CTA - first time asking for action. Profile is now established.' },
               ].map(r => (
-                <div key={r.post} className="flex items-center gap-3 text-[12.5px] p-2 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                  <span className="text-[#666D7A] w-10 shrink-0">{r.post}</span>
-                  <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]' : 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#5390FF]/20'}`}>{r.temp}</span>
-                  <span className="text-[#666D7A]">{r.desc}</span>
+                <div key={r.post} className="flex items-center gap-3 text-[12.5px] p-2 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                  <span className="text-[#8A9099] w-10 shrink-0">{r.post}</span>
+                  <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-[#D4817E] bg-[#FDEDED] border-[#F5C9C9]' : 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#C2C6CC]/20'}`}>{r.temp}</span>
+                  <span className="text-[#8A9099]">{r.desc}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-3 p-3 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-lg">
-              <p className="text-[12.5px] text-[#1B6DFC] font-medium">After Post 5 - move to the ongoing 5×/week cadence and launch Meta ads.</p>
+            <div className="mt-3 p-3 bg-[#FAFAF8]/5 border border-[#FAFAF8]/20 rounded-lg">
+              <p className="text-[12.5px] text-[#FAFAF8] font-medium">After Post 5 - move to the ongoing 5×/week cadence and launch Meta ads.</p>
             </div>
           </Card>
 
@@ -2743,28 +2743,28 @@ export default function StrategyPage() {
       {tab === 'organic' && (
         <div className="space-y-4">
 
-          <Card className="border-teal-500/40 bg-teal-500/5">
-            <SectionLabel>Hashtags &amp; caption search <span className="text-teal-700">(14 Aug)</span></SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed mb-2"><strong className="text-[#141821]">Five per post, maximum.</strong> They do little for reach now &mdash; Instagram removed hashtag following and has said they are not a meaningful ranking factor &mdash; so the slots are for topic classification, not discovery.</p>
-            <ul className="text-sm text-[#141821] space-y-1.5 mb-3">
-              <li>Mid-size and specific beats huge and generic. <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">#perimenopauseweightloss</code> is findable; <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">#fitness</code> at 500m posts is not.</li>
+          <Card className="border-[#2A2F39]/40 bg-[#1A1E26]/5">
+            <SectionLabel>Hashtags &amp; caption search <span className="text-[#C2C6CC]">(14 Aug)</span></SectionLabel>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed mb-2"><strong className="text-[#FAFAF8]">Five per post, maximum.</strong> They do little for reach now &mdash; Instagram removed hashtag following and has said they are not a meaningful ranking factor &mdash; so the slots are for topic classification, not discovery.</p>
+            <ul className="text-sm text-[#FAFAF8] space-y-1.5 mb-3">
+              <li>Mid-size and specific beats huge and generic. <code className="text-[12.5px] bg-[#1A1E26] px-1 rounded">#perimenopauseweightloss</code> is findable; <code className="text-[12.5px] bg-[#1A1E26] px-1 rounded">#fitness</code> at 500m posts is not.</li>
               <li>Matched to the post, never one block pasted everywhere &mdash; identical tags on every post is the pattern Instagram treats as spammy.</li>
               <li>The sign-off sits <strong>above</strong> them: body &rarr; Link in bio &rarr; founder tag &rarr; tags.</li>
             </ul>
-            <p className="text-sm text-[#141821] leading-relaxed"><strong className="text-[#141821]">What replaced them is caption search.</strong> Instagram indexes caption text, so the words she actually types &mdash; perimenopause, menopause, belly fat &mdash; need to be <em>in the caption</em>, not in the tags.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed"><strong className="text-[#FAFAF8]">What replaced them is caption search.</strong> Instagram indexes caption text, so the words she actually types &mdash; perimenopause, menopause, belly fat &mdash; need to be <em>in the caption</em>, not in the tags.</p>
           </Card>
 
-          <Card className="border-pink-500/30 bg-pink-500/5">
+          <Card className="border-[#2A2F39]/30 bg-[#1A1E26]/5">
             <SectionLabel>Instagram Organic System</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed">This tab is the <strong className="text-[#141821]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same funnel (two-door model: scorecard + Challenge — see Overview). See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed">This tab is the <strong className="text-[#FAFAF8]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same funnel (two-door model: scorecard + Challenge — see Overview). See the <strong className="text-[#1056D6]">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           {/* Goal */}
-          <Card className="border-[#1B6DFC]/20 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/20 bg-[#FAFAF8]/5">
             <SectionLabel>The Goal</SectionLabel>
             <p className="text-[#1056D6] font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
-            <p className="text-[#666D7A] text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
-            <p className="text-[12.5px] text-[#666D7A] mt-2">Two-door model (see Overview): scorecard submissions are the <strong>Door 1</strong> signal; also track <strong>Challenge sign-ups</strong> from promo posts (Door 2). Both count as conversion.</p>
+            <p className="text-[#8A9099] text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
+            <p className="text-[12.5px] text-[#8A9099] mt-2">Two-door model (see Overview): scorecard submissions are the <strong>Door 1</strong> signal; also track <strong>Challenge sign-ups</strong> from promo posts (Door 2). Both count as conversion.</p>
           </Card>
 
           {/* Three levers */}
@@ -2776,8 +2776,8 @@ export default function StrategyPage() {
                   num: '1',
                   title: 'Content',
                   color: 'text-[#1056D6]',
-                  border: 'border-[#5390FF]/20',
-                  bg: 'bg-[#5390FF]/5',
+                  border: 'border-[#C2C6CC]/20',
+                  bg: 'bg-[#C2C6CC]/5',
                   items: [
                     '5x/week - Cold builds audience, Hot converts',
                     'Sunday Diagnostic post always drives to scorecard',
@@ -2801,9 +2801,9 @@ export default function StrategyPage() {
                 {
                   num: '3',
                   title: 'Warm Outreach',
-                  color: 'text-[#1B6DFC]',
-                  border: 'border-[#1B6DFC]/20',
-                  bg: 'bg-[#1B6DFC]/5',
+                  color: 'text-[#FAFAF8]',
+                  border: 'border-[#FAFAF8]/20',
+                  bg: 'bg-[#FAFAF8]/5',
                   items: [
                     'Reply to every comment within 1 hour of posting',
                     'DM every new follower - short welcome, no pitch',
@@ -2814,13 +2814,13 @@ export default function StrategyPage() {
               ].map(l => (
                 <div key={l.num} className={`border ${l.border} ${l.bg} rounded-xl p-4`}>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${l.color} bg-[#EFF1F4]`}>{l.num}</span>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${l.color} bg-[#1F242C]`}>{l.num}</span>
                     <p className={`text-sm font-semibold ${l.color}`}>{l.title}</p>
                   </div>
                   <ul className="space-y-1.5">
                     {l.items.map((item, i) => (
-                      <li key={i} className="text-[12.5px] text-[#666D7A] leading-relaxed flex gap-2">
-                        <span className="text-[#141821] shrink-0">·</span>
+                      <li key={i} className="text-[12.5px] text-[#8A9099] leading-relaxed flex gap-2">
+                        <span className="text-[#FAFAF8] shrink-0">·</span>
                         {item}
                       </li>
                     ))}
@@ -2833,7 +2833,7 @@ export default function StrategyPage() {
           {/* Weekly action plan */}
           <Card>
             <SectionLabel>Weekly Action Plan</SectionLabel>
-            <p className="text-[#666D7A] text-[12.5px] mb-3">Steady-state ongoing rhythm. Pre-launch is complete - this is the cadence to maintain week after week. What to do each week beyond just posting.</p>
+            <p className="text-[#8A9099] text-[12.5px] mb-3">Steady-state ongoing rhythm. Pre-launch is complete - this is the cadence to maintain week after week. What to do each week beyond just posting.</p>
             <div className="space-y-2">
               {[
                 { day: 'Mon', post: true,  action: 'Post (Authority - Cold · Door 1). Reply to all weekend comments within 1hr.' },
@@ -2844,13 +2844,13 @@ export default function StrategyPage() {
                 { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, Challenge sign-ups, follower growth. Note in weekly log.' },
                 { day: 'Sun', post: true,  action: 'Post (Challenge Promo - Hot · Door 2 → "Join the free 14-day Challenge"). The weekly promo slot; turn up wave-scarcity when a wave opens. DM anyone who comments asking how to join.' },
               ].map(r => (
-                <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                  <span className="text-[12.5px] font-medium text-[#666D7A] w-7 shrink-0 pt-0.5">{r.day}</span>
+                <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                  <span className="text-[12.5px] font-medium text-[#8A9099] w-7 shrink-0 pt-0.5">{r.day}</span>
                   {r.post
-                    ? <span className="text-[12.5px] font-semibold text-[#1B6DFC] shrink-0 pt-0.5">Post</span>
-                    : <span className="text-[12.5px] font-semibold text-[#141821] shrink-0 pt-0.5">Rest</span>
+                    ? <span className="text-[12.5px] font-semibold text-[#FAFAF8] shrink-0 pt-0.5">Post</span>
+                    : <span className="text-[12.5px] font-semibold text-[#FAFAF8] shrink-0 pt-0.5">Rest</span>
                   }
-                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{r.action}</p>
+                  <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{r.action}</p>
                 </div>
               ))}
             </div>
@@ -2859,22 +2859,22 @@ export default function StrategyPage() {
           {/* Conversion milestones */}
           <Card>
             <SectionLabel>Conversion Milestones</SectionLabel>
-            <p className="text-[#666D7A] text-[12.5px] mb-3">What the numbers should look like over 6 weeks. Track scorecard submissions per week in the CRM.</p>
+            <p className="text-[#8A9099] text-[12.5px] mb-3">What the numbers should look like over 6 weeks. Track scorecard submissions per week in the CRM.</p>
             <div className="space-y-2">
               {[
-                { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-[#666D7A]', bg: 'bg-[#EFF1F4]/50', border: 'border-[#E8EAEE]', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
+                { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-[#8A9099]', bg: 'bg-[#1F242C]/50', border: 'border-[#2A2F39]', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
                 { weeks: 'Week 3–4', subs: '1–2/week', label: 'Traction', color: 'text-[#A96A12]', bg: 'bg-[#FDF6E9]', border: 'border-[#F1DEB8]', note: 'Content is landing. Warm outreach is working. Dial in hook quality.' },
-                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-[#1B6DFC]', bg: 'bg-[rgba(27,109,252,0.08)]', border: 'border-[#1B6DFC]/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
+                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-[#FAFAF8]', bg: 'bg-[rgba(27,109,252,0.08)]', border: 'border-[#FAFAF8]/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
               ].map(m => (
                 <div key={m.weeks} className={`border ${m.border} ${m.bg} rounded-xl p-4`}>
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-3">
-                      <span className="text-[12.5px] text-[#666D7A]">{m.weeks}</span>
+                      <span className="text-[12.5px] text-[#8A9099]">{m.weeks}</span>
                       <span className={`text-sm font-bold ${m.color}`}>{m.subs}</span>
                     </div>
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${m.border} ${m.color}`}>{m.label}</span>
                   </div>
-                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{m.note}</p>
+                  <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{m.note}</p>
                 </div>
               ))}
             </div>
@@ -2883,12 +2883,12 @@ export default function StrategyPage() {
           {/* Daily engagement routine */}
           <Card>
             <SectionLabel>Daily Engagement Routine - 20 Min/Day</SectionLabel>
-            <p className="text-[#666D7A] text-[12.5px] mb-4">Do this every day, separate from posting. The algorithm reads engagement signal - an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
+            <p className="text-[#8A9099] text-[12.5px] mb-4">Do this every day, separate from posting. The algorithm reads engagement signal - an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
             <div className="space-y-3">
 
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[12.5px] font-semibold text-[#141821] mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
-                <p className="text-[12.5px] text-[#141821] mb-3">Browse these hashtags and leave 5–8 genuine comments on recent posts. Hashtags grouped by archetype so each session targets one specific person, not generic fitness.</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[12.5px] font-semibold text-[#FAFAF8] mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
+                <p className="text-[12.5px] text-[#FAFAF8] mb-3">Browse these hashtags and leave 5–8 genuine comments on recent posts. Hashtags grouped by archetype so each session targets one specific person, not generic fitness.</p>
                 <div className="space-y-2">
                   {[
                     {
@@ -2918,15 +2918,15 @@ export default function StrategyPage() {
                     },
                   ].map(g => {
                     const accent = {
-                      teal:   'text-teal-700 bg-teal-50 border-teal-500/30',
-                      violet: 'text-violet-700 bg-violet-50 border-violet-500/30',
+                      teal:   'text-[#C2C6CC] bg-[#1A1E26] border-[#2A2F39]/30',
+                      violet: 'text-[#C2C6CC] bg-[#1A1E26] border-[#2A2F39]/30',
                       amber:  'text-[#A96A12] bg-[#FDF6E9] border-[#B7791F]/30',
-                      orange: 'text-orange-700 bg-orange-50 border-orange-500/30',
-                      stone:  'text-[#141821] bg-[#F4F6F9] border-[#E8EAEE]',
+                      orange: 'text-[#C2C6CC] bg-[#1A1E26] border-[#2A2F39]/30',
+                      stone:  'text-[#FAFAF8] bg-[#1A1E26] border-[#2A2F39]',
                     }[g.color]
                     return (
                       <div key={g.arch}>
-                        <p className="text-[11px] font-medium text-[#141821] mb-1.5">{g.arch}</p>
+                        <p className="text-[11px] font-medium text-[#FAFAF8] mb-1.5">{g.arch}</p>
                         <div className="flex flex-wrap gap-1">
                           {g.tags.map(h => (
                             <span key={h} className={`text-[10px] border px-1.5 py-0.5 rounded ${accent}`}>{h}</span>
@@ -2938,9 +2938,9 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[12.5px] font-semibold text-[#141821] mb-2">Step 2 - Engage with target accounts (5 min)</p>
-                <p className="text-[12.5px] text-[#666D7A] mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed - that&apos;s a free impression on a warm audience.</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[12.5px] font-semibold text-[#FAFAF8] mb-2">Step 2 - Engage with target accounts (5 min)</p>
+                <p className="text-[12.5px] text-[#8A9099] mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed - that&apos;s a free impression on a warm audience.</p>
                 <div className="space-y-1.5">
                   {[
                     { type: 'Brisbane PTs and coaches', why: 'Your direct audience watches these accounts' },
@@ -2950,34 +2950,34 @@ export default function StrategyPage() {
                     { type: 'Corporate wellness and productivity accounts', why: 'High-functioning professionals in your target income bracket' },
                   ].map(r => (
                     <div key={r.type} className="flex items-start gap-2 text-[12.5px]">
-                      <span className="text-[#1B6DFC] shrink-0 mt-0.5">-</span>
+                      <span className="text-[#FAFAF8] shrink-0 mt-0.5">-</span>
                       <div>
-                        <span className="text-[#141821] font-medium">{r.type}</span>
-                        <span className="text-[#98A0AD]"> - {r.why}</span>
+                        <span className="text-[#FAFAF8] font-medium">{r.type}</span>
+                        <span className="text-[#676D76]"> - {r.why}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[12.5px] font-semibold text-[#141821] mb-2">Step 3 - React to stories (5 min)</p>
-                <p className="text-[12.5px] text-[#666D7A]">React to stories from people in your target audience. A reaction opens a DM thread - low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[12.5px] font-semibold text-[#FAFAF8] mb-2">Step 3 - React to stories (5 min)</p>
+                <p className="text-[12.5px] text-[#8A9099]">React to stories from people in your target audience. A reaction opens a DM thread - low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
               </div>
 
-              <div className="p-3 bg-[#DC2626]/5 rounded-lg border border-[#DC2626]/20">
-                <p className="text-[12.5px] font-semibold text-[#C82626] mb-2">Comment quality rules - non-negotiable</p>
+              <div className="p-3 bg-[#D4817E]/5 rounded-lg border border-[#D4817E]/20">
+                <p className="text-[12.5px] font-semibold text-[#D4817E] mb-2">Comment quality rules - non-negotiable</p>
                 <div className="space-y-1">
                   {[
                     { bad: '"Great post!" / "Love this!" / "So true!"', good: 'Never. Generic comments are invisible and signal a bot.' },
                     { bad: 'Always add something real', good: 'A point of agreement, a related insight, a question - 2–3 sentences. Comments that show expertise get profile clicks.' },
                     { bad: 'Example of a good comment', good: '"The cortisol-fat loss connection is underrated. Most people push harder when they\'re stuck and wonder why nothing moves. Usually the opposite is needed."' },
                   ].map((r, i) => (
-                    <div key={i} className="flex items-start gap-2 text-[12.5px] py-1 border-b border-[#DC2626]/10 last:border-0">
-                      <span className="text-[#C82626] shrink-0 mt-0.5">-</span>
+                    <div key={i} className="flex items-start gap-2 text-[12.5px] py-1 border-b border-[#D4817E]/10 last:border-0">
+                      <span className="text-[#D4817E] shrink-0 mt-0.5">-</span>
                       <div>
-                        <span className="text-[#666D7A] font-medium">{r.bad}: </span>
-                        <span className="text-[#666D7A]">{r.good}</span>
+                        <span className="text-[#8A9099] font-medium">{r.bad}: </span>
+                        <span className="text-[#8A9099]">{r.good}</span>
                       </div>
                     </div>
                   ))}
@@ -2990,7 +2990,7 @@ export default function StrategyPage() {
           {/* Content designed to grow */}
           <Card>
             <SectionLabel>Content Designed to Grow - Not Just Post</SectionLabel>
-            <p className="text-[#666D7A] text-[12.5px] mb-3">The algorithm rewards saves and shares above all else. These signals tell Instagram the post is worth distributing beyond your followers.</p>
+            <p className="text-[#8A9099] text-[12.5px] mb-3">The algorithm rewards saves and shares above all else. These signals tell Instagram the post is worth distributing beyond your followers.</p>
             <div className="space-y-2">
               {[
                 { signal: 'Saves', how: 'Reference content - "save this for next time your fat loss stalls". The body states carousel is a save magnet. Any post with a framework, checklist, or explainer gets saved.' },
@@ -2999,16 +2999,16 @@ export default function StrategyPage() {
                 { signal: 'Comments', how: 'Posts that ask a direct question at the end get more comments. More comments = more reach. End every Pattern Recognition post with one question.' },
                 { signal: 'Story polls', how: 'Use Instagram Stories polls 2–3x per week. Simple yes/no questions about symptoms ("Do you train consistently but feel like nothing is changing?"). Each response is a warm signal - that person is your audience.' },
               ].map(r => (
-                <div key={r.signal} className="flex items-start gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <span className="text-[12.5px] font-medium text-[#1B6DFC] w-14 shrink-0 pt-0.5">{r.signal}</span>
-                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{r.how}</p>
+                <div key={r.signal} className="flex items-start gap-3 p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <span className="text-[12.5px] font-medium text-[#FAFAF8] w-14 shrink-0 pt-0.5">{r.signal}</span>
+                  <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{r.how}</p>
                 </div>
               ))}
             </div>
           </Card>
 
           {/* What NOT to do */}
-          <Card className="border-[#DC2626]/20 bg-[#DC2626]/5">
+          <Card className="border-[#D4817E]/20 bg-[#D4817E]/5">
             <SectionLabel>What Not to Do</SectionLabel>
             <BulletList items={[
               'Follow/unfollow strategy - it works short-term and destroys trust long-term. Your audience is intelligent. They notice.',
@@ -3022,7 +3022,7 @@ export default function StrategyPage() {
           {/* If not converting */}
           <Card>
             <SectionLabel>If You&apos;re Not Converting by Week 6</SectionLabel>
-            <p className="text-[#666D7A] text-sm mb-3">Don&apos;t launch ads. Diagnose first.</p>
+            <p className="text-[#8A9099] text-sm mb-3">Don&apos;t launch ads. Diagnose first.</p>
             <div className="space-y-2">
               {[
                 { check: 'Hook quality', fix: 'Read back your last 10 first lines. If they don\'t stop your own scroll, they won\'t stop anyone else\'s. Rewrite the weakest 3.' },
@@ -3031,19 +3031,19 @@ export default function StrategyPage() {
                 { check: 'CTA clarity', fix: 'Every Sunday post must have one clear action: take the scorecard. Not "follow", not "save" - one action. Check the last 4 Sunday posts.' },
                 { check: 'Content temperature mix', fix: 'If every post is Cold (educational), there\'s nothing pulling people toward an action. Hot posts (Sunday Diagnostic) must run every week without exception.' },
               ].map(r => (
-                <div key={r.check} className="p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                  <p className="text-[12.5px] font-semibold text-[#141821] mb-1">{r.check}</p>
-                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{r.fix}</p>
+                <div key={r.check} className="p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                  <p className="text-[12.5px] font-semibold text-[#FAFAF8] mb-1">{r.check}</p>
+                  <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{r.fix}</p>
                 </div>
               ))}
             </div>
           </Card>
 
           {/* The trigger */}
-          <Card className="border-[#1B6DFC]/20 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/20 bg-[#FAFAF8]/5">
             <SectionLabel>The Ads Trigger</SectionLabel>
             <p className="text-[#1056D6] font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
-            <p className="text-[#666D7A] text-[12.5px]">At that point you have proof that cold traffic can find you, the profile converts them, and the scorecard holds attention. Ads buy more of that. Without those two weeks of data, you&apos;re paying to test whether the funnel works instead of to scale what already does.</p>
+            <p className="text-[#8A9099] text-[12.5px]">At that point you have proof that cold traffic can find you, the profile converts them, and the scorecard holds attention. Ads buy more of that. Without those two weeks of data, you&apos;re paying to test whether the funnel works instead of to scale what already does.</p>
           </Card>
 
         </div>
@@ -3058,81 +3058,81 @@ export default function StrategyPage() {
               into public/docs/ads/ so the actual copy is reachable while setting up in
               Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
               durable positioning doc per brand, this is an operational pack per round. */}
-          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/30 bg-[#FAFAF8]/5">
             <SectionLabel>Round 2 Pack · {ROUND2_PACK_VERSION} · the copy to upload</SectionLabel>
             <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. <strong>Stream A</strong> (neurowellness) goes up first at $25/day; <strong>Stream B</strong> (readiness) and the metabolic disqualifier are created but paused until the week-2 gate. Carries the <strong>hyper-dopamine structure</strong> unchanged, the 13-point pre-flight checklist, the seven-part visual system, and the numbers rule for which sample sizes can be quoted exactly.</Body>
             <div className="flex gap-2 mt-3">
               <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
-                className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#E4E4E0] text-[#0B0D10] hover:bg-[#1056D6]">View .pdf</a>
               <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.md`} target="_blank" rel="noopener noreferrer"
-                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#2A2F39] text-[#FAFAF8] hover:bg-[#1A1E26]">View .md</a>
               <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
-                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#666D7A] hover:bg-[#F4F6F9]">Round 1 (archived)</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#2A2F39] text-[#8A9099] hover:bg-[#1A1E26]">Round 1 (archived)</a>
             </div>
-            <p className="text-[12.5px] text-[#666D7A] mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_ROUND2_TWO_STREAMS.md</code>. After editing, re-run <code className="text-[11px]">scripts/gen-round2-ads.ts</code> and re-copy the pack into <code className="text-[11px]">public/docs/ads/</code> so the cards, the download and the doc cannot drift apart.</p>
+            <p className="text-[12.5px] text-[#8A9099] mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_ROUND2_TWO_STREAMS.md</code>. After editing, re-run <code className="text-[11px]">scripts/gen-round2-ads.ts</code> and re-copy the pack into <code className="text-[11px]">public/docs/ads/</code> so the cards, the download and the doc cannot drift apart.</p>
           </Card>
 
-          <Card className="border-pink-500/30 bg-pink-500/5">
+          <Card className="border-[#2A2F39]/30 bg-[#1A1E26]/5">
             <SectionLabel>Meta Ads Only</SectionLabel>
-            <p className="text-sm text-[#141821] leading-relaxed">All paid spend goes to Meta (Instagram feed + Facebook, automatic placements). <strong>Statics only - no Reels, no video.</strong> LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
+            <p className="text-sm text-[#FAFAF8] leading-relaxed">All paid spend goes to Meta (Instagram feed + Facebook, automatic placements). <strong>Statics only - no Reels, no video.</strong> LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
           </Card>
 
           <Card className="border-[#B7791F]/20 bg-[#B7791F]/5">
             <SectionLabel>Sequence Rule - by funnel</SectionLabel>
             <Body><strong>Funnel A (organic IG → Scorecard → Zoom → Coaching):</strong> organic-first. Ads are a multiplier on a system that already converts; not a replacement for proving the funnel works. Run organic until consistent scorecard submissions from content. Funnel A doesn&apos;t take paid spend today.</Body>
-            <p className="text-[12.5px] text-[#141821] mt-2 leading-relaxed"><strong>Funnel B (cold paid → The Body Decode → Blueprint → Membership → Coaching):</strong> paid IS the engine. The whole ladder is designed for the cold ad to be the entry point. Don&apos;t wait for organic to prove Funnel B - the /decode LP, the five-day product, the in-portal intake, the ascension cards and the Lead CAPI wire all exist precisely so paid can launch as the primary volume engine. Self-liquidation maths (Blueprint take-rate × $97 + Coaching conversion ≥ CPS) decides whether spend scales; organic doesn&apos;t gate the start.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-2 leading-relaxed"><strong>Funnel B (cold paid → The Body Decode → Blueprint → Membership → Coaching):</strong> paid IS the engine. The whole ladder is designed for the cold ad to be the entry point. Don&apos;t wait for organic to prove Funnel B - the /decode LP, the five-day product, the in-portal intake, the ascension cards and the Lead CAPI wire all exist precisely so paid can launch as the primary volume engine. Self-liquidation maths (Blueprint take-rate × $97 + Coaching conversion ≥ CPS) decides whether spend scales; organic doesn&apos;t gate the start.</p>
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Daily Budget · Phase 1</SectionLabel>
-              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">$25/day</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">One broad ad set. Budget at campaign level.</p>
+              <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">$25/day</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">One broad ad set. Budget at campaign level.</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
-              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">2 weeks</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">Before judging the stage gate</p>
+              <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">2 weeks</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">Before judging the stage gate</p>
             </Card>
             <Card>
               <SectionLabel>Phase 1 Spend</SectionLabel>
-              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">~$350</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">Before scale-or-debug decision</p>
+              <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">~$350</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">Before scale-or-debug decision</p>
             </Card>
           </div>
 
           {/* Budget Strategy - Option D Stage Gate (locked 2026-06-29) */}
-          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/30 bg-[#FAFAF8]/5">
             <SectionLabel>Budget Strategy · BROAD (decided 2026-08-05) · supersedes Option D targeting</SectionLabel>
             <Body><strong>The July run exhausted its audience.</strong> 13-30 Jul reached only 3,613 people: the first 10 days returned 21 results at $11.15 each, the last 8 returned 2 at $103.56. CPM held flat at ~$48 across both halves, so it did not get more expensive to reach people - it ran out of people to reach. The unit economics work; capacity was the constraint. <strong>Round 1 therefore runs BROAD</strong>: one ad set, no interest stacking, no lookalikes. The stage-gate budget logic still holds; the archetype ad-set structure does not.</Body>
 
             <div className="mt-3 space-y-2 text-[12.5px]">
-              <div className="bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 rounded-lg p-3">
+              <div className="bg-[#FAFAF8]/10 border border-[#FAFAF8]/30 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#1056D6] mb-1">Round 1 · Broad · four ads, one ad set</p>
-                <p className="text-[#141821] leading-relaxed">One ad set, <strong>broad</strong>: Australia, 30-60, all genders. No interests, no lookalikes. <strong>$25/day at campaign level.</strong> Round 2 runs <strong>Stream A</strong> (neurowellness, three ads) first. Stream B (readiness) and the metabolic disqualifier are built and paused until the week-2 gate. Distinct concepts on distinct images, tested inside the one set. The no-banner test moved to Round 2 on 5 Aug so a discovery slot was not spent on a duplicate of Ad 6. At $25/day, separate ad sets would get ~$6 each and learn nothing, so creative is tested inside one set. Target: cost per Body Decode signup low enough that Blueprint take-rate × $97 + coaching conversion clears it.</p>
+                <p className="text-[#FAFAF8] leading-relaxed">One ad set, <strong>broad</strong>: Australia, 30-60, all genders. No interests, no lookalikes. <strong>$25/day at campaign level.</strong> Round 2 runs <strong>Stream A</strong> (neurowellness, three ads) first. Stream B (readiness) and the metabolic disqualifier are built and paused until the week-2 gate. Distinct concepts on distinct images, tested inside the one set. The no-banner test moved to Round 2 on 5 Aug so a discovery slot was not spent on a duplicate of Ad 6. At $25/day, separate ad sets would get ~$6 each and learn nothing, so creative is tested inside one set. Target: cost per Body Decode signup low enough that Blueprint take-rate × $97 + coaching conversion clears it.</p>
               </div>
 
-              <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-1">Stage gate decision · End of week 2</p>
-                <p className="text-[#141821] leading-relaxed mb-2"><strong>If cost per signup hits target:</strong> raise to $75/day on the same broad set and add fresh creative, rather than adding audiences. Broad plus more creative is the scale path now. <strong>The fresh creative is the three format-breakers below</strong> - tripling spend on four ads that have already run their course just buys the same fatigue faster.</p>
-                <p className="text-[#141821] leading-relaxed mb-2"><strong>If it misses:</strong> DO NOT narrow the targeting. Narrowing is what caused the July exhaustion. Debug in order: (1) creative - swap in a format-breaker, one at a time, same ad set, (2) in-portal intake friction, (3) /decode LP conversion, (4) the offer itself.</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Expect broad to look worse before better.</strong> It takes longer to stabilise - do not judge it on the first 48h. CPM should fall relative to July&apos;s ~$48. If CPM does not fall, the audience was never the constraint and the creative is.</p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong className="text-[#A96A12]">Broad is all genders, and The Body Decode is not.</strong> The page opens &quot;for women whose bodies have stopped responding&quot;, the signup form turns men away, and the scorecard routes them to a strategy call instead (25 Aug). Men were <strong>3 of the 29 typed leads, about 10%</strong>. <strong>Do NOT add a gender filter to fix it</strong> - the optimisation event below is the actual lever.</p>
+              <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-1">Stage gate decision · End of week 2</p>
+                <p className="text-[#FAFAF8] leading-relaxed mb-2"><strong>If cost per signup hits target:</strong> raise to $75/day on the same broad set and add fresh creative, rather than adding audiences. Broad plus more creative is the scale path now. <strong>The fresh creative is the three format-breakers below</strong> - tripling spend on four ads that have already run their course just buys the same fatigue faster.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mb-2"><strong>If it misses:</strong> DO NOT narrow the targeting. Narrowing is what caused the July exhaustion. Debug in order: (1) creative - swap in a format-breaker, one at a time, same ad set, (2) in-portal intake friction, (3) /decode LP conversion, (4) the offer itself.</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Expect broad to look worse before better.</strong> It takes longer to stabilise - do not judge it on the first 48h. CPM should fall relative to July&apos;s ~$48. If CPM does not fall, the audience was never the constraint and the creative is.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong className="text-[#A96A12]">Broad is all genders, and The Body Decode is not.</strong> The page opens &quot;for women whose bodies have stopped responding&quot;, the signup form turns men away, and the scorecard routes them to a strategy call instead (25 Aug). Men were <strong>3 of the 29 typed leads, about 10%</strong>. <strong>Do NOT add a gender filter to fix it</strong> - the optimisation event below is the actual lever.</p>
               </div>
 
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">Pre-launch · check the optimisation event</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Which event the campaign optimises for decides whether broad self-corrects.</strong> Checked 25 Aug 2026.</p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong><code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Lead</code> fires on ONE thing</strong> - a Body Decode enrolment, in <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">/api/challenge/enroll</code>. Men are blocked from that route, so a man can never fire it. Optimise on <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Lead</code> and the algorithm stops serving men within days on its own - <strong>a gender filter buys nothing the optimiser was not going to do anyway</strong>, and costs the freedom that made broad work after July.</p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong className="text-[#A96A12]">The trap:</strong> a Body Decode enrolment fires <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">CompleteRegistration</code> as well, deliberately - Meta locks an ad set&apos;s conversion event after publish, so both are fired to keep the swap open without rebuilding the ad set. But <strong>the scorecard fires <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">CompleteRegistration</code> too, and men CAN complete the scorecard.</strong> So on that event a man counts as a conversion while never being able to enrol, and Meta keeps buying traffic that cannot convert downstream. On <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Lead</code> he cannot. <strong>Fix the event, not the audience.</strong></p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong>/book now fires <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Schedule</code></strong> (25 Aug). It fired nothing before, so every strategy call the funnel produced was invisible - and that was never a male-traffic issue, which is how it was first framed: <strong>emails 3, 4 and 5 of the female sequence push /book, and so does the scorecard result for Transitioning and Ready.</strong> Meta was blind to all of it. <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Schedule</code> is a Meta standard event, so it reports without defining a custom conversion.</p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong className="text-[#A96A12]">MEASUREMENT ONLY. Do not make Schedule an ad set&apos;s conversion event.</strong> Bookings are rare next to Decode signups, and Meta needs roughly 50 conversions a week per ad set to leave the learning phase. At $25/day, optimising on the rare event starves it. Keep the ad sets on <code className="bg-[#F4F6F9] px-1 rounded text-[#1B6DFC] text-[11px]">Lead</code>; in a month the Schedule count answers whether calls are worth chasing, on evidence rather than argument.</p>
-                <p className="text-[#141821] leading-relaxed mt-2"><strong>Revisit gender targeting after Round 2 has run</strong>, on real numbers rather than three. Note the July exhaustion was <em>interest</em> narrowing - lookalikes and interest stacks shrink the deliverable pool, a demographic filter does not. The reason to hold off is that changing targeting and creative in the same round confounds the read.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Pre-launch · check the optimisation event</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Which event the campaign optimises for decides whether broad self-corrects.</strong> Checked 25 Aug 2026.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong><code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Lead</code> fires on ONE thing</strong> - a Body Decode enrolment, in <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">/api/challenge/enroll</code>. Men are blocked from that route, so a man can never fire it. Optimise on <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Lead</code> and the algorithm stops serving men within days on its own - <strong>a gender filter buys nothing the optimiser was not going to do anyway</strong>, and costs the freedom that made broad work after July.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong className="text-[#A96A12]">The trap:</strong> a Body Decode enrolment fires <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">CompleteRegistration</code> as well, deliberately - Meta locks an ad set&apos;s conversion event after publish, so both are fired to keep the swap open without rebuilding the ad set. But <strong>the scorecard fires <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">CompleteRegistration</code> too, and men CAN complete the scorecard.</strong> So on that event a man counts as a conversion while never being able to enrol, and Meta keeps buying traffic that cannot convert downstream. On <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Lead</code> he cannot. <strong>Fix the event, not the audience.</strong></p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong>/book now fires <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Schedule</code></strong> (25 Aug). It fired nothing before, so every strategy call the funnel produced was invisible - and that was never a male-traffic issue, which is how it was first framed: <strong>emails 3, 4 and 5 of the female sequence push /book, and so does the scorecard result for Transitioning and Ready.</strong> Meta was blind to all of it. <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Schedule</code> is a Meta standard event, so it reports without defining a custom conversion.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong className="text-[#A96A12]">MEASUREMENT ONLY. Do not make Schedule an ad set&apos;s conversion event.</strong> Bookings are rare next to Decode signups, and Meta needs roughly 50 conversions a week per ad set to leave the learning phase. At $25/day, optimising on the rare event starves it. Keep the ad sets on <code className="bg-[#1A1E26] px-1 rounded text-[#FAFAF8] text-[11px]">Lead</code>; in a month the Schedule count answers whether calls are worth chasing, on evidence rather than argument.</p>
+                <p className="text-[#FAFAF8] leading-relaxed mt-2"><strong>Revisit gender targeting after Round 2 has run</strong>, on real numbers rather than three. Note the July exhaustion was <em>interest</em> narrowing - lookalikes and interest stacks shrink the deliverable pool, a demographic filter does not. The reason to hold off is that changing targeting and creative in the same round confounds the read.</p>
               </div>
 
-              <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-1">Why one ad set, not several</p>
-                <p className="text-[#141821] leading-relaxed">$25/day split across 3 ad sets = $8.30/day each, and Meta needs far more than that per set to learn. It shows ads to suboptimal slices, cost stays high, and you end up with directional noise rather than data. July proved the second half of this too: within the one ad set that did run, a single ad took $220 of $225. Watch spend distribution across the four ads - if it is not roughly even by day 3, you are testing one ad again.</p>
+              <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-1">Why one ad set, not several</p>
+                <p className="text-[#FAFAF8] leading-relaxed">$25/day split across 3 ad sets = $8.30/day each, and Meta needs far more than that per set to learn. It shows ads to suboptimal slices, cost stays high, and you end up with directional noise rather than data. July proved the second half of this too: within the one ad set that did run, a single ad took $220 of $225. Watch spend distribution across the four ads - if it is not roughly even by day 3, you are testing one ad again.</p>
               </div>
             </div>
           </Card>
@@ -3141,29 +3141,29 @@ export default function StrategyPage() {
               calendars and never touched. The vocabulary divergence that justified
               keeping them apart died when the ads started naming the four patterns
               outright, so nothing stands in the way of organic pre-selling the ad. */}
-          <Card className="border-violet-500/30 bg-violet-500/5">
+          <Card className="border-[#2A2F39]/30 bg-[#1A1E26]/5">
             <SectionLabel>Campaign alignment · organic × paid (decided 2026-08-05)</SectionLabel>
             <Body><strong>The live ad sets the week&apos;s organic theme.</strong> One idea, four angles, matching whatever concept is in market. Someone who has seen three posts on the four patterns converts on the four-patterns ad at a different rate than someone cold, and it costs nothing to do.</Body>
             <div className="mt-3 space-y-2 text-[12.5px]">
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">The week, against the campaign</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Mon</strong> Authority — the live ad&apos;s claim, expanded. <strong>Tue</strong> Contrarian — the obvious objection, killed. <strong>Wed</strong> Pattern Recognition — self-diagnosis + comment-to-DM. <strong>Fri</strong> Coach Perspective — proof it holds. <strong>Sun</strong> Promo — Body Decode invite.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">The week, against the campaign</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Mon</strong> Authority — the live ad&apos;s claim, expanded. <strong>Tue</strong> Contrarian — the obvious objection, killed. <strong>Wed</strong> Pattern Recognition — self-diagnosis + comment-to-DM. <strong>Fri</strong> Coach Perspective — proof it holds. <strong>Sun</strong> Promo — Body Decode invite.</p>
               </div>
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">Vocabulary divergence · RETIRED</p>
-                <p className="text-[#141821] leading-relaxed">The old rule gave paid &quot;Decode&quot; language and reserved the Fat Map, states and patterns for organic. Every current ad names Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline outright, so the two already speak the same language. <strong>What still diverges is format:</strong> paid is statics only, organic keeps reels and carousels.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Vocabulary divergence · RETIRED</p>
+                <p className="text-[#FAFAF8] leading-relaxed">The old rule gave paid &quot;Decode&quot; language and reserved the Fat Map, states and patterns for organic. Every current ad names Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline outright, so the two already speak the same language. <strong>What still diverges is format:</strong> paid is statics only, organic keeps reels and carousels.</p>
               </div>
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">Routing while paid is live · scoped exception</p>
-                <p className="text-[#141821] leading-relaxed">Organic doctrine posts point at <strong>/decode</strong>, not the scorecard, so the two do not compete for the same reader. The read is not skipped: <strong>the questions run inside the portal</strong>, and anyone arriving from the scorecard has them prefilled rather than being asked twice. When paid goes dark, routing <strong>reverts to scorecard-first</strong>. A scoped exception to the locked rule, not a repeal.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Routing while paid is live · scoped exception</p>
+                <p className="text-[#FAFAF8] leading-relaxed">Organic doctrine posts point at <strong>/decode</strong>, not the scorecard, so the two do not compete for the same reader. The read is not skipped: <strong>the questions run inside the portal</strong>, and anyone arriving from the scorecard has them prefilled rather than being asked twice. When paid goes dark, routing <strong>reverts to scorecard-first</strong>. A scoped exception to the locked rule, not a repeal.</p>
               </div>
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">Warm audiences · build now, spend later</p>
-                <p className="text-[#141821] leading-relaxed">Engagers, video viewers and site visitors accumulate into custom audiences <strong>from today</strong>, because they take time to populate. <strong>Do not put budget behind them at $25/day</strong> — splitting the budget is what exhausted July. They come in at the $75/day step. A warm pool fed by 5 posts a week is <strong>the only narrow audience that cannot exhaust</strong>, because it refills faster than it burns.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Warm audiences · build now, spend later</p>
+                <p className="text-[#FAFAF8] leading-relaxed">Engagers, video viewers and site visitors accumulate into custom audiences <strong>from today</strong>, because they take time to populate. <strong>Do not put budget behind them at $25/day</strong> — splitting the budget is what exhausted July. They come in at the $75/day step. A warm pool fed by 5 posts a week is <strong>the only narrow audience that cannot exhaust</strong>, because it refills faster than it burns.</p>
               </div>
-              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-violet-700 mb-1">Creative moves both ways · one endpoint</p>
-                <p className="text-[#141821] leading-relaxed">Ad 12&apos;s plate works as a carousel unchanged, Ad 14&apos;s plain type as a quote post. An organic post that outperforms is a pre-validated ad. Seven creatives used once each is waste. And both channels now measure to <strong>Challenge enrolment</strong>, so they can finally be compared.</p>
+              <div className="bg-[#14171D]/70 border border-[#2A2F39]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Creative moves both ways · one endpoint</p>
+                <p className="text-[#FAFAF8] leading-relaxed">Ad 12&apos;s plate works as a carousel unchanged, Ad 14&apos;s plain type as a quote post. An organic post that outperforms is a pre-validated ad. Seven creatives used once each is waste. And both channels now measure to <strong>Challenge enrolment</strong>, so they can finally be compared.</p>
               </div>
             </div>
           </Card>
@@ -3176,25 +3176,25 @@ export default function StrategyPage() {
             <SectionLabel>What to watch · Round 1</SectionLabel>
             <Body>Four numbers, each with an action attached. Everything else is noise while the budget is this small.</Body>
             <div className="mt-3 space-y-2 text-[12.5px]">
-              <div className="bg-white/70 border border-[#B7791F]/20 rounded-lg p-3">
+              <div className="bg-[#14171D]/70 border border-[#B7791F]/20 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#A96A12] mb-1">1 · Click → Challenge signup</p>
-                <p className="text-[#141821] leading-relaxed">The only number that matters. <strong>Not CTR, not cost per click.</strong> A cheap click that does not enrol is worse than no click, because it teaches the algorithm the wrong buyer.</p>
+                <p className="text-[#FAFAF8] leading-relaxed">The only number that matters. <strong>Not CTR, not cost per click.</strong> A cheap click that does not enrol is worse than no click, because it teaches the algorithm the wrong buyer.</p>
               </div>
-              <div className="bg-white/70 border border-[#B7791F]/20 rounded-lg p-3">
+              <div className="bg-[#14171D]/70 border border-[#B7791F]/20 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#A96A12] mb-1">2 · Frequency · the format-breaker trigger</p>
-                <p className="text-[#141821] leading-relaxed"><strong>July died past roughly 2.4.</strong> If frequency passes 2 in the first ten days, the same people are seeing the same look and a look they recognise is a look they scroll. <strong>Rotate in one format-breaker and pause the most-served ad.</strong> Do not touch the targeting.</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>July died past roughly 2.4.</strong> If frequency passes 2 in the first ten days, the same people are seeing the same look and a look they recognise is a look they scroll. <strong>Rotate in one format-breaker and pause the most-served ad.</strong> Do not touch the targeting.</p>
               </div>
-              <div className="bg-white/70 border border-[#B7791F]/20 rounded-lg p-3">
+              <div className="bg-[#14171D]/70 border border-[#B7791F]/20 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#A96A12] mb-1">3 · Spend distribution · by day 3</p>
-                <p className="text-[#141821] leading-relaxed">If spend is not roughly even across the four ads by day 3, you are testing one ad again. July proved this: one ad took <strong>$220 of $225</strong> inside a single set. Either accept its verdict or pause the leader to force delivery into the rest.</p>
+                <p className="text-[#FAFAF8] leading-relaxed">If spend is not roughly even across the four ads by day 3, you are testing one ad again. July proved this: one ad took <strong>$220 of $225</strong> inside a single set. Either accept its verdict or pause the leader to force delivery into the rest.</p>
               </div>
-              <div className="bg-white/70 border border-[#B7791F]/20 rounded-lg p-3">
+              <div className="bg-[#14171D]/70 border border-[#B7791F]/20 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#A96A12] mb-1">4 · Decision point · day 5 to 7</p>
-                <p className="text-[#141821] leading-relaxed">Kill the bottom two on cost per signup. If <em>nothing</em> is converting at an acceptable cost, stop and look at the Challenge landing page rather than buying more traffic.</p>
+                <p className="text-[#FAFAF8] leading-relaxed">Kill the bottom two on cost per signup. If <em>nothing</em> is converting at an acceptable cost, stop and look at the Challenge landing page rather than buying more traffic.</p>
               </div>
-              <div className="bg-white/70 border border-[#B7791F]/20 rounded-lg p-3">
+              <div className="bg-[#14171D]/70 border border-[#B7791F]/20 rounded-lg p-3">
                 <p className="text-[10px] font-medium text-[#A96A12] mb-1">The diagnostic that decides everything</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Cost per signup rising while CPM stays flat is creative fatigue, not an audience problem.</strong> Rising CPM would mean a reach problem. Flat CPM with worsening cost means the creative stopped working, and the fix is a format-breaker, never narrower targeting.</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Cost per signup rising while CPM stays flat is creative fatigue, not an audience problem.</strong> Rising CPM would mean a reach problem. Flat CPM with worsening cost means the creative stopped working, and the fix is a format-breaker, never narrower targeting.</p>
               </div>
             </div>
           </Card>
@@ -3219,10 +3219,10 @@ export default function StrategyPage() {
                 { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
                 { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
               ].map(row => (
-                <div key={row.k} className="flex items-start justify-between gap-2 bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-2.5">
+                <div key={row.k} className="flex items-start justify-between gap-2 bg-[#14171D] border border-[#2A2F39] rounded-lg p-2.5">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-medium text-[#666D7A] mb-0.5">{row.k}</p>
-                    <p className="text-[#141821] break-words">{row.v}</p>
+                    <p className="text-[10px] font-medium text-[#8A9099] mb-0.5">{row.k}</p>
+                    <p className="text-[#FAFAF8] break-words">{row.v}</p>
                   </div>
                   <CopyButton value={row.v} />
                 </div>
@@ -3259,38 +3259,38 @@ export default function StrategyPage() {
                     },
                   ].map(a => {
                     const colorMap = {
-                      teal:   'border-teal-500/30 bg-teal-500/5 text-teal-700',
-                      violet: 'border-violet-500/30 bg-violet-500/5 text-violet-700',
+                      teal:   'border-[#2A2F39]/30 bg-[#1A1E26]/5 text-[#C2C6CC]',
+                      violet: 'border-[#2A2F39]/30 bg-[#1A1E26]/5 text-[#C2C6CC]',
                       amber:  'border-[#B7791F]/30 bg-[#B7791F]/5 text-[#A96A12]',
-                      orange: 'border-orange-500/30 bg-orange-500/5 text-orange-700',
+                      orange: 'border-[#2A2F39]/30 bg-[#1A1E26]/5 text-[#C2C6CC]',
                     }[a.color]
                     return (
                       <div key={a.arch} className={`p-3 rounded-lg border ${colorMap.split(' ').slice(0, 2).join(' ')}`}>
                         <p className={`text-xs font-bold mb-1.5 ${colorMap.split(' ').slice(2).join(' ')}`}>{a.arch}</p>
-                        <p className="text-[12.5px] text-[#141821] mb-1.5"><span className="text-[#666D7A] text-[10px] font-semibold">Demo: </span>{a.demo}</p>
-                        <p className="text-[12.5px] text-[#141821]"><span className="text-[#666D7A] text-[10px] font-semibold">Interests: </span>{a.interests}</p>
+                        <p className="text-[12.5px] text-[#FAFAF8] mb-1.5"><span className="text-[#8A9099] text-[10px] font-semibold">Demo: </span>{a.demo}</p>
+                        <p className="text-[12.5px] text-[#FAFAF8]"><span className="text-[#8A9099] text-[10px] font-semibold">Interests: </span>{a.interests}</p>
                       </div>
                     )
                   })}
                 </div>
-                <p className="text-[12.5px] text-[#141821] mt-3"><strong>These are creative angles now, not ad sets.</strong> The interests listed above are no longer used for targeting: Round 1 runs one broad set, because interest stacking is what exhausted the audience at 3,613 reach in July. What survives is the archetype as a <em>writing</em> input - each current ad still speaks to one of these people, and Meta finds them from the creative rather than from an interest list. Postnatal Athlete stays out of cold paid either way, reached organically via the IG calendar and Funnel A.</p>
+                <p className="text-[12.5px] text-[#FAFAF8] mt-3"><strong>These are creative angles now, not ad sets.</strong> The interests listed above are no longer used for targeting: Round 1 runs one broad set, because interest stacking is what exhausted the audience at 3,613 reach in July. What survives is the archetype as a <em>writing</em> input - each current ad still speaks to one of these people, and Meta finds them from the creative rather than from an interest list. Postnatal Athlete stays out of cold paid either way, reached organically via the IG calendar and Funnel A.</p>
               </div>
               <div><Heading>Placement</Heading><Body>Automatic placements across Instagram feed and Facebook feed. <strong>Statics only, no Reels.</strong> Broad targeting means the creative does the targeting, so Meta gets room to place it.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
             </div>
           </Card>
 
-          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/30 bg-[#FAFAF8]/5">
             <SectionLabel>Copy standard · hyper-dopamine (current)</SectionLabel>
             <Body>Every cold paid creative is built to one formula: <strong>pattern interrupt</strong> (the image) + <strong>burning intrigue</strong> (the headline) + <strong>a specific benefit</strong> (so the algorithm finds the right buyer). Miss any of the three and the ad either gets scrolled past or gets clicked by the wrong people. An ad only has to stop the scroll and earn the click - it does not have to sell, explain the method, or establish credibility. That happens after the click.</Body>
-            <p className="text-[12.5px] text-[#141821] mt-2 leading-relaxed">The full 13-point pre-flight checklist, plus a measured audit of all seven current ads (character counts and readability grade, computed not estimated), is in the <strong>Round 2 Pack</strong> at the top of this tab. All seven Round 2 ads were measured rather than assumed, and all pass: 305-538 characters against a 2,200 limit, reading grade 3.4-4.7 against a grade-5 rule. M1 came out at 5.6 on the first pass and was rewritten to 4.0 before it went in the pack.</p>
-            <p className="text-[12.5px] text-[#141821] mt-2 leading-relaxed">Paid Meta only. These do NOT cascade to organic, which keeps state language and scorecard CTAs - see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence. The retired Amanda-audited doctrine is preserved in the Archive below, with each of its six rules marked as still-applies or superseded.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-2 leading-relaxed">The full 13-point pre-flight checklist, plus a measured audit of all seven current ads (character counts and readability grade, computed not estimated), is in the <strong>Round 2 Pack</strong> at the top of this tab. All seven Round 2 ads were measured rather than assumed, and all pass: 305-538 characters against a 2,200 limit, reading grade 3.4-4.7 against a grade-5 rule. M1 came out at 5.6 on the first pass and was rewritten to 4.0 before it went in the pack.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-2 leading-relaxed">Paid Meta only. These do NOT cascade to organic, which keeps state language and scorecard CTAs - see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence. The retired Amanda-audited doctrine is preserved in the Archive below, with each of its six rules marked as still-applies or superseded.</p>
           </Card>
 
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
             <Body><strong>Live:</strong> 7 static 4:5 creatives at 1080×1350 - three in Stream A, three in Stream B, one metabolic. Photo-led with a floating product screen, headline overlay and the locked offer banner, in two arrangements (NEWS and SPLIT). No reels.</Body>
-            <p className="text-[12.5px] text-[#141821] mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements - each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements - each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
             <BulletList items={[
               'Phase 1 (NOW): 7 static 4:5 images, no reels',
               'Phase 2 (future): 15-30 sec talking-head reels in parallel with static',
@@ -3307,55 +3307,55 @@ export default function StrategyPage() {
               so it is a record of what was built, not of what performed. */}
           <div className="space-y-4">
             <SectionLabel>Current creative · Round 2 (two streams)</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">For the <strong>1 September restart</strong>. Round 1 was built four-patterns-equal, before we had looked properly at who is actually in the database. Two problems, neither about the craft: <strong>insulin drift was one of the four live ads</strong> while being one in twenty-five of the profiles we have run, and <strong>nothing in the pack was about sleep or stress load</strong> — the two worst-scoring sections we measure. The hyper-dopamine formula is unchanged and still correct. Only the aim moved.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">For the <strong>1 September restart</strong>. Round 1 was built four-patterns-equal, before we had looked properly at who is actually in the database. Two problems, neither about the craft: <strong>insulin drift was one of the four live ads</strong> while being one in twenty-five of the profiles we have run, and <strong>nothing in the pack was about sleep or stress load</strong> — the two worst-scoring sections we measure. The hyper-dopamine formula is unchanged and still correct. Only the aim moved.</p>
 
-            <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/25 rounded-lg p-3">
+            <div className="bg-[#FAFAF8]/5 border border-[#FAFAF8]/25 rounded-lg p-3">
               <p className="text-[10px] font-medium text-[#1056D6] mb-1">Same visual system as Round 1 · not optional</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">Seven parts in every ad: greyscale photo of a real person in a real gym → <strong>a product screen floating over it</strong> → blue/white tag pair → 4px blue rule → headline with exactly one blue emphasis phrase → blue ticker → offer bar. <strong>The floating product screen is the element that does the work</strong> — it is proof, it is unfamiliar, and it is what the eye stops on before deciding this is an ad. Both Round 1 arrangements are kept: <em>NEWS</em> (full-bleed photo, artifact upper right) and <em>SPLIT</em> (offer banner on top, white product card left). Variety comes from <strong>a different artifact in each ad</strong>, never a different look. Five of seven show a woman, matching a 93% female audience.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Seven parts in every ad: greyscale photo of a real person in a real gym → <strong>a product screen floating over it</strong> → blue/white tag pair → 4px blue rule → headline with exactly one blue emphasis phrase → blue ticker → offer bar. <strong>The floating product screen is the element that does the work</strong> — it is proof, it is unfamiliar, and it is what the eye stops on before deciding this is an ad. Both Round 1 arrangements are kept: <em>NEWS</em> (full-bleed photo, artifact upper right) and <em>SPLIT</em> (offer banner on top, white product card left). Variety comes from <strong>a different artifact in each ad</strong>, never a different look. Five of seven show a woman, matching a 93% female audience.</p>
             </div>
 
-            <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg p-3">
-              <p className="text-[10px] font-medium text-[#666D7A] mb-1">Destination · unchanged</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">All seven land on <strong>/challenge</strong>. Ad click → Challenge landing page → sign up → welcome email with portal access → <strong>the scorecard is the first thing inside the portal</strong>. The scorecard is still the first gate; it sits after the signup rather than in front of it, and that order is deliberate — name, email and phone are captured before any gate, so someone who stalls is still a lead we can chase. Cold paid does <em>not</em> route via the public scorecard, which only asks for contact details after all five sections are answered.</p>
+            <div className="bg-[#1A1E26] border border-[#2A2F39] rounded-lg p-3">
+              <p className="text-[10px] font-medium text-[#8A9099] mb-1">Destination · unchanged</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">All seven land on <strong>/challenge</strong>. Ad click → Challenge landing page → sign up → welcome email with portal access → <strong>the scorecard is the first thing inside the portal</strong>. The scorecard is still the first gate; it sits after the signup rather than in front of it, and that order is deliberate — name, email and phone are captured before any gate, so someone who stalls is still a lead we can chase. Cold paid does <em>not</em> route via the public scorecard, which only asks for contact details after all five sections are answered.</p>
             </div>
 
             <SectionLabel>Stream A · neurowellness (Phase 1, live first)</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">The biggest lane, carrying the strongest proof we own. Across <strong>86 completed scorecards</strong>, Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections and Training Response (2.06) is the best. The argument in one line: <strong>capacity is fine, regulation is gone</strong>. These three run inside one broad ad set at $25/day so the creative tests in parallel.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">The biggest lane, carrying the strongest proof we own. Across <strong>86 completed scorecards</strong>, Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections and Training Response (2.06) is the best. The argument in one line: <strong>capacity is fine, regulation is gone</strong>. These three run inside one broad ad set at $25/day so the creative tests in parallel.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND2_ADS.filter(a => a.layer === 'streamA').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Stream B · readiness (built, PAUSED until the week-2 gate)</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">Of <strong>88 people assessed, only 18% came out Ready</strong> and half came out Transitioning. Everyone measures what you did; almost nobody measures what you could survive. <strong>Create these but leave them paused.</strong> Unpause at Phase 2 ($75/day, weeks 3-4) only if Stream A hits its CPL target — Meta cannot optimise at $7-10/day per ad set, so running six ads on $25 buys noise.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Of <strong>88 people assessed, only 18% came out Ready</strong> and half came out Transitioning. Everyone measures what you did; almost nobody measures what you could survive. <strong>Create these but leave them paused.</strong> Unpause at Phase 2 ($75/day, weeks 3-4) only if Stream A hits its CPL target — Meta cannot optimise at $7-10/day per ad set, so running six ads on $25 buys noise.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND2_ADS.filter(a => a.layer === 'streamB').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Metabolic · one ad, and it disqualifies (PAUSED)</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">Per the <strong>6 neurowellness / 3 readiness / 1 metabolic</strong> airtime rule this gets one slot in ten, and it works as a <strong>disqualifier rather than a claim</strong>: insulin is one in twenty-five of the women we assess, so the other twenty-four are being given advice built for someone else. This is the correction to Round 1, where the same topic held a quarter of the spend.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Per the <strong>6 neurowellness / 3 readiness / 1 metabolic</strong> airtime rule this gets one slot in ten, and it works as a <strong>disqualifier rather than a claim</strong>: insulin is one in twenty-five of the women we assess, so the other twenty-four are being given advice built for someone else. This is the correction to Round 1, where the same topic held a quarter of the spend.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND2_ADS.filter(a => a.layer === 'metabolic').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <div className="bg-[#B7791F]/5 border border-[#B7791F]/25 rounded-lg p-3">
               <p className="text-[10px] font-medium text-[#A96A12] mb-1">Numbers rule · check before every upload</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed"><strong>n=86 and n=88 are quotable exactly.</strong> They are the strongest thing we own and the whole position is &quot;they cite, we measure&quot;. <strong>n=27 numbers are ratios only</strong> — roughly half, about a third, one in twenty-five. The pattern split is 13/10/3/1 out of 27 people and a decimal will move. Re-run <code className="text-[#1B6DFC] bg-[#EFF1F4] px-1 rounded">scripts/state-of-the-data.ts</code> before upload and correct anything that has drifted.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed"><strong>n=86 and n=88 are quotable exactly.</strong> They are the strongest thing we own and the whole position is &quot;they cite, we measure&quot;. <strong>n=27 numbers are ratios only</strong> — roughly half, about a third, one in twenty-five. The pattern split is 13/10/3/1 out of 27 people and a decimal will move. Re-run <code className="text-[#FAFAF8] bg-[#1F242C] px-1 rounded">scripts/state-of-the-data.ts</code> before upload and correct anything that has drifted.</p>
             </div>
           </div>
 
           {/* ROUND 1 ARCHIVE. Collapsed by default via native <details>, same
               pattern as the archetype library below it. */}
-          <details className="br-card bg-[#FBFCFD] overflow-hidden">
-            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-[#F4F6F9]">
-              <span className="text-[11px] font-medium text-[#666D7A]">Archive · Round 1, the four-patterns-equal pack (retired 14 Aug 2026)</span>
+          <details className="br-card bg-[#14171D] overflow-hidden">
+            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-[#1A1E26]">
+              <span className="text-[11px] font-medium text-[#8A9099]">Archive · Round 1, the four-patterns-equal pack (retired 14 Aug 2026)</span>
             </summary>
-            <div className="px-4 pb-4 space-y-4 border-t border-[#E8EAEE] pt-4">
-              <div className="bg-[#EFF1F4]/60 border border-[#E8EAEE] rounded-lg p-3">
-                <p className="text-[12.5px] text-[#141821] leading-relaxed"><strong>Retired, not deleted — and note what it is NOT.</strong> Round 1 never spent a full budget: ads paused around 7 Aug for the hyper-dopamine revision, so this is a record of what was <em>built</em>, not of what <em>performed</em>. It sets no baseline. July&apos;s $11.15 per result came from the archetype library below, not from these.</p>
-                <p className="text-[12.5px] text-[#141821] leading-relaxed mt-2"><strong>Why it was replaced:</strong> built four-patterns-equal, so a quarter of the spend pointed at insulin drift, which is one in twenty-five of the profiles we have run — and nothing in the pack touched sleep or stress load, the two worst-scoring sections we measure. The copy standard, the broad targeting, the stage gate and the visual system all carried forward to Round 2 unchanged.</p>
+            <div className="px-4 pb-4 space-y-4 border-t border-[#2A2F39] pt-4">
+              <div className="bg-[#1F242C]/60 border border-[#2A2F39] rounded-lg p-3">
+                <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed"><strong>Retired, not deleted — and note what it is NOT.</strong> Round 1 never spent a full budget: ads paused around 7 Aug for the hyper-dopamine revision, so this is a record of what was <em>built</em>, not of what <em>performed</em>. It sets no baseline. July&apos;s $11.15 per result came from the archetype library below, not from these.</p>
+                <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed mt-2"><strong>Why it was replaced:</strong> built four-patterns-equal, so a quarter of the spend pointed at insulin drift, which is one in twenty-five of the profiles we have run — and nothing in the pack touched sleep or stress load, the two worst-scoring sections we measure. The copy standard, the broad targeting, the stage gate and the visual system all carried forward to Round 2 unchanged.</p>
               </div>
               <div className="space-y-4">
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack {LAUNCH_PACK_VERSION}</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack {LAUNCH_PACK_VERSION}</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'round1').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
@@ -3363,27 +3363,27 @@ export default function StrategyPage() {
 
             <div className="bg-[#B7791F]/5 border border-[#B7791F]/25 rounded-lg p-3">
               <p className="text-[10px] font-medium text-[#A96A12] mb-1">The no-banner test · moved to Round 2 on 5 Aug</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">Built and ready, held deliberately. Running it in Round 1 spent one of four slots on a second copy of Ad 6, so Round 1 tested three concepts instead of four on a budget where four is already the ceiling. It also answered a narrower question than it appeared to: whether the banner helps <em>Ad 6</em>, not whether the banner helps. <strong>Better sequencing is to find the winner in Round 1, then run that winner with and without the banner.</strong> Same test, better subject, no discovery slot spent. When it runs, every field except the creative must match the winner exactly or it is void.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Built and ready, held deliberately. Running it in Round 1 spent one of four slots on a second copy of Ad 6, so Round 1 tested three concepts instead of four on a budget where four is already the ceiling. It also answered a narrower question than it appeared to: whether the banner helps <em>Ad 6</em>, not whether the banner helps. <strong>Better sequencing is to find the winner in Round 1, then run that winner with and without the banner.</strong> Same test, better subject, no discovery slot spent. When it runs, every field except the creative must match the winner exactly or it is void.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'deferred').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Format-breakers · built 5 Aug</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">Round 1&apos;s four are individually strong but share one visual language: greyscale photo, Signal Blue, same type, same banner. Four ads from one account that look like a matched set read as a campaign, and a campaign reads as an ad. These three break that in three directions, and put <strong>body composition back in the image</strong> — Ad 6&apos;s picture sells a clock, Ad 3&apos;s sells a squat. No new photography: Ad 12 reuses the existing figures, Ads 13 and 14 are pure type.</p>
-            <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/25 rounded-lg p-3">
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Round 1&apos;s four are individually strong but share one visual language: greyscale photo, Signal Blue, same type, same banner. Four ads from one account that look like a matched set read as a campaign, and a campaign reads as an ad. These three break that in three directions, and put <strong>body composition back in the image</strong> — Ad 6&apos;s picture sells a clock, Ad 3&apos;s sells a squat. No new photography: Ad 12 reuses the existing figures, Ads 13 and 14 are pure type.</p>
+            <div className="bg-[#FAFAF8]/5 border border-[#FAFAF8]/25 rounded-lg p-3">
               <p className="text-[10px] font-medium text-[#1056D6] mb-1">When to use them · hold all three for now</p>
-              <p className="text-[12.5px] text-[#141821] leading-relaxed">Not in Round 1. Round 1&apos;s job is to find which <em>concept</em> wins with the banner on, and a format-breaker beside them makes a win unreadable. These are the answer to <strong>creative fatigue</strong>, which is what actually killed July: CPM held flat at ~$48, so the audience never got more expensive to reach, it stopped converting. Rotate one in when <strong>frequency passes 2</strong>, when <strong>cost per signup rises on a flat CPM</strong>, when you <strong>scale to $75/day</strong> (fresh creative, never new audiences), or to <strong>replace a Round 1 ad killed at day 5-7</strong>. Same campaign, same broad ad set, one at a time. Never a new ad set. Full rules in the launch pack.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Not in Round 1. Round 1&apos;s job is to find which <em>concept</em> wins with the banner on, and a format-breaker beside them makes a win unreadable. These are the answer to <strong>creative fatigue</strong>, which is what actually killed July: CPM held flat at ~$48, so the audience never got more expensive to reach, it stopped converting. Rotate one in when <strong>frequency passes 2</strong>, when <strong>cost per signup rises on a flat CPM</strong>, when you <strong>scale to $75/day</strong> (fresh creative, never new audiences), or to <strong>replace a Round 1 ad killed at day 5-7</strong>. Same campaign, same broad ad set, one at a time. Never a new ad set. Full rules in the launch pack.</p>
             </div>
             <div className="bg-[#B7791F]/5 border border-[#B7791F]/25 rounded-lg p-3">
-              <p className="text-[12.5px] text-[#141821] leading-relaxed"><strong>Banner caveat.</strong> None carries the blue offer banner, because it would defeat the point of all three. Each keeps the free offer as a native line instead. That entangles them with the deferred no-banner test, so <strong>run that test on a Round 1 ad, not on one of these.</strong></p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed"><strong>Banner caveat.</strong> None carries the blue offer banner, because it would defeat the point of all three. Each keeps the free offer as a native line instead. That entangles them with the deferred no-banner test, so <strong>run that test on a Round 1 ad, not on one of these.</strong></p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'variety').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Layer 2 · held until Round 1 reads out</SectionLabel>
-            <p className="text-[12.5px] text-[#141821] leading-relaxed">Ads 4, 8 and 10, rewritten 5 Aug. Not in Round 1 because four ads on $25/day is already the practical ceiling for learning anything. These go up when Round 1 gives a cost per signup to beat, or when a Round 1 ad is killed and needs replacing.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">Ads 4, 8 and 10, rewritten 5 Aug. Not in Round 1 because four ads on $25/day is already the practical ceiling for learning anything. These go up when Round 1 gives a cost per signup to beat, or when a Round 1 ad is killed and needs replacing.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'layer2').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
@@ -3394,25 +3394,25 @@ export default function StrategyPage() {
           {/* ARCHIVE. Collapsed by default via native <details> so it stays out
               of the way without needing state. Kept because these ran the July
               campaign that produced the $11.15 baseline. */}
-          <details className="br-card bg-[#FBFCFD] overflow-hidden">
-            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-[#F4F6F9]">
-              <span className="text-[11px] font-medium text-[#666D7A]">Archive · the 9-variant archetype library (retired 5 Aug 2026)</span>
+          <details className="br-card bg-[#14171D] overflow-hidden">
+            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-[#1A1E26]">
+              <span className="text-[11px] font-medium text-[#8A9099]">Archive · the 9-variant archetype library (retired 5 Aug 2026)</span>
             </summary>
-            <div className="px-4 pb-4 space-y-4 border-t border-[#E8EAEE] pt-4">
-              <div className="bg-[#EFF1F4]/60 border border-[#E8EAEE] rounded-lg p-3">
-                <p className="text-[12.5px] text-[#141821] leading-relaxed"><strong>Retired, not deleted.</strong> These nine ran the July campaign. They are superseded on three counts: they are built around <strong>three interest-based archetype ad sets</strong>, which broad targeting replaced after interest exhausted at 3,613 reach; they route on the archetype rather than the Fat Map pattern, which locked at v2.0 on 31 Jul; and their copy predates the body-composition rewrite.</p>
-                <p className="text-[12.5px] text-[#141821] leading-relaxed mt-2"><strong>Do not upload these.</strong> They are kept because July&apos;s numbers came from them, and $11.15 per result across the first ten days is the baseline Round 1 has to beat. Reading the new creative against the old is only possible if the old is still here.</p>
+            <div className="px-4 pb-4 space-y-4 border-t border-[#2A2F39] pt-4">
+              <div className="bg-[#1F242C]/60 border border-[#2A2F39] rounded-lg p-3">
+                <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed"><strong>Retired, not deleted.</strong> These nine ran the July campaign. They are superseded on three counts: they are built around <strong>three interest-based archetype ad sets</strong>, which broad targeting replaced after interest exhausted at 3,613 reach; they route on the archetype rather than the Fat Map pattern, which locked at v2.0 on 31 Jul; and their copy predates the body-composition rewrite.</p>
+                <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed mt-2"><strong>Do not upload these.</strong> They are kept because July&apos;s numbers came from them, and $11.15 per result across the first ten days is the baseline Round 1 has to beat. Reading the new creative against the old is only possible if the old is still here.</p>
               </div>
 
               <div>
-                <p className="text-[11px] font-medium text-[#666D7A] mb-2">Retired copy doctrine · Amanda-audited, locked 2026-06-27</p>
-                <div className="space-y-2 text-[12.5px] text-[#666D7A]">
-                  <p><span className="font-bold text-[#141821]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. <strong className="text-[#141821]">This one still applies</strong> and carries over to the current creative: it is Meta policy, not a style choice.</p>
-                  <p><span className="font-bold text-[#141821]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Find your pattern, NOT &quot;Fat Map&quot;. <em>Superseded.</em> The current ads name the Fat Map and the four drivers directly, because the pattern is the product.</p>
-                  <p><span className="font-bold text-[#141821]">3. Two-sentence subs.</span> <em>Superseded</em> by the hyper-dopamine structure: pattern interrupt, burning intrigue, specific benefit.</p>
-                  <p><span className="font-bold text-[#141821]">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; <em>Superseded.</em> CTA button is now Learn More on every ad.</p>
-                  <p><span className="font-bold text-[#141821]">5. Banner sub locked.</span> <em>Under test.</em> This is exactly what the no-banner test resolves.</p>
-                  <p><span className="font-bold text-[#141821]">6. Photo variant rule.</span> Don&apos;t reuse the same Kade photo across ads. <strong className="text-[#141821]">Still applies.</strong> Face fatigue is real.</p>
+                <p className="text-[11px] font-medium text-[#8A9099] mb-2">Retired copy doctrine · Amanda-audited, locked 2026-06-27</p>
+                <div className="space-y-2 text-[12.5px] text-[#8A9099]">
+                  <p><span className="font-bold text-[#FAFAF8]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. <strong className="text-[#FAFAF8]">This one still applies</strong> and carries over to the current creative: it is Meta policy, not a style choice.</p>
+                  <p><span className="font-bold text-[#FAFAF8]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Find your pattern, NOT &quot;Fat Map&quot;. <em>Superseded.</em> The current ads name the Fat Map and the four drivers directly, because the pattern is the product.</p>
+                  <p><span className="font-bold text-[#FAFAF8]">3. Two-sentence subs.</span> <em>Superseded</em> by the hyper-dopamine structure: pattern interrupt, burning intrigue, specific benefit.</p>
+                  <p><span className="font-bold text-[#FAFAF8]">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; <em>Superseded.</em> CTA button is now Learn More on every ad.</p>
+                  <p><span className="font-bold text-[#FAFAF8]">5. Banner sub locked.</span> <em>Under test.</em> This is exactly what the no-banner test resolves.</p>
+                  <p><span className="font-bold text-[#FAFAF8]">6. Photo variant rule.</span> Don&apos;t reuse the same Kade photo across ads. <strong className="text-[#FAFAF8]">Still applies.</strong> Face fatigue is real.</p>
                 </div>
               </div>
 
@@ -3422,7 +3422,7 @@ export default function StrategyPage() {
                 { name: 'Archetype 04 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
               ].map(group => (
                 <div key={group.name}>
-                  <p className="text-[11px] font-medium text-[#666D7A] mb-2">{group.name}</p>
+                  <p className="text-[11px] font-medium text-[#8A9099] mb-2">{group.name}</p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {group.ads.map(ad => <ColdAdCard key={ad.slug} ad={ad} />)}
                   </div>
@@ -3434,36 +3434,36 @@ export default function StrategyPage() {
           <Card className="border-[#22A05A]/30 bg-[#22A05A]/5">
             <SectionLabel>Reels via Captions · ORGANIC ONLY (added 2026-08-05)</SectionLabel>
             <Body>Reels were never blocked by strategy, they were blocked by <strong>Kade not having a production workflow for them</strong>. Captions removes that for talking-head content, which is the only reel format this brand needs.</Body>
-            <p className="text-[12.5px] text-[#141821] mt-2 leading-relaxed"><strong>Why it matters more than &quot;more content&quot;.</strong> Reach is not the point. <strong>Video viewers are a custom audience source</strong>, so reels are the cheapest way to fill the warm retargeting pool. That pool is the only narrow audience that cannot exhaust, and it is the structural fix for what killed July. Reels are the pump.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-2 leading-relaxed"><strong>Why it matters more than &quot;more content&quot;.</strong> Reach is not the point. <strong>Video viewers are a custom audience source</strong>, so reels are the cheapest way to fill the warm retargeting pool. That pool is the only narrow audience that cannot exhaust, and it is the structural fix for what killed July. Reels are the pump.</p>
             <div className="mt-3 space-y-2 text-[12.5px]">
-              <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-emerald-800 mb-1">Scope · organic only</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Cold paid stays statics only.</strong> Nothing here touches the ad account. The no-Reels rule on the Campaign Configuration above is unchanged.</p>
+              <div className="bg-[#14171D]/70 border border-[#22A05A]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Scope · organic only</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Cold paid stays statics only.</strong> Nothing here touches the ad account. The no-Reels rule on the Campaign Configuration above is unchanged.</p>
               </div>
-              <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-emerald-800 mb-1">Week 1 scripts · ready to film</p>
-                <p className="text-[#141821] leading-relaxed mb-2">Five talking-head scripts, one per day of the spine, each built on a message Round 1 is already spending money on. All land 42&ndash;46 seconds. Includes which Captions AI tools to use and which to avoid.</p>
+              <div className="bg-[#14171D]/70 border border-[#22A05A]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Week 1 scripts · ready to film</p>
+                <p className="text-[#FAFAF8] leading-relaxed mb-2">Five talking-head scripts, one per day of the spine, each built on a message Round 1 is already spending money on. All land 42&ndash;46 seconds. Includes which Captions AI tools to use and which to avoid.</p>
                 <div className="flex gap-2">
-                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.pdf" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#177245] text-white hover:bg-emerald-800">View .pdf</a>
-                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.md" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.pdf" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#177245] text-[#FAFAF8] hover:bg-[#1A1E26]">View .pdf</a>
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.md" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#2A2F39] text-[#FAFAF8] hover:bg-[#1A1E26]">View .md</a>
                 </div>
               </div>
-              <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-emerald-800 mb-1">Workflow</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Batch once a week</strong> — five scripts in one ~30 minute sitting. Do not film daily; that is the bottleneck that stopped this before. <strong>Scripts come from the week&apos;s spine:</strong> Monday&apos;s Authority post is the strongest candidate, because it is the message paid is already spending on. 30–45 seconds, one idea, vertical 9:16.</p>
+              <div className="bg-[#14171D]/70 border border-[#22A05A]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Workflow</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Batch once a week</strong> — five scripts in one ~30 minute sitting. Do not film daily; that is the bottleneck that stopped this before. <strong>Scripts come from the week&apos;s spine:</strong> Monday&apos;s Authority post is the strongest candidate, because it is the message paid is already spending on. 30–45 seconds, one idea, vertical 9:16.</p>
               </div>
-              <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-emerald-800 mb-1">Three things not to do</p>
-                <p className="text-[#141821] leading-relaxed"><strong>Do not post watermarked</strong> — the free tier brands your reel with someone else&apos;s logo. <strong>Do not use the AI avatar for doctrine content</strong> — your face doing the read is the asset, a synthetic stand-in undermines the authority the reel exists to build, and a 40+ professional audience will clock it. Caption and framing tools are fine, they are still you. <strong>Do not let reels replace carousels</strong> — reels buy reach, carousels buy saves.</p>
+              <div className="bg-[#14171D]/70 border border-[#22A05A]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Three things not to do</p>
+                <p className="text-[#FAFAF8] leading-relaxed"><strong>Do not post watermarked</strong> — the free tier brands your reel with someone else&apos;s logo. <strong>Do not use the AI avatar for doctrine content</strong> — your face doing the read is the asset, a synthetic stand-in undermines the authority the reel exists to build, and a 40+ professional audience will clock it. Caption and framing tools are fine, they are still you. <strong>Do not let reels replace carousels</strong> — reels buy reach, carousels buy saves.</p>
               </div>
-              <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
-                <p className="text-[10px] font-medium text-emerald-800 mb-1">Division of labour · Amanda is untouched</p>
-                <p className="text-[#141821] leading-relaxed">Amanda&apos;s contra deal covers <strong>funnel-stage video</strong> — the Challenge Day 5 session, the Blueprint education lessons, landing-page assets — produced in HeyGen and ElevenLabs. <strong>It does not cover social media.</strong> Social reels are Kade on camera in Captions. The tools are not competing: HeyGen produces funnel assets at Amanda&apos;s hand, Captions produces social at Kade&apos;s. Nothing here touches her scope or her backlog.</p>
+              <div className="bg-[#14171D]/70 border border-[#22A05A]/20 rounded-lg p-3">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-1">Division of labour · Amanda is untouched</p>
+                <p className="text-[#FAFAF8] leading-relaxed">Amanda&apos;s contra deal covers <strong>funnel-stage video</strong> — the Challenge Day 5 session, the Blueprint education lessons, landing-page assets — produced in HeyGen and ElevenLabs. <strong>It does not cover social media.</strong> Social reels are Kade on camera in Captions. The tools are not competing: HeyGen produces funnel assets at Amanda&apos;s hand, Captions produces social at Kade&apos;s. Nothing here touches her scope or her backlog.</p>
               </div>
             </div>
           </Card>
 
-          <Card className="border-[#E8EAEE] bg-[#FBFCFD]">
+          <Card className="border-[#2A2F39] bg-[#14171D]">
             <SectionLabel>Filming + workflow reference (paid reels still NOT active)</SectionLabel>
             <Body>The two cards below are the filming and post-production reference. The rules still apply to organic reels made in Captions. <strong>Cold paid remains static-only</strong> — these are not instructions for the ad account.</Body>
           </Card>
@@ -3495,8 +3495,8 @@ export default function StrategyPage() {
                 '6. Cut the underperforming creatives. Scale the winners.',
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-3 text-sm">
-                  <span className="text-[#1B6DFC] font-medium shrink-0 text-[12.5px] mt-0.5">{i + 1}</span>
-                  <span className="text-[#666D7A]">{step.replace(/^\d+\. /, '')}</span>
+                  <span className="text-[#FAFAF8] font-medium shrink-0 text-[12.5px] mt-0.5">{i + 1}</span>
+                  <span className="text-[#8A9099]">{step.replace(/^\d+\. /, '')}</span>
                 </div>
               ))}
             </div>
@@ -3509,19 +3509,19 @@ export default function StrategyPage() {
         <div className="space-y-4">
 
           {/* Overview */}
-          <Card className="border-[#B5CFFC] bg-[#1B6DFC]/5">
+          <Card className="border-[#2A2F39] bg-[#FAFAF8]/5">
             <SectionLabel>LinkedIn - Body Recode Channel</SectionLabel>
             <Body>Opened as a parallel funnel into the same scorecard, reaching the same demographic (high-functioning adults, executives, founders, professionals) through a different channel with different language. Instagram strategy stays locked. LinkedIn is additive, not a replacement.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-1">Posted from</p>
-                <p className="text-[12.5px] text-[#141821] font-medium">Kade Dunstone personal profile</p>
-                <p className="text-[11px] text-[#666D7A] mt-1">No separate Body Recode LinkedIn page. Audience follows the person.</p>
+              <div className="p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-1">Posted from</p>
+                <p className="text-[12.5px] text-[#FAFAF8] font-medium">Kade Dunstone personal profile</p>
+                <p className="text-[11px] text-[#8A9099] mt-1">No separate Body Recode LinkedIn page. Audience follows the person.</p>
               </div>
-              <div className="p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-1">Source tracking</p>
-                <p className="text-[12.5px] text-[#1B6DFC] font-mono">?source=linkedin</p>
-                <p className="text-[11px] text-[#666D7A] mt-1">Leads tagged separately from Instagram in CRM.</p>
+              <div className="p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-1">Source tracking</p>
+                <p className="text-[12.5px] text-[#FAFAF8] font-mono">?source=linkedin</p>
+                <p className="text-[11px] text-[#8A9099] mt-1">Leads tagged separately from Instagram in CRM.</p>
               </div>
             </div>
           </Card>
@@ -3536,14 +3536,14 @@ export default function StrategyPage() {
                 { channel: 'Body Recode (NEW)', freq: '1-2 posts/week', note: 'Executive/performance reframe' },
                 { channel: 'TOTAL FEED',        freq: '4-6 posts/week', note: 'Sustainable for one person' },
               ].map(r => (
-                <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-[#1B6DFC]/5 border border-[#1B6DFC]/20' : 'border border-[#E8EAEE]'}`}>
-                  <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>{r.channel}</span>
-                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-[#1056D6]' : 'text-[#141821]'}`}>{r.freq}</span>
-                  <span className="text-[#666D7A] flex-1">{r.note}</span>
+                <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-[#FAFAF8]/5 border border-[#FAFAF8]/20' : 'border border-[#2A2F39]'}`}>
+                  <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-[#FAFAF8]' : 'text-[#FAFAF8]'}`}>{r.channel}</span>
+                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-[#1056D6]' : 'text-[#FAFAF8]'}`}>{r.freq}</span>
+                  <span className="text-[#8A9099] flex-1">{r.note}</span>
                 </div>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) - when executives scroll before work.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) - when executives scroll before work.</p>
           </Card>
 
           {/* Four pillars */}
@@ -3585,10 +3585,10 @@ export default function StrategyPage() {
                 },
               ].map(p => {
                 const colorMap = {
-                  teal:   { border: 'border-[#B5CFFC]',   bg: 'bg-[#1B6DFC]/5',   accent: 'text-[#1B6DFC]' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700' },
+                  teal:   { border: 'border-[#2A2F39]',   bg: 'bg-[#FAFAF8]/5',   accent: 'text-[#FAFAF8]' },
+                  violet: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]' },
                   amber:  { border: 'border-[#F1DEB8]',  bg: 'bg-[#B7791F]/5',  accent: 'text-[#A96A12]' },
-                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
+                  orange: { border: 'border-[#2A2F39]/30', bg: 'bg-[#1A1E26]/5', accent: 'text-[#C2C6CC]' },
                 }[p.color]
                 return (
                   <div key={p.num} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
@@ -3596,16 +3596,16 @@ export default function StrategyPage() {
                       <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{p.num}</span>
                       <div className="flex-1">
                         <p className={`text-sm font-semibold ${colorMap.accent} mb-1`}>{p.title}</p>
-                        <p className="text-[12.5px] text-[#141821] mb-2 leading-relaxed">{p.desc}</p>
-                        <p className="text-[13.5px] text-[#141821] italic leading-relaxed mb-2">{p.hook}</p>
-                        <p className="text-[11px] text-[#141821]"><span className="font-bold text-[#141821] uppercase tracking-widest">Targets: </span>{p.targets}</p>
+                        <p className="text-[12.5px] text-[#FAFAF8] mb-2 leading-relaxed">{p.desc}</p>
+                        <p className="text-[13.5px] text-[#FAFAF8] italic leading-relaxed mb-2">{p.hook}</p>
+                        <p className="text-[11px] text-[#FAFAF8]"><span className="font-bold text-[#FAFAF8] uppercase tracking-widest">Targets: </span>{p.targets}</p>
                       </div>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <p className="text-[12.5px] text-[#141821] mt-3">Each pillar has 8-12 angles in the bank. We don\'t burn them all in month one. Pillars 1 and 4 are workhorse - they fit both LinkedIn primary archetypes equally.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-3">Each pillar has 8-12 angles in the bank. We don\'t burn them all in month one. Pillars 1 and 4 are workhorse - they fit both LinkedIn primary archetypes equally.</p>
           </Card>
 
           {/* Tone */}
@@ -3613,7 +3613,7 @@ export default function StrategyPage() {
             <SectionLabel>Tone Rules</SectionLabel>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] text-[#1B6DFC]/60 mb-2 font-medium">Always</p>
+                <p className="text-[10px] text-[#FAFAF8]/60 mb-2 font-medium">Always</p>
                 <div className="space-y-1.5">
                   {[
                     'Performance, recovery, decision-making language',
@@ -3622,14 +3622,14 @@ export default function StrategyPage() {
                     'CTA every 4-5 posts only',
                     'First-person, structured, no fluff',
                   ].map(t => (
-                    <div key={t} className="flex items-start gap-2 text-[12.5px] text-[#141821]">
-                      <span className="text-[#1B6DFC]/60 mt-0.5">+</span> {t}
+                    <div key={t} className="flex items-start gap-2 text-[12.5px] text-[#FAFAF8]">
+                      <span className="text-[#FAFAF8]/60 mt-0.5">+</span> {t}
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-[10px] text-[#DC2626]/60 mb-2 font-medium">Never</p>
+                <p className="text-[10px] text-[#D4817E]/60 mb-2 font-medium">Never</p>
                 <div className="space-y-1.5">
                   {[
                     'Fat loss / weight loss / body composition language',
@@ -3638,8 +3638,8 @@ export default function StrategyPage() {
                     'Links in post body (kills reach - put in profile)',
                     'A separate Body Recode LinkedIn page',
                   ].map(t => (
-                    <div key={t} className="flex items-start gap-2 text-[12.5px] text-[#666D7A]">
-                      <span className="text-[#DC2626]/60 mt-0.5">−</span> {t}
+                    <div key={t} className="flex items-start gap-2 text-[12.5px] text-[#8A9099]">
+                      <span className="text-[#D4817E]/60 mt-0.5">−</span> {t}
                     </div>
                   ))}
                 </div>
@@ -3651,17 +3651,17 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Pipeline & Source Tracking</SectionLabel>
             <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-1.5">12-week pipeline</p>
-                <p className="text-[12.5px] text-[#141821] mb-1.5">24 posts written, rotated across the 4 pillars. Tue + Thu cadence. CTAs every ~5 posts.</p>
-                <p className="text-[11px] text-[#666D7A] font-mono leading-relaxed">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</p>
+              <div className="p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-1.5">12-week pipeline</p>
+                <p className="text-[12.5px] text-[#FAFAF8] mb-1.5">24 posts written, rotated across the 4 pillars. Tue + Thu cadence. CTAs every ~5 posts.</p>
+                <p className="text-[11px] text-[#8A9099] font-mono leading-relaxed">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</p>
               </div>
-              <div className="p-3 rounded-lg bg-[#1B6DFC]/5 border border-[#1B6DFC]/20">
-                <p className="text-[10px] font-medium text-[#1B6DFC] mb-1.5">First post</p>
-                <p className="text-[12.5px] text-[#141821] font-medium">Tue 19 May 2026 · 7am Brisbane · Post 1 of 24 (State over Discipline)</p>
+              <div className="p-3 rounded-lg bg-[#FAFAF8]/5 border border-[#FAFAF8]/20">
+                <p className="text-[10px] font-medium text-[#FAFAF8] mb-1.5">First post</p>
+                <p className="text-[12.5px] text-[#FAFAF8] font-medium">Tue 19 May 2026 · 7am Brisbane · Post 1 of 24 (State over Discipline)</p>
               </div>
-              <div className="p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
-                <p className="text-[10px] font-medium text-[#666D7A] mb-2">Source URL variants</p>
+              <div className="p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
+                <p className="text-[10px] font-medium text-[#8A9099] mb-2">Source URL variants</p>
                 <div className="space-y-1.5">
                   {[
                     { where: 'In-post CTA',         url: 'performance.bodyrecode.au/scorecard?source=linkedin_post' },
@@ -3669,12 +3669,12 @@ export default function StrategyPage() {
                     { where: 'First comment / DM',  url: 'performance.bodyrecode.au/scorecard?source=linkedin_comment' },
                   ].map(r => (
                     <div key={r.where} className="flex items-center gap-3 text-[11px]">
-                      <span className="text-[#666D7A] w-32 shrink-0">{r.where}</span>
-                      <code className="text-[#1B6DFC] font-mono text-[10px]">{r.url}</code>
+                      <span className="text-[#8A9099] w-32 shrink-0">{r.where}</span>
+                      <code className="text-[#FAFAF8] font-mono text-[10px]">{r.url}</code>
                     </div>
                   ))}
                 </div>
-                <p className="text-[11px] text-[#98A0AD] mt-2">All variants collapse to <code className="text-[#1B6DFC] font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-[#1B6DFC] font-mono">source_detail</code> for granular attribution.</p>
+                <p className="text-[11px] text-[#676D76] mt-2">All variants collapse to <code className="text-[#FAFAF8] font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-[#FAFAF8] font-mono">source_detail</code> for granular attribution.</p>
               </div>
             </div>
           </Card>
@@ -3682,7 +3682,7 @@ export default function StrategyPage() {
           {/* Archetype split */}
           <Card>
             <SectionLabel>Which Archetypes LinkedIn Reaches</SectionLabel>
-            <Body className="mb-3">Per the validated client mix (100% Remediation / Depleted), the 4 archetypes split unevenly across IG and LinkedIn. LinkedIn primarily reaches archetypes 1 and 4. See <strong className="text-[#E8EAEE]">Positioning tab</strong> for full archetype detail.</Body>
+            <Body className="mb-3">Per the validated client mix (100% Remediation / Depleted), the 4 archetypes split unevenly across IG and LinkedIn. LinkedIn primarily reaches archetypes 1 and 4. See <strong className="text-[#2A2F39]">Positioning tab</strong> for full archetype detail.</Body>
             <div className="space-y-2">
               {[
                 { num: '01', name: 'Stressed Executive Woman', strength: 'Primary on LinkedIn',     color: 'teal' as const,   note: 'LinkedIn morning scroll before work matches her schedule exactly.' },
@@ -3691,27 +3691,27 @@ export default function StrategyPage() {
                 { num: '04', name: 'Slipping High Performer',   strength: 'Primary on LinkedIn',     color: 'orange' as const, note: 'Male executive. LinkedIn is his natural channel. Hooks should target this archetype on roughly 1 in 4 BR LinkedIn posts.' },
               ].map(a => {
                 const colorMap = {
-                  teal:   { dot: 'bg-teal-600',   accent: 'text-teal-700' },
-                  violet: { dot: 'bg-violet-600', accent: 'text-violet-700' },
+                  teal:   { dot: 'bg-[#1A1E26]',   accent: 'text-[#C2C6CC]' },
+                  violet: { dot: 'bg-[#1A1E26]', accent: 'text-[#C2C6CC]' },
                   amber:  { dot: 'bg-[#A96A12]',  accent: 'text-[#A96A12]' },
-                  orange: { dot: 'bg-orange-600', accent: 'text-orange-700' },
+                  orange: { dot: 'bg-[#1A1E26]', accent: 'text-[#C2C6CC]' },
                 }[a.color]
                 return (
-                  <div key={a.num} className="flex items-start gap-3 p-3 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
+                  <div key={a.num} className="flex items-start gap-3 p-3 rounded-lg bg-[#14171D] border border-[#2A2F39]">
                     <span className={`inline-block w-2 h-2 rounded-full mt-2 ${colorMap.dot}`} />
                     <div className="flex-1">
                       <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                        <span className="text-[#666D7A] font-mono text-[12.5px]">{a.num}</span>
+                        <span className="text-[#8A9099] font-mono text-[12.5px]">{a.num}</span>
                         <p className={`text-sm font-medium ${colorMap.accent}`}>{a.name}</p>
-                        <span className="text-[11px] text-[#666D7A] italic">- {a.strength}</span>
+                        <span className="text-[11px] text-[#8A9099] italic">- {a.strength}</span>
                       </div>
-                      <p className="text-[13.5px] text-[#141821] leading-relaxed">{a.note}</p>
+                      <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed">{a.note}</p>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <p className="text-[12.5px] text-[#141821] mt-3"><strong className="text-[#141821]">Implication:</strong> the BR LinkedIn 12-week pipeline (24 posts) is rightly biased toward archetypes 1 and 4. Archetypes 2 and 3 get their primary reach via Instagram, not LinkedIn.</p>
+            <p className="text-[12.5px] text-[#FAFAF8] mt-3"><strong className="text-[#FAFAF8]">Implication:</strong> the BR LinkedIn 12-week pipeline (24 posts) is rightly biased toward archetypes 1 and 4. Archetypes 2 and 3 get their primary reach via Instagram, not LinkedIn.</p>
           </Card>
 
           {/* How IG and LinkedIn coexist */}
@@ -3719,25 +3719,25 @@ export default function StrategyPage() {
             <SectionLabel>How Instagram and LinkedIn Coexist</SectionLabel>
             <Body>Both feed the same funnel via the two-door model: LinkedIn drives to the scorecard (Door 1 — &quot;find your state&quot;), with the Challenge as the direct door (Door 2). Same demographic, same physiology, executive language.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-pink-500/5 border border-pink-500/20">
-                <p className="text-[10px] font-medium text-pink-400 mb-2">Instagram</p>
-                <p className="text-[12.5px] text-[#141821] mb-2 font-medium">Body state, fat loss, depleted/transitioning/ready</p>
-                <p className="text-[11px] text-[#666D7A] leading-relaxed">5×/week, scorecard funnel, Meta ads running, consumer voice</p>
+              <div className="p-3 rounded-lg bg-[#1A1E26]/5 border border-[#2A2F39]/20">
+                <p className="text-[10px] font-medium text-[#C2C6CC] mb-2">Instagram</p>
+                <p className="text-[12.5px] text-[#FAFAF8] mb-2 font-medium">Body state, fat loss, depleted/transitioning/ready</p>
+                <p className="text-[11px] text-[#8A9099] leading-relaxed">5×/week, scorecard funnel, Meta ads running, consumer voice</p>
               </div>
-              <div className="p-3 rounded-lg bg-[#1B6DFC]/5 border border-[#1B6DFC]/20">
+              <div className="p-3 rounded-lg bg-[#FAFAF8]/5 border border-[#FAFAF8]/20">
                 <p className="text-[10px] font-medium text-[#1056D6] mb-2">LinkedIn</p>
-                <p className="text-[12.5px] text-[#141821] mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
-                <p className="text-[11px] text-[#666D7A] leading-relaxed">1-2×/week, organic only, no ads, executive voice</p>
+                <p className="text-[12.5px] text-[#FAFAF8] mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
+                <p className="text-[11px] text-[#8A9099] leading-relaxed">1-2×/week, organic only, no ads, executive voice</p>
               </div>
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">Same physiology underneath. Different surface. The IG audience and LinkedIn audience are largely distinct, so no copy-paste between channels.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">Same physiology underneath. Different surface. The IG audience and LinkedIn audience are largely distinct, so no copy-paste between channels.</p>
           </Card>
 
           {/* Honest constraint */}
           <Card className="border-[#B7791F]/20 bg-[#B7791F]/5">
             <SectionLabel>Honest Constraint</SectionLabel>
             <Body>LinkedIn is a slow-burn channel. It will not fill the AF Newstead diary this week or month. Realistic ramp: first BR LinkedIn booking probably 6-10 weeks in. Compounds from there.</Body>
-            <p className="text-[12.5px] text-[#666D7A] mt-3">Instagram funnel stays the conversion engine. LinkedIn is the brand-build and second-channel insurance.</p>
+            <p className="text-[12.5px] text-[#8A9099] mt-3">Instagram funnel stays the conversion engine. LinkedIn is the brand-build and second-channel insurance.</p>
           </Card>
 
         </div>
@@ -3814,38 +3814,38 @@ export default function StrategyPage() {
             <Card>
               <SectionLabel>60-Day Launch Plan</SectionLabel>
               <Body>Consistent for 60-90 days while the funnel launches. After that, ads and retargeting carry acquisition. Organic content maintains authority and warm audience.</Body>
-              <p className="text-[12.5px] text-[#98A0AD] mt-3">Anchor date: <strong className="text-[#666D7A]">8 April 2026</strong> (Pre-Launch Post 1 = Day 1). <strong className="text-[#A96A12]">Historical:</strong> this is the original April launch plan and its ad-angle names (Silent Frustration / Contrarian / Diagnosis). Superseded by the current Challenge-led, two-door strategy + archetype ad sets (see Overview / Paid Ads). Kept for reference.</p>
+              <p className="text-[12.5px] text-[#676D76] mt-3">Anchor date: <strong className="text-[#8A9099]">8 April 2026</strong> (Pre-Launch Post 1 = Day 1). <strong className="text-[#A96A12]">Historical:</strong> this is the original April launch plan and its ad-angle names (Silent Frustration / Contrarian / Diagnosis). Superseded by the current Challenge-led, two-door strategy + archetype ad sets (see Overview / Paid Ads). Kept for reference.</p>
             </Card>
 
-            <Card className="border-[#B5CFFC] bg-[#1B6DFC]/5">
+            <Card className="border-[#2A2F39] bg-[#FAFAF8]/5">
               <SectionLabel>You Are Here</SectionLabel>
               <div className="flex items-baseline gap-3">
-                <span className="text-[34px] font-semibold tracking-[-0.035em] text-[#1B6DFC]">Day {dayNumber}</span>
-                <span className="text-sm text-[#666D7A]">{currentPhase.phase}</span>
+                <span className="text-[34px] font-semibold tracking-[-0.035em] text-[#FAFAF8]">Day {dayNumber}</span>
+                <span className="text-sm text-[#8A9099]">{currentPhase.phase}</span>
               </div>
-              <p className="text-[12.5px] text-[#666D7A] mt-2">{currentPhase.dateRange}</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-2">{currentPhase.dateRange}</p>
             </Card>
 
             {phases.map(phase => {
               const isCurrent = dayNumber >= phase.startDay && dayNumber <= phase.endDay
               const isPast = dayNumber > phase.endDay
               return (
-                <Card key={phase.phase} className={isCurrent ? 'border-[#B5CFFC] bg-[#1B6DFC]/5' : isPast ? 'opacity-60' : ''}>
+                <Card key={phase.phase} className={isCurrent ? 'border-[#2A2F39] bg-[#FAFAF8]/5' : isPast ? 'opacity-60' : ''}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-semibold text-[#141821]">{phase.phase}</p>
-                      {isCurrent && <span className="text-[10px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded-full">Current</span>}
-                      {isPast && <span className="text-[10px] font-medium text-[#666D7A] bg-[#EFF1F4] border border-[#E8EAEE] px-2 py-0.5 rounded-full">Complete</span>}
+                      <p className="text-sm font-semibold text-[#FAFAF8]">{phase.phase}</p>
+                      {isCurrent && <span className="text-[10px] font-medium text-[#FAFAF8] bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] px-2 py-0.5 rounded-full">Current</span>}
+                      {isPast && <span className="text-[10px] font-medium text-[#8A9099] bg-[#1F242C] border border-[#2A2F39] px-2 py-0.5 rounded-full">Complete</span>}
                     </div>
                     <Tag color={phase.color}>{phase.days}</Tag>
                   </div>
-                  <p className="text-[12.5px] text-[#666D7A] mb-3">{phase.dateRange}</p>
+                  <p className="text-[12.5px] text-[#8A9099] mb-3">{phase.dateRange}</p>
                   <BulletList items={phase.items} />
                 </Card>
               )
             })}
 
-            <Card className="border-[#1B6DFC]/20 bg-[#1B6DFC]/5">
+            <Card className="border-[#FAFAF8]/20 bg-[#FAFAF8]/5">
               <SectionLabel>The Rule</SectionLabel>
               <p className="text-sm text-[#1056D6] font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
             </Card>
@@ -3887,23 +3887,23 @@ export default function StrategyPage() {
                   statusColor: 'amber' as const,
                 },
               ].map(row => (
-                <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE] text-[12.5px]">
+                <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-[#14171D] rounded-lg border border-[#2A2F39] text-[12.5px]">
                   <div>
-                    <p className="text-[#98A0AD] mb-0.5">Platform</p>
-                    <p className="font-semibold text-[#141821]">{row.platform}</p>
-                    <p className="text-[#666D7A] mt-0.5">{row.handle}</p>
+                    <p className="text-[#676D76] mb-0.5">Platform</p>
+                    <p className="font-semibold text-[#FAFAF8]">{row.platform}</p>
+                    <p className="text-[#8A9099] mt-0.5">{row.handle}</p>
                   </div>
                   <div>
-                    <p className="text-[#98A0AD] mb-0.5">Status</p>
+                    <p className="text-[#676D76] mb-0.5">Status</p>
                     <Tag color={row.statusColor}>{row.status}</Tag>
                   </div>
                   <div>
-                    <p className="text-[#98A0AD] mb-0.5">Bio</p>
-                    <p className={row.bioUpdated ? 'text-[#1B6DFC] font-medium' : 'text-[#C82626] font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
+                    <p className="text-[#676D76] mb-0.5">Bio</p>
+                    <p className={row.bioUpdated ? 'text-[#FAFAF8] font-medium' : 'text-[#D4817E] font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
                   </div>
                   <div>
-                    <p className="text-[#98A0AD] mb-0.5">Link</p>
-                    <p className="text-[#666D7A] break-all">{row.linkSet}</p>
+                    <p className="text-[#676D76] mb-0.5">Link</p>
+                    <p className="text-[#8A9099] break-all">{row.linkSet}</p>
                   </div>
                 </div>
               ))}
@@ -3916,26 +3916,26 @@ export default function StrategyPage() {
             <div className="space-y-4">
               <div>
                 <Heading>Current Bio</Heading>
-                <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] leading-relaxed whitespace-pre-line font-mono">
+                <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3 text-sm text-[#FAFAF8] leading-relaxed whitespace-pre-line font-mono">
                   {`Trained 5 days a week. Ate clean. Body still won't shift?\nYou're Depleted, Transitioning, or Ready.\nFree 2-min Scorecard to find out.`}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-[12.5px]">
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Username</p>
-                  <p className="text-[#141821] font-medium">@body_recode_</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Username</p>
+                  <p className="text-[#FAFAF8] font-medium">@body_recode_</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Bio link</p>
-                  <p className="text-[#1B6DFC]">performance.bodyrecode.au/scorecard?source=instagram</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Bio link</p>
+                  <p className="text-[#FAFAF8]">performance.bodyrecode.au/scorecard?source=instagram</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Account type</p>
-                  <p className="text-[#141821]">Creator or Business</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Account type</p>
+                  <p className="text-[#FAFAF8]">Creator or Business</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Link tool</p>
-                  <p className="text-[#141821]">None - one link, one destination</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Link tool</p>
+                  <p className="text-[#FAFAF8]">None - one link, one destination</p>
                 </div>
               </div>
               <div>
@@ -3948,13 +3948,13 @@ export default function StrategyPage() {
                     { name: 'Scorecard', purpose: 'How it works, CTA to take it' },
                     { name: 'Program', purpose: 'What coaching looks like' },
                   ].map(h => (
-                    <div key={h.name} className="flex items-center gap-3 text-[12.5px] p-2 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                      <span className="text-[#1B6DFC] font-semibold w-20 shrink-0">{h.name}</span>
-                      <span className="text-[#666D7A]">{h.purpose}</span>
+                    <div key={h.name} className="flex items-center gap-3 text-[12.5px] p-2 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                      <span className="text-[#FAFAF8] font-semibold w-20 shrink-0">{h.name}</span>
+                      <span className="text-[#8A9099]">{h.purpose}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-[12.5px] text-[#98A0AD] mt-2">Set up covers even if empty at launch. Dark background, teal icon or text.</p>
+                <p className="text-[12.5px] text-[#676D76] mt-2">Set up covers even if empty at launch. Dark background, teal icon or text.</p>
               </div>
             </div>
           </Card>
@@ -3965,55 +3965,55 @@ export default function StrategyPage() {
             <div className="space-y-4">
               <div>
                 <Heading>Current Bio (About field)</Heading>
-                <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] leading-relaxed">
+                <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-3 text-sm text-[#FAFAF8] leading-relaxed">
                   Performance coaching for people whose bodies stopped responding. Body state interpretation. Training. Nutrition. Find out which state you&apos;re in - 2-min scorecard linked below.
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-[12.5px]">
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Page name</p>
-                  <p className="text-[#141821] font-medium">Body Recode</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Page name</p>
+                  <p className="text-[#FAFAF8] font-medium">Body Recode</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Website field</p>
-                  <p className="text-[#1B6DFC]">performance.bodyrecode.au</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Website field</p>
+                  <p className="text-[#FAFAF8]">performance.bodyrecode.au</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">CTA / scorecard link</p>
-                  <p className="text-[#1B6DFC]">performance.bodyrecode.au/scorecard?source=facebook</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">CTA / scorecard link</p>
+                  <p className="text-[#FAFAF8]">performance.bodyrecode.au/scorecard?source=facebook</p>
                 </div>
-                <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                  <p className="text-[#98A0AD] mb-1">Bio updated</p>
-                  <p className="text-[#141821]">9 Apr 2026</p>
+                <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                  <p className="text-[#676D76] mb-1">Bio updated</p>
+                  <p className="text-[#FAFAF8]">9 Apr 2026</p>
                 </div>
               </div>
             </div>
           </Card>
 
           {/* LinkedIn */}
-          <Card className="border-[#1B6DFC]/20 bg-[#1B6DFC]/5">
+          <Card className="border-[#FAFAF8]/20 bg-[#FAFAF8]/5">
             <SectionLabel>LinkedIn Profile</SectionLabel>
-            <p className="text-[12.5px] text-[#666D7A] mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries The Collective + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-[#1056D6]">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries The Collective + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-[#1056D6]">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
             <div className="grid sm:grid-cols-2 gap-3 text-[12.5px]">
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[#98A0AD] mb-1">Profile</p>
-                <p className="text-[#141821] font-medium">Kade Dunstone</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[#676D76] mb-1">Profile</p>
+                <p className="text-[#FAFAF8] font-medium">Kade Dunstone</p>
               </div>
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[#98A0AD] mb-1">Profile bio link</p>
-                <p className="text-[#1B6DFC] break-all">performance.bodyrecode.au/scorecard?source=linkedin_profile</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[#676D76] mb-1">Profile bio link</p>
+                <p className="text-[#FAFAF8] break-all">performance.bodyrecode.au/scorecard?source=linkedin_profile</p>
               </div>
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[#98A0AD] mb-1">In-post CTA link</p>
-                <p className="text-[#1B6DFC] break-all">performance.bodyrecode.au/scorecard?source=linkedin_post</p>
-                <p className="text-[#98A0AD] mt-1">Put in first comment, not post body (kills reach)</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[#676D76] mb-1">In-post CTA link</p>
+                <p className="text-[#FAFAF8] break-all">performance.bodyrecode.au/scorecard?source=linkedin_post</p>
+                <p className="text-[#676D76] mt-1">Put in first comment, not post body (kills reach)</p>
               </div>
-              <div className="p-3 bg-[#FBFCFD] rounded-lg border border-[#E8EAEE]">
-                <p className="text-[#98A0AD] mb-1">Comment / DM follow-up link</p>
-                <p className="text-[#1B6DFC] break-all">performance.bodyrecode.au/scorecard?source=linkedin_comment</p>
+              <div className="p-3 bg-[#14171D] rounded-lg border border-[#2A2F39]">
+                <p className="text-[#676D76] mb-1">Comment / DM follow-up link</p>
+                <p className="text-[#FAFAF8] break-all">performance.bodyrecode.au/scorecard?source=linkedin_comment</p>
               </div>
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">All variants collapse to <code className="text-[#1B6DFC] font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-[#1B6DFC] font-mono">source_detail</code> for granular attribution.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">All variants collapse to <code className="text-[#FAFAF8] font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-[#FAFAF8] font-mono">source_detail</code> for granular attribution.</p>
           </Card>
 
           {/* Terminology rule */}
@@ -4025,18 +4025,18 @@ export default function StrategyPage() {
                 { context: 'CFFS coaching system (internal)', terms: 'Remediation / Optimisation / Post-Optimisation' },
               ].map(row => (
                 <div key={row.context} className="flex items-start gap-3 text-[12.5px] py-2 border-b border-[#B7791F]/10 last:border-0">
-                  <span className="text-[#666D7A] w-52 shrink-0">{row.context}</span>
+                  <span className="text-[#8A9099] w-52 shrink-0">{row.context}</span>
                   <span className="text-[#A96A12] font-medium">{row.terms}</span>
                 </div>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#98A0AD] mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
           </Card>
 
           {/* Profile setup checklist */}
           <Card>
             <SectionLabel>Profile Setup Checklist</SectionLabel>
-            <p className="text-[12.5px] text-[#666D7A] mb-3">Click any item to toggle. State persists in your browser.</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-3">Click any item to toggle. State persists in your browser.</p>
             <div className="space-y-1.5">
               {[
                 // Instagram (pre-launch is complete)
@@ -4057,18 +4057,18 @@ export default function StrategyPage() {
                 { key: 'li_post1',   item: 'First BR LinkedIn post scheduled / drafted (Tue 19 May 2026)', defaultDone: false, group: 'LinkedIn' },
               ].map(({ key, item, defaultDone, group }) => {
                 const done = profileSetup[key] ?? defaultDone
-                const groupColor = group === 'Instagram' ? 'text-pink-400' : group === 'Facebook' ? 'text-[#1056D6]' : 'text-[#1056D6]'
+                const groupColor = group === 'Instagram' ? 'text-[#C2C6CC]' : group === 'Facebook' ? 'text-[#1056D6]' : 'text-[#1056D6]'
                 return (
                   <button
                     key={key}
                     onClick={() => toggleProfileItem(key, defaultDone)}
-                    className="flex items-center gap-2.5 text-[12.5px] py-1.5 border-b border-[#E8EAEE] last:border-0 w-full text-left hover:bg-[#F4F6F9]/40 -mx-2 px-2 rounded transition-colors"
+                    className="flex items-center gap-2.5 text-[12.5px] py-1.5 border-b border-[#2A2F39] last:border-0 w-full text-left hover:bg-[#1A1E26]/40 -mx-2 px-2 rounded transition-colors"
                   >
-                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-[#DDE9FD] border-[#9CC0FB]' : 'bg-[#F4F6F9] border-[#E8EAEE]'}`}>
-                      {done && <span className="text-[#1B6DFC] text-[10px] font-medium">✓</span>}
+                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-[#DDE9FD] border-[#9CC0FB]' : 'bg-[#1A1E26] border-[#2A2F39]'}`}>
+                      {done && <span className="text-[#FAFAF8] text-[10px] font-medium">✓</span>}
                     </div>
                     <span className={`text-[11px] font-medium w-16 shrink-0 ${groupColor}`}>{group}</span>
-                    <span className={done ? 'text-[#666D7A] line-through' : 'text-[#141821]'}>{item}</span>
+                    <span className={done ? 'text-[#8A9099] line-through' : 'text-[#FAFAF8]'}>{item}</span>
                   </button>
                 )
               })}

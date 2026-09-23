@@ -67,13 +67,13 @@ export default function DormantReactivationButton() {
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/50 p-4">
+    <div className="mb-6 rounded-xl border border-[#2A2F39] bg-[rgba(27,109,252,0.08)]/50 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[13.5px] font-bold text-[#141821] flex items-center gap-1.5">
-            <Users size={14} className="text-[#1B6DFC]" /> Dormant Lead Reactivation
+          <p className="text-[13.5px] font-bold text-[#FAFAF8] flex items-center gap-1.5">
+            <Users size={14} className="text-[#FAFAF8]" /> Dormant Lead Reactivation
           </p>
-          <p className="text-[13.5px] text-[#43474F] leading-relaxed mt-1 max-w-xl">
+          <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed mt-1 max-w-xl">
             Leads who did a scorecard and were never followed up. Sends their read, an SMS four days
             later, then the next step that matches their state. Anyone who replies drops out.
           </p>
@@ -82,12 +82,12 @@ export default function DormantReactivationButton() {
               Sent. {sent} leads are now in the sequence.
             </p>
           )}
-          {error && <p className="text-[13.5px] font-bold text-[#C82626] mt-2">{error}</p>}
+          {error && <p className="text-[13.5px] font-bold text-[#D4817E] mt-2">{error}</p>}
         </div>
         <button
           onClick={preview}
           disabled={busy}
-          className="shrink-0 inline-flex items-center gap-1.5 text-[13.5px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[13.5px] font-bold px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#E4E4E0] transition-colors disabled:opacity-50"
         >
           <Send size={13} /> {busy ? 'Working...' : 'See who gets it'}
         </button>
@@ -95,34 +95,34 @@ export default function DormantReactivationButton() {
 
       {open && dry && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setOpen(false)}>
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E8EAEE]">
+          <div className="bg-[#14171D] rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#2A2F39]">
               <p className="text-[13.5px] font-bold">Who would receive this</p>
-              <button onClick={() => setOpen(false)} className="text-[#98A0AD] hover:text-[#141821]"><X size={16} /></button>
+              <button onClick={() => setOpen(false)} className="text-[#676D76] hover:text-[#FAFAF8]"><X size={16} /></button>
             </div>
 
-            <div className="px-5 py-4 border-b border-[#E8EAEE]">
+            <div className="px-5 py-4 border-b border-[#2A2F39]">
               <p className="text-[16px]">
-                <b className="text-[#1B6DFC] text-[20px]">{dry.wouldSend}</b> leads would receive it.
-                <span className="text-[#666D7A]"> {dry.excludedCount} excluded of {dry.totalDormant} dormant.</span>
+                <b className="text-[#FAFAF8] text-[20px]">{dry.wouldSend}</b> leads would receive it.
+                <span className="text-[#8A9099]"> {dry.excludedCount} excluded of {dry.totalDormant} dormant.</span>
               </p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
                 {Object.entries(dry.excludedByReason).map(([reason, n]) => (
-                  <span key={reason} className="text-[12.5px] text-[#666D7A]">{n} · {reason}</span>
+                  <span key={reason} className="text-[12.5px] text-[#8A9099]">{n} · {reason}</span>
                 ))}
               </div>
             </div>
 
             <div className="flex-1 overflow-y-auto px-5 py-3">
               <table className="w-full text-[12.5px]">
-                <thead><tr className="text-left text-[#98A0AD] text-[11px]">
+                <thead><tr className="text-left text-[#676D76] text-[11px]">
                   <th className="pb-2">Lead</th><th className="pb-2">Read</th><th className="pb-2">First email</th>
                 </tr></thead>
                 <tbody>
                   {dry.preview.map(p => (
                     <tr key={p.email} className="border-t border-[#F4F4F4]">
-                      <td className="py-2 pr-3"><b>{p.name}</b><br /><span className="text-[#98A0AD]">{p.email}</span></td>
-                      <td className="py-2 pr-3">{p.state?.replace(' State', '')}<br /><span className="text-[#98A0AD]">{p.pattern}</span></td>
+                      <td className="py-2 pr-3"><b>{p.name}</b><br /><span className="text-[#676D76]">{p.email}</span></td>
+                      <td className="py-2 pr-3">{p.state?.replace(' State', '')}<br /><span className="text-[#676D76]">{p.pattern}</span></td>
                       <td className="py-2">{p.touch1_subject}</td>
                     </tr>
                   ))}
@@ -130,16 +130,16 @@ export default function DormantReactivationButton() {
               </table>
             </div>
 
-            <div className="px-5 py-3.5 border-t border-[#E8EAEE] flex items-center justify-between gap-3">
-              <p className="text-[12.5px] text-[#666D7A] flex items-center gap-1.5">
+            <div className="px-5 py-3.5 border-t border-[#2A2F39] flex items-center justify-between gap-3">
+              <p className="text-[12.5px] text-[#8A9099] flex items-center gap-1.5">
                 <AlertTriangle size={13} className="text-[#B7791F]" /> This sends real emails. It cannot be undone.
               </p>
               <div className="flex gap-2">
-                <button onClick={() => setOpen(false)} className="text-[13.5px] font-semibold px-4 py-2 border border-[#E8EAEE] rounded-lg hover:bg-[#F4F6F9]">
+                <button onClick={() => setOpen(false)} className="text-[13.5px] font-semibold px-4 py-2 border border-[#2A2F39] rounded-lg hover:bg-[#1A1E26]">
                   Not yet
                 </button>
                 <button onClick={send} disabled={busy}
-                  className="text-[13.5px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-50">
+                  className="text-[13.5px] font-bold px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#E4E4E0] disabled:opacity-50">
                   {busy ? 'Sending...' : `Send to ${dry.wouldSend}`}
                 </button>
               </div>

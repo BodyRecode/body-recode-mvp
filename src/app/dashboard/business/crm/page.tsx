@@ -41,14 +41,14 @@ export default async function CRMPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
           <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">CRM</h1>
-          <p className="text-[#666D7A] text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
+          <p className="text-[#8A9099] text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
         </div>
         <Link
           href="/dashboard/leads/new"
-          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Lead
@@ -63,10 +63,10 @@ export default async function CRMPage() {
             <div key={stage} className="shrink-0 w-52">
               {/* Stage header */}
               <div className="flex items-center justify-between mb-2 px-1">
-                <p className="text-[12.5px] font-semibold text-[#666D7A]">
+                <p className="text-[12.5px] font-semibold text-[#8A9099]">
                   {stageLabel[stage]}
                 </p>
-                <span className="text-[12.5px] text-[#98A0AD] bg-[#EFF1F4] px-1.5 py-0.5 rounded-full">
+                <span className="text-[12.5px] text-[#676D76] bg-[#1F242C] px-1.5 py-0.5 rounded-full">
                   {cards.length}
                 </span>
               </div>
@@ -77,19 +77,19 @@ export default async function CRMPage() {
                   <Link
                     key={lead.id}
                     href={`/dashboard/business/crm/${lead.id}`}
-                    className="block bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg p-3 hover:border-[#E8EAEE] transition-colors group"
+                    className="block bg-[#1A1E26] border border-[#2A2F39] rounded-lg p-3 hover:border-[#2A2F39] transition-colors group"
                   >
-                    <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
+                    <p className="text-sm font-medium text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">
                       {lead.name}
                     </p>
                     {lead.email && (
-                      <p className="text-[12.5px] text-[#666D7A] truncate mt-0.5">{lead.email}</p>
+                      <p className="text-[12.5px] text-[#8A9099] truncate mt-0.5">{lead.email}</p>
                     )}
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-[10px] text-[#98A0AD]">
+                      <span className="text-[10px] text-[#676D76]">
                         {lead.source || 'direct'}
                       </span>
-                      <span className="text-[10px] text-[#98A0AD]">
+                      <span className="text-[10px] text-[#676D76]">
                         {new Date(lead.created_at).toLocaleDateString('en-AU', {
                           day: 'numeric',
                           month: 'short',
@@ -100,8 +100,8 @@ export default async function CRMPage() {
                 ))}
 
                 {cards.length === 0 && (
-                  <div className="bg-[#F4F6F9]/50 border border-dashed border-[#E8EAEE] rounded-lg p-3">
-                    <p className="text-[12.5px] text-[#141821] text-center">Empty</p>
+                  <div className="bg-[#1A1E26]/50 border border-dashed border-[#2A2F39] rounded-lg p-3">
+                    <p className="text-[12.5px] text-[#FAFAF8] text-center">Empty</p>
                   </div>
                 )}
               </div>
@@ -111,10 +111,10 @@ export default async function CRMPage() {
       </div>
 
       {/* Closed leads link */}
-      <div className="mt-6 pt-6 border-t border-[#E8EAEE]">
+      <div className="mt-6 pt-6 border-t border-[#2A2F39]">
         <Link
           href="/dashboard/leads"
-          className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors flex items-center gap-1"
+          className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors flex items-center gap-1"
         >
           <Users size={12} />
           View all leads including closed →

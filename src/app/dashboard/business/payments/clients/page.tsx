@@ -38,17 +38,17 @@ const STATUS_META: Record<SubStatus | 'none', { label: string; tone: 'good' | 'w
 }
 
 const TONE_CLASS = {
-  good:  'text-[#1B6DFC]',
+  good:  'text-[#FAFAF8]',
   warn:  'text-[#A96A12]',
-  bad:   'text-[#C82626]',
-  muted: 'text-[#666D7A]',
+  bad:   'text-[#D4817E]',
+  muted: 'text-[#8A9099]',
 } as const
 
 const TONE_BG = {
   good:  'bg-[rgba(27,109,252,0.08)]',
   warn:  'bg-[#FDF6E9]',
   bad:   'bg-[#FDEDED]',
-  muted: 'bg-[#EFF1F4]/40',
+  muted: 'bg-[#1F242C]/40',
 } as const
 
 function formatAud(amount: number | null | undefined): string {
@@ -175,16 +175,16 @@ export default async function ClientStatusPage() {
 
   return (
     <div className="max-w-6xl">
-      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Payments</h1>
-        <p className="text-[#666D7A] text-sm">Products, invoices, and payment history</p>
+        <p className="text-[#8A9099] text-sm">Products, invoices, and payment history</p>
       </div>
 
       <PaymentsNav />
 
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-[#141821] mb-1">Client Status</h2>
-        <p className="text-[#666D7A] text-sm">Every client and their payment plan health. Sorted with attention-needed rows on top.</p>
+        <h2 className="text-lg font-semibold text-[#FAFAF8] mb-1">Client Status</h2>
+        <p className="text-[#8A9099] text-sm">Every client and their payment plan health. Sorted with attention-needed rows on top.</p>
       </div>
 
       {/* Counts */}
@@ -197,7 +197,7 @@ export default async function ClientStatusPage() {
 
       {/* Table */}
       <div className="br-card overflow-hidden">
-        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-[#F4F6F9] border-b border-[#E8EAEE] text-[10px] font-semibold text-[#666D7A]">
+        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-[#1A1E26] border-b border-[#2A2F39] text-[10px] font-semibold text-[#8A9099]">
           <div>Client</div>
           <div>Plan</div>
           <div>Foundational Read</div>
@@ -206,7 +206,7 @@ export default async function ClientStatusPage() {
           <div className="text-right">Lifetime PC</div>
         </div>
         {rows.length === 0 ? (
-          <div className="p-8 text-center text-[#666D7A] text-sm">No clients yet.</div>
+          <div className="p-8 text-center text-[#8A9099] text-sm">No clients yet.</div>
         ) : (
           rows.map(r => {
             const meta = STATUS_META[r.sub]
@@ -214,18 +214,18 @@ export default async function ClientStatusPage() {
               <Link
                 key={r.id}
                 href={`/dashboard/clients/${r.id}#payments`}
-                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-[#E8EAEE] last:border-b-0 hover:bg-[#F4F6F9]/50 transition-colors items-center"
+                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-[#2A2F39] last:border-b-0 hover:bg-[#1A1E26]/50 transition-colors items-center"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-[#141821] truncate">{r.name}</p>
+                  <p className="text-sm font-medium text-[#FAFAF8] truncate">{r.name}</p>
                   {!r.stripeLinked && (
                     <p className="text-[10px] text-[#A96A12]/80 mt-0.5">No Stripe link</p>
                   )}
                 </div>
-                <div className="text-[12.5px] text-[#666D7A] truncate">{r.planName}</div>
+                <div className="text-[12.5px] text-[#8A9099] truncate">{r.planName}</div>
                 <div className="text-[12.5px]">
                   {r.commencementPaid ? (
-                    <span className="text-[#1B6DFC]">Paid</span>
+                    <span className="text-[#FAFAF8]">Paid</span>
                   ) : (
                     <span className="text-[#A96A12]">Not paid</span>
                   )}
@@ -236,24 +236,24 @@ export default async function ClientStatusPage() {
                     <span className={`${TONE_CLASS[meta.tone]} font-medium`}>{meta.label}</span>
                   </div>
                   {r.sub !== 'none' && (
-                    <p className="text-[#666D7A] text-[11px] mt-0.5 truncate">
+                    <p className="text-[#8A9099] text-[11px] mt-0.5 truncate">
                       {formatAud(r.subAmount)}{r.subInterval ? `/${r.subInterval}` : ''}
                       {r.nextCharge && ['active', 'trialing', 'past_due'].includes(r.sub) && (
-                        <span className="text-[#98A0AD]"> · next {formatDate(r.nextCharge)}</span>
+                        <span className="text-[#676D76]"> · next {formatDate(r.nextCharge)}</span>
                       )}
                       {r.cancelAtPeriodEnd && <span className="text-[#A96A12]"> · cancels</span>}
                     </p>
                   )}
                 </div>
-                <div className="text-[12.5px] text-[#666D7A] text-right">{formatDate(r.lastPaid)}</div>
-                <div className="text-[12.5px] text-[#141821] text-right font-medium">{formatAud(r.lifetimePC)}</div>
+                <div className="text-[12.5px] text-[#8A9099] text-right">{formatDate(r.lastPaid)}</div>
+                <div className="text-[12.5px] text-[#FAFAF8] text-right font-medium">{formatAud(r.lifetimePC)}</div>
               </Link>
             )
           })
         )}
       </div>
 
-      <p className="text-[12.5px] text-[#98A0AD] mt-3">
+      <p className="text-[12.5px] text-[#676D76] mt-3">
         Click any row to jump to that client&apos;s Payments section. Status is cached from Stripe; use the &quot;Refresh from Stripe&quot; button on a client to pull live state.
       </p>
     </div>
@@ -262,10 +262,10 @@ export default async function ClientStatusPage() {
 
 function CountCard({ label, value, icon: Icon, tone }: { label: string; value: number; icon: typeof CheckCircle2; tone: 'good' | 'warn' | 'bad' | 'muted' }) {
   return (
-    <div className="bg-[#F4F6F9] br-card p-4">
+    <div className="bg-[#1A1E26] br-card p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={13} className={TONE_CLASS[tone]} />
-        <p className="text-[10px] font-semibold text-[#666D7A]">{label}</p>
+        <p className="text-[10px] font-semibold text-[#8A9099]">{label}</p>
       </div>
       <p className={`text-2xl font-bold ${TONE_CLASS[tone]}`}>{value}</p>
     </div>

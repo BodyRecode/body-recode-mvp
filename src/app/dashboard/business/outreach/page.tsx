@@ -12,9 +12,9 @@ const stepLabel: Record<string, string> = Object.fromEntries(
 )
 
 const stateChip: Record<string, string> = {
-  'Depleted State': 'bg-[#FDEDED] text-[#C82626] border-[#F5C9C9]',
+  'Depleted State': 'bg-[#FDEDED] text-[#D4817E] border-[#F5C9C9]',
   'Transitioning State': 'bg-[#FDF6E9] text-[#A96A12] border-[#F1DEB8]',
-  'Ready State': 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#B5CFFC]',
+  'Ready State': 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#2A2F39]',
 }
 
 interface TouchRow {
@@ -36,7 +36,7 @@ export default async function OutreachQueuePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    return <div className="max-w-3xl p-6 text-[#666D7A]">Please sign in.</div>
+    return <div className="max-w-3xl p-6 text-[#8A9099]">Please sign in.</div>
   }
 
   const admin = createAdminClient()
@@ -51,14 +51,14 @@ export default async function OutreachQueuePage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
           <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Booking Agent</h1>
-          <p className="text-[#666D7A] text-sm">
+          <p className="text-[#8A9099] text-sm">
             {touches.length} draft{touches.length === 1 ? '' : 's'} waiting for approval
           </p>
         </div>
-        <div className="flex items-center gap-2 text-[12.5px] text-[#666D7A] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2">
+        <div className="flex items-center gap-2 text-[12.5px] text-[#8A9099] bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2">
           <Send className="w-3.5 h-3.5" />
           Nothing sends until you approve it
         </div>
@@ -66,9 +66,9 @@ export default async function OutreachQueuePage() {
 
       {touches.length === 0 ? (
         <div className="br-card p-10 text-center">
-          <Inbox className="w-8 h-8 text-[#E8EAEE] mx-auto mb-3" />
-          <p className="text-[#666D7A] text-sm font-medium mb-1">The queue is clear</p>
-          <p className="text-[#666D7A] text-sm">
+          <Inbox className="w-8 h-8 text-[#2A2F39] mx-auto mb-3" />
+          <p className="text-[#8A9099] text-sm font-medium mb-1">The queue is clear</p>
+          <p className="text-[#8A9099] text-sm">
             New scorecard leads get their first draft a day after they complete it. Approved and skipped drafts drop off this list.
           </p>
         </div>
@@ -80,18 +80,18 @@ export default async function OutreachQueuePage() {
             const bodyState = lead?.scorecard_body_state
             return (
               <div key={touch.id} className="br-card overflow-hidden">
-                <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#14171D] border-b border-[#2A2F39]">
                   <div className="flex items-center gap-3 min-w-0">
-                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-[#141821] hover:text-[#1560E0] truncate">
+                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-[#FAFAF8] hover:text-[#E4E4E0] truncate">
                       {name}
                     </Link>
                     {bodyState && (
-                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${stateChip[bodyState] ?? 'bg-[#F4F6F9] text-[#666D7A] border-[#E8EAEE]'}`}>
+                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${stateChip[bodyState] ?? 'bg-[#1A1E26] text-[#8A9099] border-[#2A2F39]'}`}>
                         {bodyState.replace(' State', '')}
                       </span>
                     )}
                   </div>
-                  <span className="text-[12.5px] font-medium text-[#666D7A] whitespace-nowrap">
+                  <span className="text-[12.5px] font-medium text-[#8A9099] whitespace-nowrap">
                     {stepLabel[touch.step_key] ?? touch.step_key}
                   </span>
                 </div>

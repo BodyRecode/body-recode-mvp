@@ -33,11 +33,11 @@ export default function BuildPage() {
               </p>
             </div>
           )}
-          <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">
+          <details className="mb-6 p-4 rounded-xl border border-[#2A2F39] bg-[rgba(27,109,252,0.08)]/40">
             <summary className="cursor-pointer text-[13.5px] font-semibold text-[#0A46B2] select-none">
               How to read this page
             </summary>
-            <div className="mt-3 space-y-3 text-[13.5px] text-[#141821] leading-relaxed">
+            <div className="mt-3 space-y-3 text-[13.5px] text-[#FAFAF8] leading-relaxed">
               <p>
                 <strong>One board instead of three.</strong> Until 14 Sep 2026 the read, the coaching
                 engine and Strenn each had their own board, which meant three percentages and three
@@ -74,11 +74,11 @@ export default function BuildPage() {
                 <strong>What is parked.</strong> {health.parkedCount} steps, mostly the plumbing for
                 other coaches running the coaching product under their own brand. They keep their
                 history on the older{' '}
-                <Link href="/dashboard/settings/platform-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">
+                <Link href="/dashboard/settings/platform-buildout" className="text-[#E4E4E0] hover:text-[#1056D6] underline">
                   Body Recode
                 </Link>{' '}
                 and{' '}
-                <Link href="/dashboard/settings/coaching-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">
+                <Link href="/dashboard/settings/coaching-buildout" className="text-[#E4E4E0] hover:text-[#1056D6] underline">
                   Performance Coaching
                 </Link>{' '}
                 boards, which are history now rather than plans.
@@ -88,13 +88,13 @@ export default function BuildPage() {
         </>
       }
       footer={
-        <div className="mt-10 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12.5px] text-[#666D7A] leading-relaxed">
-          <strong className="text-[#141821]">Where to change things:</strong> the order and the product
-          labels live in <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">src/lib/build-sequence.ts</code>.
+        <div className="mt-10 p-4 rounded-xl border border-[#2A2F39] bg-[#14171D] text-[12.5px] text-[#8A9099] leading-relaxed">
+          <strong className="text-[#FAFAF8]">Where to change things:</strong> the order and the product
+          labels live in <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">src/lib/build-sequence.ts</code>.
           A step&apos;s status lives in its source file:{' '}
-          <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">saas-buildout-manifest.ts</code> (the read),{' '}
-          <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">performance-coaching-buildout-manifest.ts</code> (the engine), or{' '}
-          <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">rey-buildout-manifest.ts</code> (Strenn). The Strenn specification is in Dropbox under 05_REY.
+          <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">saas-buildout-manifest.ts</code> (the read),{' '}
+          <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">performance-coaching-buildout-manifest.ts</code> (the engine), or{' '}
+          <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">rey-buildout-manifest.ts</code> (Strenn). The Strenn specification is in Dropbox under 05_REY.
           {' '}{health.placedCount} steps on the path, {health.parkedCount} parked.
         </div>
       }

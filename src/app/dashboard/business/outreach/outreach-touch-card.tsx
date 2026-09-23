@@ -59,45 +59,45 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
 
   return (
     <div className="p-5">
-      <label className="block text-[11px] font-semibold text-[#666D7A] mb-1">Subject</label>
+      <label className="block text-[11px] font-semibold text-[#8A9099] mb-1">Subject</label>
       <input
         value={subject}
         onChange={e => setSubject(e.target.value)}
-        className="w-full text-sm font-medium text-[#141821] border border-[#E8EAEE] rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 focus:border-[#5390FF]"
+        className="w-full text-sm font-medium text-[#FAFAF8] border border-[#2A2F39] rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#FAFAF8]/30 focus:border-[#C2C6CC]"
       />
 
-      <label className="block text-[11px] font-semibold text-[#666D7A] mb-1">
-        Body <span className="normal-case font-normal text-[#98A0AD]">— blank line between paragraphs. Greeting, button and signature are added automatically.</span>
+      <label className="block text-[11px] font-semibold text-[#8A9099] mb-1">
+        Body <span className="normal-case font-normal text-[#676D76]">— blank line between paragraphs. Greeting, button and signature are added automatically.</span>
       </label>
       <textarea
         value={body}
         onChange={e => setBody(e.target.value)}
         rows={Math.max(6, body.split('\n').length + 1)}
-        className="w-full text-sm text-[#141821] leading-relaxed border border-[#E8EAEE] rounded-lg px-3 py-2 font-sans resize-y focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 focus:border-[#5390FF]"
+        className="w-full text-sm text-[#FAFAF8] leading-relaxed border border-[#2A2F39] rounded-lg px-3 py-2 font-sans resize-y focus:outline-none focus:ring-2 focus:ring-[#FAFAF8]/30 focus:border-[#C2C6CC]"
       />
 
       <div className="flex items-center justify-between mt-2 mb-4">
-        <p className="text-[11px] text-[#98A0AD]">
+        <p className="text-[11px] text-[#676D76]">
           To {email || 'lead'} · {aiModel === 'fallback-template' ? 'template fallback' : 'AI draft'}{edited ? ' · edited' : ''}
         </p>
         <a
           href={`/api/outreach/${id}/preview`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#1560E0]"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#8A9099] hover:text-[#E4E4E0]"
           onClick={async e => { if (dirty) { e.preventDefault(); const ok = await save(); if (ok) window.open(`/api/outreach/${id}/preview`, '_blank') } }}
         >
           <Eye className="w-3.5 h-3.5" /> Preview email
         </a>
       </div>
 
-      {error && <p className="text-[12.5px] text-[#C82626] mb-3">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E] mb-3">{error}</p>}
 
       <div className="flex items-center gap-2">
         <button
           onClick={send}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 bg-[#1560E0] hover:bg-[#1056D6] text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-[#E4E4E0] hover:bg-[#1056D6] text-[#0B0D10] text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
         >
           {busy === 'send' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           Approve &amp; send
@@ -106,7 +106,7 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
           <button
             onClick={save}
             disabled={busy !== null}
-            className="inline-flex items-center gap-2 border border-[#E8EAEE] text-[#141821] hover:bg-[#FBFCFD] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50"
+            className="inline-flex items-center gap-2 border border-[#2A2F39] text-[#FAFAF8] hover:bg-[#14171D] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50"
           >
             {busy === 'save' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save edits
@@ -115,7 +115,7 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
         <button
           onClick={skip}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 text-[#666D7A] hover:text-[#C82626] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 ml-auto"
+          className="inline-flex items-center gap-2 text-[#8A9099] hover:text-[#D4817E] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 ml-auto"
         >
           {busy === 'skip' ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
           Skip

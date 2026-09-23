@@ -84,7 +84,7 @@ export default function RecordPaymentButton({ products }: Props) {
     <>
       <button
         onClick={openModal}
-        className="flex items-center gap-2 text-sm text-[#141821] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] px-4 py-2 rounded-lg transition-colors"
+        className="flex items-center gap-2 text-sm text-[#FAFAF8] hover:text-[#FAFAF8] border border-[#2A2F39] hover:border-[#2A2F39] px-4 py-2 rounded-lg transition-colors"
       >
         <DollarSign size={14} />
         Record Payment
@@ -92,20 +92,20 @@ export default function RecordPaymentButton({ products }: Props) {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#FBFCFD]" onClick={close} />
-          <div className="relative bg-[#F4F6F9] br-card p-6 w-full max-w-md shadow-2xl">
+          <div className="absolute inset-0 bg-[#14171D]" onClick={close} />
+          <div className="relative bg-[#1A1E26] br-card p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">Record Payment</h2>
-              <button onClick={close} className="text-[#666D7A] hover:text-[#141821] transition-colors">
+              <button onClick={close} className="text-[#8A9099] hover:text-[#FAFAF8] transition-colors">
                 <X size={18} />
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Contact</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Contact</label>
                 {loadingContacts ? (
-                  <div className="flex items-center gap-2 text-[#666D7A] text-sm py-2">
+                  <div className="flex items-center gap-2 text-[#8A9099] text-sm py-2">
                     <Loader2 size={14} className="animate-spin" />
                     Loading...
                   </div>
@@ -116,7 +116,7 @@ export default function RecordPaymentButton({ products }: Props) {
                       const contact = contacts.find(c => c.id === e.target.value)
                       setForm(f => ({ ...f, contactId: e.target.value, contactType: contact?.type ?? 'lead' }))
                     }}
-                    className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                    className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                   >
                     <option value="">Select a contact...</option>
                     {contacts.filter(c => c.type === 'lead').length > 0 && (
@@ -138,11 +138,11 @@ export default function RecordPaymentButton({ products }: Props) {
               </div>
 
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Product (optional)</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Product (optional)</label>
                 <select
                   value={form.productId}
                   onChange={(e) => handleProductChange(e.target.value)}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                 >
                   <option value="">Manual / no product</option>
                   {products.map(p => (
@@ -152,9 +152,9 @@ export default function RecordPaymentButton({ products }: Props) {
               </div>
 
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Amount (AUD)</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Amount (AUD)</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666D7A] text-sm">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A9099] text-sm">$</span>
                   <input
                     type="number"
                     value={form.amount}
@@ -162,13 +162,13 @@ export default function RecordPaymentButton({ products }: Props) {
                     placeholder="0.00"
                     min="0"
                     step="0.01"
-                    className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg pl-7 pr-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
+                    className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg pl-7 pr-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#2A2F39]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Status</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Status</label>
                 <div className="flex gap-2">
                   {[
                     { value: 'paid', label: 'Paid' },
@@ -179,8 +179,8 @@ export default function RecordPaymentButton({ products }: Props) {
                       onClick={() => setForm(f => ({ ...f, status: opt.value as 'paid' | 'pending' }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.status === opt.value
-                          ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
-                          : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
+                          ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#FAFAF8]'
+                          : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39] hover:text-[#FAFAF8]'
                       }`}
                     >
                       {opt.label}
@@ -193,14 +193,14 @@ export default function RecordPaymentButton({ products }: Props) {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={close}
-                className="flex-1 text-sm text-[#666D7A] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] py-2.5 rounded-lg transition-colors"
+                className="flex-1 text-sm text-[#8A9099] hover:text-[#FAFAF8] border border-[#2A2F39] hover:border-[#2A2F39] py-2.5 rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={submit}
                 disabled={!form.contactId || !form.amount || isPending}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
               >
                 {isPending && <Loader2 size={13} className="animate-spin" />}
                 Record

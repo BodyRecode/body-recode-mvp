@@ -24,11 +24,11 @@ const PRODUCT_META: Record<Product, { label: string; accent: string; bg: string 
   // what three historical rows hold. Only the label moves, because the offer
   // those people joined a list for is now The Body Decode. Signal Blue to match
   // Stage 1 everywhere else; the old red read like a warning.
-  challenge: { label: 'The Body Decode (old key)', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
+  challenge: { label: 'The Body Decode (old key)', accent: '#FAFAF8', bg: 'rgba(27,109,252,0.06)' },
   // Written by /decode while it is paused, 17 Sep 2026.
-  decode: { label: 'The Body Decode', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
+  decode: { label: 'The Body Decode', accent: '#FAFAF8', bg: 'rgba(27,109,252,0.06)' },
   blueprint: { label: '6-Week Body Rewire Blueprint', accent: '#f59e0b', bg: 'rgba(245,158,11,0.06)' },
-  membership: { label: 'Body Recode Membership', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
+  membership: { label: 'Body Recode Membership', accent: '#FAFAF8', bg: 'rgba(27,109,252,0.06)' },
 }
 
 function fmtDate(iso: string): string {
@@ -89,7 +89,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
   }), [rows])
 
   const tabs: Array<{ key: Product | 'all'; label: string; count: number; accent: string }> = [
-    { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#141821' },
+    { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#FAFAF8' },
     { key: 'decode',     label: 'Body Decode',  count: grouped.decode.length,     accent: PRODUCT_META.decode.accent },
     { key: 'challenge',  label: 'Decode (old key)',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
     { key: 'blueprint',  label: 'Blueprint',  count: grouped.blueprint.length,  accent: PRODUCT_META.blueprint.accent },
@@ -110,8 +110,8 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
             onClick={() => setActiveTab(t.key)}
             className={`text-left rounded-xl border p-4 transition ${
               activeTab === t.key
-                ? 'border-[#141821] bg-white shadow-sm'
-                : 'border-[#E8EAEE] bg-white hover:border-[#E8EAEE]'
+                ? 'border-[#FAFAF8] bg-[#14171D] shadow-sm'
+                : 'border-[#2A2F39] bg-[#14171D] hover:border-[#2A2F39]'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
@@ -121,12 +121,12 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
               >
                 {t.label}
               </span>
-              <Users className="w-3.5 h-3.5 text-[#98A0AD]" />
+              <Users className="w-3.5 h-3.5 text-[#676D76]" />
             </div>
-            <p className="text-2xl font-black text-[#141821] leading-none">
+            <p className="text-2xl font-black text-[#FAFAF8] leading-none">
               {t.count}
             </p>
-            <p className="text-[12.5px] text-[#666D7A] mt-1">
+            <p className="text-[12.5px] text-[#8A9099] mt-1">
               {t.count === 1 ? '1 signup' : `${t.count} signups`}
             </p>
           </button>
@@ -136,12 +136,12 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
       {/* Active tab header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-lg font-bold text-[#141821]">
+          <h2 className="text-lg font-bold text-[#FAFAF8]">
             {activeTab === 'all'
               ? 'All product waitlist signups'
               : `${PRODUCT_META[activeTab].label} waitlist`}
           </h2>
-          <p className="text-sm text-[#666D7A] mt-1">
+          <p className="text-sm text-[#8A9099] mt-1">
             {visible.length === 0
               ? 'No signups yet.'
               : `${visible.length} ${visible.length === 1 ? 'lead' : 'leads'} waiting for launch. Sorted newest first.`}
@@ -150,7 +150,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
         {visible.length > 0 && (
           <button
             onClick={() => downloadCsv(visible, csvName)}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E8EAEE] bg-white text-sm font-semibold text-[#141821] hover:border-[#CFD4DC] transition"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[#2A2F39] bg-[#14171D] text-sm font-semibold text-[#FAFAF8] hover:border-[#2A2F39] transition"
           >
             <Download className="w-3.5 h-3.5" />
             Export CSV
@@ -160,48 +160,48 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
 
       {/* Table */}
       {visible.length === 0 ? (
-        <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-8 text-center">
-          <Users className="w-6 h-6 text-[#98A0AD] mx-auto mb-2" />
-          <p className="text-sm font-semibold text-[#141821]">No signups in this segment yet</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">
+        <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] p-8 text-center">
+          <Users className="w-6 h-6 text-[#676D76] mx-auto mb-2" />
+          <p className="text-sm font-semibold text-[#FAFAF8]">No signups in this segment yet</p>
+          <p className="text-[12.5px] text-[#8A9099] mt-1">
             Rows appear here as soon as leads click &quot;Join the waitlist&quot; on the scorecard result page.
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Email</th>
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Name</th>
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Phone</th>
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Sex</th>
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Body state</th>
+              <tr className="bg-[#14171D] border-b border-[#2A2F39]">
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Email</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Name</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Phone</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Sex</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Body state</th>
                 {activeTab === 'all' && (
-                  <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Product</th>
+                  <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Product</th>
                 )}
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Source</th>
-                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Joined</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Source</th>
+                <th className="text-left text-[12.5px] font-medium text-[#8A9099] px-4 py-3">Joined</th>
               </tr>
             </thead>
             <tbody>
               {visible.map((r, i) => {
                 const meta = PRODUCT_META[r.product]
                 return (
-                  <tr key={r.id} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
-                    <td className="px-4 py-3 text-[#141821] font-medium">
+                  <tr key={r.id} className={i % 2 === 0 ? 'bg-[#14171D]' : 'bg-[#14171D]/50'}>
+                    <td className="px-4 py-3 text-[#FAFAF8] font-medium">
                       <div className="flex items-center gap-2">
-                        <Mail className="w-3 h-3 text-[#98A0AD] flex-shrink-0" />
+                        <Mail className="w-3 h-3 text-[#676D76] flex-shrink-0" />
                         <span>{r.email}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-[#141821]">{[r.first_name, r.last_name].filter(Boolean).join(' ') || '-'}</td>
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{r.phone ?? '-'}</td>
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px] capitalize">{r.gender ? r.gender.replace(/_/g, ' ') : '-'}</td>
-                    <td className="px-4 py-3 text-[#141821]">
+                    <td className="px-4 py-3 text-[#FAFAF8]">{[r.first_name, r.last_name].filter(Boolean).join(' ') || '-'}</td>
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">{r.phone ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px] capitalize">{r.gender ? r.gender.replace(/_/g, ' ') : '-'}</td>
+                    <td className="px-4 py-3 text-[#FAFAF8]">
                       {r.body_state ? (
                         <div className="inline-flex items-center gap-1.5">
-                          <MapPin className="w-3 h-3 text-[#98A0AD]" />
+                          <MapPin className="w-3 h-3 text-[#676D76]" />
                           {r.body_state}
                         </div>
                       ) : '-'}
@@ -216,10 +216,10 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
                         </span>
                       </td>
                     )}
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{r.source ?? '-'}</td>
-                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">{r.source ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#8A9099] text-[12.5px]">
                       <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3 h-3 text-[#98A0AD]" />
+                        <Calendar className="w-3 h-3 text-[#676D76]" />
                         {fmtDate(r.created_at)}
                       </div>
                     </td>

@@ -85,25 +85,25 @@ export default async function CopilotReviewPage() {
                 <div className="min-w-0">
                   <Link
                     href={`/dashboard/clients/${f.client_id}`}
-                    className="text-[13.5px] font-semibold text-[#1B6DFC] hover:underline"
+                    className="text-[13.5px] font-semibold text-[#FAFAF8] hover:underline"
                   >
                     {nameById.get(f.client_id) ?? 'Unknown client'}
                   </Link>
-                  <span className="ml-2 text-[12.5px] text-[#98A0AD]">{fmtWhen(f.flagged_at)}</span>
+                  <span className="ml-2 text-[12.5px] text-[#676D76]">{fmtWhen(f.flagged_at)}</span>
                 </div>
                 <ResolveButton clientId={f.client_id} messageId={f.id} />
               </div>
 
               {f.question && (
                 <div className="mb-3">
-                  <p className="text-[12.5px] font-mediumr text-[#98A0AD] mb-1">Coach asked</p>
+                  <p className="text-[12.5px] font-mediumr text-[#676D76] mb-1">Coach asked</p>
                   <p className="text-[13.5px] text-[#4B4B4B] whitespace-pre-wrap">{f.question}</p>
                 </div>
               )}
 
               <div>
-                <p className="text-[12.5px] font-mediumr text-[#98A0AD] mb-1">Co-pilot answered (flagged)</p>
-                <p className="text-[13.5px] text-[#141821] whitespace-pre-wrap">{f.content}</p>
+                <p className="text-[12.5px] font-mediumr text-[#676D76] mb-1">Co-pilot answered (flagged)</p>
+                <p className="text-[13.5px] text-[#FAFAF8] whitespace-pre-wrap">{f.content}</p>
               </div>
             </Card>
           ))}

@@ -98,14 +98,14 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
                 href={`/f/${slug}`}
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 text-[#98A0AD] hover:text-[#666D7A] transition-colors"
+                className="p-2 text-[#676D76] hover:text-[#8A9099] transition-colors"
                 title="Preview live page"
               >
                 <ExternalLink size={15} />
               </a>
               <button
                 onClick={deleteFunnel}
-                className="p-2 text-[#98A0AD] hover:text-[#C82626] transition-colors"
+                className="p-2 text-[#676D76] hover:text-[#D4817E] transition-colors"
               >
                 <Trash2 size={15} />
               </button>
@@ -113,7 +113,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
           )}
           <button
             onClick={() => router.back()}
-            className="p-2 text-[#98A0AD] hover:text-[#666D7A] transition-colors"
+            className="p-2 text-[#676D76] hover:text-[#8A9099] transition-colors"
           >
             <X size={15} />
           </button>
@@ -121,7 +121,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
       </div>
 
       {error && (
-        <div className="mb-6 bg-[#FDEDED] border border-[#DC2626]/20 rounded-lg px-4 py-3 text-[#C82626] text-sm">
+        <div className="mb-6 bg-[#FDEDED] border border-[#D4817E]/20 rounded-lg px-4 py-3 text-[#D4817E] text-sm">
           {error}
         </div>
       )}
@@ -130,7 +130,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
         {/* Name + Slug */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Funnel Name</label>
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Funnel Name</label>
             <input
               type="text"
               value={name}
@@ -139,105 +139,105 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
                 if (isNew) setSlug(autoSlug(e.target.value))
               }}
               placeholder="e.g. Free Consultation"
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+              className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
             />
           </div>
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">
               <Globe size={11} className="inline mr-1" />
               URL Slug
             </label>
-            <div className="flex items-center bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg overflow-hidden focus-within:border-[#1B6DFC]">
-              <span className="pl-3 text-[#98A0AD] text-[12.5px] shrink-0">/f/</span>
+            <div className="flex items-center bg-[#1A1E26] border border-[#2A2F39] rounded-lg overflow-hidden focus-within:border-[#FAFAF8]">
+              <span className="pl-3 text-[#676D76] text-[12.5px] shrink-0">/f/</span>
               <input
                 type="text"
                 value={slug}
                 onChange={e => setSlug(autoSlug(e.target.value))}
                 placeholder="free-consultation"
-                className="flex-1 bg-transparent px-2 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none"
+                className="flex-1 bg-transparent px-2 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none"
               />
             </div>
           </div>
         </div>
 
         {/* Active toggle */}
-        <div className="flex items-center justify-between bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3">
+        <div className="flex items-center justify-between bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-[#141821]">Live</p>
-            <p className="text-[12.5px] text-[#666D7A]">Anyone with the link can submit</p>
+            <p className="text-sm font-medium text-[#FAFAF8]">Live</p>
+            <p className="text-[12.5px] text-[#8A9099]">Anyone with the link can submit</p>
           </div>
           <button
             onClick={() => setIsActive(v => !v)}
-            className={`relative w-10 h-6 rounded-full transition-colors ${isActive ? 'bg-[#1B6DFC]' : 'bg-[#E8EAEE]'}`}
+            className={`relative w-10 h-6 rounded-full transition-colors ${isActive ? 'bg-[#FAFAF8]' : 'bg-[#2A2F39]'}`}
           >
-            <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isActive ? 'left-5' : 'left-1'}`} />
+            <span className={`absolute top-1 w-4 h-4 bg-[#14171D] rounded-full transition-all ${isActive ? 'left-5' : 'left-1'}`} />
           </button>
         </div>
 
-        <hr className="border-[#E8EAEE]" />
-        <p className="text-[12.5px] font-semibold text-[#666D7A]">Page Content</p>
+        <hr className="border-[#2A2F39]" />
+        <p className="text-[12.5px] font-semibold text-[#8A9099]">Page Content</p>
 
         {/* Headline */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Headline</label>
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Headline</label>
           <input
             type="text"
             value={headline}
             onChange={e => setHeadline(e.target.value)}
             placeholder="Stop guessing. Start transforming."
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
           />
         </div>
 
         {/* Subheadline */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Subheadline</label>
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Subheadline</label>
           <input
             type="text"
             value={subheadline}
             onChange={e => setSubheadline(e.target.value)}
             placeholder="A short supporting line under the headline"
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
           />
         </div>
 
         {/* Body */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Body Copy</label>
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Body Copy</label>
           <textarea
             value={body}
             onChange={e => setBody(e.target.value)}
             placeholder="Describe what they'll get, who it's for, what happens next..."
             rows={6}
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] resize-none"
+            className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-3 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] resize-none"
           />
         </div>
 
         {/* CTA */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Button Label</label>
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Button Label</label>
             <input
               type="text"
               value={ctaLabel}
               onChange={e => setCtaLabel(e.target.value)}
               placeholder="Book a Free Call"
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+              className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
             />
           </div>
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">After Submit</label>
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">After Submit</label>
             <div className="relative">
               <select
                 value={redirectTo}
                 onChange={e => setRedirectTo(e.target.value)}
-                className="w-full appearance-none bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                className="w-full appearance-none bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
               >
                 {REDIRECT_OPTIONS.map(o => (
                   <option key={o.value} value={o.value}>{o.label}</option>
                 ))}
               </select>
-              <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[#666D7A] pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[#8A9099] pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
           <button
             onClick={save}
             disabled={saving}
-            className="bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-sm font-semibold px-6 py-2.5 rounded-lg transition-colors"
+            className="bg-[#FAFAF8] hover:bg-[#E4E4E0] disabled:opacity-50 text-[#14171D] text-sm font-semibold px-6 py-2.5 rounded-lg transition-colors"
           >
             {saving ? 'Saving...' : isNew ? 'Create Funnel' : 'Save Changes'}
           </button>

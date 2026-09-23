@@ -37,8 +37,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="br-card p-5">
       <div className="flex items-center gap-2.5 mb-4">
-        <span className="w-6 h-[3px] rounded-full bg-[#1B6DFC]" />
-        <h2 className="text-[11px] font-medium text-[#141821]">{title}</h2>
+        <span className="w-6 h-[3px] rounded-full bg-[#FAFAF8]" />
+        <h2 className="text-[11px] font-medium text-[#FAFAF8]">{title}</h2>
       </div>
       {children}
     </div>
@@ -47,10 +47,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Outcome({ title, active, children }: { title: string; active: boolean; children: React.ReactNode }) {
   return (
-    <div className={`rounded-xl border p-4 space-y-3 ${active ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.04)]' : 'border-[#E8EAEE]'}`}>
+    <div className={`rounded-xl border p-4 space-y-3 ${active ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.04)]' : 'border-[#2A2F39]'}`}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-[13.5px] font-semibold text-[#141821]">{title}</h3>
-        {active && <span className="text-[10px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.1)] px-2 py-0.5 rounded-full">Where this lead is</span>}
+        <h3 className="text-[13.5px] font-semibold text-[#FAFAF8]">{title}</h3>
+        {active && <span className="text-[10px] font-medium text-[#FAFAF8] bg-[rgba(27,109,252,0.1)] px-2 py-0.5 rounded-full">Where this lead is</span>}
       </div>
       {children}
     </div>
@@ -58,11 +58,11 @@ function Outcome({ title, active, children }: { title: string; active: boolean; 
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <p className="text-[12.5px] font-medium text-[#43474F]">{children}</p>
+  return <p className="text-[12.5px] font-medium text-[#C2C6CC]">{children}</p>
 }
 
 function Status({ children, tone = 'muted' }: { children: React.ReactNode; tone?: 'muted' | 'done' | 'warn' }) {
-  const c = tone === 'done' ? 'text-[#15803D]' : tone === 'warn' ? 'text-[#B45309]' : 'text-[#666D7A]'
+  const c = tone === 'done' ? 'text-[#15803D]' : tone === 'warn' ? 'text-[#B45309]' : 'text-[#8A9099]'
   return <p className={`text-[12.5px] leading-relaxed ${c}`}>{children}</p>
 }
 
@@ -164,11 +164,11 @@ export default function LeadActionsTab({
           </Status>
         </div>
         {bookings.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-[#E8EAEE] space-y-1.5">
+          <div className="mt-4 pt-3 border-t border-[#2A2F39] space-y-1.5">
             {bookings.map(b => (
               <div key={b.id} className="flex items-center justify-between text-[12.5px]">
-                <span className="text-[#43474F]">{bne(b.scheduled_at)} · {b.duration_minutes} min</span>
-                <span className={b.status === 'scheduled' ? 'text-[#1B6DFC] font-semibold' : 'text-[#98A0AD]'}>{b.status}</span>
+                <span className="text-[#C2C6CC]">{bne(b.scheduled_at)} · {b.duration_minutes} min</span>
+                <span className={b.status === 'scheduled' ? 'text-[#FAFAF8] font-semibold' : 'text-[#676D76]'}>{b.status}</span>
               </div>
             ))}
           </div>
@@ -187,7 +187,7 @@ export default function LeadActionsTab({
               linkExpiresAt={feeLinkExpiresAt}
               timesSent={feeSends.length}
             />
-            <div className="pt-3 border-t border-[#E8EAEE] space-y-2">
+            <div className="pt-3 border-t border-[#2A2F39] space-y-2">
               {converted ? (
                 <>
                   <Status tone="done">Client profile created{lead.converted_at ? ` ${bne(lead.converted_at)}` : ''}.</Status>
@@ -212,7 +212,7 @@ export default function LeadActionsTab({
                   ? `Offer emailed ${bne(lastOffer.sent_at)}${lastOffer.notes === 'Auto-sent on decline.' ? ', automatically with the declined follow-up' : ''}. Not bought yet.${offerSends.length > 1 ? ` Sent ${offerSends.length} times.` : ''}`
                   : 'Offer not sent yet.'}
             </Status>
-            <div className="pt-3 border-t border-[#E8EAEE] space-y-2">
+            <div className="pt-3 border-t border-[#2A2F39] space-y-2">
               <Label>Declined follow-up emails</Label>
               <Zoom1DeclinedButton leadId={lead.id} />
               <Status tone={declined.tone}>{declined.text}</Status>

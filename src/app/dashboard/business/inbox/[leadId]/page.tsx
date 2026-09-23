@@ -6,16 +6,16 @@ import { ArrowLeft, Mail, Calendar, FileText, Send, AlertCircle, CheckCircle2, R
 import InboxCompose from './inbox-compose'
 
 const EVENT_CONFIG: Record<string, { label: string; icon: typeof Mail; colour: string }> = {
-  email_sent: { label: 'You', icon: Mail, colour: 'text-[#1B6DFC]' },
+  email_sent: { label: 'You', icon: Mail, colour: 'text-[#FAFAF8]' },
   email_received: { label: 'Reply received', icon: Mail, colour: 'text-[#1056D6]' },
-  zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-[#1B6DFC]' },
-  check_in_submitted: { label: 'Check-in submitted', icon: FileText, colour: 'text-[#666D7A]' },
+  zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-[#FAFAF8]' },
+  check_in_submitted: { label: 'Check-in submitted', icon: FileText, colour: 'text-[#8A9099]' },
   followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-[#A96A12]' },
-  followup_cancelled: { label: 'Follow-up cancelled', icon: AlertCircle, colour: 'text-[#666D7A]' },
-  reengagement_sent: { label: 'Re-engagement sent', icon: Mail, colour: 'text-[#1B6DFC]' },
-  orientation_sent: { label: 'Orientation sent', icon: Mail, colour: 'text-[#1B6DFC]' },
+  followup_cancelled: { label: 'Follow-up cancelled', icon: AlertCircle, colour: 'text-[#8A9099]' },
+  reengagement_sent: { label: 'Re-engagement sent', icon: Mail, colour: 'text-[#FAFAF8]' },
+  orientation_sent: { label: 'Orientation sent', icon: Mail, colour: 'text-[#FAFAF8]' },
   noshow_sequence_scheduled: { label: 'No-show sequence started', icon: RefreshCw, colour: 'text-[#A96A12]' },
-  report_scheduled: { label: 'Report scheduled', icon: FileText, colour: 'text-[#666D7A]' },
+  report_scheduled: { label: 'Report scheduled', icon: FileText, colour: 'text-[#8A9099]' },
 }
 
 export default async function InboxThreadPage({
@@ -48,21 +48,21 @@ export default async function InboxThreadPage({
   return (
     <div className="max-w-2xl flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="flex items-center gap-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <Link
           href="/dashboard/business/inbox"
-          className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors"
+          className="p-1.5 text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
         >
           <ArrowLeft size={16} />
         </Link>
         <div className="flex-1">
-          <h1 className="text-lg font-semibold text-[#141821]">{lead.name}</h1>
-          <div className="flex items-center gap-3 text-[12.5px] text-[#666D7A]">
+          <h1 className="text-lg font-semibold text-[#FAFAF8]">{lead.name}</h1>
+          <div className="flex items-center gap-3 text-[12.5px] text-[#8A9099]">
             {lead.email && <span>{lead.email}</span>}
             {lead.phone && <span>{lead.phone}</span>}
             <Link
               href={`/dashboard/business/crm/${lead.id}`}
-              className="text-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+              className="text-[#FAFAF8] hover:text-[#FAFAF8] transition-colors"
             >
               View in CRM →
             </Link>
@@ -74,11 +74,11 @@ export default async function InboxThreadPage({
       <div className="flex-1 space-y-3 mb-6">
         {events && events.length > 0 ? (
           events.map((event: any) => {
-            const cfg = EVENT_CONFIG[event.type] ?? { label: event.type, icon: Mail, colour: 'text-[#666D7A]' }
+            const cfg = EVENT_CONFIG[event.type] ?? { label: event.type, icon: Mail, colour: 'text-[#8A9099]' }
             const Icon = cfg.icon
 
             return (
-              <div key={event.id} className={`border rounded-xl p-4 ${event.type === 'email_received' ? 'bg-[#EFF1F4]/60 border-[#1B6DFC]/20' : 'bg-[#F4F6F9] border-[#E8EAEE]'}`}>
+              <div key={event.id} className={`border rounded-xl p-4 ${event.type === 'email_received' ? 'bg-[#1F242C]/60 border-[#FAFAF8]/20' : 'bg-[#1A1E26] border-[#2A2F39]'}`}>
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 shrink-0">
                     <Icon size={13} className={cfg.colour} />
@@ -86,7 +86,7 @@ export default async function InboxThreadPage({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <p className={`text-xs font-medium ${cfg.colour}`}>{cfg.label}</p>
-                      <p className="text-[12.5px] text-[#98A0AD]">
+                      <p className="text-[12.5px] text-[#676D76]">
                         {new Date(event.sent_at).toLocaleString('en-AU', {
                           day: 'numeric', month: 'short',
                           hour: 'numeric', minute: '2-digit', hour12: true,
@@ -95,10 +95,10 @@ export default async function InboxThreadPage({
                       </p>
                     </div>
                     {event.subject && (
-                      <p className="text-sm font-medium text-[#141821] mb-1">{event.subject}</p>
+                      <p className="text-sm font-medium text-[#FAFAF8] mb-1">{event.subject}</p>
                     )}
                     {event.notes && (
-                      <p className="text-sm text-[#666D7A] leading-relaxed whitespace-pre-line">{event.notes}</p>
+                      <p className="text-sm text-[#8A9099] leading-relaxed whitespace-pre-line">{event.notes}</p>
                     )}
                   </div>
                 </div>
@@ -106,7 +106,7 @@ export default async function InboxThreadPage({
             )
           })
         ) : (
-          <div className="text-center py-12 text-[#98A0AD] text-sm">
+          <div className="text-center py-12 text-[#676D76] text-sm">
             No activity yet - send an email to start the conversation.
           </div>
         )}
@@ -117,7 +117,7 @@ export default async function InboxThreadPage({
         <InboxCompose leadId={lead.id} leadName={lead.name} leadEmail={lead.email} />
       )}
       {!lead.email && (
-        <div className="bg-[#F4F6F9] br-card p-4 text-[#666D7A] text-sm text-center">
+        <div className="bg-[#1A1E26] br-card p-4 text-[#8A9099] text-sm text-center">
           No email address on file - can't send from here.
         </div>
       )}

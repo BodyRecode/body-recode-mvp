@@ -30,12 +30,12 @@ export default async function EditWorkflowPage({ params }: { params: Promise<{ i
 
   return (
     <div>
-      <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-6">
-        <Link href="/dashboard/business/automations" className="hover:text-[#141821] transition-colors">
+      <div className="flex items-center gap-2 text-[#8A9099] text-sm mb-6">
+        <Link href="/dashboard/business/automations" className="hover:text-[#FAFAF8] transition-colors">
           Automations
         </Link>
         <span>/</span>
-        <span className="text-[#141821]">{workflow.name}</span>
+        <span className="text-[#FAFAF8]">{workflow.name}</span>
       </div>
       <WorkflowEditor
         initial={{

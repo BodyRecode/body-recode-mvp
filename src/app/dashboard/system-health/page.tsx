@@ -73,19 +73,19 @@ export default async function SystemHealthPage({
       <div className="mb-6 flex flex-wrap gap-2">
         <Link
           href="/dashboard/system-health/nutrition-engine"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#2A2F39] text-[#FAFAF8] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors"
         >
           Nutrition engine telemetry →
         </Link>
         <Link
           href="/dashboard/system-health/banned-terms-audit"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#2A2F39] text-[#FAFAF8] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors"
         >
           Banned-terms audit →
         </Link>
         <Link
           href="/dashboard/system-health/rrs-suggestions"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#2A2F39] text-[#FAFAF8] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors"
         >
           RRS suggestion acceptance →
         </Link>
@@ -93,11 +93,11 @@ export default async function SystemHealthPage({
 
       <Card className="mb-6">
         <div className="flex items-center gap-2.5 mb-3">
-          <span className="w-6 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2 className="text-[11px] font-medium text-[#141821]">Email delivery, last 30 days</h2>
+          <span className="w-6 h-[3px] rounded-full bg-[#FAFAF8]" />
+          <h2 className="text-[11px] font-medium text-[#FAFAF8]">Email delivery, last 30 days</h2>
         </div>
         {(badEmail?.length ?? 0) === 0 ? (
-          <p className="text-[12.5px] text-[#666D7A]">
+          <p className="text-[12.5px] text-[#8A9099]">
             {deliveredCount
               ? `${deliveredCount} emails confirmed delivered. None bounced, refused or reported as spam.`
               : 'Nothing recorded yet. This fills once the Resend webhook is connected and the next email goes out.'}
@@ -111,12 +111,12 @@ export default async function SystemHealthPage({
               <table className="w-full text-[12.5px]">
                 <tbody>
                   {badEmail!.map(e => (
-                    <tr key={e.id} className="border-b border-[#EFF1F4] last:border-0">
-                      <td className="py-2 pr-3 whitespace-nowrap text-[#141821] font-medium">{e.event_type}</td>
-                      <td className="py-2 pr-3 text-[#43474F]">{e.to_address}</td>
-                      <td className="py-2 pr-3 text-[#666D7A]">{e.subject}</td>
-                      <td className="py-2 pr-3 text-[#666D7A]">{e.detail}</td>
-                      <td className="py-2 whitespace-nowrap text-[#98A0AD]">
+                    <tr key={e.id} className="border-b border-[#1F242C] last:border-0">
+                      <td className="py-2 pr-3 whitespace-nowrap text-[#FAFAF8] font-medium">{e.event_type}</td>
+                      <td className="py-2 pr-3 text-[#C2C6CC]">{e.to_address}</td>
+                      <td className="py-2 pr-3 text-[#8A9099]">{e.subject}</td>
+                      <td className="py-2 pr-3 text-[#8A9099]">{e.detail}</td>
+                      <td className="py-2 whitespace-nowrap text-[#676D76]">
                         {new Date(e.occurred_at).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })}
                       </td>
                     </tr>
@@ -126,7 +126,7 @@ export default async function SystemHealthPage({
             </div>
           </div>
         )}
-        <p className="text-[10px] text-[#98A0AD] mt-3 leading-relaxed">
+        <p className="text-[10px] text-[#676D76] mt-3 leading-relaxed">
           Bounced, refused and spam complaints are reported and show here. Being filed as junk is never reported by any provider, so a quiet list does not prove everything was read.
         </p>
       </Card>
@@ -145,7 +145,7 @@ export default async function SystemHealthPage({
           {/* Run list */}
           <div className="md:w-56 md:flex-shrink-0">
             <p
-              className="text-[10px] font-medium text-[#98A0AD] mb-3"
+              className="text-[10px] font-medium text-[#676D76] mb-3"
             >
               Run history
             </p>
@@ -168,8 +168,8 @@ export default async function SystemHealthPage({
                     href={`/dashboard/system-health?run=${run.id}`}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border transition-colors ${
                       isSelected
-                        ? 'bg-[#EFF1F4] border-[#CFD4DC]'
-                        : 'border-transparent hover:bg-[#FFFFFF]'
+                        ? 'bg-[#1F242C] border-[#2A2F39]'
+                        : 'border-transparent hover:bg-[#14171D]'
                     }`}
                   >
                     <div
@@ -177,8 +177,8 @@ export default async function SystemHealthPage({
                       style={{ background: tone.bar }}
                     />
                     <div className="min-w-0">
-                      <p className={`text-[12.5px] font-semibold ${isSelected ? 'text-[#141821]' : 'text-[#43474F]'}`}>{label}</p>
-                      <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>{time}</p>
+                      <p className={`text-[12.5px] font-semibold ${isSelected ? 'text-[#FAFAF8]' : 'text-[#C2C6CC]'}`}>{label}</p>
+                      <p className="text-[10px] text-[#676D76]" style={{ fontFamily: MONO_FONT }}>{time}</p>
                       {run.status !== 'ok' && (
                         <p className="text-[10px] font-medium mt-0.5" style={{ color: tone.text }}>
                           {run.status === 'fixed'
@@ -199,7 +199,7 @@ export default async function SystemHealthPage({
               <RunDetail run={selectedRun} />
             ) : (
               <Card>
-                <p className="text-[#98A0AD] text-[13.5px] text-center py-6">Select a run to view details.</p>
+                <p className="text-[#676D76] text-[13.5px] text-center py-6">Select a run to view details.</p>
               </Card>
             )}
           </div>

@@ -88,18 +88,18 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
   return (
     <div className="space-y-4">
       {rows.length === 0 ? (
-        <div className="bg-[#F4F6F9] br-card p-6">
-          <p className="text-sm text-[#98A0AD]">No availability set up yet. Add a slot below.</p>
+        <div className="bg-[#1A1E26] br-card p-6">
+          <p className="text-sm text-[#676D76]">No availability set up yet. Add a slot below.</p>
         </div>
       ) : (
-        <div className="bg-[#F4F6F9] br-card divide-y divide-[#EFF1F4]">
+        <div className="bg-[#1A1E26] br-card divide-y divide-[#1F242C]">
           {rows.map(row => (
             <div key={row.id} className="flex items-center justify-between px-5 py-4">
               <div>
-                <span className={`text-sm font-medium ${row.is_active ? 'text-[#141821]' : 'text-[#666D7A]'}`}>
+                <span className={`text-sm font-medium ${row.is_active ? 'text-[#FAFAF8]' : 'text-[#8A9099]'}`}>
                   {DAYS[row.day_of_week]}
                 </span>
-                <span className="text-[12.5px] text-[#666D7A] ml-2">
+                <span className="text-[12.5px] text-[#8A9099] ml-2">
                   · {formatTime(row.start_time)} to {formatTime(row.end_time)} · {row.slot_duration_minutes} min slots · {row.buffer_minutes} min buffer
                 </span>
               </div>
@@ -109,8 +109,8 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                   disabled={toggling === row.id}
                   className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors ${
                     row.is_active
-                      ? 'border-[#9CC0FB] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
-                      : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                      ? 'border-[#9CC0FB] text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
+                      : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                   }`}
                 >
                   {toggling === row.id ? '...' : row.is_active ? 'Active' : 'Paused'}
@@ -118,7 +118,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                 <button
                   onClick={() => handleRemove(row.id)}
                   disabled={removing === row.id}
-                  className="text-[#98A0AD] hover:text-[#C82626] transition-colors text-[12.5px]"
+                  className="text-[#676D76] hover:text-[#D4817E] transition-colors text-[12.5px]"
                 >
                   {removing === row.id ? '...' : '✕'}
                 </button>
@@ -131,16 +131,16 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+          className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors"
         >
           + Add availability
         </button>
       ) : (
-        <div className="bg-[#F4F6F9] br-card p-6 space-y-5">
-          <p className="text-[12.5px] text-[#666D7A]">New Availability Window</p>
+        <div className="bg-[#1A1E26] br-card p-6 space-y-5">
+          <p className="text-[12.5px] text-[#8A9099]">New Availability Window</p>
 
           <div>
-            <p className="text-[12.5px] text-[#666D7A] mb-2">Day</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-2">Day</p>
             <div className="flex flex-wrap gap-2">
               {DAY_SHORT.map((d, i) => (
                 <button
@@ -148,8 +148,8 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                   onClick={() => setDay(i)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     day === i
-                      ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
-                      : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                      ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]'
+                      : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                   }`}
                 >
                   {d}
@@ -160,28 +160,28 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">Start time</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">Start time</p>
               <input
                 type="time"
                 value={startTime}
                 onChange={e => setStartTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC] w-full"
+                className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8] w-full"
               />
             </div>
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">End time</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">End time</p>
               <input
                 type="time"
                 value={endTime}
                 onChange={e => setEndTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC] w-full"
+                className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8] w-full"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">Slot duration (min)</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">Slot duration (min)</p>
               <div className="flex gap-2">
                 {[30, 45, 60].map(d => (
                   <button
@@ -189,8 +189,8 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                     onClick={() => setSlotDuration(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       slotDuration === d
-                        ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
-                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                        ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]'
+                        : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                     }`}
                   >
                     {d}
@@ -199,7 +199,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
               </div>
             </div>
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">Buffer (min)</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">Buffer (min)</p>
               <div className="flex gap-2">
                 {[0, 15, 30].map(d => (
                   <button
@@ -207,8 +207,8 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                     onClick={() => setBuffer(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       buffer === d
-                        ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
-                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                        ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]'
+                        : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                     }`}
                   >
                     {d}
@@ -218,19 +218,19 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
             </div>
           </div>
 
-          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-[#1B6DFC] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#1560E0] transition-colors"
+              className="px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#E4E4E0] transition-colors"
             >
               {saving ? 'Saving...' : 'Add'}
             </button>
             <button
               onClick={() => { setAdding(false); setError('') }}
-              className="px-4 py-2 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
+              className="px-4 py-2 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
             >
               Cancel
             </button>

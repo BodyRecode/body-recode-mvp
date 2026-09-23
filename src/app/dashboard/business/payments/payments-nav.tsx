@@ -20,7 +20,7 @@ export default function PaymentsNav() {
   ]
 
   return (
-    <div className="flex items-center gap-1 mb-6 border-b border-[#E8EAEE]">
+    <div className="flex items-center gap-1 mb-6 border-b border-[#2A2F39]">
       {tabs.map(t => {
         const active = t.exact ? pathname === t.href : pathname?.startsWith(t.href)
         return (
@@ -29,8 +29,8 @@ export default function PaymentsNav() {
             href={t.href}
             className={`px-3 py-2 text-xs font-medium transition-colors border-b-2 -mb-px ${
               active
-                ? 'text-[#1B6DFC] border-[#1B6DFC]'
-                : 'text-[#666D7A] hover:text-[#141821] border-transparent'
+                ? 'text-[#FAFAF8] border-[#FAFAF8]'
+                : 'text-[#8A9099] hover:text-[#FAFAF8] border-transparent'
             }`}
           >
             {t.label}

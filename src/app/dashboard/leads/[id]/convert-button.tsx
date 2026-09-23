@@ -22,7 +22,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     return (
       <a
         href={`/dashboard/clients/${clientId}`}
-        className="inline-block text-sm font-medium text-[#1B6DFC] hover:underline"
+        className="inline-block text-sm font-medium text-[#FAFAF8] hover:underline"
       >
         View client profile →
       </a>
@@ -85,19 +85,19 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
         )}
         {portalEmailSent === false && (
           <div className="rounded-lg border border-[#EFAFAF] bg-[#FDEDED] px-4 py-3 space-y-1">
-            <p className="text-sm text-[#C82626] font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
-            <p className="text-[12.5px] text-[#C82626]">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
+            <p className="text-sm text-[#D4817E] font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
+            <p className="text-[12.5px] text-[#D4817E]">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
           </div>
         )}
 
         {portalLink && (
           <div className="space-y-1.5">
-            <p className="text-[12.5px] font-medium text-[#666D7A]">Portal link (client signs in here):</p>
-            <div className="bg-[#EFF1F4] rounded-lg px-4 py-3 flex items-center gap-3">
-              <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{portalLink}</p>
+            <p className="text-[12.5px] font-medium text-[#8A9099]">Portal link (client signs in here):</p>
+            <div className="bg-[#1F242C] rounded-lg px-4 py-3 flex items-center gap-3">
+              <p className="text-[#8A9099] text-[12.5px] font-mono flex-1 truncate">{portalLink}</p>
               <button
                 onClick={copyPortal}
-                className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#43474F] hover:text-[#141821] transition-colors"
+                className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#2A2F39] text-[#C2C6CC] hover:border-[#C2C6CC] hover:text-[#FAFAF8] transition-colors"
               >
                 {portalCopied ? 'Copied!' : 'Copy'}
               </button>
@@ -106,12 +106,12 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
         )}
 
         <div className="space-y-1.5">
-          <p className="text-[12.5px] font-medium text-[#666D7A]">Intake link:</p>
-          <div className="bg-[#EFF1F4] rounded-lg px-4 py-3 flex items-center gap-3">
-            <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{intakeLink}</p>
+          <p className="text-[12.5px] font-medium text-[#8A9099]">Intake link:</p>
+          <div className="bg-[#1F242C] rounded-lg px-4 py-3 flex items-center gap-3">
+            <p className="text-[#8A9099] text-[12.5px] font-mono flex-1 truncate">{intakeLink}</p>
             <button
               onClick={copy}
-              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#43474F] hover:text-[#141821] transition-colors"
+              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#2A2F39] text-[#C2C6CC] hover:border-[#C2C6CC] hover:text-[#FAFAF8] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy'}
             </button>
@@ -125,7 +125,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     <button
       onClick={convert}
       disabled={loading}
-      className="bg-[#1B6DFC] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
+      className="bg-[#FAFAF8] text-[#0B0D10] text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#E4E4E0] transition-colors disabled:opacity-50"
     >
       {loading ? 'Converting...' : 'Convert to Client'}
     </button>

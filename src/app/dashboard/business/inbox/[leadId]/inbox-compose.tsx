@@ -50,20 +50,20 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
   }
 
   return (
-    <div className="bg-[#F4F6F9] br-card overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-[#E8EAEE]">
-        <div className="flex items-center gap-2 text-[12.5px] text-[#666D7A]">
+    <div className="bg-[#1A1E26] br-card overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-[#2A2F39]">
+        <div className="flex items-center gap-2 text-[12.5px] text-[#8A9099]">
           <span>To:</span>
-          <span className="text-[#141821]">{leadName} &lt;{leadEmail}&gt;</span>
+          <span className="text-[#FAFAF8]">{leadName} &lt;{leadEmail}&gt;</span>
         </div>
       </div>
-      <div className="px-4 py-2.5 border-b border-[#E8EAEE]">
+      <div className="px-4 py-2.5 border-b border-[#2A2F39]">
         <input
           type="text"
           value={subject}
           onChange={e => setSubject(e.target.value)}
           placeholder="Subject"
-          className="w-full bg-transparent text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none"
+          className="w-full bg-transparent text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none"
         />
       </div>
       <textarea
@@ -71,16 +71,16 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
         onChange={e => setMessage(e.target.value)}
         placeholder="Write your message..."
         rows={4}
-        className="w-full bg-transparent px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none resize-none"
+        className="w-full bg-transparent px-4 py-3 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none resize-none"
       />
-      <div className="px-4 py-3 border-t border-[#E8EAEE] flex items-center justify-between">
-        {error && <p className="text-[#C82626] text-[12.5px]">{error}</p>}
-        {sent && <p className="text-[#1B6DFC] text-[12.5px]">Sent.</p>}
+      <div className="px-4 py-3 border-t border-[#2A2F39] flex items-center justify-between">
+        {error && <p className="text-[#D4817E] text-[12.5px]">{error}</p>}
+        {sent && <p className="text-[#FAFAF8] text-[12.5px]">Sent.</p>}
         {!error && !sent && <span />}
         <button
           onClick={send}
           disabled={sending}
-          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] disabled:opacity-50 text-[#14171D] text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Send size={12} />
           {sending ? 'Sending...' : 'Send'}

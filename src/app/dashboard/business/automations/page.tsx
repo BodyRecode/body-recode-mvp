@@ -41,14 +41,14 @@ export default async function AutomationsPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
           <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Automations</h1>
-          <p className="text-[#666D7A] text-sm">{active} active · {total} total</p>
+          <p className="text-[#8A9099] text-sm">{active} active · {total} total</p>
         </div>
         <Link
           href="/dashboard/business/automations/new"
-          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Workflow
@@ -88,7 +88,7 @@ export default async function AutomationsPage() {
 
       {workflows && workflows.length > 0 ? (
         <div>
-          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Custom Workflows</p>
+          <p className="text-[12.5px] font-semibold text-[#8A9099] mb-3">Custom Workflows</p>
           <div className="space-y-2">
             {workflows.map((workflow) => {
             const stepCount = Array.isArray(workflow.be_workflow_steps)
@@ -98,21 +98,21 @@ export default async function AutomationsPage() {
               <Link
                 key={workflow.id}
                 href={`/dashboard/business/automations/${workflow.id}`}
-                className="flex items-center gap-4 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors group"
+                className="flex items-center gap-4 bg-[#1A1E26] br-card p-4 hover:border-[#2A2F39] transition-colors group"
               >
-                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-[rgba(27,109,252,0.08)]' : 'bg-[#EFF1F4]'}`}>
+                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-[rgba(27,109,252,0.08)]' : 'bg-[#1F242C]'}`}>
                   <Zap
                     size={15}
-                    className={workflow.is_active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}
+                    className={workflow.is_active ? 'text-[#FAFAF8]' : 'text-[#8A9099]'}
                     strokeWidth={1.8}
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
+                  <p className="text-sm font-medium text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">
                     {workflow.name}
                   </p>
-                  <p className="text-[12.5px] text-[#666D7A] mt-0.5">
+                  <p className="text-[12.5px] text-[#8A9099] mt-0.5">
                     {triggerLabel[workflow.trigger_type] ?? workflow.trigger_type}
                     {' · '}
                     {stepCount} step{stepCount !== 1 ? 's' : ''}
@@ -124,14 +124,14 @@ export default async function AutomationsPage() {
                     <ReseedScorecardButton stepCount={stepCount} />
                   )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${
-                    workflow.is_active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'
+                    workflow.is_active ? 'text-[#FAFAF8]' : 'text-[#8A9099]'
                   }`}>
                     {workflow.is_active
                       ? <><Play size={11} />Active</>
                       : <><Pause size={11} />Paused</>
                     }
                   </span>
-                  <ChevronRight size={14} className="text-[#98A0AD] group-hover:text-[#666D7A] transition-colors" />
+                  <ChevronRight size={14} className="text-[#676D76] group-hover:text-[#8A9099] transition-colors" />
                 </div>
               </Link>
             )
@@ -139,17 +139,17 @@ export default async function AutomationsPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
+        <div className="bg-[#1A1E26] border border-dashed border-[#2A2F39] rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-[#EFF1F4] rounded-xl">
-              <Zap size={24} className="text-[#666D7A]" strokeWidth={1.5} />
+            <div className="p-3 bg-[#1F242C] rounded-xl">
+              <Zap size={24} className="text-[#8A9099]" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-[#666D7A] text-sm font-medium mb-1">No automations yet</p>
-          <p className="text-[#98A0AD] text-[12.5px] mb-6">Build workflows to automate your entire lead and client journey</p>
+          <p className="text-[#8A9099] text-sm font-medium mb-1">No automations yet</p>
+          <p className="text-[#676D76] text-[12.5px] mb-6">Build workflows to automate your entire lead and client journey</p>
           <Link
             href="/dashboard/business/automations/new"
-            className="inline-flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
             Build your first workflow

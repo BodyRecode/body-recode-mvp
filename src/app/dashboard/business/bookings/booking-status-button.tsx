@@ -13,9 +13,9 @@ interface Props {
 }
 
 const options = [
-  { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-[#1B6DFC]' },
-  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-[#C82626]' },
-  { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-[#666D7A]' },
+  { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-[#FAFAF8]' },
+  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-[#D4817E]' },
+  { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-[#8A9099]' },
 ]
 
 /** Brisbane wall-clock parts of an instant, for prefilling the date/time inputs. */
@@ -86,7 +86,7 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       <button
         onClick={() => setOpen(!open)}
         disabled={isPending}
-        className="flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-1 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] border border-[#2A2F39] hover:border-[#2A2F39] px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
       >
         {isPending ? 'Saving...' : 'Update'}
         <ChevronDown size={11} />
@@ -95,11 +95,11 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       {open && !rescheduling && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg shadow-xl overflow-hidden min-w-36">
+          <div className="absolute right-0 top-8 z-20 bg-[#1A1E26] border border-[#2A2F39] rounded-lg shadow-xl overflow-hidden min-w-36">
             {currentStatus === 'scheduled' && (
               <button
                 onClick={() => { setRescheduling(true); setOpen(false) }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-[12.5px] hover:bg-[#EFF1F4] transition-colors text-[#141821] border-b border-[#E8EAEE]"
+                className="w-full flex items-center gap-2 px-3 py-2 text-[12.5px] hover:bg-[#1F242C] transition-colors text-[#FAFAF8] border-b border-[#2A2F39]"
               >
                 <CalendarClock size={12} />
                 Reschedule
@@ -111,7 +111,7 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
                 <button
                   key={opt.value}
                   onClick={() => updateStatus(opt.value)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-[#EFF1F4] transition-colors ${opt.colour}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-[#1F242C] transition-colors ${opt.colour}`}
                 >
                   <Icon size={12} />
                   {opt.label}
@@ -141,33 +141,33 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       {rescheduling && (
         <>
           <div className="fixed inset-0 z-10 bg-black/20" onClick={() => setRescheduling(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg shadow-xl p-3 w-64">
-            <p className="text-[12.5px] font-semibold text-[#141821] mb-2">Move this booking</p>
+          <div className="absolute right-0 top-8 z-20 bg-[#1A1E26] border border-[#2A2F39] rounded-lg shadow-xl p-3 w-64">
+            <p className="text-[12.5px] font-semibold text-[#FAFAF8] mb-2">Move this booking</p>
             <div className="space-y-2">
               <div>
-                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Date</label>
+                <label className="block text-[11px] font-medium text-[#8A9099] mb-1">Date</label>
                 <input
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Time (Brisbane)</label>
+                <label className="block text-[11px] font-medium text-[#8A9099] mb-1">Time (Brisbane)</label>
                 <input
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Duration</label>
+                <label className="block text-[11px] font-medium text-[#8A9099] mb-1">Duration</label>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                 >
                   <option value="30">30 min</option>
                   <option value="45">45 min</option>
@@ -176,20 +176,20 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
                 </select>
               </div>
             </div>
-            <p className="text-[11px] text-[#666D7A] leading-relaxed mt-2.5">
+            <p className="text-[11px] text-[#8A9099] leading-relaxed mt-2.5">
               Moves the Zoom meeting without changing the join link, cancels the old reminders, and emails them the corrected time.
             </p>
             <div className="flex gap-2 mt-2.5">
               <button
                 onClick={() => setRescheduling(false)}
-                className="flex-1 text-[12.5px] text-[#666D7A] border border-[#E8EAEE] rounded-lg px-2 py-1.5 hover:bg-[#EFF1F4] transition-colors"
+                className="flex-1 text-[12.5px] text-[#8A9099] border border-[#2A2F39] rounded-lg px-2 py-1.5 hover:bg-[#1F242C] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={submitReschedule}
                 disabled={!date || !time}
-                className="flex-1 text-[12.5px] font-semibold text-white bg-[#1B6DFC] rounded-lg px-2 py-1.5 hover:bg-[#1560E0] transition-colors disabled:opacity-40"
+                className="flex-1 text-[12.5px] font-semibold text-[#0B0D10] bg-[#FAFAF8] rounded-lg px-2 py-1.5 hover:bg-[#E4E4E0] transition-colors disabled:opacity-40"
               >
                 Save
               </button>

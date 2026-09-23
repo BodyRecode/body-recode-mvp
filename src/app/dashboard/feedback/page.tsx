@@ -114,12 +114,12 @@ export default function FeedbackDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FBFCFD] text-[#141821]">
+    <div className="min-h-screen bg-[#14171D] text-[#FAFAF8]">
       <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">Coach</p>
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+          <p className="text-[12.5px] font-medium text-[#8A9099] mb-1">Coach</p>
           <h1 className="text-2xl font-bold tracking-tight">Feedback triage</h1>
-          <p className="text-sm text-[#666D7A] mt-1">All captured feedback across stages. Triage incoming, manage permission-to-publish, tag churn risk, mark testimonials as published.</p>
+          <p className="text-sm text-[#8A9099] mt-1">All captured feedback across stages. Triage incoming, manage permission-to-publish, tag churn risk, mark testimonials as published.</p>
         </div>
 
         {/* Filter chips */}
@@ -132,23 +132,23 @@ export default function FeedbackDashboardPage() {
             ['published', `Published (${counts.published})`],
             ['all', `All (${counts.total})`],
           ] as [Filter, string][]).map(([f, label]) => (
-            <button key={f} onClick={() => setFilter(f)} className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${filter === f ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-white text-[#141821] border-[#E8EAEE] hover:border-[#5390FF]'}`}>{label}</button>
+            <button key={f} onClick={() => setFilter(f)} className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${filter === f ? 'bg-[#FAFAF8] text-[#0B0D10] border-[#FAFAF8]' : 'bg-[#14171D] text-[#FAFAF8] border-[#2A2F39] hover:border-[#C2C6CC]'}`}>{label}</button>
           ))}
         </div>
 
         <div className="flex gap-2 mb-6">
-          <select value={stageFilter} onChange={e => setStageFilter(e.target.value)} className="text-[12.5px] bg-white border border-[#E8EAEE] rounded px-2 py-1.5 font-medium">
+          <select value={stageFilter} onChange={e => setStageFilter(e.target.value)} className="text-[12.5px] bg-[#14171D] border border-[#2A2F39] rounded px-2 py-1.5 font-medium">
             <option value="all">All stages</option>
             {Object.entries(STAGE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
-          <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium">↻ Refresh</button>
+          <button onClick={load} className="text-[12.5px] bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8] px-3 py-1.5 rounded font-medium">↻ Refresh</button>
         </div>
 
-        {loading && <p className="text-sm text-[#666D7A]">Loading...</p>}
+        {loading && <p className="text-sm text-[#8A9099]">Loading...</p>}
 
         {!loading && filtered.length === 0 && (
           <div className="br-card p-12 text-center">
-            <p className="text-[#666D7A]">No feedback matches this filter.</p>
+            <p className="text-[#8A9099]">No feedback matches this filter.</p>
           </div>
         )}
 
@@ -157,20 +157,20 @@ export default function FeedbackDashboardPage() {
             const statusStyle = STATUS_STYLES[r.permission_status] ?? STATUS_STYLES.pending
             const isUnseen = !r.coach_seen_at
             return (
-              <div key={r.id} className={`bg-white border rounded-xl p-5 ${isUnseen ? 'border-[#9CC0FB] shadow-sm' : 'border-[#E8EAEE]'}`}>
+              <div key={r.id} className={`bg-[#14171D] border rounded-xl p-5 ${isUnseen ? 'border-[#9CC0FB] shadow-sm' : 'border-[#2A2F39]'}`}>
                 <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[12.5px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded">{STAGE_LABELS[r.stage] ?? r.stage}</span>
-                    <span className="text-[12.5px] text-[#666D7A]">·</span>
-                    <span className="text-[12.5px] text-[#141821] font-medium">{r.moment}</span>
-                    <span className="text-[12.5px] text-[#98A0AD]">·</span>
-                    <span className="text-[12.5px] text-[#666D7A]">{new Date(r.created_at).toLocaleString('en-AU')}</span>
-                    {r.first_name && <span className="text-[12.5px] text-[#666D7A]">· {r.first_name}{r.last_initial ? ` ${r.last_initial}.` : ''}</span>}
+                    <span className="text-[12.5px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] px-2 py-0.5 rounded">{STAGE_LABELS[r.stage] ?? r.stage}</span>
+                    <span className="text-[12.5px] text-[#8A9099]">·</span>
+                    <span className="text-[12.5px] text-[#FAFAF8] font-medium">{r.moment}</span>
+                    <span className="text-[12.5px] text-[#676D76]">·</span>
+                    <span className="text-[12.5px] text-[#8A9099]">{new Date(r.created_at).toLocaleString('en-AU')}</span>
+                    {r.first_name && <span className="text-[12.5px] text-[#8A9099]">· {r.first_name}{r.last_initial ? ` ${r.last_initial}.` : ''}</span>}
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-[12.5px] font-semibold px-2 py-0.5 rounded border" style={{ background: statusStyle.bg, color: statusStyle.color, borderColor: statusStyle.border }}>{statusStyle.label}</span>
-                    {r.churn_risk && <span className="text-[12.5px] font-semibold px-2 py-0.5 rounded border bg-[#FDEDED] text-[#C82626] border-[#EFAFAF] inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> Churn risk</span>}
-                    {r.testimonial_published_at && <span className="text-[12.5px] font-semibold px-2 py-0.5 rounded border bg-[#EDF8F1] text-[#177245] border-green-300">✓ Published</span>}
+                    {r.churn_risk && <span className="text-[12.5px] font-semibold px-2 py-0.5 rounded border bg-[#FDEDED] text-[#D4817E] border-[#EFAFAF] inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> Churn risk</span>}
+                    {r.testimonial_published_at && <span className="text-[12.5px] font-semibold px-2 py-0.5 rounded border bg-[#EDF8F1] text-[#177245] border-[#2A2F39]">✓ Published</span>}
                   </div>
                 </div>
 
@@ -178,49 +178,49 @@ export default function FeedbackDashboardPage() {
                   <div className="flex items-center gap-3 mb-3">
                     {r.nps_score !== null && (
                       <div className="flex items-center gap-2">
-                        <span className="text-[12.5px] text-[#666D7A] font-medium">NPS</span>
-                        <span className={`text-base font-bold ${r.nps_score >= 9 ? 'text-[#177245]' : r.nps_score >= 7 ? 'text-[#A96A12]' : 'text-[#C82626]'}`}>{r.nps_score}/10</span>
+                        <span className="text-[12.5px] text-[#8A9099] font-medium">NPS</span>
+                        <span className={`text-base font-bold ${r.nps_score >= 9 ? 'text-[#177245]' : r.nps_score >= 7 ? 'text-[#A96A12]' : 'text-[#D4817E]'}`}>{r.nps_score}/10</span>
                       </div>
                     )}
                     {r.accuracy_score !== null && (
                       <div className="flex items-center gap-2">
-                        <span className="text-[12.5px] text-[#666D7A] font-medium">Accuracy</span>
-                        <span className="text-base font-bold text-[#141821]">{r.accuracy_score}/5</span>
+                        <span className="text-[12.5px] text-[#8A9099] font-medium">Accuracy</span>
+                        <span className="text-base font-bold text-[#FAFAF8]">{r.accuracy_score}/5</span>
                       </div>
                     )}
                   </div>
                 )}
 
                 {r.response_text && (
-                  <blockquote className="border-l-2 border-[#9CC0FB] bg-[rgba(27,109,252,0.08)]/50 px-4 py-3 my-3 rounded text-sm text-[#141821] italic leading-relaxed">
+                  <blockquote className="border-l-2 border-[#9CC0FB] bg-[rgba(27,109,252,0.08)]/50 px-4 py-3 my-3 rounded text-sm text-[#FAFAF8] italic leading-relaxed">
                     &ldquo;{r.response_text}&rdquo;
                   </blockquote>
                 )}
 
                 <div className="flex flex-wrap gap-2 mt-3">
                   {isUnseen && (
-                    <button onClick={() => markSeen(r.id)} className="text-[12.5px] bg-[#1B6DFC] hover:bg-[#1560E0] text-white px-3 py-1.5 rounded font-medium">✓ Mark seen</button>
+                    <button onClick={() => markSeen(r.id)} className="text-[12.5px] bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#0B0D10] px-3 py-1.5 rounded font-medium">✓ Mark seen</button>
                   )}
                   {r.permission_status === 'pending' && r.response_text && (
-                    <button onClick={() => sendConsent(r.id)} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Mail size={12} strokeWidth={2.5} /> Send consent email</button>
+                    <button onClick={() => sendConsent(r.id)} className="text-[12.5px] bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8] px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Mail size={12} strokeWidth={2.5} /> Send consent email</button>
                   )}
                   {r.permission_status === 'granted' && !r.testimonial_published_at && (
                     <button onClick={() => {
                       const where = prompt('Where published? e.g. site_homepage, IG_story_2026-07-20, blueprint_lp')
                       if (where) markPublished(r.id, where)
-                    }} className="text-[12.5px] bg-[#22A05A] hover:bg-[#177245] text-white px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Pin size={12} strokeWidth={2.5} /> Mark published</button>
+                    }} className="text-[12.5px] bg-[#22A05A] hover:bg-[#177245] text-[#FAFAF8] px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Pin size={12} strokeWidth={2.5} /> Mark published</button>
                   )}
-                  <button onClick={() => flipChurnRisk(r.id, r.churn_risk)} className={`text-xs px-3 py-1.5 rounded font-medium ${r.churn_risk ? 'bg-[#FBDCDC] text-[#C82626] border border-[#EFAFAF]' : 'bg-[#F4F6F9] hover:bg-[#FDEDED] text-[#666D7A] border border-[#E8EAEE]'}`}><span className="inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> {r.churn_risk ? 'Clear churn risk' : 'Flag churn risk'}</span></button>
+                  <button onClick={() => flipChurnRisk(r.id, r.churn_risk)} className={`text-xs px-3 py-1.5 rounded font-medium ${r.churn_risk ? 'bg-[#FBDCDC] text-[#D4817E] border border-[#EFAFAF]' : 'bg-[#1A1E26] hover:bg-[#FDEDED] text-[#8A9099] border border-[#2A2F39]'}`}><span className="inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> {r.churn_risk ? 'Clear churn risk' : 'Flag churn risk'}</span></button>
                   <div className="flex gap-1">
                     {(['positive', 'neutral', 'negative'] as const).map(s => (
-                      <button key={s} onClick={() => setSentiment(r.id, s)} className={`text-xs px-2 py-1.5 rounded font-medium ${r.sentiment === s ? (s === 'positive' ? 'bg-[#22A05A] text-white' : s === 'negative' ? 'bg-[#DC2626] text-white' : 'bg-[#666D7A] text-white') : 'bg-[#F4F6F9] text-[#666D7A] hover:bg-[#EFF1F4]'}`}>
+                      <button key={s} onClick={() => setSentiment(r.id, s)} className={`text-xs px-2 py-1.5 rounded font-medium ${r.sentiment === s ? (s === 'positive' ? 'bg-[#22A05A] text-[#FAFAF8]' : s === 'negative' ? 'bg-[#D4817E] text-[#FAFAF8]' : 'bg-[#8A9099] text-[#FAFAF8]') : 'bg-[#1A1E26] text-[#8A9099] hover:bg-[#1F242C]'}`}>
                         {s === 'positive' ? <Smile size={16} strokeWidth={2.2} /> : s === 'negative' ? <Frown size={16} strokeWidth={2.2} /> : <Meh size={16} strokeWidth={2.2} />}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {r.source && <p className="text-[12.5px] text-[#98A0AD] mt-3">source: {r.source}</p>}
+                {r.source && <p className="text-[12.5px] text-[#676D76] mt-3">source: {r.source}</p>}
               </div>
             )
           })}

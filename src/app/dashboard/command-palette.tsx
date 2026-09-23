@@ -193,17 +193,17 @@ export default function CommandPalette() {
         aria-label="Command palette"
       >
         {/* Search input */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E8EAEE]">
-          <Search size={16} className="text-[#98A0AD] shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#2A2F39]">
+          <Search size={16} className="text-[#676D76] shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search pages, actions…"
-            className="flex-1 bg-transparent text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] outline-none"
+            className="flex-1 bg-transparent text-[13.5px] text-[#FAFAF8] placeholder:text-[#676D76] outline-none"
           />
           <span
-            className="hidden sm:inline-flex items-center gap-1 text-[10px] text-[#98A0AD] px-1.5 py-0.5 rounded border border-[#E8EAEE] bg-[#FFFFFF]"
+            className="hidden sm:inline-flex items-center gap-1 text-[10px] text-[#676D76] px-1.5 py-0.5 rounded border border-[#2A2F39] bg-[#14171D]"
             style={{ fontFamily: MONO_FONT }}
           >
             esc
@@ -214,14 +214,14 @@ export default function CommandPalette() {
         <div ref={listRef} className="max-h-[420px] overflow-y-auto p-2">
           {filtered.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-[13.5px] text-[#666D7A]">No matches</p>
-              <p className="text-[11px] text-[#98A0AD] mt-1">Try a different search</p>
+              <p className="text-[13.5px] text-[#8A9099]">No matches</p>
+              <p className="text-[11px] text-[#676D76] mt-1">Try a different search</p>
             </div>
           ) : (
             grouped.map(([group, items]) => (
               <div key={group} className="mb-2 last:mb-0">
                 <div
-                  className="text-[10px] text-[#98A0AD] px-3 pt-2 pb-1"
+                  className="text-[10px] text-[#676D76] px-3 pt-2 pb-1"
                 >
                   {group}
                 </div>
@@ -237,18 +237,18 @@ export default function CommandPalette() {
                       onMouseEnter={() => setActiveIdx(idx)}
                       onClick={() => { router.push(item.href); setOpen(false) }}
                       className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
-                        active ? 'bg-[#EFF1F4]' : 'hover:bg-[#EFF1F4]/60'
+                        active ? 'bg-[#1F242C]' : 'hover:bg-[#1F242C]/60'
                       }`}
                     >
-                      <Icon size={15} className={active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'} />
+                      <Icon size={15} className={active ? 'text-[#FAFAF8]' : 'text-[#8A9099]'} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[13.5px] text-[#141821] truncate">{item.label}</p>
+                        <p className="text-[13.5px] text-[#FAFAF8] truncate">{item.label}</p>
                         {item.hint && (
-                          <p className="text-[11px] text-[#98A0AD] truncate">{item.hint}</p>
+                          <p className="text-[11px] text-[#676D76] truncate">{item.hint}</p>
                         )}
                       </div>
                       {active && (
-                        <CornerDownLeft size={13} className="text-[#98A0AD] shrink-0" />
+                        <CornerDownLeft size={13} className="text-[#676D76] shrink-0" />
                       )}
                     </button>
                   )
@@ -260,7 +260,7 @@ export default function CommandPalette() {
 
         {/* Footer hints */}
         <div
-          className="flex items-center justify-between gap-3 px-4 py-2.5 border-t border-[#E8EAEE] text-[10px] text-[#98A0AD]"
+          className="flex items-center justify-between gap-3 px-4 py-2.5 border-t border-[#2A2F39] text-[10px] text-[#676D76]"
         >
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1">

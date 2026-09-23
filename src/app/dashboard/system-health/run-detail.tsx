@@ -44,10 +44,10 @@ export default function RunDetail({ run }: { run: Run }) {
   })
 
   const overallColor = run.status === 'ok'
-    ? 'text-[#1B6DFC] border-[#B5CFFC] bg-[#1B6DFC]/5'
+    ? 'text-[#FAFAF8] border-[#2A2F39] bg-[#FAFAF8]/5'
     : run.status === 'fixed'
     ? 'text-[#A96A12] border-[#F1DEB8] bg-[#C08A2D]/5'
-    : 'text-[#C82626] border-[#F5C9C9] bg-red-400/5'
+    : 'text-[#D4817E] border-[#F5C9C9] bg-[#1A1E26]/5'
 
   const overallLabel = run.status === 'ok'
     ? 'All systems operational'
@@ -69,35 +69,35 @@ export default function RunDetail({ run }: { run: Run }) {
   }
 
   const statusIcon = (s: CheckStatus) => {
-    if (s === 'ok') return <span className="text-[#1B6DFC] font-bold">&#10003;</span>
+    if (s === 'ok') return <span className="text-[#FAFAF8] font-bold">&#10003;</span>
     if (s === 'fixed') return <span className="text-[#A96A12] font-bold">&#9889;</span>
-    if (s === 'failed') return <span className="text-[#C82626] font-bold">&#10007;</span>
-    return <span className="text-[#98A0AD]">&#8212;</span>
+    if (s === 'failed') return <span className="text-[#D4817E] font-bold">&#10007;</span>
+    return <span className="text-[#676D76]">&#8212;</span>
   }
 
   const statusTextColor = (s: CheckStatus) => {
-    if (s === 'ok') return 'text-[#141821]'
+    if (s === 'ok') return 'text-[#FAFAF8]'
     if (s === 'fixed') return 'text-[#A96A12]'
-    if (s === 'failed') return 'text-[#C82626]'
-    return 'text-[#666D7A]'
+    if (s === 'failed') return 'text-[#D4817E]'
+    return 'text-[#8A9099]'
   }
 
   return (
     <div>
       {/* Header */}
-      <div className="bg-[#F4F6F9] br-card p-5 mb-4">
+      <div className="bg-[#1A1E26] br-card p-5 mb-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[12.5px] text-[#666D7A] mb-1">{dateStr}</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-1">{dateStr}</p>
             <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full border ${overallColor}`}>
               {overallLabel}
             </span>
-            <p className="text-[12.5px] text-[#98A0AD] mt-2">{checks.length} checks run</p>
+            <p className="text-[12.5px] text-[#676D76] mt-2">{checks.length} checks run</p>
           </div>
           <button
             onClick={download}
             disabled={downloading}
-            className="flex-shrink-0 text-[12.5px] font-semibold px-4 py-2 border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors disabled:opacity-50"
+            className="flex-shrink-0 text-[12.5px] font-semibold px-4 py-2 border border-[#2A2F39] text-[#FAFAF8] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors disabled:opacity-50"
           >
             {downloading ? 'Downloading...' : 'Download .md'}
           </button>
@@ -105,13 +105,13 @@ export default function RunDetail({ run }: { run: Run }) {
 
         {/* Summary callouts */}
         {failures.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
-            <p className="text-[12.5px] font-medium text-[#C82626] mb-2">Needs manual attention</p>
+          <div className="mt-4 pt-4 border-t border-[#2A2F39]">
+            <p className="text-[12.5px] font-medium text-[#D4817E] mb-2">Needs manual attention</p>
             <div className="space-y-1.5">
               {failures.map((f, i) => (
                 <div key={i}>
-                  <p className="text-[12.5px] text-[#141821] font-medium">{f.name}</p>
-                  {f.manualFix && <p className="text-[12.5px] text-[#666D7A] mt-0.5">{f.manualFix}</p>}
+                  <p className="text-[12.5px] text-[#FAFAF8] font-medium">{f.name}</p>
+                  {f.manualFix && <p className="text-[12.5px] text-[#8A9099] mt-0.5">{f.manualFix}</p>}
                 </div>
               ))}
             </div>
@@ -119,11 +119,11 @@ export default function RunDetail({ run }: { run: Run }) {
         )}
 
         {fixes.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
+          <div className="mt-4 pt-4 border-t border-[#2A2F39]">
             <p className="text-[12.5px] font-medium text-[#A96A12] mb-2">Auto-fixed</p>
             <div className="space-y-1">
               {fixes.map((f, i) => (
-                <p key={i} className="text-[12.5px] text-[#666D7A]">{f.name} - {f.action}</p>
+                <p key={i} className="text-[12.5px] text-[#8A9099]">{f.name} - {f.action}</p>
               ))}
             </div>
           </div>
@@ -136,21 +136,21 @@ export default function RunDetail({ run }: { run: Run }) {
           const sectionChecks = checks.slice(section.range[0], section.range[1])
           if (sectionChecks.length === 0) return null
           return (
-            <div key={section.label} className="bg-[#F4F6F9] br-card p-5">
-              <p className="text-[12.5px] font-medium text-[#666D7A] mb-4">{section.label}</p>
+            <div key={section.label} className="bg-[#1A1E26] br-card p-5">
+              <p className="text-[12.5px] font-medium text-[#8A9099] mb-4">{section.label}</p>
               <div className="space-y-3">
                 {sectionChecks.map((c, i) => (
-                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-[#E8EAEE]' : ''}`}>
+                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-[#2A2F39]' : ''}`}>
                     <div className="flex items-center gap-2 mb-1">
                       {statusIcon(c.status)}
                       <span className={`text-sm font-semibold ${statusTextColor(c.status)}`}>{c.name}</span>
                     </div>
-                    <p className="text-[12.5px] text-[#666D7A] pl-5">{c.detail}</p>
+                    <p className="text-[12.5px] text-[#8A9099] pl-5">{c.detail}</p>
                     {c.action && (
                       <p className="text-[12.5px] text-[#A96A12] pl-5 mt-1">&#9889; {c.action}</p>
                     )}
                     {c.manualFix && (
-                      <p className="text-[12.5px] text-[#C82626] pl-5 mt-1">Action needed: {c.manualFix}</p>
+                      <p className="text-[12.5px] text-[#D4817E] pl-5 mt-1">Action needed: {c.manualFix}</p>
                     )}
                   </div>
                 ))}

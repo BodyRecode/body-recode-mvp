@@ -107,12 +107,12 @@ export default async function DashboardProgramsPage() {
       />
 
       {total === 0 ? (
-        <div className="border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
-          <div className="w-12 h-12 rounded-full border border-[#E8EAEE] bg-[#FFFFFF] flex items-center justify-center mx-auto mb-4">
-            <Dumbbell size={18} className="text-[#98A0AD]" />
+        <div className="border border-dashed border-[#2A2F39] rounded-xl p-12 text-center">
+          <div className="w-12 h-12 rounded-full border border-[#2A2F39] bg-[#14171D] flex items-center justify-center mx-auto mb-4">
+            <Dumbbell size={18} className="text-[#676D76]" />
           </div>
-          <p className="text-[13.5px] text-[#666D7A] mb-1">No active clients.</p>
-          <p className="text-[12.5px] text-[#98A0AD]">
+          <p className="text-[13.5px] text-[#8A9099] mb-1">No active clients.</p>
+          <p className="text-[12.5px] text-[#676D76]">
             Programs appear here once a client is marked active and has a generated training block.
           </p>
         </div>

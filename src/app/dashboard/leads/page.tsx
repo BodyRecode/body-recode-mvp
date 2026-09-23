@@ -31,7 +31,7 @@ const QUALITY_BADGE: Record<'green' | 'yellow' | 'red', { label: string; classNa
   },
   red: {
     label: '2 Red Flags',
-    className: 'bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626]',
+    className: 'bg-[#FEE7E7] border border-[#F5C6C6] text-[#D4817E]',
   },
 }
 
@@ -103,11 +103,11 @@ export default async function LeadsPage({
         subtitle={`${allLeads.length} ${showInactive ? 'inactive' : 'active'} ${allLeads.length === 1 ? 'lead' : 'leads'}`}
         cta={
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
+            <div className="inline-flex items-center bg-[#14171D] border border-[#2A2F39] rounded-lg p-0.5">
               <Link
                 href="/dashboard/leads"
                 className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                  !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
+                  !showInactive ? 'bg-[#FAFAF8] text-[#14171D]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
                 }`}
               >
                 Active
@@ -115,7 +115,7 @@ export default async function LeadsPage({
               <Link
                 href="/dashboard/leads?view=inactive"
                 className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                  showInactive ? 'bg-[#EFF1F4] text-[#141821]' : 'text-[#666D7A] hover:text-[#141821]'
+                  showInactive ? 'bg-[#1F242C] text-[#FAFAF8]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
                 }`}
               >
                 Inactive
@@ -133,7 +133,7 @@ export default async function LeadsPage({
         {STATUS_GROUPS.map(group => (
           <div key={group.label}>
             <p
-              className="text-[10px] font-medium text-[#98A0AD] mb-2.5"
+              className="text-[10px] font-medium text-[#676D76] mb-2.5"
             >
               {group.label}
             </p>
@@ -147,7 +147,7 @@ export default async function LeadsPage({
                     className={`text-[11px] px-3 py-1.5 rounded-full border transition-colors ${
                       active
                         ? getLeadStatusColour(s)
-                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] bg-[#FFFFFF]'
+                        : 'border-[#2A2F39] text-[#8A9099] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] bg-[#14171D]'
                     }`}
                   >
                     {getLeadStatusLabel(s)}
@@ -183,8 +183,8 @@ export default async function LeadsPage({
                   {lead.lead_quality && (
                     <span
                       title={qualityTitle(lead.lead_quality, lead.biological_sex)}
-                      className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#FFFFFF] ${
-                        lead.lead_quality === 'red' ? 'bg-[#DC2626]' :
+                      className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#14171D] ${
+                        lead.lead_quality === 'red' ? 'bg-[#D4817E]' :
                         lead.lead_quality === 'yellow' ? 'bg-[#D97706]' :
                         'bg-[#16A34A]'
                       }`}
@@ -192,8 +192,8 @@ export default async function LeadsPage({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[13.5px] font-medium text-[#141821] truncate group-hover:text-[#1B6DFC] transition-colors">{lead.name}</p>
-                  <p className="text-[12.5px] text-[#98A0AD] truncate mt-0.5">
+                  <p className="text-[13.5px] font-medium text-[#FAFAF8] truncate group-hover:text-[#FAFAF8] transition-colors">{lead.name}</p>
+                  <p className="text-[12.5px] text-[#676D76] truncate mt-0.5">
                     {lead.email}
                     {lead.phone ? ` · ${lead.phone}` : ''}
                     {' · '}
@@ -215,7 +215,7 @@ export default async function LeadsPage({
                 <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getLeadStatusColour(lead.status)}`}>
                   {getLeadStatusLabel(lead.status)}
                 </span>
-                <ChevronRight size={16} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors" />
+                <ChevronRight size={16} className="text-[#676D76] group-hover:text-[#FAFAF8] transition-colors" />
               </div>
             </Link>
           ))}

@@ -426,9 +426,9 @@ export default async function TodayWidget() {
       {/* Header strip */}
       <div className="flex items-center justify-between mb-4 px-1 flex-wrap gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
           <h2
-            className="text-[11px] font-medium text-[#141821]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Today&apos;s Focus
           </h2>
@@ -474,7 +474,7 @@ export default async function TodayWidget() {
       {sorted.length === 0 ? (
         <EmptyStateBlock />
       ) : (
-        <div className="divide-y divide-[#EFF1F4]">
+        <div className="divide-y divide-[#1F242C]">
           {sorted.map((action, i) => (
             <ActionRow key={action.clientId} action={action} index={i} also={concurrent.get(action.clientId) ?? []} />
           ))}
@@ -531,10 +531,10 @@ function ActionRow({
   const row = (
     <Link
       href={action.href}
-      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#EFF1F4]/40 -mx-1 px-2 rounded-lg transition-colors"
+      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#1F242C]/40 -mx-1 px-2 rounded-lg transition-colors"
     >
       <span
-        className="text-[11px] font-medium tabular-nums text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0 w-6 text-right"
+        className="text-[11px] font-medium tabular-nums text-[#676D76] group-hover:text-[#FAFAF8] transition-colors shrink-0 w-6 text-right"
       >
         {String(index + 1).padStart(2, '0')}
       </span>
@@ -546,12 +546,12 @@ function ActionRow({
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-[13.5px] font-bold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
+          <p className="text-[13.5px] font-bold text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">
             {action.clientName}
           </p>
           {action.badge && (
             <span
-              className="inline-flex items-center text-[10px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]"
+              className="inline-flex items-center text-[10px] px-1.5 py-0.5 rounded-full border border-[#2A2F39] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]"
             >
               {action.badge}
             </span>
@@ -565,7 +565,7 @@ function ActionRow({
         </p>
         {action.sublabel && (
           <p
-            className="text-[10px] text-[#98A0AD] mt-0.5 truncate"
+            className="text-[10px] text-[#676D76] mt-0.5 truncate"
           >
             {action.sublabel}
           </p>
@@ -573,7 +573,7 @@ function ActionRow({
       </div>
       <ArrowUpRight
         size={16}
-        className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0"
+        className="text-[#676D76] group-hover:text-[#FAFAF8] transition-colors shrink-0"
       />
     </Link>
   )
@@ -630,8 +630,8 @@ function iconFor(action: ClientNextAction) {
 function EmptyStateBlock() {
   return (
     <div className="py-8 text-center">
-      <p className="text-[13.5px] text-[#666D7A] mb-1">No active clients yet</p>
-      <p className="text-[12.5px] text-[#98A0AD]">
+      <p className="text-[13.5px] text-[#8A9099] mb-1">No active clients yet</p>
+      <p className="text-[12.5px] text-[#676D76]">
         Per-client focus board will populate as clients onboard.
       </p>
     </div>

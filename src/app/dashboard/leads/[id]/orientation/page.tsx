@@ -2,23 +2,23 @@ import { brand } from "@/config/tenant";
 
 export default function OrientationPage() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
+    <div className="min-h-screen bg-[#14171D] text-[#FAFAF8]">
       <div className="max-w-2xl mx-auto px-8 py-16">
 
         {/* Header */}
-        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <p className="text-[10px] text-[#98A0AD] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
-          <div className="w-8 h-px bg-[#1B6DFC]/60 mb-8" />
-          <h1 className="text-4xl font-light text-[#141821] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
-          <p className="text-[#666D7A] text-base leading-relaxed">How this works. What to expect. How we begin.</p>
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+          <p className="text-[10px] text-[#676D76] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
+          <div className="w-8 h-px bg-[#FAFAF8]/60 mb-8" />
+          <h1 className="text-4xl font-light text-[#FAFAF8] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
+          <p className="text-[#8A9099] text-base leading-relaxed">How this works. What to expect. How we begin.</p>
         </div>
 
         {/* Intro note */}
-        <div className="border-l-2 border-[#B5CFFC] pl-6 mb-16">
-          <p className="text-[#666D7A] text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
+        <div className="border-l-2 border-[#2A2F39] pl-6 mb-16">
+          <p className="text-[#8A9099] text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
         </div>
 
-        <div className="space-y-14 text-[#141821] text-[16px] leading-relaxed">
+        <div className="space-y-14 text-[#FAFAF8] text-[16px] leading-relaxed">
 
           <OrientationSection title="A Note on How to Read This">
             <p>This orientation is not something to get through quickly. It is designed to be read slowly, in your own time, without needing to take notes, make decisions, or figure anything out as you go. You don&apos;t need to agree with everything you read, and you don&apos;t need to be certain about anything by the end.</p>
@@ -79,13 +79,13 @@ export default function OrientationPage() {
 
           {/* Closing */}
           <div className="pt-2">
-            <div className="w-8 h-px bg-[#1B6DFC]/30 mb-8" />
-            <p className="text-[#666D7A] text-sm italic leading-relaxed">{brand().name} doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
+            <div className="w-8 h-px bg-[#FAFAF8]/30 mb-8" />
+            <p className="text-[#8A9099] text-sm italic leading-relaxed">{brand().name} doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
           </div>
 
         </div>
 
-        <p className="text-[10px] text-[#141821] mt-20">{brand().name}&trade;</p>
+        <p className="text-[10px] text-[#FAFAF8] mt-20">{brand().name}&trade;</p>
 
       </div>
     </div>
@@ -96,8 +96,8 @@ function OrientationSection({ title, children }: { title: string; children: Reac
   return (
     <section>
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-1 h-4 bg-[#1B6DFC]/50 rounded-full shrink-0" />
-        <h2 className="text-[12.5px] font-semibold text-[#1B6DFC]/70"
+        <div className="w-1 h-4 bg-[#FAFAF8]/50 rounded-full shrink-0" />
+        <h2 className="text-[12.5px] font-semibold text-[#FAFAF8]/70"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>

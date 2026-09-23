@@ -27,7 +27,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
 
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-[#E8EAEE] mb-5 overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#2A2F39] mb-5 overflow-x-auto">
         {available.map(tab => {
           const on = tab.id === current?.id
           return (
@@ -35,7 +35,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
               key={tab.id}
               onClick={() => setActive(tab.id)}
               className={`relative shrink-0 px-3.5 py-2.5 text-[13.5px] font-semibold transition-colors ${
-                on ? 'text-[#1B6DFC]' : 'text-[#666D7A] hover:text-[#141821]'
+                on ? 'text-[#FAFAF8]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
               <span className="inline-flex items-center gap-1.5">
@@ -43,13 +43,13 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
                 {tab.alert && <span className="w-1.5 h-1.5 rounded-full bg-[#B7791F]" />}
                 {tab.badge != null && tab.badge !== '' && (
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                    on ? 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]' : 'bg-[#F4F6F9] text-[#98A0AD]'
+                    on ? 'bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]' : 'bg-[#1A1E26] text-[#676D76]'
                   }`}>
                     {tab.badge}
                   </span>
                 )}
               </span>
-              {on && <span className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#1B6DFC] rounded-full" />}
+              {on && <span className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#FAFAF8] rounded-full" />}
             </button>
           )
         })}

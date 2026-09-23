@@ -5,10 +5,10 @@ const TYPE_STYLES: Record<
   BriefingItem['type'],
   { badge: string; icon: string; badgeText: string; borderColor: string }
 > = {
-  action: { badge: 'bg-[#DDE9FD] text-[#1056D6]', icon: '→', badgeText: 'Action', borderColor: 'border-[#B5CFFC]' },
-  question: { badge: 'bg-purple-100 text-purple-700', icon: '?', badgeText: 'Question', borderColor: 'border-purple-200' },
-  observation: { badge: 'bg-[#F4F6F9] text-[#141821]', icon: '·', badgeText: 'Observation', borderColor: 'border-[#E8EAEE]' },
-  alert: { badge: 'bg-[#FBDCDC] text-[#C82626]', icon: '!', badgeText: 'Alert', borderColor: 'border-[#EFAFAF]' },
+  action: { badge: 'bg-[#DDE9FD] text-[#1056D6]', icon: '→', badgeText: 'Action', borderColor: 'border-[#2A2F39]' },
+  question: { badge: 'bg-[#1A1E26] text-[#C2C6CC]', icon: '?', badgeText: 'Question', borderColor: 'border-[#2A2F39]' },
+  observation: { badge: 'bg-[#1A1E26] text-[#FAFAF8]', icon: '·', badgeText: 'Observation', borderColor: 'border-[#2A2F39]' },
+  alert: { badge: 'bg-[#FBDCDC] text-[#D4817E]', icon: '!', badgeText: 'Alert', borderColor: 'border-[#EFAFAF]' },
 }
 
 const PRIORITY_STYLES: Record<
@@ -33,16 +33,16 @@ export async function BriefingCards({
 
   if (briefing.error) {
     return (
-      <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12.5px] text-[#666D7A] leading-relaxed">
-        <strong className="text-[#141821]">{briefing.persona}&apos;s briefing unavailable.</strong> {briefing.error}
+      <div className="mb-8 p-4 rounded-xl border border-[#2A2F39] bg-[#14171D] text-[12.5px] text-[#8A9099] leading-relaxed">
+        <strong className="text-[#FAFAF8]">{briefing.persona}&apos;s briefing unavailable.</strong> {briefing.error}
       </div>
     )
   }
 
   if (briefing.items.length === 0) {
     return (
-      <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12.5px] text-[#666D7A] leading-relaxed">
-        <strong className="text-[#141821]">{briefing.persona}</strong> is quiet today. Metrics below look nominal.
+      <div className="mb-8 p-4 rounded-xl border border-[#2A2F39] bg-[#14171D] text-[12.5px] text-[#8A9099] leading-relaxed">
+        <strong className="text-[#FAFAF8]">{briefing.persona}</strong> is quiet today. Metrics below look nominal.
       </div>
     )
   }
@@ -50,10 +50,10 @@ export async function BriefingCards({
   return (
     <div className="mb-8">
       <div className="flex items-center gap-3 mb-3">
-        <h3 className="text-[11px] font-medium text-[#666D7A]">
+        <h3 className="text-[11px] font-medium text-[#8A9099]">
           {label ?? `${briefing.persona}'s briefing`}
         </h3>
-        <span className="text-[10px] text-[#98A0AD] font-mono">
+        <span className="text-[10px] text-[#676D76] font-mono">
           {new Date(briefing.generatedAt).toLocaleTimeString('en-AU', {
             timeZone: 'Australia/Brisbane',
             hour: '2-digit',
@@ -75,7 +75,7 @@ function BriefingCard({ item }: { item: BriefingItem }) {
   const priority = PRIORITY_STYLES[item.priority]
 
   return (
-    <div className={`bg-white border ${style.borderColor} rounded-xl p-5 ${priority.ring}`}>
+    <div className={`bg-[#14171D] border ${style.borderColor} rounded-xl p-5 ${priority.ring}`}>
       <div className="flex items-start gap-3">
         <div className={`w-6 h-6 rounded-full ${style.badge} flex items-center justify-center text-[13.5px] font-bold shrink-0 mt-0.5`}>
           {style.icon}
@@ -86,7 +86,7 @@ function BriefingCard({ item }: { item: BriefingItem }) {
               {style.badgeText}
             </span>
             {item.priority === 'critical' && (
-              <span className="text-[10px] font-medium bg-[#FBDCDC] text-[#C82626] px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-medium bg-[#FBDCDC] text-[#D4817E] px-1.5 py-0.5 rounded">
                 Critical
               </span>
             )}
@@ -96,18 +96,18 @@ function BriefingCard({ item }: { item: BriefingItem }) {
               </span>
             )}
           </div>
-          <h4 className="text-[16px] font-bold text-[#141821] mb-1 leading-snug">{item.title}</h4>
-          <p className="text-[13.5px] text-[#141821] leading-relaxed">{item.body}</p>
+          <h4 className="text-[16px] font-bold text-[#FAFAF8] mb-1 leading-snug">{item.title}</h4>
+          <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed">{item.body}</p>
           {item.cta_href && item.cta_label && (
             <Link
               href={item.cta_href}
-              className="inline-block mt-3 text-[13.5px] font-semibold text-[#1560E0] hover:text-[#1056D6] underline"
+              className="inline-block mt-3 text-[13.5px] font-semibold text-[#E4E4E0] hover:text-[#1056D6] underline"
             >
               {item.cta_label} →
             </Link>
           )}
           {!item.cta_href && item.cta_label && (
-            <span className="inline-block mt-3 text-[13.5px] font-semibold text-[#98A0AD] italic">
+            <span className="inline-block mt-3 text-[13.5px] font-semibold text-[#676D76] italic">
               {item.cta_label} (Ask panel coming soon)
             </span>
           )}

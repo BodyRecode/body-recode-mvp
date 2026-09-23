@@ -245,21 +245,21 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         <div>
           <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">{isNew ? 'New Campaign' : 'Edit Campaign'}</h1>
           {campaign?.status && (
-            <p className="text-[12.5px] text-[#666D7A] capitalize">{campaign.status}</p>
+            <p className="text-[12.5px] text-[#8A9099] capitalize">{campaign.status}</p>
           )}
         </div>
         <div className="flex items-center gap-2">
           {!isNew && campaign?.status === 'draft' && (
             <button
               onClick={deleteCampaign}
-              className="p-2 text-[#98A0AD] hover:text-[#C82626] transition-colors"
+              className="p-2 text-[#676D76] hover:text-[#D4817E] transition-colors"
             >
               <Trash2 size={16} />
             </button>
           )}
           <button
             onClick={() => router.back()}
-            className="p-2 text-[#98A0AD] hover:text-[#666D7A] transition-colors"
+            className="p-2 text-[#676D76] hover:text-[#8A9099] transition-colors"
           >
             <X size={16} />
           </button>
@@ -267,7 +267,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
       </div>
 
       {error && (
-        <div className="mb-6 bg-[#FDEDED] border border-[#DC2626]/20 rounded-lg px-4 py-3 text-[#C82626] text-sm">
+        <div className="mb-6 bg-[#FDEDED] border border-[#D4817E]/20 rounded-lg px-4 py-3 text-[#D4817E] text-sm">
           {error}
         </div>
       )}
@@ -275,20 +275,20 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
       <div className="space-y-6">
         {/* Name */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Campaign Name</label>
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Campaign Name</label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="e.g. July Check-In Blast"
             disabled={isSent}
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] disabled:opacity-50"
+            className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] disabled:opacity-50"
           />
         </div>
 
         {/* Type */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Type</label>
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Type</label>
           <div className="flex gap-2">
             {typeOptions.map(opt => {
               const Icon = opt.icon
@@ -299,8 +299,8 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   disabled={isSent}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors disabled:opacity-50 ${
                     type === opt.value
-                      ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
-                      : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#E8EAEE]'
+                      ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#FAFAF8]'
+                      : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                   }`}
                 >
                   <Icon size={13} />
@@ -314,57 +314,57 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         {/* Subject (email only) */}
         {type === 'email' && (
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Subject Line</label>
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Subject Line</label>
             <input
               type="text"
               value={subject}
               onChange={e => setSubject(e.target.value)}
               placeholder="Your email subject..."
               disabled={isSent}
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] disabled:opacity-50"
+              className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] disabled:opacity-50"
             />
           </div>
         )}
 
         {/* Content */}
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">
+          <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">
             {type === 'email' ? 'Email Body' : type === 'sms' ? 'SMS Message' : 'Post Content'}
           </label>
-          <p className="text-[12.5px] text-[#98A0AD] mb-2">Use {'{{first_name}}'} to personalise</p>
+          <p className="text-[12.5px] text-[#676D76] mb-2">Use {'{{first_name}}'} to personalise</p>
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder={type === 'email' ? 'Write your email...' : 'Write your message...'}
             rows={type === 'email' ? 12 : 5}
             disabled={isSent}
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] resize-none disabled:opacity-50"
+            className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-3 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] resize-none disabled:opacity-50"
           />
         </div>
 
         {/* Test Send (SMS only) */}
         {type === 'sms' && (
-          <div className="border border-[#E8EAEE] rounded-lg p-4">
-            <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Test Send</p>
+          <div className="border border-[#2A2F39] rounded-lg p-4">
+            <p className="text-[12.5px] font-medium text-[#8A9099] mb-3">Test Send</p>
             <div className="flex gap-2">
               <input
                 type="tel"
                 value={testPhone}
                 onChange={e => { setTestPhone(e.target.value); setTestResult(null) }}
                 placeholder="04xx xxx xxx"
-                className="flex-1 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+                className="flex-1 bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
               />
               <button
                 onClick={sendTestSms}
                 disabled={testSending || !testPhone.trim() || !content.trim()}
-                className="flex items-center gap-2 px-4 py-2.5 bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] text-sm font-medium rounded-lg transition-colors disabled:opacity-40"
+                className="flex items-center gap-2 px-4 py-2.5 bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8] text-sm font-medium rounded-lg transition-colors disabled:opacity-40"
               >
                 <Send size={13} />
                 {testSending ? 'Sending...' : 'Send Test'}
               </button>
             </div>
             {testResult === 'sent' && (
-              <p className="text-[12.5px] text-[#1B6DFC] mt-2">Test SMS sent successfully.</p>
+              <p className="text-[12.5px] text-[#FAFAF8] mt-2">Test SMS sent successfully.</p>
             )}
           </div>
         )}
@@ -372,19 +372,19 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         {/* Recipients */}
         {!isSent && (
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Recipients</label>
+            <label className="block text-[12.5px] font-medium text-[#8A9099] mb-2">Recipients</label>
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <select
                   value={recipientType}
                   onChange={e => { setRecipientType(e.target.value); setRecipientValue('') }}
-                  className="w-full appearance-none bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                  className="w-full appearance-none bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
                 >
                   {recipientOptions.map(o => (
                     <option key={o.value} value={o.value}>{o.label}</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666D7A] pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9099] pointer-events-none" />
               </div>
 
               {selectedRecipientOption?.needsValue && recipientType === 'pipeline_stage' && (
@@ -392,14 +392,14 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   <select
                     value={recipientValue}
                     onChange={e => setRecipientValue(e.target.value)}
-                    className="w-full appearance-none bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-full appearance-none bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
                   >
                     <option value="">Select stage...</option>
                     {PIPELINE_STAGES.map(s => (
                       <option key={s.value} value={s.value}>{s.label}</option>
                     ))}
                   </select>
-                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666D7A] pointer-events-none" />
+                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9099] pointer-events-none" />
                 </div>
               )}
 
@@ -408,14 +408,14 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   <select
                     value={recipientValue}
                     onChange={e => setRecipientValue(e.target.value)}
-                    className="w-full appearance-none bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-full appearance-none bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2.5 pr-8 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
                   >
                     <option value="">Select tag...</option>
                     {tags.map(t => (
                       <option key={t.id} value={t.name}>{t.name}</option>
                     ))}
                   </select>
-                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666D7A] pointer-events-none" />
+                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9099] pointer-events-none" />
                 </div>
               )}
             </div>
@@ -428,7 +428,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={() => save()}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-[#1F242C] hover:bg-[#2A2F39] text-[#FAFAF8] text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <Save size={14} />
               Save Draft
@@ -437,7 +437,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={sendNow}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               <Send size={14} />
               {sending ? 'Sending...' : 'Send Now'}
@@ -446,7 +446,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={() => setShowSchedule(v => !v)}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] text-[#666D7A] text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 border border-[#2A2F39] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] text-[#8A9099] text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <Clock size={14} />
               Schedule
@@ -460,7 +460,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
               type="datetime-local"
               value={scheduleAt}
               onChange={e => setScheduleAt(e.target.value)}
-              className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+              className="bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-4 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
             />
             <button
               onClick={schedule}
@@ -473,7 +473,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         )}
 
         {isSent && (
-          <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-lg px-4 py-3 text-[#1B6DFC] text-sm">
+          <div className="bg-[#FAFAF8]/5 border border-[#FAFAF8]/20 rounded-lg px-4 py-3 text-[#FAFAF8] text-sm">
             This campaign has been sent and can no longer be edited.
           </div>
         )}

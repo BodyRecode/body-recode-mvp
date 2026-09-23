@@ -70,21 +70,21 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
   return (
     <div className="space-y-4">
       {rows.length === 0 ? (
-        <div className="bg-[#F4F6F9] br-card p-5">
-          <p className="text-sm text-[#98A0AD]">No blocked times.</p>
+        <div className="bg-[#1A1E26] br-card p-5">
+          <p className="text-sm text-[#676D76]">No blocked times.</p>
         </div>
       ) : (
-        <div className="bg-[#F4F6F9] br-card divide-y divide-[#EFF1F4]">
+        <div className="bg-[#1A1E26] br-card divide-y divide-[#1F242C]">
           {rows.map(row => (
             <div key={row.id} className="flex items-center justify-between px-5 py-4">
               <div>
-                <span className="text-sm text-[#141821]">{formatRange(row.start_at, row.end_at)}</span>
-                {row.reason && <span className="text-[12.5px] text-[#666D7A] ml-2">· {row.reason}</span>}
+                <span className="text-sm text-[#FAFAF8]">{formatRange(row.start_at, row.end_at)}</span>
+                {row.reason && <span className="text-[12.5px] text-[#8A9099] ml-2">· {row.reason}</span>}
               </div>
               <button
                 onClick={() => handleRemove(row.id)}
                 disabled={removing === row.id}
-                className="text-[#98A0AD] hover:text-[#C82626] transition-colors text-[12.5px] ml-4"
+                className="text-[#676D76] hover:text-[#D4817E] transition-colors text-[12.5px] ml-4"
               >
                 {removing === row.id ? '...' : '✕'}
               </button>
@@ -96,70 +96,70 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+          className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] transition-colors"
         >
           + Block out time
         </button>
       ) : (
-        <div className="bg-[#F4F6F9] br-card p-6 space-y-4">
-          <p className="text-[12.5px] text-[#666D7A]">Block Out Time</p>
+        <div className="bg-[#1A1E26] br-card p-6 space-y-4">
+          <p className="text-[12.5px] text-[#8A9099]">Block Out Time</p>
 
           <div>
-            <p className="text-[12.5px] text-[#666D7A] mb-2">Date</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-2">Date</p>
             <input
               type="date"
               value={date}
               min={todayBrisbane()}
               onChange={e => setDate(e.target.value)}
-              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+              className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
             />
           </div>
 
           <div className="flex gap-4">
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">From</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">From</p>
               <input
                 type="time"
                 value={startTime}
                 onChange={e => setStartTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
               />
             </div>
             <div>
-              <p className="text-[12.5px] text-[#666D7A] mb-2">To</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">To</p>
               <input
                 type="time"
                 value={endTime}
                 onChange={e => setEndTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
+                className="bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
               />
             </div>
           </div>
 
           <div>
-            <p className="text-[12.5px] text-[#666D7A] mb-2">Reason (optional)</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-2">Reason (optional)</p>
             <input
               type="text"
               value={reason}
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Doctor appointment"
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+              className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8]"
             />
           </div>
 
-          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-[#1B6DFC] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#1560E0] transition-colors"
+              className="px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#E4E4E0] transition-colors"
             >
               {saving ? 'Saving...' : 'Block time'}
             </button>
             <button
               onClick={() => { setAdding(false); setError('') }}
-              className="px-4 py-2 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
+              className="px-4 py-2 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
             >
               Cancel
             </button>

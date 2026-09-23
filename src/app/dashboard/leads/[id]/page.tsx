@@ -42,21 +42,21 @@ const EVENT_LABELS: Record<string, string> = {
 }
 
 const EVENT_COLOURS: Record<string, string> = {
-  prep_form_completed: 'bg-[#1B6DFC]',
-  scorecard_completed: 'bg-[#1B6DFC]',
-  day_zero_intake_completed: 'bg-[#1B6DFC]',
+  prep_form_completed: 'bg-[#FAFAF8]',
+  scorecard_completed: 'bg-[#FAFAF8]',
+  day_zero_intake_completed: 'bg-[#FAFAF8]',
   zoom_booked: 'bg-[#22A05A]',
   challenge_enrolled: 'bg-[#22A05A]',
   downsell_purchased: 'bg-[#22A05A]',
   custom_time_requested: 'bg-[#B7791F]',
-  followup_cancelled: 'bg-red-400',
-  zoom_declined: 'bg-red-400',
+  followup_cancelled: 'bg-[#1A1E26]',
+  zoom_declined: 'bg-[#1A1E26]',
 }
 
 const STATE_COLOUR: Record<string, string> = {
-  'Depleted State': '#DC2626',
+  'Depleted State': '#D4817E',
   'Transitioning State': '#B7791F',
-  'Ready State': '#1B6DFC',
+  'Ready State': '#FAFAF8',
 }
 
 const SCORECARD_SECTIONS: Record<string, string> = {
@@ -70,8 +70,8 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 function CardTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2.5 mb-4">
-      <span className="w-6 h-[3px] rounded-full bg-[#1B6DFC]" />
-      <h2 className="text-[11px] font-medium text-[#141821]">
+      <span className="w-6 h-[3px] rounded-full bg-[#FAFAF8]" />
+      <h2 className="text-[11px] font-medium text-[#FAFAF8]">
         {children}
       </h2>
     </div>
@@ -115,8 +115,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     nextBooking ? `${bne(nextBooking.scheduled_at)} Brisbane` : null,
   )
 
-  const stateColour = lead.scorecard_body_state ? STATE_COLOUR[lead.scorecard_body_state] : '#666D7A'
-  const qualityColour = lead.lead_quality === 'red' ? '#DC2626' : lead.lead_quality === 'yellow' ? '#D97706' : '#16A34A'
+  const stateColour = lead.scorecard_body_state ? STATE_COLOUR[lead.scorecard_body_state] : '#8A9099'
+  const qualityColour = lead.lead_quality === 'red' ? '#D4817E' : lead.lead_quality === 'yellow' ? '#D97706' : '#16A34A'
   const sections = lead.scorecard_section_scores as Record<string, number> | null
   const checkInAnswers = lead.check_in_answers as Record<string, number> | null
 
@@ -126,15 +126,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     <div
       className="br-card p-5 mb-5"
       style={{
-        background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
-        boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        background: 'linear-gradient(180deg,#14171D,#14171D)',
+        boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #14171D',
       }}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
             <Avatar name={lead.name} size={34} />
-            <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{lead.name}</h1>
+            <h1 className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">{lead.name}</h1>
             <span className={`text-[11px] font-medium px-2.5 py-[3px] rounded-full border ${getLeadStatusColour(lead.status)}`}>
               {getLeadStatusLabel(lead.status)}
             </span>
@@ -152,7 +152,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             {lead.email && <CopyField value={lead.email} label="email" />}
             {lead.phone && <CopyField value={lead.phone} label="phone" />}
           </div>
-          <p className="text-[11px] text-[#98A0AD]">
+          <p className="text-[11px] text-[#676D76]">
             {getLeadSourceLabel(lead.source)}
             {lead.source_detail ? ` · ${lead.source_detail}` : ''}
             {lead.utm_campaign ? ` · ${lead.utm_campaign}` : ''}
@@ -165,13 +165,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <div className="text-right">
               <div className="flex items-baseline gap-1.5 justify-end">
                 <span className="text-[34px] font-semibold leading-none tracking-[-0.035em]" style={{ color: stateColour, fontVariantNumeric: 'tabular-nums' }}>{lead.scorecard_score}</span>
-                <span className="text-[12.5px] text-[#98A0AD]">/ 15</span>
+                <span className="text-[12.5px] text-[#676D76]">/ 15</span>
               </div>
               <p className="text-[11px] font-medium mt-0.5" style={{ color: stateColour }}>
                 {lead.scorecard_body_state.replace(' State', '')}
               </p>
               {lead.scorecard_profile && (
-                <p className="text-[11px] text-[#666D7A] mt-0.5">
+                <p className="text-[11px] text-[#8A9099] mt-0.5">
                   {lead.scorecard_profile}
                   {lead.scorecard_profile_confidence === 'low' && <span className="text-[#B7791F]"> · provisional</span>}
                 </p>
@@ -182,27 +182,27 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Next action strip */}
-      <div className="mt-4 pt-4 border-t border-[#E8EAEE] flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-4 pt-4 border-t border-[#2A2F39] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-[13.5px]">
           {nextBooking ? (
             <>
-              <CalendarClock size={14} className="text-[#1B6DFC]" />
-              <span className="font-semibold text-[#141821]">{bne(nextBooking.scheduled_at)} Brisbane</span>
-              <span className="text-[#98A0AD]">· {nextBooking.duration_minutes} min</span>
+              <CalendarClock size={14} className="text-[#FAFAF8]" />
+              <span className="font-semibold text-[#FAFAF8]">{bne(nextBooking.scheduled_at)} Brisbane</span>
+              <span className="text-[#676D76]">· {nextBooking.duration_minutes} min</span>
             </>
           ) : (
-            <span className="text-[#98A0AD]">No call booked</span>
+            <span className="text-[#676D76]">No call booked</span>
           )}
         </div>
         <div className="flex items-center gap-2">
           {nextBooking?.meeting_link && (
             <Link href={nextBooking.meeting_link} target="_blank"
-              className="inline-flex items-center gap-1.5 text-[13.5px] font-bold px-3 py-1.5 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-bold px-3 py-1.5 border border-[#2A2F39] text-[#C2C6CC] rounded-lg hover:border-[#FAFAF8] hover:text-[#FAFAF8] transition-colors">
               <Video size={13} /> Join Zoom
             </Link>
           )}
           <Link href={`/companion/${lead.id}/zoom`} target="_blank"
-            className="text-[13.5px] font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors">
+            className="text-[13.5px] font-bold px-3 py-1.5 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#E4E4E0] transition-colors">
             Call companion ↗
           </Link>
         </div>
@@ -239,14 +239,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {summary && <BriefCard summary={summary} scopeFlags={scopeFlags} />}
         {brief
           ? <PreCallRead leadId={lead.id} initialBrief={brief} />
-          : <Card><p className="text-sm text-[#666D7A]">No brief yet. It builds automatically once a scorecard is on file.</p></Card>}
+          : <Card><p className="text-sm text-[#8A9099]">No brief yet. It builds automatically once a scorecard is on file.</p></Card>}
         {supplement && (
           <details className="br-card group">
-            <summary className="px-5 py-3.5 cursor-pointer select-none text-[13.5px] font-semibold text-[#666D7A] hover:text-[#141821]">
+            <summary className="px-5 py-3.5 cursor-pointer select-none text-[13.5px] font-semibold text-[#8A9099] hover:text-[#FAFAF8]">
               In-person session supplement
-              <span className="font-normal text-[#98A0AD]"> — only if you are running this at AF Newstead</span>
+              <span className="font-normal text-[#676D76]"> — only if you are running this at AF Newstead</span>
             </summary>
-            <pre className="mx-5 mb-5 text-[12.5px] leading-relaxed text-[#43474F] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#E8EAEE] rounded-lg p-4 max-h-[420px] overflow-y-auto">
+            <pre className="mx-5 mb-5 text-[12.5px] leading-relaxed text-[#C2C6CC] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#2A2F39] rounded-lg p-4 max-h-[420px] overflow-y-auto">
               {supplement}
             </pre>
           </details>
@@ -268,7 +268,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </Card>
         ) : (
           <Card>
-            <p className="text-sm text-[#666D7A]">
+            <p className="text-sm text-[#8A9099]">
               Pre-call form not completed. It is sent with their booking confirmation, and chased at 24 and 72 hours.
             </p>
           </Card>
@@ -276,7 +276,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {lead.situation_text && (
           <Card>
             <CardTitle>In their own words, from the scorecard</CardTitle>
-            <p className="text-[13.5px] leading-relaxed text-[#43474F] whitespace-pre-wrap">{lead.situation_text}</p>
+            <p className="text-[13.5px] leading-relaxed text-[#C2C6CC] whitespace-pre-wrap">{lead.situation_text}</p>
           </Card>
         )}
         {enrollment?.quiz_answers && (
@@ -285,8 +285,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <div className="grid grid-cols-2 gap-x-6 gap-y-1.5">
               {Object.entries(enrollment.quiz_answers as Record<string, string>).map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3 text-[12.5px] border-b border-[#F4F4F4] py-1">
-                  <span className="text-[#98A0AD]">{k}</span>
-                  <span className="text-[#43474F] font-medium">{v}</span>
+                  <span className="text-[#676D76]">{k}</span>
+                  <span className="text-[#C2C6CC] font-medium">{v}</span>
                 </div>
               ))}
             </div>
@@ -306,28 +306,28 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <div className="space-y-0">
             {events.map(e => (
               <div key={e.id} className="flex gap-3 py-2.5 border-b border-[#F4F4F4] last:border-0">
-                <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${EVENT_COLOURS[e.type] ?? 'bg-[#D4D4D4]'}`} />
+                <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${EVENT_COLOURS[e.type] ?? 'bg-[#2A2F39]'}`} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-[13.5px] font-semibold text-[#141821]">
+                    <p className="text-[13.5px] font-semibold text-[#FAFAF8]">
                       {e.subject || EVENT_LABELS[e.type] || e.type}
                     </p>
-                    <span className="text-[11px] text-[#98A0AD] shrink-0" style={{ fontFamily: MONO_FONT }}>
+                    <span className="text-[11px] text-[#676D76] shrink-0" style={{ fontFamily: MONO_FONT }}>
                       {bne(e.sent_at)}
                     </span>
                   </div>
                   {e.subject && EVENT_LABELS[e.type] && (
-                    <p className="text-[11px] text-[#98A0AD]">{EVENT_LABELS[e.type]}</p>
+                    <p className="text-[11px] text-[#676D76]">{EVENT_LABELS[e.type]}</p>
                   )}
                   {e.notes && e.type !== 'prep_form_completed' && (
-                    <p className="text-[12.5px] text-[#666D7A] mt-0.5 whitespace-pre-wrap">{e.notes}</p>
+                    <p className="text-[12.5px] text-[#8A9099] mt-0.5 whitespace-pre-wrap">{e.notes}</p>
                   )}
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-[#666D7A]">Nothing recorded yet.</p>
+          <p className="text-sm text-[#8A9099]">Nothing recorded yet.</p>
         )}
       </Card>
     ),
@@ -345,18 +345,18 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <div className="grid grid-cols-5 gap-2 mb-4">
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                   const s = sections[key]
-                  const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#98A0AD'
+                  const color = s === 1 ? '#D4817E' : s === 2 ? '#B7791F' : s === 3 ? '#FAFAF8' : '#676D76'
                   const bg = s === 1 ? '#FEE7E7' : s === 2 ? '#FEF6E7' : s === 3 ? '#F3F7FF' : '#F4F4F4'
                   return (
                     <div key={key} className="rounded-lg p-2.5 text-center" style={{ background: bg, border: `1px solid ${color}33` }}>
                       <div className="text-xl font-black" style={{ color }}>{s ?? '-'}</div>
-                      <div className="text-[10px] font-medium text-[#666D7A] mt-0.5">{title}</div>
+                      <div className="text-[10px] font-medium text-[#8A9099] mt-0.5">{title}</div>
                     </div>
                   )
                 })}
               </div>
             )}
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12.5px] pt-3 border-t border-[#E8EAEE]">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12.5px] pt-3 border-t border-[#2A2F39]">
               {[
                 ['Body state', lead.scorecard_body_state],
                 ['Pattern', lead.scorecard_profile ? `${lead.scorecard_profile}${lead.scorecard_profile_confidence === 'low' ? ' (provisional)' : ''}` : null],
@@ -365,20 +365,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 ['Approach', lead.approach_response], ['Investment', lead.investment_readiness],
               ].filter(([, v]) => v).map(([k, v]) => (
                 <div key={k as string} className="flex justify-between gap-3 border-b border-[#F4F4F4] py-1">
-                  <span className="text-[#98A0AD]">{k}</span>
-                  <span className="text-[#43474F] font-medium">{v}</span>
+                  <span className="text-[#676D76]">{k}</span>
+                  <span className="text-[#C2C6CC] font-medium">{v}</span>
                 </div>
               ))}
             </div>
             {scorecardReport?.token && (
               <Link href={`/report/${scorecardReport.token}`} target="_blank"
-                className="inline-block mt-4 text-[13.5px] font-bold text-[#1B6DFC] hover:underline">
+                className="inline-block mt-4 text-[13.5px] font-bold text-[#FAFAF8] hover:underline">
                 Open their scorecard report ↗
               </Link>
             )}
           </Card>
         ) : (
-          <Card><p className="text-sm text-[#666D7A]">No scorecard on file.</p></Card>
+          <Card><p className="text-sm text-[#8A9099]">No scorecard on file.</p></Card>
         )}
 
         {enrollment && (
@@ -393,14 +393,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 ['Check-In pattern', enrollment.quiz_result ?? '-'],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3 border-b border-[#F4F4F4] py-1">
-                  <span className="text-[#98A0AD]">{k}</span>
-                  <span className="text-[#43474F] font-medium">{v}</span>
+                  <span className="text-[#676D76]">{k}</span>
+                  <span className="text-[#C2C6CC] font-medium">{v}</span>
                 </div>
               ))}
             </div>
             {enrollment.token && (
               <Link href={`/decode/${enrollment.token}`} target="_blank"
-                className="inline-block mt-3 text-[13.5px] font-bold text-[#1B6DFC] hover:underline">
+                className="inline-block mt-3 text-[13.5px] font-bold text-[#FAFAF8] hover:underline">
                 Open their Challenge portal ↗
               </Link>
             )}
@@ -410,7 +410,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {checkInAnswers && Object.keys(checkInAnswers).length > 0 && (
           <Card>
             <CardTitle>Legacy performance check-in</CardTitle>
-            <p className="text-[12.5px] text-[#666D7A]">{Object.keys(checkInAnswers).length} answers on file from the old check-in form.</p>
+            <p className="text-[12.5px] text-[#8A9099]">{Object.keys(checkInAnswers).length} answers on file from the old check-in form.</p>
           </Card>
         )}
       </div>
@@ -441,7 +441,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {lead.notes && (
           <Card>
             <CardTitle>Notes</CardTitle>
-            <p className="text-[13.5px] text-[#43474F] whitespace-pre-wrap leading-relaxed">{lead.notes}</p>
+            <p className="text-[13.5px] text-[#C2C6CC] whitespace-pre-wrap leading-relaxed">{lead.notes}</p>
           </Card>
         )}
         <Card>
@@ -454,7 +454,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="max-w-[900px]">
-      <Link href="/dashboard/leads" className="inline-flex items-center gap-1 text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-3">
+      <Link href="/dashboard/leads" className="inline-flex items-center gap-1 text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors mb-3">
         <ChevronLeft size={13} /> All Leads
       </Link>
       {commandBar}

@@ -167,7 +167,7 @@ export default async function MessagesInboxPage({
             <MessageSearch initialQuery={sp.q ?? ''} selectedClientId={selected.clientId} />
 
             {visible.length === 0 && (
-              <p className="text-[12.5px] text-[#98A0AD] px-1 py-3">
+              <p className="text-[12.5px] text-[#676D76] px-1 py-3">
                 Nothing matches &ldquo;{sp.q}&rdquo;.
               </p>
             )}
@@ -184,34 +184,34 @@ export default async function MessagesInboxPage({
                   scroll={false}
                   className={`block rounded-xl border px-4 py-3 transition-colors ${
                     isSelected
-                      ? 'border-[#1B6DFC] bg-[#F3F7FF]'
-                      : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#1B6DFC]/40 hover:bg-[#FAFBFD]'
+                      ? 'border-[#FAFAF8] bg-[#F3F7FF]'
+                      : 'border-[#2A2F39] bg-[#14171D] hover:border-[#FAFAF8]/40 hover:bg-[#FAFBFD]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <p className={`text-[13.5px] font-bold truncate ${isSelected ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>
+                    <p className={`text-[13.5px] font-bold truncate ${isSelected ? 'text-[#FAFAF8]' : 'text-[#FAFAF8]'}`}>
                       {name}
                     </p>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {c.ended && (
-                        <span className="text-[10px] font-medium text-[#98A0AD] border border-[#E8EAEE] rounded px-1 py-px">
+                        <span className="text-[10px] font-medium text-[#676D76] border border-[#2A2F39] rounded px-1 py-px">
                           Ended
                         </span>
                       )}
-                      {c.awaitingReply && <span className="w-2 h-2 rounded-full bg-[#1B6DFC]" aria-label="Awaiting reply" />}
-                      {c.latest && <span className="text-[10px] text-[#98A0AD]">{when(c.latest.created_at)}</span>}
+                      {c.awaitingReply && <span className="w-2 h-2 rounded-full bg-[#FAFAF8]" aria-label="Awaiting reply" />}
+                      {c.latest && <span className="text-[10px] text-[#676D76]">{when(c.latest.created_at)}</span>}
                     </div>
                   </div>
                   {/* How long they have been waiting is the actionable number,
                       not when they last wrote. */}
                   {c.awaitingReply && c.waitingSince && (
-                    <p className="text-[10px] font-semibold text-[#1B6DFC] mb-1">
+                    <p className="text-[10px] font-semibold text-[#FAFAF8] mb-1">
                       Waiting {when(c.waitingSince).replace(' ago', '')}
                     </p>
                   )}
-                  <p className="text-[11px] text-[#666D7A] leading-snug line-clamp-2">
+                  <p className="text-[11px] text-[#8A9099] leading-snug line-clamp-2">
                     {preview === null ? (
-                      <span className="italic text-[#98A0AD]">No messages yet</span>
+                      <span className="italic text-[#676D76]">No messages yet</span>
                     ) : (
                       <>
                         {c.latest!.sender === 'coach' ? 'You: ' : ''}
@@ -240,15 +240,15 @@ export default async function MessagesInboxPage({
               thread at a time, so there is no reason to hide history from the
               coach that the client can already see. */}
           <Card accent={selected.awaitingReply ? 'blue' : undefined}>
-            <div className="flex items-center justify-between gap-3 mb-5 pb-4 border-b border-[#E8EAEE]">
+            <div className="flex items-center justify-between gap-3 mb-5 pb-4 border-b border-[#2A2F39]">
               <div className="min-w-0">
                 <Link
                   href={`/dashboard/clients/${selected.clientId}`}
-                  className="text-[16px] font-bold text-[#141821] hover:text-[#1B6DFC] transition-colors"
+                  className="text-[16px] font-bold text-[#FAFAF8] hover:text-[#FAFAF8] transition-colors"
                 >
                   {selectedName}
                 </Link>
-                <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
+                <p className="text-[12.5px] text-[#676D76] mt-0.5">
                   {selected.thread.length} message{selected.thread.length === 1 ? '' : 's'}
                   {selected.awaitingReply && ' · awaiting your reply'}
                   {selected.handled && ' · handled elsewhere'}
@@ -259,7 +259,7 @@ export default async function MessagesInboxPage({
                 <Link
                   href={`/portal/${selectedClient.onboarding_token}/message`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#666D7A] hover:text-[#1B6DFC] transition-colors shrink-0"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#8A9099] hover:text-[#FAFAF8] transition-colors shrink-0"
                 >
                   <ExternalLink size={12} />
                   Their view
@@ -285,7 +285,7 @@ export default async function MessagesInboxPage({
             />
 
             {selected.thread.length === 0 && (
-              <p className="text-[12.5px] text-[#98A0AD] mt-6 text-center py-6 border-t border-[#E8EAEE]">
+              <p className="text-[12.5px] text-[#676D76] mt-6 text-center py-6 border-t border-[#2A2F39]">
                 No messages with {selectedFirstName} yet. Whatever you send lands in their portal and their inbox.
               </p>
             )}
@@ -297,29 +297,29 @@ export default async function MessagesInboxPage({
                   className={
                     m.sender === 'coach'
                       ? 'rounded-xl bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-4 py-3 ml-8'
-                      : 'rounded-xl bg-[#F7F7F7] border border-[#E8EAEE] px-4 py-3 mr-8'
+                      : 'rounded-xl bg-[#F7F7F7] border border-[#2A2F39] px-4 py-3 mr-8'
                   }
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-[11px] font-medium text-[#98A0AD]">
+                    <p className="text-[11px] font-medium text-[#676D76]">
                       {m.sender === 'coach' ? 'You' : selectedFirstName}
                     </p>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[10px] text-[#98A0AD]">{when(m.created_at)}</span>
+                      <span className="text-[10px] text-[#676D76]">{when(m.created_at)}</span>
                       {/* Read receipt. Only meaningful on the coach's own
                           messages: it is stamped when the client opens their
                           portal thread. */}
                       {m.sender === 'coach' && (
                         m.client_read_at ? (
                           <span
-                            className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#1B6DFC]"
+                            className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FAFAF8]"
                             title={`Read ${new Date(m.client_read_at).toLocaleString('en-AU')}`}
                           >
                             <CheckCheck size={12} />
                             Read {when(m.client_read_at).replace(' ago', '')}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#98A0AD]">
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#676D76]">
                             <Check size={12} />
                             Not read yet
                           </span>
@@ -334,12 +334,12 @@ export default async function MessagesInboxPage({
                           ? anchorPortalHref(selectedClient.onboarding_token, m.anchor_kind)
                           : `/dashboard/clients/${selected.clientId}`
                       }
-                      className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2 hover:bg-[#F3F7FF] transition-colors"
+                      className="inline-block text-[10px] font-medium text-[#FAFAF8] bg-[#14171D] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2 hover:bg-[#F3F7FF] transition-colors"
                     >
                       {anchorChipLabel(m.anchor_kind, m.anchor_label)} →
                     </Link>
                   )}
-                  <p className="text-[13.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+                  <p className="text-[13.5px] text-[#C2C6CC] leading-relaxed whitespace-pre-wrap">{m.body}</p>
                 </div>
               ))}
             </div>

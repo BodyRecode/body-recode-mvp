@@ -80,7 +80,7 @@ export default function CreateBookingButton() {
     <>
       <button
         onClick={openModal}
-        className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        className="flex items-center gap-2 bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
       >
         <Plus size={14} strokeWidth={2.5} />
         New Booking
@@ -88,11 +88,11 @@ export default function CreateBookingButton() {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#FBFCFD]" onClick={close} />
-          <div className="relative bg-[#F4F6F9] br-card p-6 w-full max-w-md shadow-2xl">
+          <div className="absolute inset-0 bg-[#14171D]" onClick={close} />
+          <div className="relative bg-[#1A1E26] br-card p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">New Booking</h2>
-              <button onClick={close} className="text-[#666D7A] hover:text-[#141821] transition-colors">
+              <button onClick={close} className="text-[#8A9099] hover:text-[#FAFAF8] transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -100,9 +100,9 @@ export default function CreateBookingButton() {
             <div className="space-y-4">
               {/* Contact */}
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Contact</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Contact</label>
                 {loadingContacts ? (
-                  <div className="flex items-center gap-2 text-[#666D7A] text-sm py-2">
+                  <div className="flex items-center gap-2 text-[#8A9099] text-sm py-2">
                     <Loader2 size={14} className="animate-spin" />
                     Loading...
                   </div>
@@ -113,7 +113,7 @@ export default function CreateBookingButton() {
                       const contact = contacts.find(c => c.id === e.target.value)
                       setForm(f => ({ ...f, contactId: e.target.value, contactType: contact?.type ?? 'lead' }))
                     }}
-                    className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                    className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                   >
                     <option value="">Select a contact...</option>
                     {contacts.filter(c => c.type === 'lead').length > 0 && (
@@ -136,7 +136,7 @@ export default function CreateBookingButton() {
 
               {/* Type */}
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Type</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Type</label>
                 <div className="flex gap-2">
                   {[{ value: 'zoom1', label: 'Zoom' }, { value: 'other', label: 'Other' }].map(opt => (
                     <button
@@ -144,8 +144,8 @@ export default function CreateBookingButton() {
                       onClick={() => setForm(f => ({ ...f, type: opt.value }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
-                          : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
+                          ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#FAFAF8]'
+                          : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39] hover:text-[#FAFAF8]'
                       }`}
                     >
                       {opt.label}
@@ -157,32 +157,32 @@ export default function CreateBookingButton() {
               {/* Date + Time */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Date</label>
+                  <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Date</label>
                   <input
                     type="date"
                     value={form.date}
                     onChange={(e) => setForm(f => ({ ...f, date: e.target.value }))}
-                    className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                    className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Time (Brisbane)</label>
+                  <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Time (Brisbane)</label>
                   <input
                     type="time"
                     value={form.time}
                     onChange={(e) => setForm(f => ({ ...f, time: e.target.value }))}
-                    className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                    className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                   />
                 </div>
               </div>
 
               {/* Duration */}
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Duration</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Duration</label>
                 <select
                   value={form.duration}
                   onChange={(e) => setForm(f => ({ ...f, duration: e.target.value }))}
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39]"
                 >
                   <option value="30">30 min</option>
                   <option value="45">45 min</option>
@@ -193,13 +193,13 @@ export default function CreateBookingButton() {
 
               {/* Meeting link */}
               <div>
-                <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">Zoom Link (optional)</label>
+                <label className="block text-[12.5px] font-medium text-[#8A9099] mb-1.5">Zoom Link (optional)</label>
                 <input
                   type="url"
                   value={form.meetingLink}
                   onChange={(e) => setForm(f => ({ ...f, meetingLink: e.target.value }))}
                   placeholder="https://zoom.us/j/..."
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#1F242C] border border-[#2A2F39] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#2A2F39]"
                 />
               </div>
             </div>
@@ -207,14 +207,14 @@ export default function CreateBookingButton() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={close}
-                className="flex-1 text-sm text-[#666D7A] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] py-2.5 rounded-lg transition-colors"
+                className="flex-1 text-sm text-[#8A9099] hover:text-[#FAFAF8] border border-[#2A2F39] hover:border-[#2A2F39] py-2.5 rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={submit}
                 disabled={!form.contactId || !form.date || !form.time || isPending}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#14171D] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
               >
                 {isPending && <Loader2 size={13} className="animate-spin" />}
                 Book

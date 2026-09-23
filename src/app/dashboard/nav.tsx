@@ -186,15 +186,15 @@ function NavItem({
       aria-current={active ? 'page' : undefined}
       className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13.5px] transition-colors ${
         active
-          ? 'bg-[#FFFFFF] text-[#0F1115] font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.05)]'
-          : 'text-[#4A4F57] hover:bg-[#FFFFFF] hover:text-[#0F1115]'
+          ? 'bg-[#14171D] text-[#FAFAF8] font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.05)]'
+          : 'text-[#C2C6CC] hover:bg-[#14171D] hover:text-[#FAFAF8]'
       }`}
     >
       {active && (
         <span
           aria-hidden
           className="absolute left-0 top-[7px] bottom-[7px] w-[3px] rounded-r-[3px]"
-          style={{ background: '#0F1115' }}
+          style={{ background: '#FAFAF8' }}
         />
       )}
       <Icon size={15} strokeWidth={2} className={active ? 'opacity-100' : 'opacity-60'} />
@@ -209,8 +209,8 @@ function NavItem({
             // number, and it is graphite like every other number in the
             // product. 'alert' is the exception and stays coloured, because
             // that one does mean something.
-            background: badge.tone === 'alert' ? '#8F2D2D' : '#0F1115',
-            color: '#FAFAF8',
+            background: badge.tone === 'alert' ? '#D4817E' : '#FAFAF8',
+            color: '#0B0D10',
             boxShadow: badge.tone === 'alert'
               ? '0 1px 2px rgba(143,45,45,0.30)'
               : '0 1px 2px rgba(15,17,21,0.24)',
@@ -254,7 +254,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10px] font-semibold text-[#9CA2AB]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10px] font-semibold text-[#676D76]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">
@@ -273,7 +273,7 @@ export default function DashboardNav({
       })}
       {showDev && (
         <p
-          className="mt-3 mx-2 text-[11px] font-medium text-[#B06E1F] bg-[#FDF8F1] px-1.5 py-0.5 rounded inline-block"
+          className="mt-3 mx-2 text-[11px] font-medium text-[#E0A254] bg-[#1A1E26] px-1.5 py-0.5 rounded inline-block"
           title="Dev-only nav items are visible (append ?dev=1 to any dashboard URL to toggle)"
         >
           dev

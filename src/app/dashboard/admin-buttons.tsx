@@ -33,7 +33,7 @@ function ActionButton({
   const palette =
     tone === 'caution'
       ? 'border border-[#F1DEB8] text-[#B7791F] bg-[#FDF6E9] hover:border-[#D9B976] hover:text-[#8A5A14]'
-      : 'border border-[#E8EAEE] text-[#43474F] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+      : 'border border-[#2A2F39] text-[#C2C6CC] bg-[#14171D] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
 
   return (
     <button
@@ -49,9 +49,9 @@ function ActionButton({
 
 function FieldRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#E8EAEE] bg-[#FFFFFF]">
+    <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#2A2F39] bg-[#14171D]">
       <span
-        className="text-[10px] text-[#666D7A]"
+        className="text-[10px] text-[#8A9099]"
       >
         {label}
       </span>
@@ -135,7 +135,7 @@ export default function AdminButtons() {
         <select
           value={reportBodyState}
           onChange={e => setReportBodyState(e.target.value)}
-          className="text-[12.5px] bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="text-[12.5px] bg-[#14171D] border border-[#2A2F39] text-[#C2C6CC] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#FAFAF8]"
         >
           <option>Depleted State</option>
           <option>Transitioning State</option>
@@ -164,7 +164,7 @@ export default function AdminButtons() {
 
       <FieldRow label="Resend reports to all leads">
         {blastResult && (
-          <span className="text-[11px] text-[#1B6DFC]" style={{ fontFamily: MONO_FONT }}>
+          <span className="text-[11px] text-[#FAFAF8]" style={{ fontFamily: MONO_FONT }}>
             {blastResult.sent} sent · {blastResult.failed} failed
           </span>
         )}
@@ -180,7 +180,7 @@ export default function AdminButtons() {
 
       <FieldRow label="Retrigger scorecard for missed leads">
         {retriggerResult && (
-          <span className="text-[11px] text-[#1B6DFC]" style={{ fontFamily: MONO_FONT }}>
+          <span className="text-[11px] text-[#FAFAF8]" style={{ fontFamily: MONO_FONT }}>
             {retriggerResult.triggered} sent · {retriggerResult.skipped} skipped · {retriggerResult.failed} failed
           </span>
         )}

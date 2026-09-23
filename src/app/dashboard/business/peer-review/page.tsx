@@ -19,12 +19,12 @@ type Reviewer = {
 }
 
 const STATUS_COLOURS: Record<ReviewerStatus, string> = {
-  'Not contacted': 'bg-[#EFF1F4] text-[#666D7A]',
-  'Contacted':     'bg-[#1B6DFC]/15 text-[#1056D6]',
-  'Accessed site': 'bg-yellow-500/15 text-yellow-400',
-  'Responded':     'bg-[#1B6DFC]/15 text-[#1B6DFC]',
-  'Call booked':   'bg-purple-500/15 text-purple-400',
-  'Complete':      'bg-[#22A05A]/15 text-green-400',
+  'Not contacted': 'bg-[#1F242C] text-[#8A9099]',
+  'Contacted':     'bg-[#FAFAF8]/15 text-[#1056D6]',
+  'Accessed site': 'bg-[#1A1E26]/15 text-[#C2C6CC]',
+  'Responded':     'bg-[#FAFAF8]/15 text-[#FAFAF8]',
+  'Call booked':   'bg-[#1A1E26]/15 text-[#C2C6CC]',
+  'Complete':      'bg-[#22A05A]/15 text-[#C2C6CC]',
 }
 
 const STATUSES: ReviewerStatus[] = ['Not contacted', 'Contacted', 'Accessed site', 'Responded', 'Call booked', 'Complete']
@@ -230,12 +230,12 @@ export default function PeerReviewPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
-          <span className="text-[12.5px] font-semibold text-[#1B6DFC]">System Development</span>
+        <div className="flex items-center gap-2 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#FAFAF8]" />
+          <span className="text-[12.5px] font-semibold text-[#FAFAF8]">System Development</span>
         </div>
-        <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mb-2">Peer Review Program</h1>
-        <p className="text-sm text-[#666D7A] max-w-2xl">
+        <h1 className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em] mb-2">Peer Review Program</h1>
+        <p className="text-sm text-[#8A9099] max-w-2xl">
           Manage the {brand().name}™ peer review process. Track outreach, reviewer status, and feedback from medical, allied health, and performance professionals.
                           </p>
       </div>
@@ -248,16 +248,16 @@ export default function PeerReviewPage() {
           { label: 'Responded', value: stats.responded },
           { label: 'Complete', value: stats.complete },
         ].map(stat => (
-          <div key={stat.label} className="bg-[#F4F6F9] br-card p-4">
-            <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mb-1">{stat.value}</p>
-            <p className="text-[12.5px] text-[#666D7A]">{stat.label}</p>
+          <div key={stat.label} className="bg-[#1A1E26] br-card p-4">
+            <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em] mb-1">{stat.value}</p>
+            <p className="text-[12.5px] text-[#8A9099]">{stat.label}</p>
           </div>
         ))}
       </div>
 
       {/* Review Assets */}
       <div className="mb-8">
-        <h2 className="text-sm font-semibold text-[#141821] mb-3">Review Assets</h2>
+        <h2 className="text-sm font-semibold text-[#FAFAF8] mb-3">Review Assets</h2>
         <div className="grid grid-cols-3 gap-3">
           {ASSETS.map(asset => (
             <a
@@ -265,13 +265,13 @@ export default function PeerReviewPage() {
               href={asset.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start justify-between gap-3 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors group"
+              className="flex items-start justify-between gap-3 bg-[#1A1E26] br-card p-4 hover:border-[#2A2F39] transition-colors group"
             >
               <div>
-                <p className="text-sm font-medium text-[#141821] mb-1">{asset.label}</p>
-                <p className="text-[12.5px] text-[#666D7A]">{asset.description}</p>
+                <p className="text-sm font-medium text-[#FAFAF8] mb-1">{asset.label}</p>
+                <p className="text-[12.5px] text-[#8A9099]">{asset.description}</p>
               </div>
-              <ExternalLink size={14} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0 mt-0.5" />
+              <ExternalLink size={14} className="text-[#676D76] group-hover:text-[#FAFAF8] transition-colors shrink-0 mt-0.5" />
             </a>
           ))}
         </div>
@@ -279,9 +279,9 @@ export default function PeerReviewPage() {
 
       {/* Outreach Templates */}
       <div className="mb-8">
-        <h2 className="text-sm font-semibold text-[#141821] mb-3">Outreach Templates</h2>
-        <div className="bg-[#F4F6F9] br-card overflow-hidden">
-          <div className="flex border-b border-[#E8EAEE]">
+        <h2 className="text-sm font-semibold text-[#FAFAF8] mb-3">Outreach Templates</h2>
+        <div className="bg-[#1A1E26] br-card overflow-hidden">
+          <div className="flex border-b border-[#2A2F39]">
             {([
               { key: 'outreach', label: 'Initial Outreach' },
               { key: 'followup', label: '2-Week Follow-Up' },
@@ -291,7 +291,7 @@ export default function PeerReviewPage() {
                 key={tab.key}
                 onClick={() => setActiveTemplate(tab.key)}
                 className={`px-5 py-3 text-xs font-medium transition-colors ${
-                  activeTemplate === tab.key ? 'text-[#1B6DFC] border-b-2 border-[#1B6DFC]' : 'text-[#666D7A] hover:text-[#141821]'
+                  activeTemplate === tab.key ? 'text-[#FAFAF8] border-b-2 border-[#FAFAF8]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
                 }`}
               >
                 {tab.label}
@@ -299,13 +299,13 @@ export default function PeerReviewPage() {
             ))}
           </div>
           <div className="p-4">
-            <pre className="text-[12.5px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans">
+            <pre className="text-[12.5px] text-[#8A9099] whitespace-pre-wrap leading-relaxed font-sans">
               {activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : activeTemplate === 'followup' ? FOLLOWUP_TEMPLATE : CALL_AGENDA}
             </pre>
             {activeTemplate !== 'agenda' && (
               <button
                 onClick={() => copy(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
-                className="mt-4 px-4 py-2 text-[12.5px] font-medium rounded-lg bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE] transition-colors"
+                className="mt-4 px-4 py-2 text-[12.5px] font-medium rounded-lg bg-[#1F242C] text-[#FAFAF8] hover:bg-[#2A2F39] transition-colors"
               >
                 {copiedKey === activeTemplate ? 'Copied' : 'Copy to clipboard'}
               </button>
@@ -317,10 +317,10 @@ export default function PeerReviewPage() {
       {/* Reviewer Tracker */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-[#141821]">Reviewer Tracker</h2>
+          <h2 className="text-sm font-semibold text-[#FAFAF8]">Reviewer Tracker</h2>
           <button
             onClick={addReviewer}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border border-[#1B6DFC]/20 rounded-lg hover:bg-[#DDE9FD] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium bg-[rgba(27,109,252,0.08)] text-[#FAFAF8] border border-[#FAFAF8]/20 rounded-lg hover:bg-[#DDE9FD] transition-colors"
           >
             <Plus size={13} />
             Add Reviewer
@@ -328,20 +328,20 @@ export default function PeerReviewPage() {
         </div>
 
         {reviewers.length === 0 ? (
-          <div className="bg-[#F4F6F9] br-card p-10 text-center">
-            <p className="text-sm text-[#666D7A]">No reviewers added yet.</p>
-            <p className="text-[12.5px] text-[#98A0AD] mt-1">Click "Add Reviewer" to start tracking your outreach.</p>
+          <div className="bg-[#1A1E26] br-card p-10 text-center">
+            <p className="text-sm text-[#8A9099]">No reviewers added yet.</p>
+            <p className="text-[12.5px] text-[#676D76] mt-1">Click "Add Reviewer" to start tracking your outreach.</p>
           </div>
         ) : (
           <div className="space-y-2">
             {reviewers.map(reviewer => (
-              <div key={reviewer.id} className="bg-[#F4F6F9] br-card overflow-hidden">
+              <div key={reviewer.id} className="bg-[#1A1E26] br-card overflow-hidden">
 
                 {/* Row */}
                 <div className="flex items-center gap-4 px-4 py-3">
                   <button
                     onClick={() => setExpandedId(expandedId === reviewer.id ? null : reviewer.id)}
-                    className="text-[#98A0AD] hover:text-[#666D7A] transition-colors shrink-0"
+                    className="text-[#676D76] hover:text-[#8A9099] transition-colors shrink-0"
                   >
                     {expandedId === reviewer.id ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                   </button>
@@ -350,21 +350,21 @@ export default function PeerReviewPage() {
                     value={reviewer.name}
                     onChange={e => updateReviewer(reviewer.id, 'name', e.target.value)}
                     placeholder="Full name"
-                    className="flex-1 bg-transparent text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
+                    className="flex-1 bg-transparent text-sm text-[#FAFAF8] placeholder-[#676D76] outline-none"
                   />
 
                   <input
                     value={reviewer.field}
                     onChange={e => updateReviewer(reviewer.id, 'field', e.target.value)}
                     placeholder="Field (e.g. GP, Physio, EP)"
-                    className="w-44 bg-transparent text-sm text-[#666D7A] placeholder-[#98A0AD] outline-none"
+                    className="w-44 bg-transparent text-sm text-[#8A9099] placeholder-[#676D76] outline-none"
                   />
 
                   <input
                     value={reviewer.contactDate}
                     onChange={e => updateReviewer(reviewer.id, 'contactDate', e.target.value)}
                     placeholder="Date contacted"
-                    className="w-32 bg-transparent text-sm text-[#666D7A] placeholder-[#98A0AD] outline-none"
+                    className="w-32 bg-transparent text-sm text-[#8A9099] placeholder-[#676D76] outline-none"
                   />
 
                   <select
@@ -374,13 +374,13 @@ export default function PeerReviewPage() {
                     style={{ background: 'transparent' }}
                   >
                     {STATUSES.map(s => (
-                      <option key={s} value={s} className="bg-[#F4F6F9] text-[#141821]">{s}</option>
+                      <option key={s} value={s} className="bg-[#1A1E26] text-[#FAFAF8]">{s}</option>
                     ))}
                   </select>
 
                   <button
                     onClick={() => deleteReviewer(reviewer.id)}
-                    className="text-[#141821] hover:text-[#DC2626] transition-colors shrink-0"
+                    className="text-[#FAFAF8] hover:text-[#D4817E] transition-colors shrink-0"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -388,47 +388,47 @@ export default function PeerReviewPage() {
 
                 {/* Expanded */}
                 {expandedId === reviewer.id && (
-                  <div className="px-4 pb-4 border-t border-[#E8EAEE] pt-4 space-y-4">
+                  <div className="px-4 pb-4 border-t border-[#2A2F39] pt-4 space-y-4">
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Organisation</label>
+                        <label className="text-[12.5px] text-[#8A9099] mb-1.5 block">Organisation</label>
                         <input
                           value={reviewer.organisation}
                           onChange={e => updateReviewer(reviewer.id, 'organisation', e.target.value)}
                           placeholder="Practice / hospital / gym"
-                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
+                          className="w-full bg-[#1F242C] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Feedback Summary</label>
+                        <label className="text-[12.5px] text-[#8A9099] mb-1.5 block">Feedback Summary</label>
                         <input
                           value={reviewer.feedback}
                           onChange={e => updateReviewer(reviewer.id, 'feedback', e.target.value)}
                           placeholder="Key feedback points"
-                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
+                          className="w-full bg-[#1F242C] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] outline-none"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Call Notes</label>
+                      <label className="text-[12.5px] text-[#8A9099] mb-1.5 block">Call Notes</label>
                       <textarea
                         value={reviewer.notes}
                         onChange={e => updateReviewer(reviewer.id, 'notes', e.target.value)}
                         placeholder="Notes from your follow-up call..."
                         rows={3}
-                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none resize-none"
+                        className="w-full bg-[#1F242C] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] outline-none resize-none"
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-[12.5px] text-[#666D7A]">Social DM</label>
+                        <label className="text-[12.5px] text-[#8A9099]">Social DM</label>
                         {reviewer.socialDm && (
                           <button
                             onClick={() => copy(reviewer.socialDm, `dm-${reviewer.id}`)}
-                            className="flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-[#1B6DFC] transition-colors"
+                            className="flex items-center gap-1 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
                           >
                             {copiedKey === `dm-${reviewer.id}` ? <Check size={11} /> : <Copy size={11} />}
                             {copiedKey === `dm-${reviewer.id}` ? 'Copied' : 'Copy'}
@@ -440,9 +440,9 @@ export default function PeerReviewPage() {
                         onChange={e => updateReviewer(reviewer.id, 'socialDm', e.target.value)}
                         placeholder="Short DM for Facebook / Instagram outreach..."
                         rows={5}
-                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none resize-none"
+                        className="w-full bg-[#1F242C] rounded-lg px-3 py-2 text-sm text-[#FAFAF8] placeholder-[#676D76] outline-none resize-none"
                       />
-                      <p className="text-[12.5px] text-[#98A0AD] mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
+                      <p className="text-[12.5px] text-[#676D76] mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
                     </div>
 
                   </div>

@@ -77,13 +77,13 @@ export default function ReplyBox({
     <form onSubmit={submit}>
       {isDraft && (
         <div className="flex items-center justify-between gap-3 mb-2 rounded-lg bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-3 py-2">
-          <p className="text-[11px] text-[#1B6DFC]">
+          <p className="text-[11px] text-[#FAFAF8]">
             Drafted for you from {clientFirstName}&apos;s plan. Read it before sending.
           </p>
           <button
             type="button"
             onClick={() => { setBody(''); setIsDraft(false) }}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#666D7A] hover:text-[#141821] transition-colors shrink-0"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#8A9099] hover:text-[#FAFAF8] transition-colors shrink-0"
           >
             <RotateCcw size={11} />
             Discard
@@ -96,13 +96,13 @@ export default function ReplyBox({
         onChange={e => { setBody(e.target.value); if (isDraft) setIsDraft(false) }}
         placeholder={`Reply to ${clientFirstName}...`}
         rows={4}
-        className={`w-full bg-[#FFFFFF] border rounded-xl px-3 py-3 text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] leading-relaxed resize-y ${
-          isDraft ? 'border-[rgba(27,109,252,0.4)]' : 'border-[#E8EAEE]'
+        className={`w-full bg-[#14171D] border rounded-xl px-3 py-3 text-[13.5px] text-[#FAFAF8] placeholder:text-[#676D76] focus:outline-none focus:border-[#FAFAF8] leading-relaxed resize-y ${
+          isDraft ? 'border-[rgba(27,109,252,0.4)]' : 'border-[#2A2F39]'
         }`}
       />
 
       <div className="flex items-center justify-between gap-3 mt-3">
-        <p className="text-[11px] text-[#98A0AD]">
+        <p className="text-[11px] text-[#676D76]">
           {sent ? 'Sent. They have been emailed a copy.' : `${body.length}/5000 · lands in their portal and their inbox`}
         </p>
         <div className="flex items-center gap-2 shrink-0">
@@ -111,7 +111,7 @@ export default function ReplyBox({
               type="button"
               onClick={draft}
               disabled={drafting || sending}
-              className="inline-flex items-center gap-1.5 border border-[#E8EAEE] text-[#43474F] text-[13.5px] font-semibold px-3 py-2 rounded-lg hover:border-[#1B6DFC]/40 hover:text-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 border border-[#2A2F39] text-[#C2C6CC] text-[13.5px] font-semibold px-3 py-2 rounded-lg hover:border-[#FAFAF8]/40 hover:text-[#FAFAF8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {drafting ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
               {drafting ? 'Drafting...' : 'Draft a reply'}
@@ -120,7 +120,7 @@ export default function ReplyBox({
           <button
             type="submit"
             disabled={!body.trim() || sending}
-            className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13.5px] font-bold px-4 py-2 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#FAFAF8] text-[#14171D] text-[13.5px] font-bold px-4 py-2 rounded-lg hover:bg-[#E4E4E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {sending ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
             {sending ? 'Sending...' : 'Send reply'}

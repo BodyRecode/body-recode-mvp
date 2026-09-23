@@ -37,18 +37,18 @@ export default function StageMover({ leadId, currentStatus, stageOrder, stageLab
       <button
         onClick={() => moveStage(stageOrder[currentIndex - 1])}
         disabled={!canGoBack || isPending}
-        className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
+        className="flex items-center gap-1.5 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] border border-[#2A2F39] hover:border-[#2A2F39] disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
       >
         <ChevronLeft size={13} />
         {canGoBack ? stageLabel[stageOrder[currentIndex - 1]] : 'Back'}
       </button>
 
-      {isPending && <Loader2 size={13} className="text-[#666D7A] animate-spin" />}
+      {isPending && <Loader2 size={13} className="text-[#8A9099] animate-spin" />}
 
       <button
         onClick={() => moveStage(stageOrder[currentIndex + 1])}
         disabled={!canGoForward || isPending}
-        className="flex items-center gap-1.5 text-[12.5px] text-[#141821] bg-[rgba(27,109,252,0.08)] hover:bg-[#DDE9FD] border border-[#B5CFFC] hover:border-[#1B6DFC]/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
+        className="flex items-center gap-1.5 text-[12.5px] text-[#FAFAF8] bg-[rgba(27,109,252,0.08)] hover:bg-[#DDE9FD] border border-[#2A2F39] hover:border-[#FAFAF8]/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
       >
         {canGoForward ? stageLabel[stageOrder[currentIndex + 1]] : 'Done'}
         <ChevronRight size={13} />

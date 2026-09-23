@@ -44,17 +44,17 @@ export default function ReseedScorecardButton({ stepCount }: { stepCount: number
   return (
     <div>
       {isCurrent && !synced ? (
-        <span className="text-[12.5px] font-medium text-[#666D7A] px-3 py-1.5">Up to date</span>
+        <span className="text-[12.5px] font-medium text-[#8A9099] px-3 py-1.5">Up to date</span>
       ) : (
         <button
           onClick={resync}
           disabled={loading}
-          className="bg-[#EFF1F4] hover:bg-[#E8EAEE] disabled:opacity-50 text-[#141821] text-[12.5px] font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
+          className="bg-[#1F242C] hover:bg-[#2A2F39] disabled:opacity-50 text-[#FAFAF8] text-[12.5px] font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
         >
           {loading ? 'Syncing...' : synced ? 'Synced ✓' : 'Re-sync'}
         </button>
       )}
-      {error && <p className="text-[12.5px] text-[#C82626] mt-1">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E] mt-1">{error}</p>}
     </div>
   )
 }

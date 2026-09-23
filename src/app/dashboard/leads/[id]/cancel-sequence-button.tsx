@@ -19,14 +19,14 @@ export default function CancelSequenceButton({ leadId, hasScheduled }: { leadId:
   }
 
   if (done) {
-    return <p className="text-[12.5px] text-[#98A0AD]">Sequence cancelled.</p>
+    return <p className="text-[12.5px] text-[#676D76]">Sequence cancelled.</p>
   }
 
   return (
     <button
       onClick={handleClick}
       disabled={loading || !hasScheduled}
-      className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors disabled:opacity-40 disabled:hover:text-[#98A0AD]"
+      className="text-[12.5px] text-[#676D76] hover:text-[#D4817E] transition-colors disabled:opacity-40 disabled:hover:text-[#676D76]"
     >
       {loading ? 'Cancelling…' : 'Cancel follow-up sequence'}
     </button>

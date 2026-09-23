@@ -211,7 +211,7 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <Link href="/dashboard/leads" className="text-[12.5px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+              <Link href="/dashboard/leads" className="text-[12.5px] text-[#FAFAF8] hover:text-[#C2C6CC] transition-colors">
                 View all →
               </Link>
             }
@@ -243,7 +243,7 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <Link href="/dashboard/checkins" className="text-[12.5px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+              <Link href="/dashboard/checkins" className="text-[12.5px] text-[#FAFAF8] hover:text-[#C2C6CC] transition-colors">
                 Review queue →
               </Link>
             }
@@ -261,7 +261,7 @@ export default async function DashboardHomePage() {
                   secondary={`Week ${ci.week_number} · Form ${ci.form_type}`}
                   trailing={
                     <span
-                      className="text-[10px] text-[#666D7A]"
+                      className="text-[10px] text-[#8A9099]"
                     >
                       {new Date(ci.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </span>
@@ -316,8 +316,8 @@ function PaymentsStatusCard({
       className="block mb-6 group"
     >
       <div
-        className="rounded-xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#CFD4DC]"
-        style={{ borderColor: '#E8EAEE' }}
+        className="rounded-xl border bg-[#14171D] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#2A2F39]"
+        style={{ borderColor: '#2A2F39' }}
       >
         <span className="w-1 h-10 rounded-full" style={{ background: a.bar }} />
         <div
@@ -328,7 +328,7 @@ function PaymentsStatusCard({
         </div>
         <div className="min-w-0 flex-1">
           <p
-            className="text-[10px] text-[#666D7A] mb-0.5"
+            className="text-[10px] text-[#8A9099] mb-0.5"
           >
             Payments
           </p>
@@ -341,12 +341,12 @@ function PaymentsStatusCard({
               : `${overdueCount} ${overdueCount === 1 ? 'client' : 'clients'} overdue`}
           </p>
           {!isCurrent && namePreview && (
-            <p className="text-[12.5px] text-[#666D7A] truncate mt-0.5">{namePreview}</p>
+            <p className="text-[12.5px] text-[#8A9099] truncate mt-0.5">{namePreview}</p>
           )}
         </div>
         <ArrowUpRight
           size={16}
-          className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0"
+          className="text-[#676D76] group-hover:text-[#FAFAF8] transition-colors shrink-0"
         />
       </div>
     </Link>

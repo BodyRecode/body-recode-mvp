@@ -76,19 +76,19 @@ export default async function PaymentsPage() {
         <SectionLabel meta={products?.length ? `${products.length}` : undefined}>Products</SectionLabel>
         {products && products.length > 0 ? (
           <Card padding="none">
-            <div className="divide-y divide-[#EFF1F4]">
+            <div className="divide-y divide-[#1F242C]">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="p-4 flex items-center justify-between gap-4 hover:bg-[#F7F9FC] transition-colors"
+                className="p-4 flex items-center justify-between gap-4 hover:bg-[#14171D] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[#EFF1F4] rounded-lg">
-                    <Package size={14} className="text-[#666D7A]" />
+                  <div className="p-2 bg-[#1F242C] rounded-lg">
+                    <Package size={14} className="text-[#8A9099]" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#141821]">{product.name}</p>
-                    <p className="text-[12.5px] text-[#666D7A]">
+                    <p className="text-sm font-medium text-[#FAFAF8]">{product.name}</p>
+                    <p className="text-[12.5px] text-[#8A9099]">
                       {product.type === 'subscription'
                         ? `${product.billing_interval} subscription`
                         : 'One-time payment'}
@@ -97,9 +97,9 @@ export default async function PaymentsPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-[#141821]">${product.price.toLocaleString('en-AU')}</p>
+                    <p className="text-sm font-semibold text-[#FAFAF8]">${product.price.toLocaleString('en-AU')}</p>
                     {product.type === 'subscription' && (
-                      <p className="text-[12.5px] text-[#666D7A]">/ {product.billing_interval?.replace('ly', '')}</p>
+                      <p className="text-[12.5px] text-[#8A9099]">/ {product.billing_interval?.replace('ly', '')}</p>
                     )}
                   </div>
                   <GetPaymentLinkButton
@@ -122,7 +122,7 @@ export default async function PaymentsPage() {
       <div>
         <SectionLabel>Payment history</SectionLabel>
         {payments && payments.length > 0 ? (
-          <Card padding="none"><div className="divide-y divide-[#EFF1F4]">
+          <Card padding="none"><div className="divide-y divide-[#1F242C]">
             {payments.map((payment) => {
               const contact = payment.leads || payment.clients
               const contactHref = payment.lead_id
@@ -141,28 +141,28 @@ export default async function PaymentsPage() {
               return (
                 <div
                   key={payment.id}
-                  className="p-4 flex items-center gap-3.5 hover:bg-[#F7F9FC] transition-colors"
+                  className="p-4 flex items-center gap-3.5 hover:bg-[#14171D] transition-colors"
                 >
                   <Avatar name={contactName} size={31} />
                   <div className="flex-1 min-w-0">
                     {contactHref ? (
                       <Link
                         href={contactHref}
-                        className="text-sm font-medium text-[#141821] hover:text-[#1B6DFC] transition-colors truncate block"
+                        className="text-sm font-medium text-[#FAFAF8] hover:text-[#FAFAF8] transition-colors truncate block"
                       >
                         {contactName}
                       </Link>
                     ) : (
-                      <p className="text-sm font-medium text-[#141821] truncate">{contactName}</p>
+                      <p className="text-sm font-medium text-[#FAFAF8] truncate">{contactName}</p>
                     )}
-                    <p className="text-[12.5px] text-[#666D7A] mt-0.5">{productName}</p>
+                    <p className="text-[12.5px] text-[#8A9099] mt-0.5">{productName}</p>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="text-sm font-semibold text-[#141821]">
+                    <p className="text-sm font-semibold text-[#FAFAF8]">
                       ${payment.amount.toLocaleString('en-AU')}
                     </p>
-                    <p className="text-[12.5px] text-[#98A0AD]">
+                    <p className="text-[12.5px] text-[#676D76]">
                       {new Date(payment.created_at).toLocaleDateString('en-AU', {
                         day: 'numeric',
                         month: 'short',

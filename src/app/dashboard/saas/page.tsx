@@ -64,7 +64,7 @@ export default async function SaasLaunchPage() {
             is buying it. What has been <em>built</em> lives on the{' '}
             <Link
               href="/dashboard/build"
-              className="text-[#1560E0] hover:text-[#1056D6] underline"
+              className="text-[#E4E4E0] hover:text-[#1056D6] underline"
             >
               Build board
             </Link>
@@ -99,13 +99,13 @@ export default async function SaasLaunchPage() {
             }}
           >
             {gateOpen ? (
-              <Rocket size={17} className="text-[#1B6DFC]" />
+              <Rocket size={17} className="text-[#FAFAF8]" />
             ) : (
-              <AlertTriangle size={17} className="text-[#DC2626]" />
+              <AlertTriangle size={17} className="text-[#D4817E]" />
             )}
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="text-[16px] font-semibold text-[#141821] leading-snug mb-1.5">
+            <h2 className="text-[16px] font-semibold text-[#FAFAF8] leading-snug mb-1.5">
               {gateOpen
                 ? `${snap.outsideCoaches} coach${snap.outsideCoaches === 1 ? '' : 'es'} who ${snap.outsideCoaches === 1 ? 'is' : 'are'} not you ${snap.outsideCoaches === 1 ? 'has' : 'have'} an account`
                 : 'No coach who is not you has ever run the read'}
@@ -125,7 +125,7 @@ export default async function SaasLaunchPage() {
                 </>
               )}
             </p>
-            <p className="text-[11px] text-[#98A0AD] mt-2.5">
+            <p className="text-[11px] text-[#676D76] mt-2.5">
               Measured as coach accounts on the platform other than your own: {snap.tenantsTotal}{' '}
               configured in total.
             </p>
@@ -176,25 +176,25 @@ export default async function SaasLaunchPage() {
       <Card className="mb-8">
         <p className="text-[13.5px] text-[#4A5160] leading-relaxed mb-4 max-w-3xl">
           Six functions run this business. You hold four of them, your accountant takes finance and
-          structure, your lawyer takes legal. <strong className="text-[#141821]">Commercial has
+          structure, your lawyer takes legal. <strong className="text-[#FAFAF8]">Commercial has
           never been staffed</strong> and it is the one the gate is waiting on.
           <br /><br />
-          <strong className="text-[#141821]">Read this list carefully.</strong> These people applied
+          <strong className="text-[#FAFAF8]">Read this list carefully.</strong> These people applied
           through the Collective form, which is the Performance Coaching product white-labelled, not
-          the read. <strong className="text-[#141821]">There is no way at all for a coach to enquire
+          the read. <strong className="text-[#FAFAF8]">There is no way at all for a coach to enquire
           about Body Recode</strong> — no page, no form, no price. That is not a small gap. It means
           the read has never been offered to anyone, so it has never been refused either.
         </p>
 
         {snap.applications.length === 0 ? (
-          <p className="text-[13.5px] text-[#98A0AD] italic">
+          <p className="text-[13.5px] text-[#676D76] italic">
             No applications yet. Nothing to answer.
           </p>
         ) : (
           <div className="overflow-x-auto -mx-1">
             <table className="w-full text-[12.5px] min-w-[560px]">
               <thead>
-                <tr className="text-left text-[10px] text-[#98A0AD] border-b border-[#E8EAEE]">
+                <tr className="text-left text-[10px] text-[#676D76] border-b border-[#2A2F39]">
                   <th className="py-2 pr-3 font-semibold">Who</th>
                   <th className="py-2 pr-3 font-semibold">Focus</th>
                   <th className="py-2 pr-3 font-semibold">Self-scored</th>
@@ -206,9 +206,9 @@ export default async function SaasLaunchPage() {
                 {snap.applications.map((a) => (
                   <tr key={a.id} className="border-b border-[#F2F3F6] last:border-0 align-top">
                     <td className="py-2.5 pr-3">
-                      <span className="text-[#141821] font-medium">{a.name ?? 'Unnamed'}</span>
+                      <span className="text-[#FAFAF8] font-medium">{a.name ?? 'Unnamed'}</span>
                       {a.businessName && (
-                        <span className="block text-[11px] text-[#98A0AD]">{a.businessName}</span>
+                        <span className="block text-[11px] text-[#676D76]">{a.businessName}</span>
                       )}
                     </td>
                     <td className="py-2.5 pr-3 text-[#4A5160]">{a.modality ?? '—'}</td>
@@ -253,7 +253,7 @@ export default async function SaasLaunchPage() {
         <StatCard label="Clients on the platform" value={snap.clients} sub="The development cohort" />
       </div>
       <Card className="mb-8" padding="md">
-        <p className="text-[12.5px] text-[#666D7A] leading-relaxed">
+        <p className="text-[12.5px] text-[#8A9099] leading-relaxed">
           These are the figures that go in anything shown to an outsider, because they describe what
           the system does without describing how big the business is. Client counts and revenue stay
           off investor-facing documents deliberately: the cohort exists to develop and validate the
@@ -278,14 +278,14 @@ export default async function SaasLaunchPage() {
               Body Recode trades as a sole trader with the engine owned personally and no registered
               name. No software company signs a health-data agreement with an unincorporated sole
               trader, and there is nothing an investor could buy into.{' '}
-              <strong className="text-[#141821]">
+              <strong className="text-[#FAFAF8]">
                 This is the first stage, not a later one
               </strong>
               , and it is not development work. It runs alongside everything else and it has lead
               time that cannot be compressed.
             </p>
             {companyProgress && (
-              <p className="text-[11px] text-[#98A0AD] mt-2.5">
+              <p className="text-[11px] text-[#676D76] mt-2.5">
                 {companyProgress.shipped} of {companyProgress.total} steps shipped on this phase.
               </p>
             )}
@@ -301,15 +301,15 @@ export default async function SaasLaunchPage() {
                   style={{
                     background:
                       s.status === 'shipped'
-                        ? '#1B6DFC'
+                        ? '#FAFAF8'
                         : s.status === 'blocked'
-                          ? '#DC2626'
+                          ? '#D4817E'
                           : '#C9CFD9',
                   }}
                 />
                 <div className="min-w-0">
-                  <span className="text-[12.5px] text-[#141821]">{s.title}</span>
-                  <span className="text-[12.5px] text-[#98A0AD]"> — {s.description}</span>
+                  <span className="text-[12.5px] text-[#FAFAF8]">{s.title}</span>
+                  <span className="text-[12.5px] text-[#676D76]"> — {s.description}</span>
                 </div>
               </li>
             ))}
@@ -324,40 +324,40 @@ export default async function SaasLaunchPage() {
       <Card padding="md">
         <ul className="space-y-2.5 text-[12.5px]">
           <li className="flex items-start gap-2.5">
-            <FileText size={14} className="text-[#98A0AD] mt-[3px] shrink-0" />
+            <FileText size={14} className="text-[#676D76] mt-[3px] shrink-0" />
             <span className="text-[#4A5160]">
-              <strong className="text-[#141821]">Information brief</strong> — the three-page document
+              <strong className="text-[#FAFAF8]">Information brief</strong> — the three-page document
               for anyone deciding whether to back this. No client counts, no revenue.{' '}
-              <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">
+              <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">
                 10_INVESTOR/2026-09-12_Body_Recode_Information_Brief.pdf
               </code>
             </span>
           </li>
           <li className="flex items-start gap-2.5">
-            <FileText size={14} className="text-[#98A0AD] mt-[3px] shrink-0" />
+            <FileText size={14} className="text-[#676D76] mt-[3px] shrink-0" />
             <span className="text-[#4A5160]">
-              <strong className="text-[#141821]">Read as a Product roadmap</strong> — the strategy
+              <strong className="text-[#FAFAF8]">Read as a Product roadmap</strong> — the strategy
               this board operationalises.{' '}
-              <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">
+              <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">
                 06_SAAS_PLATFORM_BUILD/2026-09-01_Read_As_A_Product_Roadmap.md
               </code>
             </span>
           </li>
           <li className="flex items-start gap-2.5">
-            <FileText size={14} className="text-[#98A0AD] mt-[3px] shrink-0" />
+            <FileText size={14} className="text-[#676D76] mt-[3px] shrink-0" />
             <span className="text-[#4A5160]">
-              <strong className="text-[#141821]">Explained Twice</strong> — the same product in plain
+              <strong className="text-[#FAFAF8]">Explained Twice</strong> — the same product in plain
               words and in investor language. Your own prep, not a handout.{' '}
-              <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">
+              <code className="bg-[#1A1E26] px-1 py-0.5 rounded text-[11px]">
                 10_INVESTOR/2026-09-05_Explained_Twice.pdf
               </code>
             </span>
           </li>
           <li className="flex items-start gap-2.5">
-            <ArrowRight size={14} className="text-[#98A0AD] mt-[3px] shrink-0" />
+            <ArrowRight size={14} className="text-[#676D76] mt-[3px] shrink-0" />
             <Link
               href="/dashboard/build"
-              className="text-[#1560E0] hover:text-[#1056D6] underline"
+              className="text-[#E4E4E0] hover:text-[#1056D6] underline"
             >
               The Build board, everything being built in the order it gets built
             </Link>
@@ -380,7 +380,7 @@ const oneIn = (r: number) => `1 in ${Math.round(1 / r)}`
 
 function Tally({ counts, options }: { counts: Record<string, number>; options: readonly { value: string; label: string }[] }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
-  if (total === 0) return <p className="text-[12.5px] text-[#98A0AD] italic">No answers yet.</p>
+  if (total === 0) return <p className="text-[12.5px] text-[#676D76] italic">No answers yet.</p>
   return (
     <div className="space-y-1.5">
       {options.map((o) => {
@@ -389,9 +389,9 @@ function Tally({ counts, options }: { counts: Record<string, number>; options: r
           <div key={o.value} className="flex items-center gap-2 text-[12.5px]">
             <span className="w-40 shrink-0 text-[#4A5160] truncate">{o.label}</span>
             <span className="flex-1 h-2 rounded-full bg-[#EEF0F3] overflow-hidden">
-              <span className="block h-full bg-[#1B6DFC]" style={{ width: `${(n / total) * 100}%` }} />
+              <span className="block h-full bg-[#FAFAF8]" style={{ width: `${(n / total) * 100}%` }} />
             </span>
-            <span className="w-8 text-right text-[#141821] font-semibold" style={{ fontVariantNumeric: 'tabular-nums' }}>{n}</span>
+            <span className="w-8 text-right text-[#FAFAF8] font-semibold" style={{ fontVariantNumeric: 'tabular-nums' }}>{n}</span>
           </div>
         )
       })}
@@ -413,14 +413,14 @@ function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').
       <Card className="mb-4" accent={verdict.accent} tint={verdict.accent !== 'neutral'}>
         <div className="flex items-start gap-4 flex-wrap">
           <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(27,109,252,0.12)' }}>
-            <Tag size={17} className="text-[#1B6DFC]" />
+            <Tag size={17} className="text-[#FAFAF8]" />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="text-[16px] font-semibold text-[#141821] leading-snug mb-1.5">{verdict.text}</h2>
+            <h2 className="text-[16px] font-semibold text-[#FAFAF8] leading-snug mb-1.5">{verdict.text}</h2>
             <p className="text-[13.5px] text-[#4A5160] leading-relaxed max-w-3xl">
               Pass mark agreed 14 Sep 2026, before any results: of the women who see ${PRICE_YEAR} a year,{' '}
-              <strong className="text-[#141821]">{oneIn(PASS_MARK_GO)} or more join = go ahead</strong>,{' '}
-              <strong className="text-[#141821]">fewer than {oneIn(PASS_MARK_RETHINK)} = rethink the price or the offer</strong>.
+              <strong className="text-[#FAFAF8]">{oneIn(PASS_MARK_GO)} or more join = go ahead</strong>,{' '}
+              <strong className="text-[#FAFAF8]">fewer than {oneIn(PASS_MARK_RETHINK)} = rethink the price or the offer</strong>.
               Do not move these lines after the results come in. Share the page with <code className="text-[12.5px]">?source=</code> on the end so you can see where each woman came from.
             </p>
           </div>
@@ -435,19 +435,19 @@ function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').
       <Card className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">At ${PRICE_YEAR} a year, is this</p>
+            <p className="text-[11px] font-semibold text-[#676D76] mb-2">At ${PRICE_YEAR} a year, is this</p>
             <Tally counts={f.reactions} options={PRICE_REACTION_OPTIONS} />
           </div>
           <div>
-            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">How soon she wants to start</p>
+            <p className="text-[11px] font-semibold text-[#676D76] mb-2">How soon she wants to start</p>
             <Tally counts={f.startTiming} options={START_OPTIONS} />
           </div>
           <div>
-            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">A coach in her ear</p>
+            <p className="text-[11px] font-semibold text-[#676D76] mb-2">A coach in her ear</p>
             <Tally counts={f.voice} options={VOICE_OPTIONS} />
           </div>
         </div>
-        <p className="text-[11px] text-[#98A0AD] mt-4">
+        <p className="text-[11px] text-[#676D76] mt-4">
           Women only. Counted live from every result shown, including women who left without joining.
         </p>
       </Card>

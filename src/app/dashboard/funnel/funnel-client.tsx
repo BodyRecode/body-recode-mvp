@@ -9,11 +9,11 @@ import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboar
 import PagesIndex from './pages-index'
 
 const PATTERN_COLOURS: Record<string, string> = {
-  'stress-stored': '#DC2626',
+  'stress-stored': '#D4817E',
   'metabolic-drift': '#B7791F',
   'hormonal-shift': '#8b5cf6',
-  'system-overload': '#1B6DFC',
-  'pending': '#98A0AD',
+  'system-overload': '#FAFAF8',
+  'pending': '#676D76',
 }
 
 const PATTERN_LABELS: Record<string, string> = {
@@ -41,7 +41,7 @@ function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: b
   const item = (label: string, done: boolean) => (
     <span
       title={done ? `${label}: done` : `${label}: not yet`}
-      className={`inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded ${done ? 'text-[#15803D] bg-[#DCFCE7]' : 'text-[#98A0AD] bg-[#EFF1F4]'}`}
+      className={`inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded ${done ? 'text-[#15803D] bg-[#DCFCE7]' : 'text-[#676D76] bg-[#1F242C]'}`}
       style={{ fontFamily: MONO_FONT }}
     >
       {done ? '✓' : '·'} {label}
@@ -61,10 +61,10 @@ function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: b
 // otherwise a muted "Pending". Colour keyed to body state.
 function ScorecardResult({ done, score, bodyState }: { done: boolean; score: number | null; bodyState: string | null }) {
   if (!done) {
-    return <span className="text-[#98A0AD] text-[12.5px]" style={{ fontFamily: MONO_FONT }}>Pending</span>
+    return <span className="text-[#676D76] text-[12.5px]" style={{ fontFamily: MONO_FONT }}>Pending</span>
   }
   const state = (bodyState ?? '').replace(/ State$/, '') || 'Done'
-  const colour = state === 'Depleted' ? '#DC2626' : state === 'Transitioning' ? '#1B6DFC' : state === 'Ready' ? '#15803D' : '#666666'
+  const colour = state === 'Depleted' ? '#D4817E' : state === 'Transitioning' ? '#FAFAF8' : state === 'Ready' ? '#15803D' : '#666666'
   return (
     <span
       className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full border"
@@ -97,7 +97,7 @@ function formatDate(dateStr: string) {
 }
 
 function AvgBadge({ avg }: { avg: number }) {
-  const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#B7791F' : '#DC2626'
+  const colour = avg >= 4 ? '#FAFAF8' : avg >= 3 ? '#B7791F' : '#D4817E'
   return (
     <span
       className="inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full border"
@@ -109,7 +109,7 @@ function AvgBadge({ avg }: { avg: number }) {
 }
 
 function PatternBadge({ pattern }: { pattern: string }) {
-  const colour = PATTERN_COLOURS[pattern] ?? '#98A0AD'
+  const colour = PATTERN_COLOURS[pattern] ?? '#676D76'
   const label = PATTERN_LABELS[pattern] ?? pattern
   return (
     <span
@@ -137,11 +137,11 @@ function Table({ headers, children }: { headers: string[]; children: React.React
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-[13.5px]">
         <thead>
-          <tr className="border-b border-[#E8EAEE] bg-[#FFFFFF]">
+          <tr className="border-b border-[#2A2F39] bg-[#14171D]">
             {headers.map(h => (
               <th
                 key={h}
-                className="text-left px-3 py-3 text-[10px] font-medium text-[#98A0AD] whitespace-nowrap"
+                className="text-left px-3 py-3 text-[10px] font-medium text-[#676D76] whitespace-nowrap"
               >
                 {h}
               </th>
@@ -160,7 +160,7 @@ function TR({ children, highlight, href }: { children: React.ReactNode; highligh
   return (
     <tr
       onClick={clickable ? () => router.push(href!) : undefined}
-      className={`border-b border-[#E8EAEE] last:border-b-0 transition-colors hover:bg-[#EFF1F4]/40 ${clickable ? 'cursor-pointer' : ''}`}
+      className={`border-b border-[#2A2F39] last:border-b-0 transition-colors hover:bg-[#1F242C]/40 ${clickable ? 'cursor-pointer' : ''}`}
       style={highlight ? { background: 'rgba(239,68,68,0.04)' } : undefined}
     >
       {children}
@@ -169,20 +169,20 @@ function TR({ children, highlight, href }: { children: React.ReactNode; highligh
 }
 
 function TD({ children }: { children: React.ReactNode }) {
-  return <td className="px-3 py-3 text-[#666D7A] align-middle">{children}</td>
+  return <td className="px-3 py-3 text-[#8A9099] align-middle">{children}</td>
 }
 
 function TDName({ name, email, drillHref }: { name: string; email: string; drillHref?: string }) {
   const inner = (
     <>
-      <div className="text-[13.5px] font-semibold text-[#141821]">{name}</div>
-      <div className="text-[11px] text-[#98A0AD]">{email}</div>
+      <div className="text-[13.5px] font-semibold text-[#FAFAF8]">{name}</div>
+      <div className="text-[11px] text-[#676D76]">{email}</div>
     </>
   )
   return (
     <td className="px-3 py-3 align-middle">
       {drillHref ? (
-        <Link href={drillHref} className="block hover:text-[#1B6DFC] transition-colors">
+        <Link href={drillHref} className="block hover:text-[#FAFAF8] transition-colors">
           {inner}
         </Link>
       ) : (
@@ -246,7 +246,7 @@ export default function FunnelClient({
         const done = challengeEnrollments.filter(e => e.product === 'decode' && e.scorecardDone).length
         return legacy > 0 ? `${done} did scorecard · ${legacy} legacy Challenge` : `${done} did scorecard`
       })(),
-      accent: '#1B6DFC',
+      accent: '#FAFAF8',
     },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
     { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#B7791F' },
@@ -269,17 +269,17 @@ export default function FunnelClient({
               style={{ background: s.accent }}
             />
             <p
-              className="text-[10px] text-[#666D7A] mt-4 mb-3"
+              className="text-[10px] text-[#8A9099] mt-4 mb-3"
             >
               {s.label}
             </p>
             <p
-              className="text-[34px] font-extrabold text-[#141821] tracking-tight leading-none mb-2.5"
+              className="text-[34px] font-extrabold text-[#FAFAF8] tracking-tight leading-none mb-2.5"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {s.count}
             </p>
-            <p className="text-[11px] text-[#98A0AD] truncate">{s.sub}</p>
+            <p className="text-[11px] text-[#676D76] truncate">{s.sub}</p>
           </div>
         ))}
       </div>
@@ -287,7 +287,7 @@ export default function FunnelClient({
       {/* Attention flags */}
       {(blueprintAtRisk > 0 || membershipNoCheckin > 0) && (
         <div
-          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-4 flex-wrap"
+          className="mb-5 bg-[#14171D] border rounded-xl px-4 py-3 flex items-center gap-4 flex-wrap"
           style={{ borderColor: amber.ring }}
         >
           <div className="inline-flex items-center gap-2 shrink-0">
@@ -300,13 +300,13 @@ export default function FunnelClient({
             </span>
           </div>
           {blueprintAtRisk > 0 && (
-            <div className="text-[13.5px] text-[#666D7A]">
-              <span className="font-semibold text-[#141821]">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
+            <div className="text-[13.5px] text-[#8A9099]">
+              <span className="font-semibold text-[#FAFAF8]">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
             </div>
           )}
           {membershipNoCheckin > 0 && (
-            <div className="text-[13.5px] text-[#666D7A]">
-              <span className="font-semibold text-[#141821]">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
+            <div className="text-[13.5px] text-[#8A9099]">
+              <span className="font-semibold text-[#FAFAF8]">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
             </div>
           )}
         </div>
@@ -314,7 +314,7 @@ export default function FunnelClient({
 
       {/* Search + tabs */}
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#14171D] border border-[#2A2F39] rounded-lg p-0.5">
           {([
             { id: 'decode', label: `Body Decode (${challengeEnrollments.length})` },
             { id: 'blueprint', label: `Blueprint (${blueprintEnrollments.length})` },
@@ -325,7 +325,7 @@ export default function FunnelClient({
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
-                tab === t.id ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
+                tab === t.id ? 'bg-[#FAFAF8] text-[#14171D]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
               {t.label}
@@ -333,12 +333,12 @@ export default function FunnelClient({
           ))}
         </div>
         <div className="relative">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#98A0AD] pointer-events-none" />
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#676D76] pointer-events-none" />
           <input
             placeholder="Search name or email..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="text-[13.5px] bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg pl-8 pr-3 py-2 text-[#141821] placeholder:text-[#98A0AD] outline-none focus:border-[#1B6DFC] w-[220px] transition-colors"
+            className="text-[13.5px] bg-[#14171D] border border-[#2A2F39] rounded-lg pl-8 pr-3 py-2 text-[#FAFAF8] placeholder:text-[#676D76] outline-none focus:border-[#FAFAF8] w-[220px] transition-colors"
           />
         </div>
       </div>
@@ -349,7 +349,7 @@ export default function FunnelClient({
         {tab === 'decode' && (
           <Table headers={['Name', 'Day', 'Setup', 'Scorecard', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
             {filteredDecode.length === 0 && (
-              <TR><TD><span className="text-[#98A0AD]">No enrollments yet.</span></TD></TR>
+              <TR><TD><span className="text-[#676D76]">No enrollments yet.</span></TD></TR>
             )}
             {filteredDecode.map(e => {
               const lastDay = e.product === 'decode' ? DECODE_DAYS.length : 14
@@ -358,10 +358,10 @@ export default function FunnelClient({
                 <TR key={e.id} highlight={atRisk} href={`/dashboard/funnel/${e.token}`}>
                   <TDName name={e.name} email={e.email} drillHref={`/dashboard/funnel/${e.token}`} />
                   <TD>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, lastDay)}</span>
-                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / {lastDay}</span>
+                    <span className="font-bold text-[#FAFAF8]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, lastDay)}</span>
+                    <span className="text-[11px] text-[#676D76]" style={{ fontFamily: MONO_FONT }}> / {lastDay}</span>
                     {e.product !== 'decode' && (
-                      <span className="ml-2 text-[10px] text-[#98A0AD]" title="Enrolled on the retired 14-day Challenge">legacy</span>
+                      <span className="ml-2 text-[10px] text-[#676D76]" title="Enrolled on the retired 14-day Challenge">legacy</span>
                     )}
                   </TD>
                   <TD>
@@ -371,24 +371,24 @@ export default function FunnelClient({
                     <ScorecardResult done={e.scorecardDone} score={e.scorecardScore} bodyState={e.scorecardBodyState} />
                   </TD>
                   <TD>
-                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#98A0AD] text-[12.5px]">No quiz</span>}
+                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#676D76] text-[12.5px]">No quiz</span>}
                   </TD>
                   <TD>
                     {e.quizCompleted
-                      ? <StatusBadge label="Completed" colour="#1B6DFC" />
-                      : <StatusBadge label="Pending" colour="#98A0AD" />}
+                      ? <StatusBadge label="Completed" colour="#FAFAF8" />
+                      : <StatusBadge label="Pending" colour="#676D76" />}
                   </TD>
                   <TD>
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
                       : e.currentDay >= lastDay
-                        ? <StatusBadge label="Not yet" colour="#DC2626" />
-                        : <StatusBadge label="Reading" colour="#98A0AD" />}
+                        ? <StatusBadge label="Not yet" colour="#D4817E" />
+                        : <StatusBadge label="Reading" colour="#676D76" />}
                   </TD>
                   <TD>
                     <div className="flex items-center justify-between gap-2">
                       <span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span>
-                      <ChevronRight size={14} className="text-[#98A0AD]" />
+                      <ChevronRight size={14} className="text-[#676D76]" />
                     </div>
                   </TD>
                 </TR>
@@ -400,7 +400,7 @@ export default function FunnelClient({
         {tab === 'blueprint' && (
           <Table headers={['Name', 'Pattern', 'Week', 'Last Check-In', 'Avg Score', 'Membership', 'Purchased']}>
             {filteredBlueprint.length === 0 && (
-              <TR><TD><span className="text-[#98A0AD]">No Blueprint buyers yet.</span></TD></TR>
+              <TR><TD><span className="text-[#676D76]">No Blueprint buyers yet.</span></TD></TR>
             )}
             {filteredBlueprint.map(e => {
               const atRisk = e.currentWeek === 6 && !e.hasMembership
@@ -410,21 +410,21 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
-                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / 6</span>
+                    <span className="font-bold text-[#FAFAF8]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
+                    <span className="text-[11px] text-[#676D76]" style={{ fontFamily: MONO_FONT }}> / 6</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12.5px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12.5px] text-[#DC2626]">None submitted</span>}
+                      ? <span className="text-[12.5px] text-[#8A9099]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12.5px] text-[#D4817E]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12.5px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#676D76] text-[12.5px]">-</span>}</TD>
                   <TD>
                     {e.hasMembership
-                      ? <StatusBadge label="Active" colour="#1B6DFC" />
+                      ? <StatusBadge label="Active" colour="#FAFAF8" />
                       : e.currentWeek === 6
-                        ? <StatusBadge label="Not joined" colour="#DC2626" />
-                        : <StatusBadge label="Not yet" colour="#98A0AD" />}
+                        ? <StatusBadge label="Not joined" colour="#D4817E" />
+                        : <StatusBadge label="Not yet" colour="#676D76" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.purchaseDate)}</span></TD>
                 </TR>
@@ -436,7 +436,7 @@ export default function FunnelClient({
         {tab === 'membership' && (
           <Table headers={['Name', 'Pattern', 'Block / Week', 'Last Check-In', 'Avg Score', 'Status', 'Joined']}>
             {filteredMembership.length === 0 && (
-              <TR><TD><span className="text-[#98A0AD]">No members yet.</span></TD></TR>
+              <TR><TD><span className="text-[#676D76]">No members yet.</span></TD></TR>
             )}
             {filteredMembership.map(e => {
               const noCheckin = !e.cancelledAt && !e.lastCheckin
@@ -445,20 +445,20 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT }}>Block {e.currentBlock}</span>
-                    <span className="text-[#98A0AD]"> · </span>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
+                    <span className="font-bold text-[#FAFAF8]" style={{ fontFamily: MONO_FONT }}>Block {e.currentBlock}</span>
+                    <span className="text-[#676D76]"> · </span>
+                    <span className="font-bold text-[#FAFAF8]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12.5px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12.5px] text-[#DC2626]">None submitted</span>}
+                      ? <span className="text-[12.5px] text-[#8A9099]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12.5px] text-[#D4817E]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12.5px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#676D76] text-[12.5px]">-</span>}</TD>
                   <TD>
                     {e.cancelledAt
-                      ? <StatusBadge label="Cancelled" colour="#DC2626" />
-                      : <StatusBadge label="Active" colour="#1B6DFC" />}
+                      ? <StatusBadge label="Cancelled" colour="#D4817E" />
+                      : <StatusBadge label="Active" colour="#FAFAF8" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.joinedAt)}</span></TD>
                 </TR>

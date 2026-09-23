@@ -171,12 +171,12 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               onClick={() => toggleSection(b.id)}
               className="flex items-center gap-2 group"
             >
-              <span className={`text-[#43474F] group-hover:text-[#666D7A] transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
-              <h3 className="text-[12.5px] font-medium text-[#1B6DFC]">
+              <span className={`text-[#C2C6CC] group-hover:text-[#8A9099] transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
+              <h3 className="text-[12.5px] font-medium text-[#FAFAF8]">
                 {b.title}
               </h3>
             </button>
-            <div className="flex-1 h-px bg-[#EFF1F4]" />
+            <div className="flex-1 h-px bg-[#1F242C]" />
           </div>
         )
         return
@@ -186,7 +186,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'label') {
         out.push(
-          <p key={i} className="text-[11px] font-medium text-[#141821] pt-3 ml-1">
+          <p key={i} className="text-[11px] font-medium text-[#FAFAF8] pt-3 ml-1">
             {b.text}
           </p>
         )
@@ -195,8 +195,8 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'script') {
         out.push(
-          <div key={i} className="bg-[rgba(27,109,252,0.08)] border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-[#141821] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
+          <div key={i} className="bg-[rgba(27,109,252,0.08)] border-l-2 border-[#FAFAF8] rounded-r-lg pl-4 pr-4 py-3 ml-1">
+            <p className="text-[#FAFAF8] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
           </div>
         )
         return
@@ -205,7 +205,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       if (b.kind === 'note') {
         out.push(
           <div key={i} className="ml-1 px-3 py-2">
-            <p className="text-[#98A0AD] text-[12.5px] leading-relaxed italic whitespace-pre-line">{b.text}</p>
+            <p className="text-[#676D76] text-[12.5px] leading-relaxed italic whitespace-pre-line">{b.text}</p>
           </div>
         )
         return
@@ -214,7 +214,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       if (b.kind === 'conditional') {
         out.push(
           <div key={i} className="bg-[#FDF6E9] border-l-2 border-[#E5C98F] rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-[#141821] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
+            <p className="text-[#FAFAF8] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
           </div>
         )
         return
@@ -224,8 +224,8 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
         out.push(
           <ul key={i} className="ml-1 space-y-1.5 pl-2">
             {b.lines.map((l, j) => (
-              <li key={j} className="text-[#43474F] text-sm leading-relaxed flex gap-2">
-                <span className="text-[#1B6DFC] flex-shrink-0">·</span>
+              <li key={j} className="text-[#C2C6CC] text-sm leading-relaxed flex gap-2">
+                <span className="text-[#FAFAF8] flex-shrink-0">·</span>
                 <span>{l}</span>
               </li>
             ))}
@@ -235,7 +235,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       }
 
       out.push(
-        <p key={i} className="text-[#43474F] text-sm leading-relaxed whitespace-pre-line ml-1">
+        <p key={i} className="text-[#C2C6CC] text-sm leading-relaxed whitespace-pre-line ml-1">
           {b.text}
         </p>
       )
@@ -245,14 +245,14 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-6 mb-4">
+    <div className="bg-[#14171D] border border-[#2A2F39] border-l-[3px] border-l-[#FAFAF8] rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2.5 mb-1">
-            <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-            <h2 className="text-[11px] font-medium text-[#1B6DFC]" style={{ letterSpacing: '0.14em' }}>Pre-Call Read</h2>
+            <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
+            <h2 className="text-[11px] font-medium text-[#FAFAF8]" style={{ letterSpacing: '0.14em' }}>Pre-Call Read</h2>
           </div>
-          <p className="text-[#666D7A] text-sm">
+          <p className="text-[#8A9099] text-sm">
             Lead-specific brief for this call. Their pattern, what to listen for, lines to have ready.
           </p>
         </div>
@@ -262,14 +262,14 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               <button
                 onClick={cancel}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
+                className="text-sm font-bold px-4 py-2 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={save}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
+                className="text-sm font-bold px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#E4E4E0] transition-colors disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -277,7 +277,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           ) : (
             <button
               onClick={startEdit}
-              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#2A2F39] text-[#C2C6CC] rounded-lg hover:border-[#FAFAF8] hover:text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
             >
               {brief ? 'Edit' : 'Add'}
             </button>
@@ -290,21 +290,21 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           value={draft}
           onChange={e => setDraft(e.target.value)}
           placeholder="Paste or write the pre-call brief for this lead. Pattern, hot spot triggers, key lines..."
-          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4 text-[#141821] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#98A0AD]"
+          className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg p-4 text-[#FAFAF8] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#2A2F39] placeholder-[#676D76]"
           style={{ minHeight: '480px' }}
         />
       ) : brief ? (
         <div className="space-y-4">
           {sections.length > 1 && (
-            <div className="flex flex-wrap items-center gap-1.5 mb-2 pb-4 border-b border-[#E8EAEE]">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2 pb-4 border-b border-[#2A2F39]">
               {sections.map(s => (
                 <button
                   key={s.id}
                   onClick={() => openSection(s.id)}
                   className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border transition-colors ${
                     collapsedState[s.id]
-                      ? 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:text-[#1B6DFC]'
-                      : 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]'
+                      ? 'bg-[#1A1E26] border-[#2A2F39] text-[#8A9099] hover:border-[#FAFAF8] hover:text-[#FAFAF8]'
+                      : 'bg-[rgba(27,109,252,0.08)] border-[#2A2F39] text-[#FAFAF8]'
                   }`}
                 >
                   {s.title}
@@ -312,7 +312,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               ))}
               <button
                 onClick={() => setAll(!allOpen)}
-                className="ml-auto text-[11px] font-semibold px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] transition-colors"
+                className="ml-auto text-[11px] font-semibold px-2.5 py-1 rounded-md border border-[#2A2F39] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
               >
                 {allOpen ? 'Collapse all' : 'Expand all'}
               </button>
@@ -322,9 +322,9 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
             {renderBlocks()}
           </div>
 
-          <div className="pt-4 mt-2 border-t border-[#E8EAEE] flex flex-wrap gap-3 text-[11px] text-[#43474F]">
+          <div className="pt-4 mt-2 border-t border-[#2A2F39] flex flex-wrap gap-3 text-[11px] text-[#C2C6CC]">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-[#1B6DFC] rounded-sm" />
+              <span className="w-2 h-2 bg-[#FAFAF8] rounded-sm" />
               What you say
             </span>
             <span className="flex items-center gap-1.5">
@@ -332,15 +332,15 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               Conditional response
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-[#98A0AD] italic">italic</span>
+              <span className="text-[#676D76] italic">italic</span>
               Coach note
             </span>
           </div>
         </div>
       ) : (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-dashed rounded-lg p-6 text-center">
-          <p className="text-[#98A0AD] text-sm">No pre-call read written yet for this lead.</p>
-          <p className="text-[#43474F] text-[12.5px] mt-1">Click Add to write one.</p>
+        <div className="bg-[#14171D] border border-[#2A2F39] border-dashed rounded-lg p-6 text-center">
+          <p className="text-[#676D76] text-sm">No pre-call read written yet for this lead.</p>
+          <p className="text-[#C2C6CC] text-[12.5px] mt-1">Click Add to write one.</p>
         </div>
       )}
     </div>

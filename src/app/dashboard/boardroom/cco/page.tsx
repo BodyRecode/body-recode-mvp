@@ -10,8 +10,8 @@ export const revalidate = 0
 
 function BriefingSkeleton({ persona }: { persona: string }) {
   return (
-    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13.5px] text-[#666D7A] leading-relaxed">
-      <strong className="text-[#141821]">{persona}</strong> is drafting the briefing…
+    <div className="mb-8 p-4 rounded-xl border border-[#2A2F39] bg-[#14171D] text-[13.5px] text-[#8A9099] leading-relaxed">
+      <strong className="text-[#FAFAF8]">{persona}</strong> is drafting the briefing…
     </div>
   )
 }
@@ -33,19 +33,19 @@ export default async function CcoPage() {
 
       <div className="mb-6 flex items-center gap-3">
         <span className="text-[10px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live data</span>
-        <span className="text-[11px] text-[#666D7A] font-mono">
+        <span className="text-[11px] text-[#8A9099] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
       </div>
 
-      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Client base</h3>
+      <h3 className="text-[11px] font-medium text-[#8A9099] mb-3">Client base</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric label="Active clients" value={fmtNum(snap.activeClients)} large />
         <Metric label="Added last 30d" value={fmtNum(snap.clientsAdded30d)} hint="New client records" />
         <Metric label="Lifetime clients" value={fmtNum(snap.clientsLifetime)} hint="Since day zero" />
       </div>
 
-      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Churn signals</h3>
+      <h3 className="text-[11px] font-medium text-[#8A9099] mb-3">Churn signals</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Churn rate 30d"
@@ -87,7 +87,7 @@ export default async function CcoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Engagement</h3>
+      <h3 className="text-[11px] font-medium text-[#8A9099] mb-3">Engagement</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Checked in last 7d"
@@ -125,7 +125,7 @@ export default async function CcoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Feedback triage</h3>
+      <h3 className="text-[11px] font-medium text-[#8A9099] mb-3">Feedback triage</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Unseen feedback"
@@ -160,7 +160,7 @@ export default async function CcoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Sentiment (last 30d)</h3>
+      <h3 className="text-[11px] font-medium text-[#8A9099] mb-3">Sentiment (last 30d)</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Metric
           label="Avg accuracy score"
@@ -201,16 +201,16 @@ export default async function CcoPage() {
       </div>
 
       <div className="mb-8 flex items-center gap-3 text-[13.5px]">
-        <Link href="/dashboard/feedback" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
+        <Link href="/dashboard/feedback" className="text-[#E4E4E0] hover:text-[#1056D6] underline font-semibold">
           → Open Feedback Triage
         </Link>
-        <span className="text-[#98A0AD]">·</span>
-        <Link href="/dashboard/coaching" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
+        <span className="text-[#676D76]">·</span>
+        <Link href="/dashboard/coaching" className="text-[#E4E4E0] hover:text-[#1056D6] underline font-semibold">
           → Coaching queue
         </Link>
       </div>
 
-      <Link href="/dashboard/boardroom" className="text-[12.5px] text-[#1560E0] hover:text-[#1056D6] underline">
+      <Link href="/dashboard/boardroom" className="text-[12.5px] text-[#E4E4E0] hover:text-[#1056D6] underline">
         ← Back to Boardroom
       </Link>
     </div>
@@ -231,18 +231,18 @@ function Metric({
   large?: boolean
 }) {
   const valueColor = {
-    default: 'text-[#141821]',
-    stone: 'text-[#98A0AD]',
+    default: 'text-[#FAFAF8]',
+    stone: 'text-[#676D76]',
     green: 'text-[#177245]',
     amber: 'text-[#A96A12]',
-    red: 'text-[#C82626]',
+    red: 'text-[#D4817E]',
   }[tone]
   const size = large ? 'text-[34px]' : 'text-[20px]'
   return (
     <div className="br-card p-5">
-      <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
+      <div className="text-[11px] font-medium text-[#8A9099] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
-      {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}
+      {hint && <div className="text-[11px] text-[#8A9099] leading-relaxed">{hint}</div>}
     </div>
   )
 }

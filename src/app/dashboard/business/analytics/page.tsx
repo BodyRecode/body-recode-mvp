@@ -74,56 +74,56 @@ export default async function AnalyticsPage() {
 
   return (
     <div className="max-w-4xl">
-      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Analytics</h1>
-        <p className="text-[#666D7A] text-sm">Live view of your business performance</p>
+        <p className="text-[#8A9099] text-sm">Live view of your business performance</p>
       </div>
 
       {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="bg-[#F4F6F9] br-card p-5">
+        <div className="bg-[#1A1E26] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <DollarSign size={14} className="text-[#1B6DFC]" />
-            <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Revenue</p>
+            <DollarSign size={14} className="text-[#FAFAF8]" />
+            <p className="text-[12.5px] font-semibold text-[#8A9099]">Total Revenue</p>
           </div>
-          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
+          <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-[12.5px] text-[#8A9099] mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
         </div>
 
-        <div className="bg-[#F4F6F9] br-card p-5">
+        <div className="bg-[#1A1E26] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Users size={14} className="text-[#1B6DFC]" />
-            <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Leads</p>
+            <Users size={14} className="text-[#FAFAF8]" />
+            <p className="text-[12.5px] font-semibold text-[#8A9099]">Total Leads</p>
           </div>
-          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{totalLeads}</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
+          <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">{totalLeads}</p>
+          <p className="text-[12.5px] text-[#8A9099] mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
         </div>
 
-        <div className="bg-[#F4F6F9] br-card p-5">
+        <div className="bg-[#1A1E26] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={14} className="text-[#1B6DFC]" />
-            <p className="text-[12.5px] font-semibold text-[#666D7A]">Conversion</p>
+            <TrendingUp size={14} className="text-[#FAFAF8]" />
+            <p className="text-[12.5px] font-semibold text-[#8A9099]">Conversion</p>
           </div>
-          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{conversionRate}%</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">{converted} of {totalLeads} converted</p>
+          <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">{conversionRate}%</p>
+          <p className="text-[12.5px] text-[#8A9099] mt-1">{converted} of {totalLeads} converted</p>
         </div>
 
-        <div className="bg-[#F4F6F9] br-card p-5">
+        <div className="bg-[#1A1E26] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <CheckCircle2 size={14} className="text-[#1B6DFC]" />
-            <p className="text-[12.5px] font-semibold text-[#666D7A]">Show-up Rate</p>
+            <CheckCircle2 size={14} className="text-[#FAFAF8]" />
+            <p className="text-[12.5px] font-semibold text-[#8A9099]">Show-up Rate</p>
           </div>
-          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{showUpRate}%</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">{completedBookings} completed · {noShows} no show</p>
+          <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">{showUpRate}%</p>
+          <p className="text-[12.5px] text-[#8A9099] mt-1">{completedBookings} completed · {noShows} no show</p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Pipeline funnel */}
-        <div className="bg-[#F4F6F9] br-card p-6">
+        <div className="bg-[#1A1E26] br-card p-6">
           <div className="flex items-center gap-2 mb-5">
-            <BarChart2 size={14} className="text-[#666D7A]" />
-            <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Pipeline Breakdown</h2>
+            <BarChart2 size={14} className="text-[#8A9099]" />
+            <h2 className="text-[12.5px] font-semibold text-[#8A9099]">Pipeline Breakdown</h2>
           </div>
           <div className="space-y-3">
             {stageOrder.map(({ key, label }) => {
@@ -132,12 +132,12 @@ export default async function AnalyticsPage() {
               return (
                 <div key={key}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-[12.5px] text-[#666D7A]">{label}</p>
-                    <p className="text-[12.5px] font-semibold text-[#141821]">{count}</p>
+                    <p className="text-[12.5px] text-[#8A9099]">{label}</p>
+                    <p className="text-[12.5px] font-semibold text-[#FAFAF8]">{count}</p>
                   </div>
-                  <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#1F242C] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-[#1B6DFC] rounded-full transition-all"
+                      className="h-full bg-[#FAFAF8] rounded-full transition-all"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -148,10 +148,10 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Lead sources */}
-        <div className="bg-[#F4F6F9] br-card p-6">
+        <div className="bg-[#1A1E26] br-card p-6">
           <div className="flex items-center gap-2 mb-5">
-            <TrendingUp size={14} className="text-[#666D7A]" />
-            <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Lead Sources</h2>
+            <TrendingUp size={14} className="text-[#8A9099]" />
+            <h2 className="text-[12.5px] font-semibold text-[#8A9099]">Lead Sources</h2>
           </div>
           {topSources.length > 0 ? (
             <div className="space-y-3">
@@ -160,15 +160,15 @@ export default async function AnalyticsPage() {
                 return (
                   <div key={source}>
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-[12.5px] text-[#666D7A] capitalize">{source.replace(/_/g, ' ')}</p>
+                      <p className="text-[12.5px] text-[#8A9099] capitalize">{source.replace(/_/g, ' ')}</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-[12.5px] text-[#666D7A]">{pct}%</p>
-                        <p className="text-[12.5px] font-semibold text-[#141821]">{count}</p>
+                        <p className="text-[12.5px] text-[#8A9099]">{pct}%</p>
+                        <p className="text-[12.5px] font-semibold text-[#FAFAF8]">{count}</p>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[#1F242C] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-violet-500 rounded-full transition-all"
+                        className="h-full bg-[#1A1E26] rounded-full transition-all"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -177,27 +177,27 @@ export default async function AnalyticsPage() {
               })}
             </div>
           ) : (
-            <p className="text-[#666D7A] text-sm">No lead data yet</p>
+            <p className="text-[#8A9099] text-sm">No lead data yet</p>
           )}
         </div>
       </div>
 
       {/* Bookings summary */}
-      <div className="bg-[#F4F6F9] br-card p-6">
+      <div className="bg-[#1A1E26] br-card p-6">
         <div className="flex items-center gap-2 mb-5">
-          <Calendar size={14} className="text-[#666D7A]" />
-          <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Bookings</h2>
+          <Calendar size={14} className="text-[#8A9099]" />
+          <h2 className="text-[12.5px] font-semibold text-[#8A9099]">Bookings</h2>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {[
-            { label: 'Total', value: totalBookings, colour: 'text-[#141821]' },
-            { label: 'Completed', value: completedBookings, colour: 'text-[#1B6DFC]' },
-            { label: 'No Show', value: noShows, colour: 'text-[#C82626]' },
-            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#141821]' },
+            { label: 'Total', value: totalBookings, colour: 'text-[#FAFAF8]' },
+            { label: 'Completed', value: completedBookings, colour: 'text-[#FAFAF8]' },
+            { label: 'No Show', value: noShows, colour: 'text-[#D4817E]' },
+            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#FAFAF8]' },
           ].map(({ label, value, colour }) => (
             <div key={label} className="text-center">
               <p className={`text-2xl font-bold ${colour}`}>{value}</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1">{label}</p>
+              <p className="text-[12.5px] text-[#8A9099] mt-1">{label}</p>
             </div>
           ))}
         </div>
