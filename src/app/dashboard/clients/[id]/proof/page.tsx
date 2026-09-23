@@ -76,13 +76,13 @@ export default async function ProofPage({
   if (!read) {
     return (
       <div className="max-w-[760px] mx-auto py-10 px-6">
-        <h1 className="text-[28px] font-bold tracking-[-0.03em] text-[#0F1115]">Nothing to show yet</h1>
-        <p className="text-[14px] text-[#4A4F57] leading-[1.6] mt-3">
+        <h1 className="text-[34px] font-bold tracking-[-0.03em] text-[#0F1115]">Nothing to show yet</h1>
+        <p className="text-[13.5px] text-[#4A4F57] leading-[1.6] mt-3">
           This appears once {anonymous ? 'a client' : (client.name ?? 'this client')} has been read a second time,
           twelve weeks after the first. It is the two reads side by side, and it is the clearest evidence the
           work is doing anything.
         </p>
-        <Link href={`/dashboard/clients/${id}`} className="inline-block text-[13px] font-semibold mt-6 underline text-[#0F1115]">
+        <Link href={`/dashboard/clients/${id}`} className="inline-block text-[13.5px] font-semibold mt-6 underline text-[#0F1115]">
           Back to their file
         </Link>
       </div>
@@ -108,7 +108,7 @@ export default async function ProofPage({
           {new Date(when).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
         </div>
       )}
-      <div className="text-[26px] font-bold tracking-[-0.03em] text-[#0F1115] mt-2.5 leading-tight">
+      <div className="text-[34px] font-bold tracking-[-0.03em] text-[#0F1115] mt-2.5 leading-tight">
         {state ?? 'Not read'}
       </div>
     </div>
@@ -120,10 +120,10 @@ export default async function ProofPage({
         <ProofActions clientId={id} anonymous={anonymous} />
 
         <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9CA2AB]">Twelve weeks</div>
-        <h1 className="text-[40px] font-extrabold tracking-[-0.038em] leading-[1] text-[#0F1115] mt-2">
+        <h1 className="text-[46px] font-extrabold tracking-[-0.038em] leading-[1] text-[#0F1115] mt-2">
           {name}
         </h1>
-        <p className="text-[15px] text-[#4A4F57] leading-[1.6] mt-3 max-w-[620px]">
+        <p className="text-[16px] text-[#4A4F57] leading-[1.6] mt-3 max-w-[620px]">
           The same assessment, read twice, twelve weeks apart. Both were written against{' '}
           {anonymous ? 'their' : 'their'} own starting point rather than against a target.
         </p>
@@ -154,8 +154,8 @@ export default async function ProofPage({
             {signals.map(([label, v]) => (
               <div key={label}>
                 <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: dot(v) }} />
-                <div className="text-[13px] font-semibold text-[#0F1115] mt-2">{label}</div>
-                <div className="text-[12px] text-[#6E747D]">{v && v !== 'Unknown' ? v : 'Not read'}</div>
+                <div className="text-[13.5px] font-semibold text-[#0F1115] mt-2">{label}</div>
+                <div className="text-[12.5px] text-[#6E747D]">{v && v !== 'Unknown' ? v : 'Not read'}</div>
               </div>
             ))}
           </div>
@@ -164,13 +164,13 @@ export default async function ProofPage({
         {read.comparison_text && (
           <div className="mt-10 pt-8 border-t border-[#E4E4E0]">
             <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9CA2AB] mb-4">What changed</div>
-            <div className="text-[14.5px] text-[#0F1115] leading-[1.7] whitespace-pre-wrap max-w-[640px]">
+            <div className="text-[13.5px] text-[#0F1115] leading-[1.7] whitespace-pre-wrap max-w-[640px]">
               {read.comparison_text as string}
             </div>
           </div>
         )}
 
-        <p className="text-[11.5px] text-[#9CA2AB] leading-[1.6] mt-12 pt-6 border-t border-[#E4E4E0] max-w-[620px]">
+        <p className="text-[11px] text-[#9CA2AB] leading-[1.6] mt-12 pt-6 border-t border-[#E4E4E0] max-w-[620px]">
           This is an interpretation of what was reported, not a diagnosis, and it does not diagnose, treat, cure
           or prevent anything. It says what appears to be going on. What to do about it is the coach&rsquo;s decision.
         </p>
