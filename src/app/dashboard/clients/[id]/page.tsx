@@ -12,7 +12,7 @@ import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 import { formatDate, readinessPillStyle, readinessMarkStyle } from '@/lib/utils'
 import Link from 'next/link'
-import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
+import { PageHeader, MONO_FONT, PageBody } from '@/components/dashboard/ui'
 import { GlanceCard, flagsPill, type GlancePill } from '@/components/glance-card'
 import { evaluateReadiness } from '@/lib/readiness-monitor'
 import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
@@ -70,6 +70,17 @@ import { ironFlag, IRON_REFERRAL_SENTENCE, IRON_TIER_TIMEFRAME, type IronScreen 
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 import { readinessLevel } from '@/lib/readiness-levels'
+import { BRAND } from '@/lib/brand-tokens'
+
+const PUBLIC_READINESS: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+
+/** Readiness is the one thing on this record that carries a colour. */
+function readinessInk(state: string) {
+  return state === 'Remediation' ? BRAND.remediationOnDark
+    : state === 'Optimisation' ? BRAND.optimisationOnDark
+    : state === 'Post-Optimisation' ? BRAND.postOptimisationOnDark
+    : BRAND.darkInk
+}
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -478,7 +489,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const weekStrip = (await buildWeekStrips([id]))[id]
 
   return (
-    <div className="max-w-[980px]">
+    /* NO CAP. This record was pinned to 980px while Today ran the full width,
+       which is why Kade could see the difference between the two pages without
+       being able to name it. Prose inside is capped where prose needs capping;
+       the page is not. Same rule as PageBody. */
+    <PageBody>
       <div className="min-w-0">
       <div id="overview" className="scroll-mt-8">
         <Link
@@ -577,54 +592,78 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         return (
           <div className="mb-6 space-y-3">
             {activeCffs && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase px-2.5 py-[3px] rounded-full border whitespace-nowrap"
-                  style={{ letterSpacing: '0.08em', ...readinessPillStyle(bodyState.label ?? '', true) }}
-                >
-                  {bodyState.label}
-                </span>
-                {bodyState.reScored && (
-                  <span className="text-[11px] text-[#8A9099]">
-                    re-scored{bodyState.blockName ? ` at the end of ${bodyState.blockName}` : ''} · foundational read said {bodyState.foundational}
-                  </span>
-                )}
-                {/* Pattern sits beside state deliberately. The funnel sells both
-                    labels; a 1:1 client should not silently lose one of them. */}
-                {client.pattern && (
-                  <span
-                    title={
-                      client.pattern_source === 'cffs'
-                        ? 'Read from the full CFFS'
-                        : `Provisional read from the ${client.pattern_source ?? 'funnel'}. Sharpens at the next CFFS.`
-                    }
-                  >
-                    <Pill accent="neutral">
-                      {readPatternLabel(currentProgressRead?.pattern_classification ?? client.pattern)}
-                      {client.pattern_source !== 'cffs' && ' (provisional)'}
-                    </Pill>
-                  </span>
-                )}
-                {activeCffs.resolution_state && <Pill accent="ink">{activeCffs.resolution_state}</Pill>}
-                {/* The re-read as something to hand over, rather than something
-                    that only exists in here. Queued 21 Sep, built 23 Sep. */}
-                <Link
-                  href={`/dashboard/clients/${id}/proof`}
-                  className="text-[11px] font-bold uppercase px-2.5 py-[3px] rounded-full border"
-                  style={{ letterSpacing: '0.08em', color: '#C2C6CC', borderColor: '#2A2F39' }}
-                >
-                  Twelve weeks
-                </Link>
-                {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
-                {/* Readiness reads as one instrument with four needles, not as
-                    four unrelated chips, so the four sit in a single control. */}
-                <span className="inline-flex items-center gap-3 text-[11px] text-[#8A9099] pl-2.5 pr-3 py-[3px] rounded-full border border-[#2A2F39] bg-[linear-gradient(180deg,#14171D,#0B0D10)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
-                  {READY.map(r => (
-                    <span key={r.label} className="inline-flex items-center gap-1.5" title={`${r.label}: ${readinessLevel(r.v).label}. ${readinessLevel(r.v).meaning}`}>
-                      <span className={`w-[7px] h-[7px] rounded-full ${mark(r.v)}`} /> {r.label}
-                    </span>
-                  ))}
-                </span>
+              /* THE BAND. This was fifteen chips at one size in a row, and once
+                 the four ratings stopped being coloured it read as nothing at
+                 all. The answer was never colour: it is SCALE. The one thing
+                 this product produces is the readiness, so the readiness is the
+                 biggest thing on the record and the only coloured thing on it,
+                 and the four ratings are words you can read instead of dots you
+                 have to hover. Same move that made Today work. */
+              <div className="br-card overflow-hidden">
+                <div className="grid gap-px md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]" style={{ background: '#2A2F39' }}>
+                  <div className="px-6 py-5" style={{ background: '#14171D' }}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#676D76]">Readiness</p>
+                    <p
+                      className="text-[34px] font-bold tracking-[-0.03em] leading-none mt-2"
+                      style={{ color: readinessInk(bodyState.label ?? '') }}
+                    >
+                      {bodyState.label}
+                    </p>
+                    <p className="text-[12.5px] text-[#8A9099] mt-2 leading-relaxed">
+                      They read it as {PUBLIC_READINESS[bodyState.label ?? ''] ?? bodyState.label}
+                      {bodyState.reScored ? ` · re-scored${bodyState.blockName ? ` at the end of ${bodyState.blockName}` : ''}, their first read said ${bodyState.foundational}` : ''}
+                    </p>
+                    <div className="flex items-center gap-2 flex-wrap mt-3.5">
+                      {client.pattern && (
+                        <span
+                          title={
+                            client.pattern_source === 'cffs'
+                              ? 'Read from the full CFFS'
+                              : `Provisional read from the ${client.pattern_source ?? 'funnel'}. Sharpens at the next CFFS.`
+                          }
+                        >
+                          <Pill accent="neutral">
+                            {readPatternLabel(currentProgressRead?.pattern_classification ?? client.pattern)}
+                            {client.pattern_source !== 'cffs' && ' (provisional)'}
+                          </Pill>
+                        </span>
+                      )}
+                      {activeCffs.resolution_state && <Pill accent="ink">{activeCffs.resolution_state}</Pill>}
+                      {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
+                      <Link
+                        href={`/dashboard/clients/${id}/proof`}
+                        className="text-[11px] font-bold uppercase px-2.5 py-[3px] rounded-full border"
+                        style={{ letterSpacing: '0.08em', color: '#C2C6CC', borderColor: '#2A2F39' }}
+                      >
+                        Twelve weeks
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="px-6 py-5" style={{ background: '#14171D' }}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#676D76]">What is holding them back</p>
+                    <div className="mt-3.5 space-y-2">
+                      {READY.map(r => {
+                        const lvl = readinessLevel(r.v)
+                        return (
+                          <div key={r.label} className="flex items-baseline gap-2.5" title={lvl.meaning}>
+                            <span className="text-[12.5px] text-[#8A9099] whitespace-nowrap">{r.label}</span>
+                            <span className="flex-1 border-b border-dotted border-[#2A2F39]" aria-hidden />
+                            <span
+                              className={`text-[12.5px] whitespace-nowrap ${
+                                lvl.tone === 'strong' ? 'font-bold text-[#FAFAF8]'
+                                : lvl.tone === 'normal' ? 'font-semibold text-[#C2C6CC]'
+                                : 'font-medium text-[#676D76]'
+                              }`}
+                            >
+                              {lvl.label}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             {/* Two different messages, so two different cards. With something
@@ -2233,6 +2272,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </ClientProfileTabs>
 
       </div>
-    </div>
+    </PageBody>
   )
 }

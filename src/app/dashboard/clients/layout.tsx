@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { createAdminClient } from '@/lib/supabase/admin'
-import ClientListColumn, { type ClientListEntry } from './client-list-column'
+import ClientsPane from './clients-pane'
+import { type ClientListEntry } from './client-list-column'
 import { coachFilter, requireCoachScope } from '@/lib/coach-scope'
 
 /**
@@ -10,7 +11,8 @@ import { coachFilter, requireCoachScope } from '@/lib/coach-scope'
  * does not reload the list, lose its scroll position, or clear the filter.
  *
  * The list is hidden below xl - the rail already takes 236px, and squeezing a
- * third column onto a laptop leaves the record too narrow to read.
+ * third column onto a laptop leaves the record too narrow to read. Above xl it
+ * is CLOSED BY DEFAULT and opens from a strip: see clients-pane.
  */
 export default async function ClientsLayout({ children }: { children: React.ReactNode }) {
   const admin = createAdminClient()
@@ -45,10 +47,5 @@ export default async function ClientsLayout({ children }: { children: React.Reac
   const onProof = /\/dashboard\/clients\/[^/]+\/proof(\/|$)/.test(pathname)
   if (onProof) return <>{children}</>
 
-  return (
-    <div className="xl:grid xl:grid-cols-[244px_minmax(0,1fr)] xl:gap-7">
-      <ClientListColumn clients={clients} />
-      <div className="min-w-0">{children}</div>
-    </div>
-  )
+  return <ClientsPane clients={clients}>{children}</ClientsPane>
 }
