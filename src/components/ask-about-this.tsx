@@ -24,18 +24,18 @@ export default function AskAboutThis({
   return (
     <Link
       href={askAboutHref(token, kind, label)}
-      className="group flex items-center justify-between gap-3 rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+      className="group flex items-center justify-between gap-3 rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] px-5 py-4 hover:border-[#0F1115]/40 hover:bg-blue-50 transition-colors"
     >
       <div className="flex items-center gap-3 min-w-0">
-        <MessageSquare size={15} className="text-[#1B6DFC] shrink-0" />
+        <MessageSquare size={15} className="text-[#0F1115] shrink-0" />
         <div className="min-w-0">
-          <p className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors">
+          <p className="text-[14px] font-medium text-[#0F1115] group-hover:text-[#0F1115] transition-colors">
             {anchorAskLabel(kind)}
           </p>
-          {label && <p className="text-[11px] text-[#999999] mt-0.5 truncate">{label}</p>}
+          {label && <p className="text-[11px] text-[#6E747D] mt-0.5 truncate">{label}</p>}
         </div>
       </div>
-      <span className="text-[12px] font-bold text-[#1B6DFC] shrink-0">Ask →</span>
+      <span className="text-[12px] font-bold text-[#0F1115] shrink-0">Ask →</span>
     </Link>
   )
 }

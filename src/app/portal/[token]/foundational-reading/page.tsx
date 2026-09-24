@@ -9,6 +9,8 @@ import PortalReadingDownload from './portal-reading-download'
 import { isCoachEmail } from '@/lib/coach-auth'
 import AskAboutThis from '@/components/ask-about-this'
 
+const PUBLIC_READINESS: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+
 export default async function PortalFoundationalReadingPage({
   params,
 }: {
@@ -82,7 +84,10 @@ export default async function PortalFoundationalReadingPage({
           cr_what_were_focusing_on_first: cffs.cr_what_were_focusing_on_first,
           cr_what_were_not_doing_yet: cffs.cr_what_were_not_doing_yet,
           cr_coach_note: cffs.cr_coach_note,
-          body_state_classification: cffs.body_state_classification,
+          // THE CLIENT'S OWN WORD, not ours. This pill was showing them
+          // "Remediation", which is the word we use between coaches. Theirs are
+          // Depleted, Transitioning and Ready. 23 Sep 2026.
+          body_state_classification: PUBLIC_READINESS[cffs.body_state_classification ?? ''] ?? cffs.body_state_classification,
           generated_at: cffs.client_reading_generated_at!,
           client_reading_published_at: cffs.client_reading_published_at,
         }}
@@ -92,7 +97,7 @@ export default async function PortalFoundationalReadingPage({
         <AskAboutThis
           token={token}
           kind="foundational_reading"
-          label={cffs.body_state_classification ?? null}
+          label={PUBLIC_READINESS[cffs.body_state_classification ?? ''] ?? cffs.body_state_classification ?? null}
         />
       </div>
     </>

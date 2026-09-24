@@ -40,6 +40,7 @@ import { INTAKE_SECTIONS } from '@/lib/intake-questions'
 import { INTAKE_COLUMN_FOR, WHAT_CHANGED_ID } from '@/lib/progress-check-v2'
 import type { Answers } from '@/lib/answer-comparison'
 import type { Intake } from '@/types'
+import { INTERNAL_VOCABULARY, RATING_WORDS } from './reading-lint'
 
 export const BODY_STATES = ['Remediation', 'Optimisation', 'Post-Optimisation'] as const
 
@@ -182,8 +183,12 @@ const PROGRESS_READ_MAX_TOKENS = 40_000
 
 const FOR_HER_REQUIRED = ['headline', 'where_you_are_now', 'what_has_changed', 'what_has_held', 'your_pattern', 'what_is_holding_things_back', 'tensions_and_tradeoffs'] as const
 
-/** Words that must never reach her. Checked in code; a hit is retried. */
-const INTERNAL_VOCABULARY = /\b(CFFS|Remediation|Post-Optimisation|Optimisation|Indeterminate|cluster verdict|convergence|converging|competing read|pattern_confidence|MZ[1-4])\b/i
+/*
+ * The list of words that must never reach her USED TO LIVE HERE, privately, and
+ * that is exactly why four other client-facing readings were never held to it.
+ * It is now one exported list in reading-lint, which the publish guard also
+ * uses. A rule with two copies is a rule with one copy and a gap.
+ */
 
 function measurementChangeSection(prev: MeasurementSet | null | undefined, now: Omit<CFFSBaselineContext, 'has_photos'> | null | undefined): string {
   if (!now) return 'MEASUREMENT CHANGE: no new measurements were taken with this Progress Check.'
@@ -278,7 +283,7 @@ ${PROGRESS_OUTPUT_ADDITIONS}${CFFS_OUTPUT_SCHEMA}`,
     const flat = (v: unknown): string => typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).map(flat).join(' ') : ''
     const plain = her.readiness_in_plain_words as Record<string, unknown> | undefined
     if (!plain || typeof plain !== 'object' || !['capacity', 'schedule', 'regulation', 'behaviour'].every(k => typeof plain[k] === 'string' && (plain[k] as string).trim())) return 'for_her.readiness_in_plain_words missing a rating'
-    const leak = flat(her).match(INTERNAL_VOCABULARY) ?? flat(her).match(/\b(Green|Amber|Red|Limiting|Main limit)\b/)
+    const leak = flat(her).match(INTERNAL_VOCABULARY) ?? flat(her).match(/\b(Green|Amber|Red)\b/) ?? flat(her).match(RATING_WORDS)
     if (leak) return `for_her uses internal vocabulary ("${leak[0]}")`
     // The sex gate, in code.
     if (sexAtBirth === 'Male' && c.pattern_classification === 'Estrogen-Shift') return 'Estrogen-Shift returned for a client recorded male at birth'

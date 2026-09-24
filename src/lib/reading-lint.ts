@@ -99,8 +99,28 @@ const BEGINNING_PHRASES: RegExp[] = [
   /\bbeginning of your (?:journey|training)\b/i,
 ]
 
-/** The three internal state names. A reading may use them; it may not use the wrong one. */
+/** The three internal state names. */
 const BODY_STATES = ['Remediation', 'Optimisation', 'Post-Optimisation']
+
+/**
+ * WORDS A CLIENT MAY NEVER BE SHOWN, because they are how we talk to each other
+ * about them rather than how we talk to them. Their readiness words are
+ * Depleted, Transitioning and Ready.
+ *
+ * THIS LIVED IN ONE PLACE AND COVERED ONE READING. The progress read had its
+ * own private copy of this rule, so the foundational read, the program read,
+ * the nutrition read and the trajectory read could all be published to a client
+ * carrying the word "Remediation", and one of them was: a live client's
+ * foundational read opens "your body is best described as being in a
+ * Remediation state". The check that existed only asked whether the reading
+ * named the RIGHT internal state, which is a different question and let the
+ * word straight through. Moved here and exported, 23 Sep 2026, so there is one
+ * list and every client-facing reading is held to it.
+ */
+export const INTERNAL_VOCABULARY = /\b(CFFS|CFWS|Remediation|Post-Optimisation|Optimisation|Indeterminate|cluster verdict|convergence|converging|competing read|pattern_confidence|exposure readiness|MZ[1-4])\b/i
+
+/** The coach-facing names for the four readiness ratings. Also not theirs. */
+export const RATING_WORDS = /\b(Not limiting|Limiting|Main limit)\b/
 
 export function lintClientReading(input: LintInput): LintFinding[] {
   const findings: LintFinding[] = []
@@ -283,7 +303,25 @@ export function lintClientReading(input: LintInput): LintFinding[] {
     })
   }
 
-  // ── 8. Nothing to review ───────────────────────────────────────────────────
+  // ── 8. Our words, in front of the client ───────────────────────────────────
+  // Separate from rule 6 on purpose. Rule 6 asks whether the reading names the
+  // RIGHT state, which is about contradicting the file. This asks whether it
+  // names one AT ALL, which is about whose document this is.
+  for (const [field, text] of all) {
+    for (const s of sentences(text)) {
+      const hit = s.match(INTERNAL_VOCABULARY) ?? s.match(RATING_WORDS)
+      if (!hit) continue
+      findings.push({
+        severity: 'block',
+        code: 'INTERNAL_VOCABULARY',
+        message: `${field} uses "${hit[0]}", which is a word we use between ourselves. Their readiness words are Depleted, Transitioning and Ready.`,
+        excerpt: excerpt(s),
+      })
+      break
+    }
+  }
+
+  // ── 9. Nothing to review ───────────────────────────────────────────────────
   if (all.length === 0) {
     findings.push({
       severity: 'block',

@@ -62,35 +62,35 @@ export function CollectionNotice({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="rounded-2xl border border-[#E8EAEE] bg-[#F7F8FA] px-4 py-3.5">
-      <p className="text-[13px] leading-relaxed text-[#43474F]">
-        <strong className="text-[#141821]">What you tell us here is health information.</strong>{' '}
+    <div className="rounded-2xl border border-[#E4E4E0] bg-[#F2F2EF] px-4 py-3.5">
+      <p className="text-[13px] leading-relaxed text-[#4A4F57]">
+        <strong className="text-[#0F1115]">What you tell us here is health information.</strong>{' '}
         We hold it under Australian privacy law, we use it to write your read and build your plan, and we
         never sell it.
       </p>
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="mt-2 text-[12.5px] font-semibold text-[#1056D6] hover:underline"
+        className="mt-2 text-[12.5px] font-semibold text-[#000000] hover:underline"
       >
         {open ? 'Hide the detail' : 'What we collect, who sees it, how long we keep it'}
       </button>
 
       {open && (
-        <div className="mt-3 space-y-3 border-t border-[#E8EAEE] pt-3">
+        <div className="mt-3 space-y-3 border-t border-[#E4E4E0] pt-3">
           {POINTS.map(pt => (
             <div key={pt.heading}>
-              <p className="text-[12px] font-bold text-[#141821]">{pt.heading}</p>
-              <p className="text-[12.5px] leading-relaxed text-[#5A6069]">{pt.body}</p>
+              <p className="text-[12px] font-bold text-[#0F1115]">{pt.heading}</p>
+              <p className="text-[12.5px] leading-relaxed text-[#4A4F57]">{pt.body}</p>
             </div>
           ))}
-          <p className="text-[12px] text-[#6B7280]">
+          <p className="text-[12px] text-[#6E747D]">
             The full policy is at{' '}
-            <a href="/privacy" target="_blank" rel="noreferrer" className="text-[#1056D6] hover:underline">
+            <a href="/privacy" target="_blank" rel="noreferrer" className="text-[#000000] hover:underline">
               bodyrecode.au/privacy
             </a>
             . Questions to{' '}
-            <a href={`mailto:${brand().supportEmail}`} className="text-[#1056D6] hover:underline">
+            <a href={`mailto:${brand().supportEmail}`} className="text-[#000000] hover:underline">
               {brand().supportEmail}
             </a>
             .
@@ -99,9 +99,9 @@ export function CollectionNotice({ compact = false }: { compact?: boolean }) {
       )}
 
       {!compact && !open && (
-        <p className="mt-2 text-[12px] text-[#6B7280]">
+        <p className="mt-2 text-[12px] text-[#6E747D]">
           Full policy:{' '}
-          <a href="/privacy" target="_blank" rel="noreferrer" className="text-[#1056D6] hover:underline">
+          <a href="/privacy" target="_blank" rel="noreferrer" className="text-[#000000] hover:underline">
             bodyrecode.au/privacy
           </a>
         </p>
@@ -125,14 +125,14 @@ export function HealthConsent({
   label?: string
 }) {
   return (
-    <label className="flex items-start gap-3 rounded-2xl border border-[#E8EAEE] bg-white px-4 py-3.5 cursor-pointer">
+    <label className="flex items-start gap-3 rounded-2xl border border-[#E4E4E0] bg-white px-4 py-3.5 cursor-pointer">
       <input
         type="checkbox"
         checked={checked}
         onChange={e => onChange(e.target.checked)}
-        className="mt-[3px] h-4 w-4 shrink-0 accent-[#1B6DFC]"
+        className="mt-[3px] h-4 w-4 shrink-0 accent-[#0F1115]"
       />
-      <span className="text-[13px] leading-relaxed text-[#43474F]">
+      <span className="text-[13px] leading-relaxed text-[#4A4F57]">
         {label ??
           'I agree to Body Recode collecting the health information in these questions, and to it being processed by the providers described above, to write my read and build my plan.'}
       </span>

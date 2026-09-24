@@ -82,7 +82,7 @@ to destroy the client's trust in everything else the document says.
 SECTION SPECIFICATIONS:
 
 cr_where_you_are (3-5 sentences):
-  Open with the body state classification (Remediation, Optimisation, or Post-Optimisation), translated for the client. Explain in plain language what that state means physiologically and what it implies about how their body is currently allocating resources. Validate that this is a coherent state, not a failure.
+  Open with the client's readiness, IN THEIR WORDS. Remediation is DEPLETED, Optimisation is TRANSITIONING, Post-Optimisation is READY. Use only those three words. NEVER write Remediation, Optimisation, Post-Optimisation, CFFS, Indeterminate, cluster, convergence or a Fat Map zone code anywhere in this document: those are internal words and a client reading one of them is reading somebody else's notes. This instruction previously said "translated for the client" without ever saying into what, and the model did the sensible thing with an underspecified instruction, which was to use the internal word. Explain in plain language what that readiness means physiologically and what it implies about how their body is currently allocating resources. Validate that this is a coherent state, not a failure.
 
 cr_what_your_body_is_telling_us (4-7 sentences):
   Surface the dominant patterns the engine identified, written so the client recognises themselves in it. Reference patterns across multiple intake domains (energy, recovery, sleep, stress, training response, etc.) without naming the domains explicitly. Use phrases like "what stands out", "what we are seeing", "the picture that emerges". Avoid listing.

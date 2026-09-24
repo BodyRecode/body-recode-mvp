@@ -22,12 +22,12 @@ import type { ReactNode } from 'react'
  * printBackground: true) keep working across all four readings.
  */
 
-const ACCENT = '#1B6DFC'
-const INK = '#1A1A1A'
-const BODY = '#2B2B2B'
-const MUTED = '#667085'
-const LINE = '#ECEEF2'
-const BG = '#F5F7FA'
+const ACCENT = '#0F1115'
+const INK = '#0F1115'
+const BODY = '#0F1115'
+const MUTED = '#6E747D'
+const LINE = '#E4E4E0'
+const BG = '#F2F2EF'
 const SANS = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
 
 // Section icons (lucide-style, inline so they render in-app and in the PDF).
@@ -101,32 +101,32 @@ export default function ReadingHeroShell({
         .rh { font-family: ${SANS}; background: ${BG}; color: ${INK}; min-height: 100vh; position: relative; overflow: hidden; }
         .rh * { box-sizing: border-box; }
         .rh p, .rh h1, .rh h2 { margin: 0; padding: 0; }
-        .rh-glow { position: absolute; top: -180px; left: 50%; transform: translateX(-50%); width: 760px; height: 420px; pointer-events: none; background: radial-gradient(circle, rgba(27,109,252,0.14), transparent 68%); }
+        .rh-glow { position: absolute; top: -180px; left: 50%; transform: translateX(-50%); width: 760px; height: 420px; pointer-events: none; background: radial-gradient(circle, rgba(15,17,21,0.08), transparent 68%); }
         .rh-col { position: relative; max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
-        .rh-hero { position: relative; overflow: hidden; border-radius: 18px; padding: 32px 32px 34px; background: linear-gradient(140deg, #17191F 0%, #0C1B33 100%); box-shadow: 0 14px 34px rgba(11,31,51,0.28); margin-bottom: 26px; }
-        .rh-hero-glow { position: absolute; top: -96px; right: -64px; width: 288px; height: 288px; border-radius: 999px; background: radial-gradient(circle, rgba(27,109,252,0.30), transparent 70%); pointer-events: none; }
+        .rh-hero { position: relative; overflow: hidden; border-radius: 18px; padding: 32px 32px 34px; background: linear-gradient(140deg, #0F1115 0%, #0F1115 100%); box-shadow: 0 14px 34px rgba(15,17,21,0.24); margin-bottom: 26px; }
+        .rh-hero-glow { position: absolute; top: -96px; right: -64px; width: 288px; height: 288px; border-radius: 999px; background: radial-gradient(circle, rgba(15,17,21,0.16), transparent 70%); pointer-events: none; }
         .rh-hero-inner { position: relative; }
-        .rh-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #8FB4F5; margin-bottom: 12px; }
-        .rh-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.08; color: #fff; margin-bottom: 12px; }
+        .rh-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #DCDCD7; margin-bottom: 12px; }
+        .rh-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.08; color: #FFFFFF; margin-bottom: 12px; }
         .rh-hero-sub { font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.6; margin-bottom: 18px; max-width: 52ch; }
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .rh-pill { font-size: 12px; font-weight: 700; color: #cfe0ff; background: rgba(27,109,252,0.18); border: 1px solid rgba(120,165,255,0.35); border-radius: 999px; padding: 5px 12px; }
+        .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
-        .rh-about { border-left: 3px solid ${ACCENT}; background: #fff; border: 1px solid ${LINE}; border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); }
+        .rh-about { border-left: 3px solid ${ACCENT}; background: #FFFFFF; border: 1px solid ${LINE}; border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); }
         .rh-about p { font-size: 13.5px; color: ${MUTED}; line-height: 1.7; }
         .rh-about b { color: ${INK}; font-weight: 600; }
         .rh-cards { display: flex; flex-direction: column; gap: 16px; }
-        .rh-card { background: #fff; border: 1px solid ${LINE}; border-radius: 14px; padding: 24px 26px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); break-inside: avoid; }
+        .rh-card { background: #FFFFFF; border: 1px solid ${LINE}; border-radius: 14px; padding: 24px 26px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); break-inside: avoid; }
         .rh-label { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-        .rh-chip { width: 32px; height: 32px; border-radius: 9px; background: rgba(27,109,252,0.10); color: ${ACCENT}; display: grid; place-items: center; flex: none; }
+        .rh-chip { width: 32px; height: 32px; border-radius: 9px; background: rgba(15,17,21,0.06); color: ${ACCENT}; display: grid; place-items: center; flex: none; }
         .rh-label-text { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: ${ACCENT}; }
         .rh-body { font-size: 15px; color: ${BODY}; line-height: 1.72; white-space: pre-line; }
-        .rh-coach { background: linear-gradient(180deg, #FFFFFF, #FAFBFF); }
+        .rh-coach { background: linear-gradient(180deg, #FFFFFF, #FAFAF8); }
         .rh-attn { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid ${LINE}; }
         .rh-avatar { width: 44px; height: 44px; border-radius: 999px; object-fit: cover; flex: none; border: 1px solid ${LINE}; }
         .rh-who { font-size: 13px; color: ${MUTED}; }
         .rh-who b { color: ${INK}; font-weight: 700; display: block; font-size: 14px; }
-        .rh-foot { text-align: center; margin-top: 34px; font-size: 11px; color: #98A2B3; }
+        .rh-foot { text-align: center; margin-top: 34px; font-size: 11px; color: #9CA2AB; }
         /* Print is a different medium and was being served the screen layout.
            Grey ground, drop shadows and 26px card padding read as depth on a
            display and as wasted space and dirty paper in a PDF. Tightened
