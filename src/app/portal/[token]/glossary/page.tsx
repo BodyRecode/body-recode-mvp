@@ -7,20 +7,23 @@ import { isCoachEmail } from '@/lib/coach-auth'
 
 const TERMS: Array<{ term: string; def: string }> = [
   {
-    term: 'Body State',
-    def: 'A descriptive label for what your body is currently doing across recovery, regulation, and adaptation. The three states we work with are Remediation (system under stress, needs stabilising before we push), Optimisation (system stable enough to build and progress), and Post-Optimisation (long-arc performance phase, system resilient).',
+    // THIS ENTRY TAUGHT THE CLIENT OUR WORDS. A glossary handed to a client is
+    // the strongest possible signal about whose document the product is, and
+    // this one defined three terms they should never meet. 23 Sep 2026.
+    term: 'Readiness',
+    def: 'A description of what your body is doing right now across recovery, regulation and adaptation. There are three. Depleted means your system is under load and needs steadying before anything is pushed. Transitioning means it is settled enough to start building. Ready means it is resilient, and the limit becomes what you choose to train for rather than what your body can absorb. None of the three is a grade. They describe where you are, and they move.',
   },
   {
-    term: 'CFFS - Coach-Facing Foundational Synthesis',
-    def: 'The structured interpretation your coach generates from your foundational intake. It translates your intake answers across eight signal domains into a single picture of how your body is currently organising itself. You see the client-facing version called the Foundational Read; your coach reads the technical version.',
+    term: 'Your coach\'s version of your read',
+    def: 'Every read you receive has a longer technical version your coach works from. Yours is written to you; theirs carries the working underneath it. Nothing is hidden from you in it, it is simply written in the shorthand coaches use with each other.',
   },
   {
-    term: 'CFWS - Coach-Facing Weekly Synthesis',
-    def: 'The weekly equivalent of the CFFS. Generated after both Form A and Form B check-ins are submitted. Reads what is happening in your body that week and feeds your coach\'s decisions about your training and nutrition.',
+    term: 'The weekly read',
+    def: 'The weekly version of the same thing, written after your check-in goes in. It reads what has happened in your body that week and is what your coach decides your training and eating from.',
   },
   {
     term: 'Foundational Read',
-    def: 'Your client-facing read of the same intake the CFFS was built from. Lives in your portal and explains where your body is right now, what it is signalling, what we are focusing on first, and what we are deliberately not doing yet.',
+    def: 'Your read of the intake you completed. It lives in your portal and explains where your body is right now, what it is signalling, what we are focusing on first, and what we are deliberately not doing yet.',
   },
   {
     term: 'Form A and Form B',
@@ -28,7 +31,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'Exposure Readiness',
-    def: 'Four signals your weekly check-ins produce: Capacity (do you have the recovery margin), Schedule (does your week allow consistent training), Regulation (is your nervous system in a good place), Behaviour (are your habits stable). Each rated Green / Amber / Red.',
+    def: 'Four things your check-ins are read for: Capacity (how much work you can take and recover from), Schedule (whether your week actually allows training and eating to happen), Regulation (where your stress and sleep are sitting), and Behaviour (how consistently things get done when the week does allow it). Each one is read as not limiting you, limiting you, or the main thing holding everything else back.',
   },
   {
     term: 'RPE - Rate of Perceived Exertion',

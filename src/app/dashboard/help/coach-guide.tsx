@@ -76,6 +76,19 @@ const SECTIONS: Array<{ title: string; blocks: Block[] }> = [
     ],
   },
   {
+    title: 'What you call it to them',
+    blocks: [
+      {
+        heading: 'Their three words, not ours',
+        body: [
+          'Between us the three readiness levels are Remediation, Optimisation and Post-Optimisation. A client never hears any of those. Theirs are Depleted, Transitioning and Ready, and they are the words they already met in the scorecard, in their five-day read and on the call with you.',
+          'This is not a style preference. Remediation means the act of remedying a fault, so said to a client it means we have assessed you and found something wrong. The whole premise is that the body is not broken, it is being misread.',
+        ],
+        note: 'It is enforced rather than remembered: nothing can be published to a client carrying one of our words, and the system will tell you which one and where.',
+      },
+    ],
+  },
+  {
     title: 'The pattern',
     blocks: [
       {

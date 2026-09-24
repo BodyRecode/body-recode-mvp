@@ -38,6 +38,12 @@ export interface ResolvedBodyState {
   reScoredPublicLabel: string | null
   direction: string | null
   blockName: string | null
+  /**
+   * The label to SHOW A CLIENT, always populated. It sits on the object rather
+   * than being left to each caller because the portal home printed "currently
+   * in Remediation" for months simply by reaching for the nearest field.
+   */
+  publicLabel: string | null
 }
 
 /** A PUBLISHED Progress Read (v2, 14 Sep 2026). Internal vocabulary. */
@@ -47,7 +53,20 @@ export interface ProgressReadStateSource {
   published_at: string | null
 }
 
+/**
+ * THE ONLY WORDS A CLIENT EVER MEETS. Kade, 23 Sep 2026: once somebody is a
+ * client they should hear one terminology, and it is theirs, because it is the
+ * one they met in the scorecard, the five-day read and on the call. Changing
+ * the word at the moment they pay hands them a different product from the one
+ * they were sold.
+ */
 const PUBLIC_LABEL: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+
+/** For any surface a client can see. Never print the internal label to them. */
+export function publicReadiness(label: string | null | undefined): string | null {
+  if (!label) return null
+  return PUBLIC_LABEL[label] ?? label
+}
 
 export function resolveCurrentBodyState(opts: {
   foundational: string | null
@@ -71,6 +90,7 @@ export function resolveCurrentBodyState(opts: {
     foundational,
     reScored: false,
     reScoredPublicLabel: null,
+    publicLabel: publicReadiness(foundational),
     direction: null,
     blockName: null,
   }
@@ -84,6 +104,7 @@ export function resolveCurrentBodyState(opts: {
       foundational,
       reScored: true,
       reScoredPublicLabel: PUBLIC_LABEL[label] ?? label,
+      publicLabel: publicReadiness(label),
       direction: progressRead.state_direction ?? null,
       blockName: null,
     }
@@ -103,6 +124,7 @@ export function resolveCurrentBodyState(opts: {
     foundational,
     reScored: true,
     reScoredPublicLabel: reScore.tr_new_body_state,
+    publicLabel: publicReadiness(mapped),
     direction: reScore.tr_state_direction ?? null,
     blockName: reScore.block_name ?? null,
   }

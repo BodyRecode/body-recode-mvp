@@ -663,7 +663,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <p className="text-[13.5px] font-semibold text-[#0F1115] mb-1">Foundational Read</p>
                   <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
                     A read of how your body is currently organising itself
-                    {portalBodyState.label ? `, currently in ${portalBodyState.label}.` : '.'}
+                    {portalBodyState.publicLabel ? `, currently ${portalBodyState.publicLabel}.` : '.'}
                   </p>
                 </div>
                 <span className="text-[12.5px] font-bold text-[#0F1115] ml-4 shrink-0">View →</span>

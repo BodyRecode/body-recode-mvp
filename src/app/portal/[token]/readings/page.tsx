@@ -5,6 +5,7 @@ import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
 import { FileText, ArrowUpRight } from 'lucide-react'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { publicReadiness } from '@/lib/body-state-current'
 
 export default async function ReadingsArchivePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -45,7 +46,9 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
     .eq('status', 'published')
     .eq('is_archived', false)
     .order('published_at', { ascending: false })
-  const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+  // One shared translation, not a local copy. Local copies are how the same
+  // word ends up right on one line of a file and wrong two lines down, which is
+  // exactly what this file was doing.
   const issued = (d: string) => new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
 
   return (
@@ -76,7 +79,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                       {i === 0 && <span className="text-[10px] font-bold text-[#0F1115] uppercase tracking-wider">Current</span>}
                     </div>
                     <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
-                      {PUBLIC_STATE[r.body_state_classification] ? `Readiness: ${PUBLIC_STATE[r.body_state_classification]}. ` : ''}Written {issued(r.published_at!)}.
+                      {publicReadiness(r.body_state_classification) ? `Readiness: ${publicReadiness(r.body_state_classification)}. ` : ''}Written {issued(r.published_at!)}.
                     </p>
                   </div>
                   <ArrowUpRight size={14} className="text-[#0F1115] shrink-0 mt-2" />
@@ -109,7 +112,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                     <span className="text-[10px] font-bold text-[#0F1115] uppercase tracking-wider">{(progressReads ?? []).length ? 'Your first read' : 'Current'}</span>
                   </div>
                   <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
-                    {published[0].body_state_classification ? `Currently in ${published[0].body_state_classification}.` : ''} Issued {new Date(published[0].client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
+                    {publicReadiness(published[0].body_state_classification) ? `Readiness: ${publicReadiness(published[0].body_state_classification)}.` : ''} Issued {new Date(published[0].client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
                   </p>
                 </div>
                 <ArrowUpRight size={14} className="text-[#0F1115] shrink-0 mt-2" />
@@ -131,7 +134,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                       <div className="flex-1 min-w-0">
                         <p className="text-[13.5px] font-semibold text-[#6E747D] mb-1">Foundational Read</p>
                         <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed">
-                          {r.body_state_classification ? `${r.body_state_classification}. ` : ''}Issued {new Date(r.client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
+                          {publicReadiness(r.body_state_classification) ? `${publicReadiness(r.body_state_classification)}. ` : ''}Issued {new Date(r.client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
                         </p>
                         <p className="text-[11px] text-[#9CA2AB] mt-1">Archived</p>
                       </div>
