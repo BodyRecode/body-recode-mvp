@@ -69,6 +69,21 @@ export interface CoachNoteData {
  * Anything else returns null and the section is set as it always was, because a
  * broken pull-quote is worse than no pull-quote.
  */
+/**
+ * Paragraphs, rendered as paragraphs.
+ *
+ * The engine returns each section as ONE unbroken block of five to eight
+ * sentences, and this rendered it as a single <p>, so any break it did write
+ * was collapsed on the way to the page. The prompt now asks for two or three
+ * paragraphs; this is the half that makes that visible. Content with no breaks
+ * in it renders exactly as before, so nothing already published changes shape.
+ */
+function Prose({ text }: { text: string | null }) {
+  if (!text) return null
+  const paras = text.split(/\n\s*\n/).map(t => t.trim()).filter(Boolean)
+  return <>{paras.map((t, i) => <p key={i} className="rh-body">{t}</p>)}</>
+}
+
 function leadSentence(text: string): { first: string; rest: string } | null {
   const trimmed = text.trim()
   const m = trimmed.match(/^(.+?[.!?])\s+(?=[A-Z])/)
@@ -151,6 +166,7 @@ export default function ReadingHeroShell({
         .rh-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.08; color: #FFFFFF; margin-bottom: 12px; }
         .rh-hero-sub { font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.6; margin-bottom: 18px; max-width: 52ch; }
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .rh-body + .rh-body { margin-top: 0.85em; }
         .rh-lead { font-size: 20px; line-height: 1.45; letter-spacing: -0.015em; color: ${INK}; font-weight: 500; margin-bottom: 14px; max-width: 34ch; }
         .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
@@ -261,8 +277,20 @@ export default function ReadingHeroShell({
           .rh-chip { width: 24px; height: 24px; border-radius: 7px; }
           .rh-chip svg { width: 14px; height: 14px; }
           .rh-label-text { font-size: 9.5px; letter-spacing: 0.14em; }
+          .rh-body + .rh-body { margin-top: 0.9em; }
           .rh-lead { font-size: 16px; line-height: 1.48; margin-bottom: 14px; max-width: 42ch; font-weight: 500; }
-          .rh-body { font-size: 11.5px; line-height: 1.68; max-width: 74ch; }
+          /* JUSTIFIED, WITH HYPHENATION ON. Kade asked for justified copy and it
+             is right on paper, but only with hyphens: without them the browser
+             stretches word spacing to fill the line and the page fills with
+             rivers of white running down it, which looks worse than ragged
+             right. Books justify AND hyphenate; one without the other is the
+             mistake.
+             The measure comes in from 74 to 68 characters, which is the range
+             a line of prose is comfortable to read at this size. */
+          .rh-body {
+            font-size: 11.5px; line-height: 1.68; max-width: 68ch;
+            text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+          }
 
           .rh-attn { margin-top: 16px; padding-top: 14px; gap: 11px; }
           .rh-avatar { width: 38px; height: 38px; }
@@ -353,10 +381,10 @@ export default function ReadingHeroShell({
                   {lead ? (
                     <>
                       <p className="rh-lead">{lead.first}</p>
-                      {lead.rest && <p className="rh-body">{lead.rest}</p>}
+                      <Prose text={lead.rest} />
                     </>
                   ) : (
-                    <p className="rh-body">{section.content}</p>
+                    <Prose text={section.content} />
                   )}
                 </div>
               )

@@ -81,6 +81,12 @@ to destroy the client's trust in everything else the document says.
 
 SECTION SPECIFICATIONS:
 
+WRITE IN SHORT PARAGRAPHS. Every section below currently comes back as one
+unbroken block of five to eight sentences, around 600 characters, and set on a
+page that is a slab a client has to climb. Break each section into TWO OR THREE
+paragraphs separated by a blank line, each one holding a single idea. This is
+about whether somebody reads it at all, not about style.
+
 cr_where_you_are (3-5 sentences):
   Open with the client's readiness, IN THEIR WORDS. Remediation is DEPLETED, Optimisation is TRANSITIONING, Post-Optimisation is READY. Use only those three words. NEVER write Remediation, Optimisation, Post-Optimisation, CFFS, Indeterminate, cluster, convergence or a Fat Map zone code anywhere in this document: those are internal words and a client reading one of them is reading somebody else's notes. This instruction previously said "translated for the client" without ever saying into what, and the model did the sensible thing with an underspecified instruction, which was to use the internal word. Explain in plain language what that readiness means physiologically and what it implies about how their body is currently allocating resources. Validate that this is a coherent state, not a failure.
 
