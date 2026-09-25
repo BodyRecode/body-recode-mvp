@@ -261,7 +261,10 @@ async function signin() {
     await admin.auth.admin.createUser({ email: CLIENT_EMAIL, email_confirm: true })
   }
 
-  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+  // The LIVE site by default. NEXT_PUBLIC_APP_URL is localhost in .env.local,
+  // so reading it first produced a sign-in link that landed on a machine Kade
+  // was not running. Pass PORTAL_SITE to point somewhere else on purpose.
+  const site = process.env.PORTAL_SITE ?? 'https://app.bodyrecode.au'
   const { data: link, error } = await admin.auth.admin.generateLink({
     type: 'magiclink',
     email: CLIENT_EMAIL,
