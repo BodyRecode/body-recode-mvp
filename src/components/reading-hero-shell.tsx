@@ -83,6 +83,8 @@ export default function ReadingHeroShell({
   pill,
   clientName,
   dateLine,
+  accent,
+  accentOnDark,
   aboutText,
   sections,
   coachNote,
@@ -95,6 +97,18 @@ export default function ReadingHeroShell({
   /** When this was written. A client should never have to guess how old
    *  their own read is, and until 25 Sep 2026 the document did not say. */
   dateLine?: string | null
+  /**
+   * THE ONE COLOUR ON THIS DOCUMENT, and it is different for every client.
+   *
+   * Kade, 25 Sep: "still looks boring because there is no colour". The rule we
+   * locked is that colour appears only where it MEANS something, and on a read
+   * exactly one thing does: the readiness it concludes. So the document is
+   * coloured by the client's own state rather than by a brand colour, which is
+   * also the more interesting answer — two clients' reads do not look the same.
+   */
+  accent?: string | null
+  /** The same readiness, legible on the dark hero. */
+  accentOnDark?: string | null
   aboutText?: ReactNode
   sections: ReadingSection[]
   coachNote?: CoachNoteData | null
@@ -173,6 +187,9 @@ export default function ReadingHeroShell({
             color: ${FAINT}; margin-bottom: 5px;
           }
           .rh-cover-v { font-size: 10.5px; color: ${INK}; font-weight: 600; }
+          /* The readiness is the conclusion, so it is the one thing on the cover
+             set larger than the labels around it. */
+          .rh-cover-state { font-size: 15px; letter-spacing: -0.01em; }
 
           /* The dark hero is what the cover replaced. Two of them is one too
              many, and a black slab on page two of a printed document is a
@@ -255,14 +272,14 @@ export default function ReadingHeroShell({
             <div className="rh-cover-mid">
               <p className="rh-cover-for">for {clientName}</p>
               <h1 className="rh-cover-title">{heroTitle}</h1>
-              <span className="rh-cover-rule" />
+              <span className="rh-cover-rule" style={accent ? { background: accent } : undefined} />
               <p className="rh-cover-sub">{heroSub}</p>
             </div>
             <div className="rh-cover-foot">
               {pill && (
                 <div>
                   <p className="rh-cover-k">Readiness</p>
-                  <p className="rh-cover-v">{pill}</p>
+                  <p className="rh-cover-v rh-cover-state" style={accent ? { color: accent } : undefined}>{pill}</p>
                 </div>
               )}
               {dateLine && (
@@ -285,7 +302,9 @@ export default function ReadingHeroShell({
               <h1>{heroTitle}</h1>
               <p className="rh-hero-sub">{heroSub}</p>
               <div className="rh-hero-meta">
-                {pill && <span className="rh-pill">{pill}</span>}
+                {pill && (
+                  <span className="rh-pill" style={accentOnDark ? { color: accentOnDark, background: `${accentOnDark}1F`, borderColor: `${accentOnDark}44` } : undefined}>{pill}</span>
+                )}
                 <span className="rh-for">Prepared for {clientName}{dateLine ? ` · ${dateLine}` : ''}</span>
               </div>
             </div>

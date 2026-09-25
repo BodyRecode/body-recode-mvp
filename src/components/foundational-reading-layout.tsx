@@ -1,4 +1,5 @@
 import ReadingHeroShell from './reading-hero-shell'
+import { BRAND } from '@/lib/brand-tokens'
 
 /**
  * Foundational Reading layout.
@@ -12,6 +13,32 @@ import ReadingHeroShell from './reading-hero-shell'
  * Refactored 2026-07-20 onto the shared ReadingHeroShell so all four readings
  * (Foundational, Program, Trajectory, Nutrition) present as one series.
  */
+
+/**
+ * The read is coloured by the client's own readiness and nothing else. The keys
+ * are the internal names because that is what is stored; the client never sees
+ * them, only the colour they produce.
+ */
+const READINESS_INK: Record<string, string> = {
+  Remediation: BRAND.remediation,
+  Optimisation: BRAND.optimisation,
+  'Post-Optimisation': BRAND.postOptimisation,
+  // AND THE CLIENT'S OWN WORDS, because by the time this component sees the
+  // value the portal has already translated it. Keying only on the internal
+  // names meant the lookup quietly found nothing and the cover came out
+  // colourless, which is exactly what it looked like.
+  Depleted: BRAND.remediation,
+  Transitioning: BRAND.optimisation,
+  Ready: BRAND.postOptimisation,
+}
+const READINESS_INK_ON_DARK: Record<string, string> = {
+  Remediation: BRAND.remediationOnDark,
+  Optimisation: BRAND.optimisationOnDark,
+  'Post-Optimisation': BRAND.postOptimisationOnDark,
+  Depleted: BRAND.remediationOnDark,
+  Transitioning: BRAND.optimisationOnDark,
+  Ready: BRAND.postOptimisationOnDark,
+}
 
 export interface ReadingData {
   cr_where_you_are: string | null
@@ -44,6 +71,8 @@ export default function ReadingLayout({
       clientName={client.name}
       dateLine={new Date(reading.client_reading_published_at ?? reading.generated_at)
         .toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+      accent={READINESS_INK[reading.body_state_classification ?? '']}
+      accentOnDark={READINESS_INK_ON_DARK[reading.body_state_classification ?? '']}
       aboutText={
         <p>
           <b>About this reading.</b> The intake you completed gave us a picture of how your system is currently working, across energy, recovery, sleep, stress, and training response. What follows is what stood out: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. Any pattern named here describes how your body is behaving, not a measurement of your hormone levels. It is the foundation we build from together.
