@@ -131,9 +131,18 @@ export default function ReadingHeroShell({
 }) {
   const coachPhoto = coachNote?.coachPhotoUrl ?? `${brand().marketingDomain}/kade-circle.png`
   const coachName = coachNote?.coachName ?? 'Kade Dunstone'
+  /** The client's readiness colour, or graphite when there is not one. */
+  const ink = accent ?? ACCENT
 
   return (
     <>
+      {/* THE ONE COLOUR, RUN THROUGH THE WHOLE DOCUMENT. Kade wants more colour
+          and he is right that one coloured rule on a cover is not enough. The
+          answer is not a second colour: it is letting the client's readiness be
+          the document's accent everywhere a document has one — the numbers, the
+          rules between sections, the coach's note, the cover. Two clients' reads
+          are then visibly different documents, which is true of the reads
+          themselves. 25 Sep 2026. */}
       <style>{`
         .rh { font-family: ${SANS}; background: ${BG}; color: ${INK}; min-height: 100vh; position: relative; overflow: hidden; }
         .rh * { box-sizing: border-box; }
@@ -184,12 +193,12 @@ export default function ReadingHeroShell({
           .rh-cover-top { display: flex; align-items: flex-start; justify-content: space-between; }
           .rh-cover-badge {
             font-size: 8.5px; letter-spacing: 0.16em; text-transform: uppercase;
-            color: ${MUTED}; border: 1px solid ${LINE}; border-radius: 4px; padding: 5px 10px;
+            color: ${ink}; border: 1px solid ${ink}66; border-radius: 4px; padding: 5px 10px;
           }
           .rh-cover-mid { margin-top: auto; margin-bottom: auto; }
           .rh-cover-for {
             font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase;
-            color: ${FAINT}; margin-bottom: 14px;
+            color: ${ink}; margin-bottom: 14px;
           }
           .rh-cover-title {
             font-size: 42px; line-height: 1.06; letter-spacing: -0.03em;
@@ -239,7 +248,7 @@ export default function ReadingHeroShell({
 
           .rh-about {
             display: grid; grid-template-columns: 32mm 1fr; column-gap: 9mm;
-            border-top: 1px solid ${LINE}; border-radius: 0; box-shadow: none;
+            border-top: 2px solid ${ink}; border-radius: 0; box-shadow: none;
             padding: 13px 0 0; margin: 4px 0 0;
           }
           .rh-about-label {
@@ -248,7 +257,7 @@ export default function ReadingHeroShell({
                into the 32mm label column and set itself in a ribbon. */
             display: block;
             font-size: 9px; font-weight: 700; letter-spacing: 0.07em;
-            text-transform: uppercase; color: ${FAINT}; line-height: 1.45;
+            text-transform: uppercase; color: ${ink}; line-height: 1.45;
           }
           .rh-about p { font-size: 9.5px; line-height: 1.65; color: ${FAINT}; }
           .rh-about b { color: ${MUTED}; }
@@ -276,20 +285,30 @@ export default function ReadingHeroShell({
              missing rather than any single property. */
           .rh-card {
             display: grid; grid-template-columns: 32mm 1fr; column-gap: 9mm;
-            border-top: 1px solid ${LINE}; padding-top: 13px !important;
+            border-top: 2px solid ${ink}; padding-top: 13px !important;
             margin-bottom: 20px !important;
           }
           .rh-label { display: block; margin: 0; break-after: avoid; }
           /* The chips are interface furniture. On paper the number does the
              work and does it more quietly. */
           .rh-chip { display: none !important; }
+          /* The number is the loudest coloured thing on each spread, and there
+             is one per section, so the colour runs the length of the document
+             rather than sitting on the cover alone. */
           .rh-num {
-            display: block; font-size: 15px; font-weight: 600; color: ${FAINT};
-            letter-spacing: -0.01em; margin-bottom: 6px;
+            display: block; font-size: 22px; font-weight: 700; color: ${ink};
+            letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px;
           }
           /* The coach note is the one thing that stays whole: it is signed, and
              a signature on its own page is not a signature. */
-          .rh-coach { break-inside: avoid; border-top: 1px solid ${LINE} !important; padding-top: 22px !important; }
+          /* The coach's note is the one human voice in the document, so it is
+             the one block that sits on a ground rather than on the page. */
+          .rh-coach {
+            break-inside: avoid; border-top: 2px solid ${ink} !important;
+            padding: 16px 16px 16px 0 !important;
+            background: ${ink}0D !important;
+          }
+          .rh-coach .rh-label, .rh-coach .rh-prose { padding-left: 14px; }
           .rh-chip { width: 24px; height: 24px; border-radius: 7px; }
           .rh-chip svg { width: 14px; height: 14px; }
           /* 0.14em on 9.5px uppercase pulled words apart so far they read as
