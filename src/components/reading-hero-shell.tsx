@@ -60,6 +60,26 @@ export interface CoachNoteData {
   coachPhotoUrl?: string
 }
 
+/**
+ * The first sentence of the read, to be set on its own.
+ *
+ * DELIBERATELY CAUTIOUS. It only splits on a full stop followed by a space and
+ * a capital, and only when the result is a sentence worth holding up: long
+ * enough to say something, short enough to read as one line of display type.
+ * Anything else returns null and the section is set as it always was, because a
+ * broken pull-quote is worse than no pull-quote.
+ */
+function leadSentence(text: string): { first: string; rest: string } | null {
+  const trimmed = text.trim()
+  const m = trimmed.match(/^(.+?[.!?])\s+(?=[A-Z])/)
+  if (!m) return null
+  const first = m[1].trim()
+  if (first.length < 45 || first.length > 210) return null
+  const rest = trimmed.slice(m[0].length).trim()
+  if (!rest) return null
+  return { first, rest }
+}
+
 function ChipLabel({ icon, label }: { icon: keyof typeof ICONS; label: string }) {
   const svg = ICONS[icon] ?? ICONS.pin
   return (
@@ -131,6 +151,7 @@ export default function ReadingHeroShell({
         .rh-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.08; color: #FFFFFF; margin-bottom: 12px; }
         .rh-hero-sub { font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.6; margin-bottom: 18px; max-width: 52ch; }
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .rh-lead { font-size: 20px; line-height: 1.45; letter-spacing: -0.015em; color: ${INK}; font-weight: 500; margin-bottom: 14px; max-width: 34ch; }
         .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
         .rh-about { background: transparent; border: 0; border-top: 1px solid ${LINE}; border-radius: 0; padding: 18px 2px 0; margin: 4px 0 20px; box-shadow: none; }
@@ -240,6 +261,7 @@ export default function ReadingHeroShell({
           .rh-chip { width: 24px; height: 24px; border-radius: 7px; }
           .rh-chip svg { width: 14px; height: 14px; }
           .rh-label-text { font-size: 9.5px; letter-spacing: 0.14em; }
+          .rh-lead { font-size: 16px; line-height: 1.48; margin-bottom: 14px; max-width: 42ch; font-weight: 500; }
           .rh-body { font-size: 11.5px; line-height: 1.68; max-width: 74ch; }
 
           .rh-attn { margin-top: 16px; padding-top: 14px; gap: 11px; }
@@ -317,12 +339,25 @@ export default function ReadingHeroShell({
               opening this wants the first sentence to be about them.
               25 Sep 2026. */}
           <div className="rh-cards">
-            {sections.map(section => {
+            {sections.map((section, i) => {
               if (!section.content) return null
+              // THE DOCUMENT HAD NO OPENING STATEMENT. Five blocks of solid
+              // prose, all set the same, so there was nothing to land on and
+              // nowhere for the eye to start. An editorial document opens with
+              // one line held up on its own; this takes the first sentence of
+              // the read and does exactly that.
+              const lead = i === 0 ? leadSentence(section.content) : null
               return (
                 <div key={section.key} className="rh-card">
                   <ChipLabel icon={section.icon ?? 'pin'} label={section.label} />
-                  <p className="rh-body">{section.content}</p>
+                  {lead ? (
+                    <>
+                      <p className="rh-lead">{lead.first}</p>
+                      {lead.rest && <p className="rh-body">{lead.rest}</p>}
+                    </>
+                  ) : (
+                    <p className="rh-body">{section.content}</p>
+                  )}
                 </div>
               )
             })}
