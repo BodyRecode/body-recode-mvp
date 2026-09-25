@@ -78,10 +78,10 @@ export async function sendPortalAccessEmail({
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">2.</strong> Health Declaration</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">3.</strong> Foundational Intake (25 to 35 minutes, mostly sliders, across 8 areas. It saves as you go, so you can stop and come back. Take your time. The more accurate it is, the better your read.)</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">4.</strong> Baseline Documentation</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Once your intake is in, your CFFS generates automatically. That is the read I work from to write your program. No template. Built around what your body is actually doing.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Once your intake is in, your read is written automatically. That is what your coach works from. No template. Built around what your body is actually doing.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
-          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
+          <td bgcolor="#0F1115" style="background-color:#0F1115;border-radius:8px;">
             <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Open my portal</a>
           </td>
         </tr>

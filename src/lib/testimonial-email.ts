@@ -20,8 +20,9 @@ import { darkEmailSignature, type SignatureCoach } from './email-signature'
 import { appUrl } from './app-url'
 import { coach } from '@/config/tenant'
 import { coachEmailIdentity } from './coach-identity'
+import { sendClientEmail } from './send-client-email'
 
-export function buildTestimonialAskEmail(ctx: { firstName: string; token: string; coachFirstName?: string; signature?: SignatureCoach }): { subject: string; html: string } {
+export function buildTestimonialAskEmail(ctx: { firstName: string; token: string; coachFirstName?: string }): { subject: string; body: string } {
   const url = `${appUrl()}/feedback/testimonial/${ctx.token}`
   const me = ctx.coachFirstName ?? coach().firstName
   const subject = `${ctx.firstName}, would you write a few lines about how it has gone?`
@@ -39,13 +40,11 @@ ${emailCta({ href: url, label: 'Write a few lines' })}
 ${emailUrlFallback(url)}
 
 ${emailBody(`Thank you either way.<br />${me}`, { color: '#6B6B6B', size: 13, bottom: 20 })}
-${darkEmailSignature(ctx.signature)}
 `
 
-  return {
-    subject,
-    html: darkEmailShell(body, { previewText: 'A few sentences about how it has gone, and you choose how you are named.' }),
-  }
+  // Body only. The shell and the signature are added at the send, so this
+  // file cannot get the coach wrong.
+  return { subject, body }
 }
 
 export async function sendTestimonialAsk(feedbackId: string): Promise<{ ok: true } | { ok: false; error: string }> {
@@ -68,23 +67,26 @@ export async function sendTestimonialAsk(feedbackId: string): Promise<{ ok: true
   const email = client?.email as string | null
   if (!email) return { ok: false, error: 'this client has no email address on file' }
 
-  // The ask comes from THEIR coach, and a reply goes to their coach.
+  // THROUGH THE ONE DOOR. The coach's name, their reply-to, their signature,
+  // the coach copy, the placeholder check, the unsubscribe check and the log
+  // are all the wrapper's job now rather than this file's. See
+  // lib/send-client-email for why that matters at 166 call sites.
   const who = await coachEmailIdentity(admin, row.client_id as string)
   const built = buildTestimonialAskEmail({
     firstName: (row.first_name as string | null) ?? ((client?.name as string | null) ?? '').split(' ')[0] ?? 'there',
     token: row.permission_token as string,
     coachFirstName: who.firstName,
-    signature: who.signature,
   })
 
-  const resend = new Resend(process.env.RESEND_API_KEY)
-  const { error } = await resend.emails.send({
-    from: who.from,
-    replyTo: who.replyTo,
+  const sent = await sendClientEmail({
+    admin,
+    clientId: row.client_id as string,
     to: email,
     subject: built.subject,
-    html: built.html,
+    body: built.body,
+    kind: 'testimonial_ask',
+    previewText: 'A few sentences about how it has gone, and you choose how you are named.',
   })
-  if (error) return { ok: false, error: error.message }
+  if (!sent.ok) return { ok: false, error: sent.error }
   return { ok: true }
 }
