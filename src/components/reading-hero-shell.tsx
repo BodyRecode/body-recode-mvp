@@ -61,22 +61,13 @@ export interface CoachNoteData {
 }
 
 /**
- * The first sentence of the read, to be set on its own.
- *
- * DELIBERATELY CAUTIOUS. It only splits on a full stop followed by a space and
- * a capital, and only when the result is a sentence worth holding up: long
- * enough to say something, short enough to read as one line of display type.
- * Anything else returns null and the section is set as it always was, because a
- * broken pull-quote is worse than no pull-quote.
- */
-/**
  * Paragraphs, rendered as paragraphs.
  *
  * The engine returns each section as ONE unbroken block of five to eight
- * sentences, and this rendered it as a single <p>, so any break it did write
- * was collapsed on the way to the page. The prompt now asks for two or three
- * paragraphs; this is the half that makes that visible. Content with no breaks
- * in it renders exactly as before, so nothing already published changes shape.
+ * sentences, and this used to print it into a single <p>, so any break it did
+ * write was collapsed on the way to the page. The prompt now asks for two or
+ * three paragraphs; this is the half that makes that visible. Content with no
+ * breaks renders exactly as before, so nothing already published changes shape.
  */
 function Prose({ text }: { text: string | null }) {
   if (!text) return null
@@ -84,21 +75,11 @@ function Prose({ text }: { text: string | null }) {
   return <>{paras.map((t, i) => <p key={i} className="rh-body">{t}</p>)}</>
 }
 
-function leadSentence(text: string): { first: string; rest: string } | null {
-  const trimmed = text.trim()
-  const m = trimmed.match(/^(.+?[.!?])\s+(?=[A-Z])/)
-  if (!m) return null
-  const first = m[1].trim()
-  if (first.length < 45 || first.length > 210) return null
-  const rest = trimmed.slice(m[0].length).trim()
-  if (!rest) return null
-  return { first, rest }
-}
-
-function ChipLabel({ icon, label }: { icon: keyof typeof ICONS; label: string }) {
+function ChipLabel({ icon, label, num }: { icon: keyof typeof ICONS; label: string; num?: number }) {
   const svg = ICONS[icon] ?? ICONS.pin
   return (
     <div className="rh-label">
+      {num && <span className="rh-num">{String(num).padStart(2, '0')}</span>}
       <span className="rh-chip">
         <svg
           width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -167,7 +148,7 @@ export default function ReadingHeroShell({
         .rh-hero-sub { font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.6; margin-bottom: 18px; max-width: 52ch; }
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .rh-body + .rh-body { margin-top: 0.85em; }
-        .rh-lead { font-size: 20px; line-height: 1.45; letter-spacing: -0.015em; color: ${INK}; font-weight: 500; margin-bottom: 14px; max-width: 34ch; }
+        .rh-num, .rh-about-label { display: none; }
         .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
         .rh-about { background: transparent; border: 0; border-top: 1px solid ${LINE}; border-radius: 0; padding: 18px 2px 0; margin: 4px 0 20px; box-shadow: none; }
@@ -256,8 +237,21 @@ export default function ReadingHeroShell({
           .rh-pill { font-size: 10.5px; padding: 4px 11px; }
           .rh-for { font-size: 10.5px; }
 
-          .rh-about { padding: 14px 0 0; margin: 10px 0 0; border-radius: 0; box-shadow: none; }
-          .rh-about p { font-size: 9px; line-height: 1.6; }
+          .rh-about {
+            display: grid; grid-template-columns: 32mm 1fr; column-gap: 9mm;
+            border-top: 1px solid ${LINE}; border-radius: 0; box-shadow: none;
+            padding: 13px 0 0; margin: 4px 0 0;
+          }
+          .rh-about-label {
+            /* display, because the screen rule hides it and display:none takes
+               an element OUT OF THE GRID, so without this the paragraph slid
+               into the 32mm label column and set itself in a ribbon. */
+            display: block;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.07em;
+            text-transform: uppercase; color: ${FAINT}; line-height: 1.45;
+          }
+          .rh-about p { font-size: 9.5px; line-height: 1.65; color: ${FAINT}; }
+          .rh-about b { color: ${MUTED}; }
 
           /* NO BOXES ON PAPER. Five bordered panels stacked down a page reads
              as a form to fill in. The same five sections with a heading and
@@ -270,15 +264,42 @@ export default function ReadingHeroShell({
             background: transparent !important; box-shadow: none; break-inside: auto;
           }
           .rh-card p { orphans: 3; widows: 3; }
-          .rh-label { margin-bottom: 10px; gap: 9px; break-after: avoid; }
+          /* THE PAGE IS A GRID NOW, NOT A STACK.
+             Every section was a label with a paragraph under it, four times,
+             left-aligned in one column. That is a list of blocks, and no amount
+             of adjusting type on top of it was going to make it read as a
+             designed document. Kade, plainly: design this whole document
+             better.
+             The label moves into its own narrow column in the margin and the
+             prose sits beside it, which is how a report or a long essay is set.
+             It gives the page a structure the eye can hold, and it is what was
+             missing rather than any single property. */
+          .rh-card {
+            display: grid; grid-template-columns: 32mm 1fr; column-gap: 9mm;
+            border-top: 1px solid ${LINE}; padding-top: 13px !important;
+            margin-bottom: 20px !important;
+          }
+          .rh-label { display: block; margin: 0; break-after: avoid; }
+          /* The chips are interface furniture. On paper the number does the
+             work and does it more quietly. */
+          .rh-chip { display: none !important; }
+          .rh-num {
+            display: block; font-size: 15px; font-weight: 600; color: ${FAINT};
+            letter-spacing: -0.01em; margin-bottom: 6px;
+          }
           /* The coach note is the one thing that stays whole: it is signed, and
              a signature on its own page is not a signature. */
           .rh-coach { break-inside: avoid; border-top: 1px solid ${LINE} !important; padding-top: 22px !important; }
           .rh-chip { width: 24px; height: 24px; border-radius: 7px; }
           .rh-chip svg { width: 14px; height: 14px; }
-          .rh-label-text { font-size: 9.5px; letter-spacing: 0.14em; }
+          /* 0.14em on 9.5px uppercase pulled words apart so far they read as
+             separate ones: "WHERE YO U A RE". Tracking is for small caps, not
+             for decoration. */
+          .rh-label-text {
+            font-size: 9px; letter-spacing: 0.07em; color: ${MUTED};
+            line-height: 1.45; display: block;
+          }
           .rh-body + .rh-body { margin-top: 0.9em; }
-          .rh-lead { font-size: 19px; line-height: 1.42; margin-bottom: 16px; max-width: 46ch; font-weight: 500; letter-spacing: -0.015em; }
           /* JUSTIFIED, WITH HYPHENATION ON. Kade asked for justified copy and it
              is right on paper, but only with hyphens: without them the browser
              stretches word spacing to fill the line and the page fills with
@@ -301,9 +322,14 @@ export default function ReadingHeroShell({
              uses the full width, and Kade is right that it no longer needs it.
              Hyphenation stays on, because it stops the ragged edge tearing on a
              long word. 25 Sep 2026. */
+          /* NO HYPHENS EITHER. They were earning their place when the copy was
+             justified in a narrow column. Ragged right at this measure has room
+             for any word, so all hyphenation buys now is a broken word at the
+             end of nearly every line, which is fussier than the ragged edge it
+             was tidying. */
           .rh-body {
             font-size: 12.5px; line-height: 1.72; max-width: none;
-            text-align: left; hyphens: auto; -webkit-hyphens: auto;
+            text-align: left; hyphens: none; -webkit-hyphens: none;
           }
 
           .rh-attn { margin-top: 16px; padding-top: 14px; gap: 11px; }
@@ -311,7 +337,12 @@ export default function ReadingHeroShell({
           .rh-who { font-size: 10.5px; }
           .rh-who b { font-size: 11.5px; }
 
-          .rh-foot { margin-top: 30px; font-size: 8.5px; }
+          /* Left-aligned with the prose rather than centred: the page has one
+             text edge now and the footer was the last thing ignoring it. */
+          .rh-foot {
+            margin: 22px 0 0; padding-top: 12px; border-top: 1px solid ${LINE};
+            font-size: 8.5px; color: ${FAINT}; text-align: left;
+          }
         }
       `}</style>
 
@@ -388,18 +419,12 @@ export default function ReadingHeroShell({
               // nowhere for the eye to start. An editorial document opens with
               // one line held up on its own; this takes the first sentence of
               // the read and does exactly that.
-              const lead = i === 0 ? leadSentence(section.content) : null
               return (
                 <div key={section.key} className="rh-card">
-                  <ChipLabel icon={section.icon ?? 'pin'} label={section.label} />
-                  {lead ? (
-                    <>
-                      <p className="rh-lead">{lead.first}</p>
-                      <Prose text={lead.rest} />
-                    </>
-                  ) : (
+                  <ChipLabel icon={section.icon ?? 'pin'} label={section.label} num={i + 1} />
+                  <div className="rh-prose">
                     <Prose text={section.content} />
-                  )}
+                  </div>
                 </div>
               )
             })}
@@ -419,7 +444,14 @@ export default function ReadingHeroShell({
 
           {aboutText && (
             <div className="rh-about">
-              {typeof aboutText === 'string' ? <p>{aboutText}</p> : aboutText}
+              {/* In the grid like everything else. It was the one block of text
+                  starting at a different left edge, which is the kind of thing
+                  that makes a page look unconsidered without anybody being able
+                  to say why. */}
+              <span className="rh-about-label">About this read</span>
+              <div className="rh-about-body">
+                {typeof aboutText === 'string' ? <p>{aboutText}</p> : aboutText}
+              </div>
             </div>
           )}
 
