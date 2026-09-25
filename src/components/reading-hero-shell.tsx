@@ -81,6 +81,7 @@ export default function ReadingHeroShell({
   heroSub,
   pill,
   clientName,
+  dateLine,
   aboutText,
   sections,
   coachNote,
@@ -90,6 +91,9 @@ export default function ReadingHeroShell({
   heroSub: string
   pill?: string | null
   clientName: string
+  /** When this was written. A client should never have to guess how old
+   *  their own read is, and until 25 Sep 2026 the document did not say. */
+  dateLine?: string | null
   aboutText?: ReactNode
   sections: ReadingSection[]
   coachNote?: CoachNoteData | null
@@ -135,7 +139,8 @@ export default function ReadingHeroShell({
            2026-08-01: white page, no shadows, no glows, denser type. Screen is
            untouched. */
         @media print {
-          @page { margin: 11mm; size: A4; }
+          /* Room to breathe. It was 11mm, which is a memo margin. */
+          @page { margin: 18mm 17mm; size: A4; }
           html, body { background: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
           .rh { overflow: visible; min-height: 0; background: #FFFFFF !important; }
@@ -144,38 +149,48 @@ export default function ReadingHeroShell({
           /* Radial glows render as grey smudges on paper. */
           .rh-glow, .rh-hero-glow { display: none !important; }
 
-          .rh-hero { padding: 15px 18px 16px; margin-bottom: 8px; border-radius: 10px; box-shadow: none; }
-          .rh-hero h1 { font-size: 23px; margin-bottom: 6px; }
-          .rh-hero-sub { font-size: 11px; line-height: 1.45; margin-bottom: 9px; max-width: 78ch; }
-          .rh-eyebrow { font-size: 9.5px; margin-bottom: 8px; }
-          .rh-pill { font-size: 10px; padding: 3px 9px; }
-          .rh-for { font-size: 10px; }
+          /* THIS WAS SET TO FIT, NOT TO BE READ. Kade, 25 Sep, on the PDF a
+             client downloads: "boring as fuck". He was right and the cause was
+             not the writing. Body type at 10.5px on 1.4 leading, 9px of padding
+             and 6px between sections, all to keep it on two pages. PAGES ARE
+             FREE. This is the thing somebody paid for, and it was set like a
+             receipt. */
+          .rh-hero { padding: 26px 26px 24px; margin-bottom: 26px; border-radius: 12px; box-shadow: none; }
+          .rh-hero h1 { font-size: 30px; margin-bottom: 10px; letter-spacing: -0.02em; }
+          .rh-hero-sub { font-size: 11.5px; line-height: 1.6; margin-bottom: 16px; max-width: 62ch; }
+          .rh-eyebrow { font-size: 9px; margin-bottom: 12px; }
+          .rh-pill { font-size: 10.5px; padding: 4px 11px; }
+          .rh-for { font-size: 10.5px; }
 
-          .rh-about { padding: 8px 2px 0; margin-bottom: 6px; border-radius: 0; box-shadow: none; }
-          .rh-about p { font-size: 9.5px; line-height: 1.42; }
+          .rh-about { padding: 14px 0 0; margin: 10px 0 0; border-radius: 0; box-shadow: none; }
+          .rh-about p { font-size: 9px; line-height: 1.6; }
 
-          .rh-cards { gap: 6px; }
-          /* Cards FLOW across page breaks. break-inside:avoid pushed any long
-             section wholesale onto the next page and left a third of the
-             previous one blank, which is the "too much space" problem. A
-             heading never orphans (break-after) and no single line is stranded
-             (orphans/widows). */
-          .rh-card { padding: 9px 13px; border-radius: 8px; box-shadow: none; break-inside: auto; }
+          /* NO BOXES ON PAPER. Five bordered panels stacked down a page reads
+             as a form to fill in. The same five sections with a heading and
+             room around them read as something a person wrote for you, which
+             is what this is. The space between them does the work the borders
+             were doing. */
+          .rh-cards { gap: 0; }
+          .rh-card {
+            padding: 0; margin-bottom: 26px; border: 0 !important; border-radius: 0;
+            background: transparent !important; box-shadow: none; break-inside: auto;
+          }
           .rh-card p { orphans: 3; widows: 3; }
-          .rh-label { margin-bottom: 5px; gap: 7px; break-after: avoid; }
-          /* The coach note and its signature stay together. */
-          .rh-coach { break-inside: avoid; }
-          .rh-chip { width: 22px; height: 22px; border-radius: 6px; }
-          .rh-chip svg { width: 13px; height: 13px; }
-          .rh-label-text { font-size: 9.5px; }
-          .rh-body { font-size: 10.5px; line-height: 1.4; }
+          .rh-label { margin-bottom: 10px; gap: 9px; break-after: avoid; }
+          /* The coach note is the one thing that stays whole: it is signed, and
+             a signature on its own page is not a signature. */
+          .rh-coach { break-inside: avoid; border-top: 1px solid ${LINE} !important; padding-top: 22px !important; }
+          .rh-chip { width: 24px; height: 24px; border-radius: 7px; }
+          .rh-chip svg { width: 14px; height: 14px; }
+          .rh-label-text { font-size: 9.5px; letter-spacing: 0.14em; }
+          .rh-body { font-size: 11.5px; line-height: 1.68; max-width: 74ch; }
 
-          .rh-attn { margin-top: 9px; padding-top: 8px; gap: 9px; }
-          .rh-avatar { width: 32px; height: 32px; }
-          .rh-who { font-size: 10px; }
-          .rh-who b { font-size: 11px; }
+          .rh-attn { margin-top: 16px; padding-top: 14px; gap: 11px; }
+          .rh-avatar { width: 38px; height: 38px; }
+          .rh-who { font-size: 10.5px; }
+          .rh-who b { font-size: 11.5px; }
 
-          .rh-foot { margin-top: 11px; font-size: 8.5px; }
+          .rh-foot { margin-top: 30px; font-size: 8.5px; }
         }
       `}</style>
 
@@ -191,7 +206,7 @@ export default function ReadingHeroShell({
               <p className="rh-hero-sub">{heroSub}</p>
               <div className="rh-hero-meta">
                 {pill && <span className="rh-pill">{pill}</span>}
-                <span className="rh-for">Prepared for {clientName}</span>
+                <span className="rh-for">Prepared for {clientName}{dateLine ? ` · ${dateLine}` : ''}</span>
               </div>
             </div>
           </div>

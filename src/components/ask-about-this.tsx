@@ -24,7 +24,14 @@ export default function AskAboutThis({
   return (
     <Link
       href={askAboutHref(token, kind, label)}
-      className="group flex items-center justify-between gap-3 rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] px-5 py-4 hover:border-[#0F1115]/40 hover:bg-blue-50 transition-colors"
+      /* print:hidden here rather than on each page that uses it. It is a
+         control that opens a conversation, and it was printing into the PDF a
+         client downloads and keeps: a dead button on a piece of paper, under
+         the coach's signature. One place, so the next printable page that uses
+         this is covered without anybody remembering. 25 Sep 2026.
+         hover:bg-blue-50 was also a Tailwind colour nobody chose, which is the
+         kind no search for a hex ever finds. */
+      className="group flex items-center justify-between gap-3 rounded-2xl border border-[#E4E4E0] bg-[#FFFFFF] px-5 py-4 hover:border-[#0F1115]/40 hover:bg-[#F2F2EF] transition-colors print:hidden"
     >
       <div className="flex items-center gap-3 min-w-0">
         <MessageSquare size={15} className="text-[#0F1115] shrink-0" />

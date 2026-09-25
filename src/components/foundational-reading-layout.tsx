@@ -42,6 +42,8 @@ export default function ReadingLayout({
       heroSub="A read of how your body is currently organising itself, across energy, recovery, sleep, stress, and training response. Not a verdict, a foundation we build from together."
       pill={reading.body_state_classification}
       clientName={client.name}
+      dateLine={new Date(reading.client_reading_published_at ?? reading.generated_at)
+        .toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
       aboutText={
         <p>
           <b>About this reading.</b> The intake you completed gave us a picture of how your system is currently working, across energy, recovery, sleep, stress, and training response. What follows is what stood out: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. Any pattern named here describes how your body is behaving, not a measurement of your hormone levels. It is the foundation we build from together.
