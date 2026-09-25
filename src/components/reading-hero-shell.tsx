@@ -27,6 +27,8 @@ const INK = '#0F1115'
 const BODY = '#0F1115'
 const MUTED = '#6E747D'
 const LINE = '#E4E4E0'
+/** For the footnote under the read: present, not competing with it. */
+const FAINT = '#9CA2AB'
 const BG = '#F2F2EF'
 const SANS = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
 
@@ -112,8 +114,8 @@ export default function ReadingHeroShell({
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
-        .rh-about { border-left: 3px solid ${ACCENT}; background: #FFFFFF; border: 1px solid ${LINE}; border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); }
-        .rh-about p { font-size: 13.5px; color: ${MUTED}; line-height: 1.7; }
+        .rh-about { background: transparent; border: 0; border-top: 1px solid ${LINE}; border-radius: 0; padding: 18px 2px 0; margin: 4px 0 20px; box-shadow: none; }
+        .rh-about p { font-size: 12.5px; color: ${FAINT}; line-height: 1.7; }
         .rh-about b { color: ${INK}; font-weight: 600; }
         .rh-cards { display: flex; flex-direction: column; gap: 16px; }
         .rh-card { background: #FFFFFF; border: 1px solid ${LINE}; border-radius: 14px; padding: 24px 26px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05); break-inside: avoid; }
@@ -149,7 +151,7 @@ export default function ReadingHeroShell({
           .rh-pill { font-size: 10px; padding: 3px 9px; }
           .rh-for { font-size: 10px; }
 
-          .rh-about { padding: 8px 13px; margin-bottom: 6px; border-radius: 8px; box-shadow: none; }
+          .rh-about { padding: 8px 2px 0; margin-bottom: 6px; border-radius: 0; box-shadow: none; }
           .rh-about p { font-size: 9.5px; line-height: 1.42; }
 
           .rh-cards { gap: 6px; }
@@ -194,12 +196,12 @@ export default function ReadingHeroShell({
             </div>
           </div>
 
-          {aboutText && (
-            <div className="rh-about">
-              {typeof aboutText === 'string' ? <p>{aboutText}</p> : aboutText}
-            </div>
-          )}
-
+          {/* THE PREAMBLE USED TO SIT HERE, ABOVE THE READ. Eight lines of
+              explanation and caveat between a client and the thing they paid
+              for, so the first scroll of their own read was about what the read
+              is not. It is worth saying, and it is worth saying AFTER. A client
+              opening this wants the first sentence to be about them.
+              25 Sep 2026. */}
           <div className="rh-cards">
             {sections.map(section => {
               if (!section.content) return null
@@ -223,6 +225,12 @@ export default function ReadingHeroShell({
               </div>
             )}
           </div>
+
+          {aboutText && (
+            <div className="rh-about">
+              {typeof aboutText === 'string' ? <p>{aboutText}</p> : aboutText}
+            </div>
+          )}
 
           <p className="rh-foot">{brand().name} · Prepared for {clientName} · Confidential</p>
         </div>
