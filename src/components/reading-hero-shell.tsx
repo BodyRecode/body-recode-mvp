@@ -1,5 +1,5 @@
 import { BrandMark } from './brand-mark'
-import { brand } from '@/config/tenant'
+import { brand, coach } from '@/config/tenant'
 import type { ReactNode } from 'react'
 
 /**
@@ -129,8 +129,15 @@ export default function ReadingHeroShell({
   sections: ReadingSection[]
   coachNote?: CoachNoteData | null
 }) {
-  const coachPhoto = coachNote?.coachPhotoUrl ?? `${brand().marketingDomain}/kade-circle.png`
-  const coachName = coachNote?.coachName ?? 'Kade Dunstone'
+  /* WHOSE SIGNATURE THIS IS. It used to default to Kade's name and Kade's
+     photograph whenever nothing was passed, which was always — so every
+     coach's client read a note signed by somebody they have never met. The
+     name now falls back to the tenant's own coach, and THE PHOTO DOES NOT FALL
+     BACK AT ALL: no photo means initials, because another person's face on a
+     document signed in your name is worse than no face. 25 Sep 2026. */
+  const coachName = coachNote?.coachName ?? coach().fullName
+  const coachPhoto = coachNote?.coachPhotoUrl?.trim() ? coachNote.coachPhotoUrl : null
+  const coachMonogram = coachName.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase()
   /** The client's readiness colour, or graphite when there is not one. */
   const ink = accent ?? ACCENT
 
@@ -158,6 +165,11 @@ export default function ReadingHeroShell({
         .rh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .rh-body + .rh-body { margin-top: 0.85em; }
         .rh-num, .rh-about-label { display: none; }
+        .rh-monogram {
+          display: inline-flex; align-items: center; justify-content: center;
+          background: ${ink}1A; color: ${ink}; font-weight: 700; font-size: 13px;
+          letter-spacing: 0.02em;
+        }
         .rh-pill { font-size: 12px; font-weight: 700; color: #DCDCD7; background: rgba(15,17,21,0.10); border: 1px solid rgba(15,17,21,0.12); border-radius: 999px; padding: 5px 12px; }
         .rh-for { font-size: 12px; color: rgba(255,255,255,0.5); }
         .rh-about { background: transparent; border: 0; border-top: 1px solid ${LINE}; border-radius: 0; padding: 18px 2px 0; margin: 4px 0 20px; box-shadow: none; }
@@ -453,8 +465,12 @@ export default function ReadingHeroShell({
                 <ChipLabel icon="note" label="A note from your coach" />
                 <p className="rh-body">{coachNote.content}</p>
                 <div className="rh-attn">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="rh-avatar" src={coachPhoto} alt={coachName} />
+                  {coachPhoto ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img className="rh-avatar" src={coachPhoto} alt={coachName} />
+                  ) : (
+                    <span className="rh-avatar rh-monogram" aria-hidden>{coachMonogram}</span>
+                  )}
                   <span className="rh-who"><b>{coachName}</b>your coach</span>
                 </div>
               </div>

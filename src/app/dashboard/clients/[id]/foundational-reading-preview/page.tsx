@@ -4,6 +4,7 @@ import { redirect, notFound } from 'next/navigation'
 import PrintTrigger from '../cffs-report/print-trigger'
 import ReadingLayout from '@/components/foundational-reading-layout'
 import { verifyPdfAccessToken, PDF_TOKEN_PARAM } from '@/lib/pdf-access-token'
+import { coachIdentityForClient } from '@/lib/coach-identity'
 
 export default async function FoundationalReadingPreviewPage({
   params,
@@ -48,6 +49,10 @@ export default async function FoundationalReadingPreviewPage({
   // crammed under the app menu. Print/PDF is untouched: the PDF route renders
   // in print media (page.pdf()), where this container resets to static and the
   // dashboard nav is already print:hidden.
+
+  // Whose name and face go on this document. It is not always Kade.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+
   return (
     <>
       <style>{`
@@ -72,6 +77,7 @@ export default async function FoundationalReadingPreviewPage({
             client_reading_published_at: cffs.client_reading_published_at,
           }}
           client={{ name: client.name }}
+          coach={{ fullName: coachIdentity.fullName, photoUrl: coachIdentity.photoUrl }}
         />
       </div>
     </>

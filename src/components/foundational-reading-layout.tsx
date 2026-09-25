@@ -55,12 +55,20 @@ export interface ClientMeta {
   name: string
 }
 
+/** The coach whose name and face belong on this document. */
+export interface CoachMeta {
+  fullName: string
+  photoUrl: string | null
+}
+
 export default function ReadingLayout({
   reading,
   client,
+  coach,
 }: {
   reading: ReadingData
   client: ClientMeta
+  coach?: CoachMeta
 }) {
   return (
     <ReadingHeroShell
@@ -84,7 +92,7 @@ export default function ReadingLayout({
         { key: 'cr_what_were_focusing_on_first',  label: 'What we are focusing on first',  icon: 'target', content: reading.cr_what_were_focusing_on_first },
         { key: 'cr_what_were_not_doing_yet',      label: 'What we are not doing yet',      icon: 'hold',   content: reading.cr_what_were_not_doing_yet },
       ]}
-      coachNote={{ content: reading.cr_coach_note }}
+      coachNote={{ content: reading.cr_coach_note, coachName: coach?.fullName, coachPhotoUrl: coach?.photoUrl ?? undefined }}
     />
   )
 }

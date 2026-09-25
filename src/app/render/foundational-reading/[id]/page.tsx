@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import ReadingLayout from '@/components/foundational-reading-layout'
 import { verifyPdfAccessToken, PDF_TOKEN_PARAM } from '@/lib/pdf-access-token'
+import { coachIdentityForClient } from '@/lib/coach-identity'
 
 /**
  * Token-authenticated render target for the Foundational Reading PDF.
@@ -44,6 +45,10 @@ export default async function FoundationalReadingRenderPage({
   const cffs = rows?.[0] ?? null
   if (!client || !cffs || !cffs.client_reading_generated_at) return notFound()
 
+  // Whose name and face go on this document. It is not always Kade.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+
+
   return (
     <ReadingLayout
       reading={{
@@ -57,6 +62,7 @@ export default async function FoundationalReadingRenderPage({
         client_reading_published_at: cffs.client_reading_published_at,
       }}
       client={{ name: client.name }}
+      coach={{ fullName: coachIdentity.fullName, photoUrl: coachIdentity.photoUrl }}
     />
   )
 }

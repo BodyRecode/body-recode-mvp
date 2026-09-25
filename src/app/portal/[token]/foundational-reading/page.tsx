@@ -8,6 +8,7 @@ import ReadingLayout from '@/components/foundational-reading-layout'
 import PortalReadingDownload from './portal-reading-download'
 import { isCoachEmail } from '@/lib/coach-auth'
 import AskAboutThis from '@/components/ask-about-this'
+import { coachIdentityForClient } from '@/lib/coach-identity'
 
 const PUBLIC_READINESS: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
 
@@ -70,6 +71,9 @@ export default async function PortalFoundationalReadingPage({
     )
   }
 
+  // Whose name and face go on this document. It is not always Kade.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+
   return (
     <>
       <PortalReadingDownload
@@ -92,6 +96,7 @@ export default async function PortalFoundationalReadingPage({
           client_reading_published_at: cffs.client_reading_published_at,
         }}
         client={{ name: client.name }}
+        coach={{ fullName: coachIdentity.fullName, photoUrl: coachIdentity.photoUrl }}
       />
       <div className="max-w-2xl mx-auto px-6 pb-16">
         <AskAboutThis
