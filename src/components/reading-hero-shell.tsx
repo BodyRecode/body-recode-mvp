@@ -1,3 +1,4 @@
+import { BrandMark } from './brand-mark'
 import { brand } from '@/config/tenant'
 import type { ReactNode } from 'react'
 
@@ -138,7 +139,46 @@ export default function ReadingHeroShell({
            display and as wasted space and dirty paper in a PDF. Tightened
            2026-08-01: white page, no shadows, no glows, denser type. Screen is
            untouched. */
+        /* The cover is a paper-only object. */
+        .rh-cover { display: none; }
+
         @media print {
+          /* THE COVER. Mirrors the ops PDF builder so a read and a guide look
+             like documents from the same place. */
+          .rh-cover {
+            display: flex; flex-direction: column; justify-content: space-between;
+            height: 245mm; break-after: page; page-break-after: always;
+          }
+          .rh-cover-top { display: flex; align-items: flex-start; justify-content: space-between; }
+          .rh-cover-badge {
+            font-size: 8.5px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: ${MUTED}; border: 1px solid ${LINE}; border-radius: 4px; padding: 5px 10px;
+          }
+          .rh-cover-mid { margin-top: auto; margin-bottom: auto; }
+          .rh-cover-for {
+            font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: ${FAINT}; margin-bottom: 14px;
+          }
+          .rh-cover-title {
+            font-size: 42px; line-height: 1.06; letter-spacing: -0.03em;
+            font-weight: 700; color: ${INK}; max-width: 15ch; margin: 0;
+          }
+          .rh-cover-rule { display: block; width: 86px; height: 3px; background: ${INK}; margin: 22px 0 20px; }
+          .rh-cover-sub { font-size: 11.5px; line-height: 1.65; color: ${MUTED}; max-width: 56ch; }
+          .rh-cover-foot {
+            display: flex; gap: 34px; border-top: 1px solid ${LINE}; padding-top: 14px;
+          }
+          .rh-cover-k {
+            font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: ${FAINT}; margin-bottom: 5px;
+          }
+          .rh-cover-v { font-size: 10.5px; color: ${INK}; font-weight: 600; }
+
+          /* The dark hero is what the cover replaced. Two of them is one too
+             many, and a black slab on page two of a printed document is a
+             toner bill rather than a design. */
+          .rh-hero { display: none !important; }
+
           /* Room to breathe. It was 11mm, which is a memo margin. */
           @page { margin: 18mm 17mm; size: A4; }
           html, body { background: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -197,6 +237,46 @@ export default function ReadingHeroShell({
       <div className="rh">
         <div className="rh-glow" />
         <div className="rh-col">
+
+          {/* A COVER, ON PAPER ONLY.
+              The document opened straight into content, which is what a
+              printout does. A read is the thing a client paid for and keeps,
+              and the house style for a Body Recode document already exists in
+              the ops PDF builder: mark top-left, category top-right, a large
+              title over a rule, and a row of meta along the bottom. The read
+              now looks like the same house as the guides. 25 Sep 2026.
+              Screen never sees it: on screen the dark hero already does this
+              job, and a cover you have to scroll past is an obstacle. */}
+          <div className="rh-cover">
+            <div className="rh-cover-top">
+              <BrandMark tone="dark" size="sm" />
+              <span className="rh-cover-badge">{eyebrow}</span>
+            </div>
+            <div className="rh-cover-mid">
+              <p className="rh-cover-for">for {clientName}</p>
+              <h1 className="rh-cover-title">{heroTitle}</h1>
+              <span className="rh-cover-rule" />
+              <p className="rh-cover-sub">{heroSub}</p>
+            </div>
+            <div className="rh-cover-foot">
+              {pill && (
+                <div>
+                  <p className="rh-cover-k">Readiness</p>
+                  <p className="rh-cover-v">{pill}</p>
+                </div>
+              )}
+              {dateLine && (
+                <div>
+                  <p className="rh-cover-k">Written</p>
+                  <p className="rh-cover-v">{dateLine}</p>
+                </div>
+              )}
+              <div>
+                <p className="rh-cover-k">Brand</p>
+                <p className="rh-cover-v">bodyrecode.au</p>
+              </div>
+            </div>
+          </div>
 
           <div className="rh-hero">
             <div className="rh-hero-glow" />
