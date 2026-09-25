@@ -37,9 +37,13 @@ export interface TrajectoryReadingClientMeta {
 export default function TrajectoryReadingLayout({
   reading,
   client,
+  coach,
 }: {
   reading: TrajectoryReadingData
   client: TrajectoryReadingClientMeta
+  /** The coach whose name and face belong on this document. Never Kade by
+   *  default: see lib/coach-identity. */
+  coach?: { fullName: string; photoUrl: string | null }
 }) {
   const pill = [reading.progression_phase, reading.training_goal].filter(Boolean).join(' · ') || null
 
@@ -91,7 +95,7 @@ export default function TrajectoryReadingLayout({
         </p>
       }
       sections={sections}
-      coachNote={{ content: reading.tr_coach_note }}
+      coachNote={{ content: reading.tr_coach_note, coachName: coach?.fullName, coachPhotoUrl: coach?.photoUrl ?? undefined }}
     />
   )
 }

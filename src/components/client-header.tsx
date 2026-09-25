@@ -6,12 +6,25 @@ import PortalSignOutButton from './portal-sign-out-button'
 import { brand, coach } from '@/config/tenant'
 import { BrandMark } from '@/components/brand-mark'
 
-export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?: string | null } = {}) {
+export default function ClientHeader({
+  homeHref: explicitHomeHref,
+  coachFirstName,
+}: {
+  homeHref?: string | null
+  /**
+   * The client's OWN coach. "Message Kade" sat at the bottom of every page of
+   * every portal, including a pilot coach's, because this read the global
+   * config. A client being told to message a stranger is the loudest version
+   * of the same fault as the read being signed by one. 25 Sep 2026.
+   */
+  coachFirstName?: string
+} = {}) {
   const pathname = usePathname()
   const params = useParams()
   const token = typeof params?.token === 'string' ? params.token : null
   const t = brand()
   const c = coach()
+  const coachName = coachFirstName ?? c.firstName
   // Default behaviour: link home only from /portal/[token]/* routes (those tokens are
   // onboarding_tokens). Pages on other tokens (e.g. /baseline/[baseline_token]) can
   // pass an explicit homeHref so the logo still links back to the portal.
@@ -52,7 +65,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
             href={`/portal/${token}/message`}
             className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
-            Questions? <span className="font-semibold text-[#0F1115]">Message {c.firstName} →</span>
+            Questions? <span className="font-semibold text-[#0F1115]">Message {coachName} →</span>
           </Link>
         ) : (
           <a
@@ -61,7 +74,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
             rel="noopener noreferrer"
             className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
           >
-            Questions? Message {c.firstName} on WhatsApp →
+            Questions? Message {coachName} on WhatsApp →
           </a>
         )}
       </div>

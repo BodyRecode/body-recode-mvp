@@ -33,9 +33,13 @@ export interface ProgramReadingClientMeta {
 export default function ProgramReadingLayout({
   reading,
   client,
+  coach,
 }: {
   reading: ProgramReadingData
   client: ProgramReadingClientMeta
+  /** The coach whose name and face belong on this document. Never Kade by
+   *  default: see lib/coach-identity. */
+  coach?: { fullName: string; photoUrl: string | null }
 }) {
   const pill = [reading.progression_phase, reading.training_goal].filter(Boolean).join(' · ') || null
 
@@ -57,7 +61,7 @@ export default function ProgramReadingLayout({
         { key: 'pr_how_well_know_its_working',  label: 'How we will know it is working', icon: 'compass', content: reading.pr_how_well_know_its_working },
         { key: 'pr_what_were_not_doing_yet',    label: 'What we are not doing yet',      icon: 'hold',   content: reading.pr_what_were_not_doing_yet },
       ]}
-      coachNote={{ content: reading.pr_coach_note }}
+      coachNote={{ content: reading.pr_coach_note, coachName: coach?.fullName, coachPhotoUrl: coach?.photoUrl ?? undefined }}
     />
   )
 }

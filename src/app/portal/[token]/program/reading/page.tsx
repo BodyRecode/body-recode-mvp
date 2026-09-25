@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import ProgramReadingLayout from '@/components/program-reading-layout'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachIdentityForClient } from '@/lib/coach-identity'
 
 /**
  * Standalone client view of the Program Reading.
@@ -66,6 +67,9 @@ export default async function PortalProgramReadingPage({
     )
   }
 
+  // Whose name and face go on this document. It is not always Kade.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+
   return (
     <>
       {/* Lightweight back affordance - the editorial reading layout owns the rest */}
@@ -92,6 +96,7 @@ export default async function PortalProgramReadingPage({
           program_reading_published_at: program.program_reading_published_at,
         }}
         client={{ name: client.name }}
+        coach={{ fullName: coachIdentity.fullName, photoUrl: coachIdentity.photoUrl }}
       />
     </>
   )

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import TrajectoryReadingLayout from '@/components/trajectory-reading-layout'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachIdentityForClient } from '@/lib/coach-identity'
 
 /**
  * Standalone client view of the Block-end Trajectory Reading.
@@ -66,6 +67,9 @@ export default async function PortalTrajectoryReadingPage({
     )
   }
 
+  // Whose name and face go on this document. It is not always Kade.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+
   return (
     <>
       {/* Lightweight back affordance - the editorial reading layout owns the rest */}
@@ -97,6 +101,7 @@ export default async function PortalTrajectoryReadingPage({
           tr_pattern_confidence_note: program.tr_pattern_confidence_note,
         }}
         client={{ name: client.name }}
+        coach={{ fullName: coachIdentity.fullName, photoUrl: coachIdentity.photoUrl }}
       />
     </>
   )

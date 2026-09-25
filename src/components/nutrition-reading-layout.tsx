@@ -36,9 +36,13 @@ function titleise(value: string | null): string {
 export default function NutritionReadingLayout({
   reading,
   client,
+  coach,
 }: {
   reading: NutritionReadingData
   client: NutritionReadingClientMeta
+  /** The coach whose name and face belong on this document. Never Kade by
+   *  default: see lib/coach-identity. */
+  coach?: { fullName: string; photoUrl: string | null }
 }) {
   const pill = [titleise(reading.entry_state), reading.pts_phase].filter(Boolean).join(' · ') || null
 
@@ -60,7 +64,7 @@ export default function NutritionReadingLayout({
         { key: 'nr_how_well_know_its_working',    label: 'How we will know it is working', icon: 'compass', content: reading.nr_how_well_know_its_working },
         { key: 'nr_what_were_not_doing_yet',      label: 'What we are not doing yet',      icon: 'hold',   content: reading.nr_what_were_not_doing_yet },
       ]}
-      coachNote={{ content: reading.nr_coach_note }}
+      coachNote={{ content: reading.nr_coach_note, coachName: coach?.fullName, coachPhotoUrl: coach?.photoUrl ?? undefined }}
     />
   )
 }
