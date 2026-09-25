@@ -234,7 +234,7 @@ export default function ReadingHeroShell({
           .rh-hero { display: none !important; }
 
           /* Room to breathe. It was 11mm, which is a memo margin. */
-          @page { margin: 18mm 17mm; size: A4; }
+          @page { margin: 18mm 16mm; size: A4; }
           html, body { background: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
           .rh { overflow: visible; min-height: 0; background: #FFFFFF !important; }
@@ -278,7 +278,7 @@ export default function ReadingHeroShell({
           .rh-chip svg { width: 14px; height: 14px; }
           .rh-label-text { font-size: 9.5px; letter-spacing: 0.14em; }
           .rh-body + .rh-body { margin-top: 0.9em; }
-          .rh-lead { font-size: 16px; line-height: 1.48; margin-bottom: 14px; max-width: 42ch; font-weight: 500; }
+          .rh-lead { font-size: 19px; line-height: 1.42; margin-bottom: 16px; max-width: 46ch; font-weight: 500; letter-spacing: -0.015em; }
           /* JUSTIFIED, WITH HYPHENATION ON. Kade asked for justified copy and it
              is right on paper, but only with hyphens: without them the browser
              stretches word spacing to fill the line and the page fills with
@@ -287,8 +287,16 @@ export default function ReadingHeroShell({
              mistake.
              The measure comes in from 74 to 68 characters, which is the range
              a line of prose is comfortable to read at this size. */
+          /* THE COLUMN WAS FLOATING IN THE LEFT TWO-THIRDS OF THE PAGE. A
+             68-character measure is right for the eye, but on A4 it leaves
+             about 70mm of dead margin down the right-hand side, so a justified
+             block sat in a narrow strip with a void beside it. Kade: "looks
+             shit, can the right border be extended".
+             The measure cap is gone and the PAGE sets the width instead. The
+             type goes up with it, because a longer line needs more leading and
+             a bigger size to stay readable — the two have to move together. */
           .rh-body {
-            font-size: 11.5px; line-height: 1.68; max-width: 68ch;
+            font-size: 12.5px; line-height: 1.72; max-width: none;
             text-align: justify; hyphens: auto; -webkit-hyphens: auto;
           }
 
