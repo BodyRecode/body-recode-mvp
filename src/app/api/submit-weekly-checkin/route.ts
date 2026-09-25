@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient as createServerSupabaseClient } from '@/lib/supabase/server'
+import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsClient } from '@/lib/coach-scope'
 import { parsePeriodStart } from '@/lib/cycle-phase-bands'
 import { generateCFWS } from '@/lib/cfws-generate'
 import { darkEmailSignature } from '@/lib/email-signature'
@@ -23,7 +26,6 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Verify client exists
   const { data: client } = await admin
     .from('clients')
     .select('id, name, email, onboarding_token')
@@ -32,6 +34,35 @@ export async function POST(request: NextRequest) {
 
   if (!client) {
     return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+  }
+
+  /* WHO IS SUBMITTING THIS.
+   *
+   * Until 25 Sep 2026 this route asked only whether the client EXISTED. It
+   * took a client id straight from the request body and wrote a check-in for
+   * them, which then generates their weekly read, emails their coach and feeds
+   * the engine. Anonymous. No session of any kind.
+   *
+   * The middleware gate added on 22 September did not cover it, and the reason
+   * is worth keeping: that gate runs only when somebody IS signed in and is not
+   * a coach. With no session at all there is nobody to check, so it stepped
+   * aside — which is exactly the case this route needed protecting from. A
+   * guard whose condition starts "if there is a user" cannot protect anything
+   * from a request with no user.
+   *
+   * The real portal check-in is behind a sign-in, so the browser doing this for
+   * real always has a session. Nothing legitimate loses anything here.
+   */
+  const session = await createServerSupabaseClient()
+  const { data: { user } } = await session.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Please sign in to submit your check-in.' }, { status: 401 })
+  }
+  const email = (user.email ?? '').toLowerCase()
+  const isTheirOwn = email === (client.email ?? '').toLowerCase()
+  if (!isTheirOwn && !isCoachEmail(email)) {
+    const ownedByCoach = await coachOwnsClient(client.id as string, user.id, user.email ?? null)
+    if (!ownedByCoach) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   // Check not already submitted

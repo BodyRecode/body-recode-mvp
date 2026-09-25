@@ -187,11 +187,28 @@ export async function middleware(request: NextRequest) {
       )
       const { data } = await admin
         .from('clients')
-        .select('coach_id')
+        .select('coach_id, email')
         .eq('id', bodyClientId)
         .maybeSingle()
 
-      if (!data || data.coach_id !== user.id) {
+      // A CLIENT ACTING ON THEIR OWN RECORD IS NOT AN INTRUDER, and this gate
+      // very nearly decided otherwise. It was written to answer "is this YOUR
+      // client", which is a question about a COACH. A signed-in client posting
+      // their own weekly check-in is neither a coach nor the owner of a coach
+      // account, so they failed it and were handed "Not found".
+      //
+      // No check-in window has opened since the gate went in on 22 September —
+      // the last submission was Sunday the 20th and the next window opens this
+      // evening — so nobody has actually been turned away yet. That is timing,
+      // not design. Every client would have been blocked tonight.
+      //
+      // Found by writing the CONTROL for a different fix: proving a client can
+      // still do the thing the gate is not meant to stop. The probes all passed.
+      // Only the control failed. 25 Sep 2026.
+      const theirOwnRecord =
+        !!data?.email && data.email.toLowerCase() === (user.email ?? '').toLowerCase()
+
+      if (!data || (data.coach_id !== user.id && !theirOwnRecord)) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
     }
