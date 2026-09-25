@@ -568,8 +568,8 @@ export function extractNutritionReview(responses: Record<string, string>): Revie
 const SYSTEM_ANCHOR_MS = Date.UTC(2026, 2, 23) - 10 * 60 * 60 * 1000 // 23 Mar 2026 00:00 Brisbane
 const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
 
-function nowBrisbane(): Date {
-  return new Date(Date.now() + BRISBANE_OFFSET_MS)
+function nowBrisbane(at: number = Date.now()): Date {
+  return new Date(at + BRISBANE_OFFSET_MS)
 }
 
 /** Returns the global system week number (1-based, anchored to 23 Mar 2026) */
@@ -630,8 +630,8 @@ export function lastCheckinWindowOpenMs(now: number = Date.now()): number {
   ) - BRIS_OFFSET_MS
 }
 
-export function getCheckInWindowStatus(): CheckInWindowStatus {
-  const now = nowBrisbane()
+export function getCheckInWindowStatus(at: number = Date.now()): CheckInWindowStatus {
+  const now = nowBrisbane(at)
   const day = now.getUTCDay() // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
   const hour = now.getUTCHours()
   const minute = now.getUTCMinutes()
@@ -645,8 +645,24 @@ export function getCheckInWindowStatus(): CheckInWindowStatus {
   const systemWeek = getSystemWeekNumber()
   const formType = getFormType(systemWeek)
 
-  // Calculate next window open (next Friday 6pm Brisbane)
-  const daysUntilFriday = (5 - day + 7) % 7 || 7
+  // When the next window opens (Friday 6pm Brisbane).
+  //
+  // THE `|| 7` USED TO SWALLOW FRIDAY ITSELF. On a Friday, (5 - 5 + 7) % 7 is
+  // 0, and `|| 7` turned that into a week, so between midnight and 6pm on a
+  // Friday the portal believed the next window was EIGHT days away instead of
+  // opening that evening.
+  //
+  // That is not a cosmetic date. The portal works out whether somebody missed
+  // their check-in by looking back seven days from this value, so every Friday
+  // daytime it looked at a window that had not happened yet, found nothing in
+  // it, and told EVERY CLIENT they had missed a check-in they had actually
+  // submitted the previous Sunday. Kade found it on Samantha: submitted Sunday
+  // 20 September, accused on Friday 25th.
+  //
+  // `|| 7` is right on a Friday AFTER the window has opened, and wrong before
+  // it, which is why a single expression could not say both. 25 Sep 2026.
+  const fridayBeforeItOpens = day === 5 && hour < 18
+  const daysUntilFriday = fridayBeforeItOpens ? 0 : ((5 - day + 7) % 7 || 7)
   const nextFriday = new Date(now)
   nextFriday.setUTCDate(now.getUTCDate() + (isOpen ? 0 : daysUntilFriday))
   nextFriday.setUTCHours(18, 0, 0, 0)
