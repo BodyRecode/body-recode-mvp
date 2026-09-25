@@ -219,7 +219,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     {
       id: 'intake',
       title: 'Foundational Intake',
-      description: 'Complete your full intake. This informs your entire coaching structure.',
+      // "your entire coaching structure" promises something a Body Recode
+      // client never receives: their coach reads them, they do not build a
+      // structure. Say what the intake actually does. 25 Sep 2026.
+      description: 'The long one. Everything that follows is read from these answers, so it is worth doing properly and in one sitting.',
       done: intakeDone,
       href: intakeToken ? `/intake/${intakeToken}` : null,
       available: healthDone && !clearanceBlocking,
@@ -424,6 +427,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     cta: { label: string; href: string } | null
     /** No action of hers - a calm state rather than an instruction. */
     resting?: boolean
+    /** Which onboarding task the card is showing, so the list below does not
+     *  print the same words underneath it. */
+    taskId?: string
   } = (() => {
     const firstOutstanding = tasks.find(t => !t.done && t.available && t.href)
     if (!allOnboardingDone && firstOutstanding) {
@@ -432,6 +438,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         headline: firstOutstanding.title,
         body: firstOutstanding.description,
         cta: { label: 'Start', href: firstOutstanding.href! },
+        taskId: firstOutstanding.id,
       }
     }
     if (pendingProgressCheck && progressCheckUnlocked) {
@@ -526,7 +533,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             {nextUp.cta && (
               <Link
                 href={nextUp.cta.href}
-                className="block text-center mt-6 bg-[#0F1115] hover:bg-[#000000] text-white text-[16px] font-semibold py-4 rounded-xl transition-colors"
+                /* PAPER ON GRAPHITE. This was a graphite button on a graphite
+                   card, so the only thing telling a client it was a button was
+                   the word inside it. It is the first action a new client is
+                   asked to take, and it read as a caption. The brand rule is
+                   that a button is graphite on paper or paper on graphite, and
+                   this card is the graphite. 25 Sep 2026. */
+                className="block text-center mt-6 bg-[#FAFAF8] hover:bg-[#FFFFFF] text-[#0F1115] text-[16px] font-semibold py-4 rounded-xl transition-colors"
               >
                 {nextUp.cta.label}
               </Link>
@@ -540,7 +553,18 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Onboarding tasks */}
         {!allOnboardingDone && (
           <div className="mb-10">
-            <SectionLabel icon={ListChecks} text="Getting started" />
+            {/* THE HERO ABOVE PRINTS THE FIRST OUTSTANDING TASK'S TITLE AND
+                DESCRIPTION, and this list used to print the same words again a
+                few pixels below. The same instruction twice on one screen reads
+                as a mistake and makes neither copy feel like the real one.
+                They have different jobs: the card says what to do NOW, the list
+                says how far through you are. So the list carries its own
+                description only where the hero is not already saying it.
+                25 Sep 2026. */}
+            <SectionLabel
+              icon={ListChecks}
+              text={`Getting started · ${tasks.filter(t => t.done).length} of ${tasks.length} done`}
+            />
             <div className="space-y-3">
               {tasks.map((task) => (
                 <div
@@ -562,8 +586,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-[13.5px] font-semibold mb-0.5 ${task.done ? 'text-[#0F1115]' : 'text-[#0F1115]'}`}>{task.title}</p>
-                      <p className="text-[12.5px] text-[#9CA2AB]">{task.description}</p>
+                      <p className="text-[13.5px] font-semibold mb-0.5 text-[#0F1115]">{task.title}</p>
+                      {task.id !== nextUp.taskId && (
+                        <p className="text-[12.5px] text-[#9CA2AB]">{task.description}</p>
+                      )}
                       {!task.done && task.notice && (
                         <p className="mt-2 text-[12.5px] text-[#B06E1F]/80">{task.notice}</p>
                       )}
@@ -856,11 +882,19 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <p className="text-[12.5px] text-[#9CA2AB] mb-3">Everything else</p>
             <div className="rounded-2xl border border-[#E4E4E0] overflow-hidden bg-white">
               {([
-                { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
                 // Every prescriptive link is gated on what HER COACH licenses.
                 // Before 21 Sep 2026 these were all show:true, so a client of a
                 // read-only coach saw an eating plan, daily sequences and a
                 // supplement stack that nobody could give her.
+                //
+                // TRAINING PROGRAM WAS THE ONE THE SWEEP MISSED, because it sat
+                // ABOVE the comment explaining the rule rather than below it.
+                // The page itself has been gated in the layout all along, so a
+                // Body Recode client clicking it was bounced straight back to
+                // where they started: not a leak, but a dead link in front of a
+                // client, which is the exact thing that sweep existed to
+                // remove. 25 Sep 2026.
+                { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: features.prescription },
                 { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: features.prescription },
                 { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: features.prescription },
                 { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: features.prescription && (activeRecoveryCount ?? 0) > 0 },
