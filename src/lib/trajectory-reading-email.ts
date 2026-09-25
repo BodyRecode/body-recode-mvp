@@ -19,10 +19,11 @@ export function buildTrajectoryReadingEmail({
   firstName,
   blockName,
   portalUrl,
-}: TrajectoryReadingEmailParams): { subject: string; html: string } {
+}: TrajectoryReadingEmailParams): { subject: string; body: string } {
   const subject = `${firstName}, your Progress Read is ready`
 
-  const html = darkEmailShell(`
+  // Body only: the shell and signature belong to sendClientEmail.
+  const body = `
 ${emailLogo()}
 ${emailEyebrow('Progress Read')}
 ${emailHeading(`You have closed a block, ${escapeHtml(firstName)}.`)}
@@ -30,10 +31,9 @@ ${emailBody(`You have finished ${escapeHtml(blockName)}. Your Progress Read is n
 ${emailBody(`It reads your weekly check-ins as one arc, not one week at a time. A minute with it is worth it before the next block begins.`)}
 ${emailCta({ href: portalUrl, label: 'Read your Progress Read' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: subject })
+`
 
-  return { subject, html }
+  return { subject, body }
 }
 
 function escapeHtml(input: string): string {

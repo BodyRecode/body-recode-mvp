@@ -19,14 +19,16 @@ export function buildFoundationalReadingEmail({
   firstName,
   bodyState,
   portalUrl,
-}: ReadingEmailParams): { subject: string; html: string } {
+}: ReadingEmailParams): { subject: string; body: string } {
   const subject = `${firstName}, your Foundational Read is ready`
 
   const stateLine = bodyState
     ? emailBody(`The read covers where your body is right now (currently in ${escapeHtml(bodyState)}), what it is signalling, what we are focusing on first, and what we are deliberately not doing yet.`)
     : emailBody(`The read covers where your body is right now, what it is signalling, what we are focusing on first, and what we are deliberately not doing yet.`)
 
-  const html = darkEmailShell(`
+  // Body only. The shell, the signature, the coach and the log belong to
+  // sendClientEmail, so this file cannot get any of them wrong.
+  const body = `
 ${emailLogo()}
 ${emailEyebrow('Foundational Read')}
 ${emailHeading(`Your Foundational Read is ready, ${escapeHtml(firstName)}.`)}
@@ -36,10 +38,9 @@ ${emailBody(`It is not a verdict and it is not a plan. It is the foundation we w
 ${emailCta({ href: portalUrl, label: 'Open your read' })}
 ${emailBody('It lives in your portal alongside everything else, so you can return to it any time. You can also download it as a PDF from the top of the page.', { size: 13, color: '#6B6B6B' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: subject })
+`
 
-  return { subject, html }
+  return { subject, body }
 }
 
 function escapeHtml(input: string): string {

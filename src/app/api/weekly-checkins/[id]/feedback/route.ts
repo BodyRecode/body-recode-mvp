@@ -7,6 +7,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrlFor } from '@/lib/app-url'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { coachEmailIdentity } from '@/lib/coach-identity'
 
 interface FeedbackPayload {
   interpretation?: string
@@ -121,9 +122,15 @@ export async function POST(
     checkinUrl,
   })
 
+  // Their own coach's name, and replies to their own coach.
+
+  const who = await coachEmailIdentity(admin, client.id as string)
+
+
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: client.email,
     bcc: COACH_BCC,
     subject,

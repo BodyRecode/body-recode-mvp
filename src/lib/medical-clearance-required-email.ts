@@ -4,6 +4,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell, emailUrlFallback, emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta, emailFeaturedCard, emailNumberedList, fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from "@/lib/app-url";
+import { coachEmailIdentity } from './coach-identity'
 
 interface MedicalClearanceRequiredClient {
   id: string
@@ -44,9 +45,15 @@ export async function sendMedicalClearanceRequiredEmail({
   const portalUrl = `${appUrl()}/portal/${client.onboarding_token}/medical-clearance`
   const subject = `${firstName}, one step before we start coaching`
 
+  // Their own coach's name, and replies to their own coach.
+
+  const who = await coachEmailIdentity(admin, client.id as string)
+
+
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: client.email,
     // Kade, 19 Sep 2026: copy him on the ONBOARDING emails, because this is the
     // window where he needs to see that a new client is actually receiving
@@ -73,7 +80,7 @@ ${emailBody("The moment it lands I'll review and approve. Once approved, your Fo
 ${emailCta({ href: portalUrl, label: 'Open my portal', bg: '#B7791F' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
 ${emailBody('Any questions, reply to this email.', { size: 14, bottom: 0 })}
-${darkEmailSignature()}
+${darkEmailSignature(who.signature)}
 `, { previewText: `${firstName}, one duty-of-care step before we start coaching.` }),
   })
 

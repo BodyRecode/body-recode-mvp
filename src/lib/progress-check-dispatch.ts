@@ -26,6 +26,7 @@ import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email
 import { logClientCommunication } from '@/lib/client-communications'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
+import { coachEmailIdentity } from './coach-identity'
 
 export type DispatchResult =
   | { sent: true; client: string }
@@ -158,9 +159,15 @@ export async function dispatchProgressCheckIfDue(
   const firstName = (client.name ?? '').split(' ')[0] || 'there'
   const { subject, html } = buildProgressCheckInviteEmail({ firstName, portalUrl })
 
+  // Their own coach's name, and replies to their own coach.
+
+  const who = await coachEmailIdentity(admin, client.id as string)
+
+
   const resend = new Resend(process.env.RESEND_API_KEY)
   const { error: sendErr } = await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: client.email,
     bcc: COACH_BCC,
     subject,

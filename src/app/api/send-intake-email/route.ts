@@ -7,6 +7,7 @@ import { buildIntakeInviteEmail, type IntakeInviteMode } from '@/lib/intake-invi
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { coachEmailIdentity } from '@/lib/coach-identity'
 
 // Picks the email copy variant by looking up the invitation's kind:
 //   kind='foundational' → first-time onboarding copy ("Before we begin…")
@@ -44,10 +45,16 @@ export async function POST(request: NextRequest) {
   const intakeUrl = `${appUrl()}/intake/${intakeToken}`
   const { subject, html } = buildIntakeInviteEmail({ firstName, intakeUrl, mode })
 
+  // Their own coach's name, and replies to their own coach.
+
+  const who = await coachEmailIdentity(admin, clientId as string)
+
+
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { error } = await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: clientEmail,
     bcc: COACH_BCC,
     subject,

@@ -7,6 +7,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
  */
 export type ClientCommunicationKind =
   | 'testimonial_ask'
+  | 'foundational_reading_ready'
+  | 'trajectory_reading_ready'
   | 'subscription_link'
   | 'commencement_fee_link'
   | 'portal_access'
@@ -32,6 +34,8 @@ export type ClientCommunicationKind =
 
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   testimonial_ask: 'Asked for a testimonial',
+  foundational_reading_ready: 'Foundational Read ready',
+  trajectory_reading_ready: 'Progress Read ready',
   subscription_link: 'Subscription link',
   commencement_fee_link: 'Commencement fee link',
   portal_access: 'Portal access',

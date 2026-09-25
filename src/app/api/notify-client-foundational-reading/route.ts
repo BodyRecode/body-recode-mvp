@@ -6,6 +6,8 @@ import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { sendClientEmail } from '@/lib/send-client-email'
+import { publicReadiness } from '@/lib/body-state-current'
 
 // Coach-gated "Notify client" send for a published Foundational Reading.
 //
@@ -68,25 +70,27 @@ export async function POST(request: NextRequest) {
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const portalUrl = `${appUrl()}/portal/${client.onboarding_token}/foundational-reading`
-  const { subject, html } = buildFoundationalReadingEmail({
+  const { subject, body } = buildFoundationalReadingEmail({
     firstName,
-    bodyState: cffs.body_state_classification ?? null,
+    // THEIR WORD, NOT OURS. This line read "currently in Remediation" — the
+    // word coaches use about a client, in an email TO that client, on the one
+    // announcing the document the whole product exists to produce.
+    bodyState: publicReadiness(cffs.body_state_classification),
     portalUrl,
   })
 
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({
-      from: fromCoach(),
-      to: client.email,
-      bcc: COACH_BCC,
-      subject,
-      html,
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Notify client foundational read email failed:', msg)
-    return NextResponse.json({ error: `Send failed: ${msg}` }, { status: 500 })
+  const sent = await sendClientEmail({
+    admin,
+    clientId: client.id as string,
+    to: client.email,
+    subject,
+    body,
+    kind: 'foundational_reading_ready',
+    previewText: subject,
+  })
+  if (!sent.ok) {
+    console.error('Notify client foundational read email failed:', sent.error)
+    return NextResponse.json({ error: `Send failed: ${sent.error}` }, { status: 500 })
   }
 
   const now = new Date().toISOString()

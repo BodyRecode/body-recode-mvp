@@ -8,6 +8,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { logoUrl } from '@/config/tenant'
 import { appUrl } from "@/lib/app-url";
+import { coachEmailIdentity } from '@/lib/coach-identity'
 
 /**
  * Sends the supplementary intake reminder email.
@@ -76,9 +77,15 @@ export async function POST(request: NextRequest) {
   const supplementUrl = `${appUrl()}/intake-supplement/${invitation.token}`
   const subject = `${firstName}, a quick follow-up intake`
 
+  // Their own coach's name, and replies to their own coach.
+
+  const who = await coachEmailIdentity(admin, client.id as string)
+
+
   const resend = new Resend(process.env.RESEND_API_KEY)
   const sendResult = await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: client.email,
     bcc: COACH_BCC,
     subject,
@@ -98,7 +105,7 @@ export async function POST(request: NextRequest) {
       </table>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Anything come up while you're filling it in, reply to this email.</p>
       ${emailUrlFallback(supplementUrl, 'Or paste this link into your browser')}
-      ${darkEmailSignature()}
+      ${darkEmailSignature(who.signature)}
 `, { previewText: `${firstName}, five quick follow-up questions for your intake.` }),
   })
 
