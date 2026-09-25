@@ -9,12 +9,25 @@ import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode, lastCheckinWi
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { brand, coach } from '@/config/tenant'
+import { coachIdentityForClient } from '@/lib/coach-identity'
+import { BRAND } from '@/lib/brand-tokens'
 
-function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
+/**
+ * THE SAME RULE AS THE PRINTED READ, ON SCREEN. Kade, 26 Sep: more colour in
+ * the portal like the PDFs. The colour is the client's own readiness and
+ * nothing else, so their portal and their document are the same colour, and two
+ * clients' portals are not the same.
+ */
+function SectionLabel({ icon: Icon, text, ink }: { icon: LucideIcon; text: string; ink?: string | null }) {
   return (
     <div className="flex items-center gap-2.5 mb-4">
-      <span className="w-8 h-8 rounded-lg bg-[#0F1115]/10 flex items-center justify-center text-[#0F1115]"><Icon size={16} strokeWidth={2.5} /></span>
-      <p className="text-[11px] font-semibold tracking-[0.1em] text-[#0F1115] uppercase">{text}</p>
+      <span
+        className="w-8 h-8 rounded-lg flex items-center justify-center"
+        style={{ background: `${ink ?? '#0F1115'}1A`, color: ink ?? '#0F1115' }}
+      >
+        <Icon size={16} strokeWidth={2.5} />
+      </span>
+      <p className="text-[11px] font-semibold tracking-[0.1em] uppercase" style={{ color: ink ?? '#0F1115' }}>{text}</p>
     </div>
   )
 }
@@ -168,6 +181,17 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   })
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
+
+  // Their own coach, and their own readiness colour. Both used to be whatever
+  // the global config said, which is Kade and graphite. 26 Sep 2026.
+  const coachIdentity = await coachIdentityForClient(admin, client.id as string)
+  const coachFirstName = coachIdentity.firstName
+  const READINESS_INK: Record<string, string> = {
+    Remediation: BRAND.remediation,
+    Optimisation: BRAND.optimisation,
+    'Post-Optimisation': BRAND.postOptimisation,
+  }
+  const readinessInk = READINESS_INK[portalBodyState.label ?? ''] ?? BRAND.ink
   const agreementDone = !!client.agreement_accepted_at
   const healthDone = !!client.health_declaration_submitted_at
   // Foundational vs supplementary invitations are now stored on the same
@@ -497,7 +521,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       return {
         eyebrow: 'Where you are up to',
         headline: 'Your program is being built',
-        body: `${coach().firstName} is reading your intake and baseline now. Weekly check-ins begin once it is in place, and you will hear the moment it is ready.`,
+        body: `${coachFirstName} is reading your intake and baseline now. Weekly check-ins begin once it is in place, and you will hear the moment it is ready.`,
         cta: null,
         resting: true,
       }
@@ -513,7 +537,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#0F1115]">
-      <ClientHeader />
+      <ClientHeader coachFirstName={coachFirstName} />
       <div className="max-w-lg mx-auto px-6 py-10">
         {/* The one thing, at full size. Everything else is a line further down. */}
         <div
@@ -617,7 +641,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             have to go looking for. */}
         {unreadCoachReplies > 0 && (
           <div className="mb-10">
-            <SectionLabel icon={MessageCircle} text={`New from ${coach().firstName}`} />
+            <SectionLabel ink={readinessInk} icon={MessageCircle} text={`New from ${coach().firstName}`} />
             <Link
               href={`/portal/${token}/message`}
               className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 hover:border-[#0F1115]/60 transition-colors"
@@ -642,7 +666,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             content so the client sees and completes it on next sign-in. */}
         {pendingSupplementary && (
           <div className="mb-10">
-            <SectionLabel icon={MessageCircle} text="A quick follow-up from Kade" />
+            <SectionLabel ink={readinessInk} icon={MessageCircle} text="A quick follow-up from Kade" />
             <Link
               href={`/intake-supplement/${pendingSupplementary.token}`}
               className="block rounded-2xl border border-[#DCDCD7] bg-[#F2F2EF] p-5 hover:border-[#0F1115]/60 hover:bg-[#F2F2EF] transition-colors"
@@ -663,7 +687,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Foundational Reading - shown the moment Kade publishes it */}
         {publishedReading && (
           <div className="mb-10">
-            <SectionLabel icon={FileText} text="Your Read" />
+            <SectionLabel ink={readinessInk} icon={FileText} text="Your Read" />
             {latestProgressRead && (
               <Link
                 href={`/portal/${token}/progress-read`}
@@ -689,7 +713,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <p className="text-[13.5px] font-semibold text-[#0F1115] mb-1">Foundational Read</p>
                   <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
                     A read of how your body is currently organising itself
-                    {portalBodyState.publicLabel ? `, currently ${portalBodyState.publicLabel}.` : '.'}
+                    {portalBodyState.publicLabel ? (
+                      <>, currently <span className="font-semibold" style={{ color: readinessInk }}>{portalBodyState.publicLabel}</span>.</>
+                    ) : '.'}
                   </p>
                 </div>
                 <span className="text-[12.5px] font-bold text-[#0F1115] ml-4 shrink-0">View →</span>
@@ -721,7 +747,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             evaluates training response, so it only opens once a program exists. */}
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
-            <SectionLabel icon={NotebookPen} text="This week" />
+            <SectionLabel ink={readinessInk} icon={NotebookPen} text="This week" />
             {pendingProgressCheck && (
               <Link
                 href={`/progress-check/${pendingProgressCheck.token}`}
@@ -835,7 +861,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Preview header during onboarding */}
         {!allOnboardingDone && (
           <div className="mb-6">
-            <SectionLabel icon={LayoutGrid} text="Your portal" />
+            <SectionLabel ink={readinessInk} icon={LayoutGrid} text="Your portal" />
             <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
           </div>
         )}
@@ -844,7 +870,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
           <div className="mb-10">
-            <SectionLabel icon={MessageCircle} text="From your coach" />
+            <SectionLabel ink={readinessInk} icon={MessageCircle} text="From your coach" />
             <div className="space-y-3">
               {latestProgramReview?.coach_notes && (
                 <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-2xl p-5">
