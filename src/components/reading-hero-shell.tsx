@@ -295,9 +295,15 @@ export default function ReadingHeroShell({
              The measure cap is gone and the PAGE sets the width instead. The
              type goes up with it, because a longer line needs more leading and
              a bigger size to stay readable — the two have to move together. */
+          /* RAGGED RIGHT. Justification was solving the narrow column, not the
+             page: with the measure capped at 68 characters a straight right
+             edge was the only thing holding the block together. Now the text
+             uses the full width, and Kade is right that it no longer needs it.
+             Hyphenation stays on, because it stops the ragged edge tearing on a
+             long word. 25 Sep 2026. */
           .rh-body {
             font-size: 12.5px; line-height: 1.72; max-width: none;
-            text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+            text-align: left; hyphens: auto; -webkit-hyphens: auto;
           }
 
           .rh-attn { margin-top: 16px; padding-top: 14px; gap: 11px; }
