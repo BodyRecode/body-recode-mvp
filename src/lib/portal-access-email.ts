@@ -5,6 +5,7 @@ import { fromCoach, darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { logoUrl } from '@/config/tenant'
 import { appUrl } from "@/lib/app-url";
+import { coachEmailIdentity } from './coach-identity'
 
 interface PortalAccessClient {
   id: string
@@ -51,10 +52,16 @@ export async function sendPortalAccessEmail({
   const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
   const subject = `${firstName}, your portal is ready`
 
+  // In their own coach's name, with replies going to their own coach. Resolved
+  // once here rather than by each builder reaching for the global config, which
+  // is how every coaching email came to be signed by Kade. See coach-identity.
+  const who = await coachEmailIdentity(admin, client.id)
+
   const resend = new Resend(process.env.RESEND_API_KEY)
   try {
     await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: client.email,
     // Kade, 19 Sep 2026: "what goes to a client goes to my inbox also to
     // confirm". This send was excluded by the 14 May rule that kept standard
@@ -80,7 +87,7 @@ export async function sendPortalAccessEmail({
         </tr>
       </table>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Sign in with your email. No password. The code does the work.</p>
-      ${darkEmailSignature()}
+      ${darkEmailSignature(who.signature)}
       <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
 `, { previewText: `Welcome ${firstName} - four steps to complete before we start coaching.` }),
     })

@@ -53,10 +53,19 @@ export const COACH_BCC: string[] =
  * Personal — feels like a person is emailing you. Use for coaching-facing sends
  * (welcome, check-ins, follow-ups, offers). Templated from tenant config.
  */
-export function fromCoach(): string {
+export function fromCoach(who?: { firstName: string }): string {
   const t = brand()
   const c = coach()
-  return `${c.firstName} at ${t.name} <${t.fromEmail}>`
+  /* THE NAME IS THE COACH'S, THE DOMAIN IS OURS. Kade, 25 Sep, on the pilot:
+     sending from each coach's own domain means every one of them verifying DNS
+     with the mail provider, and on a free pilot a setup step that hard is where
+     people quietly stop. Ten unwarmed domains also means their clients' email
+     lands in spam and the failure looks like our product.
+     So: the client sees their own coach's name, the reply goes to their coach,
+     and it leaves on a domain whose reputation we control. Their own sending
+     domain is the paid-tier upgrade, which makes it a reason to subscribe
+     rather than a tax on day one. */
+  return `${who?.firstName ?? c.firstName} at ${t.name} <${t.fromEmail}>`
 }
 
 /**

@@ -96,18 +96,46 @@ export function emailSignature(): string {
  * Uses bgcolor attributes (not just CSS background) so Outlook for Windows
  * preserves the white canvas underneath the signature row.
  */
-export function darkEmailSignature(): string {
+/** Who is signing. Omit for the tenant's own coach. */
+export interface SignatureCoach {
+  fullName: string
+  photoUrl?: string | null
+  credentials?: string | null
+}
+
+/**
+ * EVERY COACHING EMAIL WAS SIGNED BY KADE, with his photograph and his
+ * credentials, for every coach and every client — and not from config, from
+ * three constants in this file. A pilot coach's client received a personal
+ * email signed by somebody they have never met. 25 Sep 2026.
+ *
+ * The photo NEVER falls back. A coach with no photo set gets a monogram, not
+ * another person's face; a silent fallback is exactly how somebody else's
+ * headshot ends up over your name. The link row and social strip belong to
+ * Body Recode, not to the coach, so they stay as they are while the pilot is
+ * sent from Body Recode's own domain.
+ */
+export function darkEmailSignature(who?: SignatureCoach): string {
+  const name = who?.fullName ?? NAME
+  const credentials = who?.credentials ?? (who ? '' : CREDENTIALS)
+  const photo = who ? (who.photoUrl?.trim() || null) : PHOTO
+  const monogram = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase()
+
+  const avatar = photo
+    ? `<img src="${photo}" width="48" height="48" style="border-radius:50%;display:block;object-fit:cover;object-position:top;border:1px solid #E5E5E5;" alt="${name}" />`
+    : `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="48" height="48" style="width:48px;height:48px;border-radius:50%;background-color:#F2F2EF;border:1px solid #E5E5E5;">
+         <tr><td align="center" valign="middle" style="font-family:${FF};font-size:16px;font-weight:700;color:#4A4F57;">${monogram}</td></tr>
+       </table>`
+
   return `
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin-top:32px;border-top:1px solid #E5E5E5;width:100%;">
       <tr>
         <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:24px 14px 0 0;vertical-align:middle;width:62px;">
-          <img src="${PHOTO}" width="48" height="48"
-            style="border-radius:50%;display:block;object-fit:cover;object-position:top;border:1px solid #E5E5E5;"
-            alt="${NAME}" />
+          ${avatar}
         </td>
         <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding-top:24px;vertical-align:middle;">
-          <p style="margin:0;font-size:14px;font-weight:800;color:#1A1A1A;font-family:${FF};line-height:1.3;">${NAME}</p>
-          <p style="margin:3px 0 4px;font-size:12px;color:#6B6B6B;font-family:${FF};line-height:1.4;">${CREDENTIALS}</p>
+          <p style="margin:0;font-size:14px;font-weight:800;color:#1A1A1A;font-family:${FF};line-height:1.3;">${name}</p>
+          ${credentials ? `<p style="margin:3px 0 4px;font-size:12px;color:#6B6B6B;font-family:${FF};line-height:1.4;">${credentials}</p>` : ''}
           ${LINK_ROW}
         </td>
       </tr>

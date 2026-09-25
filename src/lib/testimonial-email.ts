@@ -16,13 +16,14 @@ import {
   darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailDivider,
   emailBody, emailCta, emailUrlFallback, fromCoach,
 } from './email-shell'
-import { darkEmailSignature } from './email-signature'
+import { darkEmailSignature, type SignatureCoach } from './email-signature'
 import { appUrl } from './app-url'
 import { coach } from '@/config/tenant'
+import { coachEmailIdentity } from './coach-identity'
 
-export function buildTestimonialAskEmail(ctx: { firstName: string; token: string }): { subject: string; html: string } {
+export function buildTestimonialAskEmail(ctx: { firstName: string; token: string; coachFirstName?: string; signature?: SignatureCoach }): { subject: string; html: string } {
   const url = `${appUrl()}/feedback/testimonial/${ctx.token}`
-  const me = coach().firstName
+  const me = ctx.coachFirstName ?? coach().firstName
   const subject = `${ctx.firstName}, would you write a few lines about how it has gone?`
 
   const body = `
@@ -38,7 +39,7 @@ ${emailCta({ href: url, label: 'Write a few lines' })}
 ${emailUrlFallback(url)}
 
 ${emailBody(`Thank you either way.<br />${me}`, { color: '#6B6B6B', size: 13, bottom: 20 })}
-${darkEmailSignature()}
+${darkEmailSignature(ctx.signature)}
 `
 
   return {
@@ -67,14 +68,19 @@ export async function sendTestimonialAsk(feedbackId: string): Promise<{ ok: true
   const email = client?.email as string | null
   if (!email) return { ok: false, error: 'this client has no email address on file' }
 
+  // The ask comes from THEIR coach, and a reply goes to their coach.
+  const who = await coachEmailIdentity(admin, row.client_id as string)
   const built = buildTestimonialAskEmail({
     firstName: (row.first_name as string | null) ?? ((client?.name as string | null) ?? '').split(' ')[0] ?? 'there',
     token: row.permission_token as string,
+    coachFirstName: who.firstName,
+    signature: who.signature,
   })
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
-    from: fromCoach(),
+    from: who.from,
+    replyTo: who.replyTo,
     to: email,
     subject: built.subject,
     html: built.html,

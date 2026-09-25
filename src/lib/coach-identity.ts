@@ -72,3 +72,51 @@ export async function coachIdentityForClient(
     return fallback
   }
 }
+
+/**
+ * Everything one email needs to go out in the right person's name.
+ *
+ * Resolved ONCE at the send, rather than each builder reaching for the global
+ * config — which is how every coaching email ended up signed by Kade. A send
+ * site becomes: resolve, then spread.
+ *
+ *   const who = await coachEmailIdentity(admin, client.id)
+ *   resend.emails.send({ from: who.from, replyTo: who.replyTo, ... })
+ *   ...darkEmailSignature(who.signature)
+ */
+export async function coachEmailIdentity(admin: SupabaseClient, clientId: string) {
+  const who = await coachIdentityForClient(admin, clientId)
+  const { fromCoach } = await import('./email-shell')
+
+  // Their coach's address, so a reply lands with the person responsible for
+  // them. This is the half that breaks something real if it is wrong: a client
+  // answering a question about their own body should not reach a stranger.
+  const replyTo = await coachReplyTo(admin, clientId)
+
+  return {
+    from: fromCoach({ firstName: who.firstName }),
+    replyTo,
+    signature: { fullName: who.fullName, photoUrl: who.photoUrl, credentials: who.credentials },
+    firstName: who.firstName,
+    fullName: who.fullName,
+  }
+}
+
+/** The coach's own address, or the tenant's when they have not got one. */
+export async function coachReplyTo(admin: SupabaseClient, clientId: string): Promise<string> {
+  const { brand } = await import('@/config/tenant')
+  try {
+    const { data: client } = await admin
+      .from('clients').select('coach_id').eq('id', clientId).maybeSingle()
+    const coachId = client?.coach_id as string | undefined
+    if (!coachId) return brand().replyToEmail
+
+    const { data: tenant } = await admin
+      .from('tenant_config').select('coach, brand').eq('coach_id', coachId).maybeSingle()
+    const c = tenant?.coach as Record<string, string> | undefined
+    const b = tenant?.brand as Record<string, string> | undefined
+    return c?.email?.trim() || b?.replyToEmail?.trim() || brand().replyToEmail
+  } catch {
+    return brand().replyToEmail
+  }
+}

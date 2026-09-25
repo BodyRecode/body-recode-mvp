@@ -1,4 +1,4 @@
-import { darkEmailSignature } from './email-signature'
+import { darkEmailSignature, type SignatureCoach } from './email-signature'
 import { darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailBody, emailCta, emailUrlFallback } from './email-shell'
 
 /**
@@ -6,7 +6,12 @@ import { darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailBody, email
  * published Progress Read (coach-gated, separate from publishing, like every
  * other read). Links to her portal page for it.
  */
-export function buildProgressReadEmail({ firstName, portalUrl }: { firstName: string; portalUrl: string }): { subject: string; html: string } {
+export function buildProgressReadEmail({ firstName, portalUrl, signature }: {
+  firstName: string
+  portalUrl: string
+  /** Who signs it. Omit for the tenant's own coach. */
+  signature?: SignatureCoach
+}): { subject: string; html: string } {
   const subject = `${firstName}, your Progress Read is ready`
   const html = darkEmailShell(`
 ${emailLogo()}
@@ -16,7 +21,7 @@ ${emailBody('Your Progress Read is in your portal. It reads everything since you
 ${emailBody('It covers what has changed, what has held steady, your pattern, and what is holding things back right now. Holding steady counts: it is often the result that matters most.')}
 ${emailCta({ href: portalUrl, label: 'Read your Progress Read' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
+${darkEmailSignature(signature)}
 `, { previewText: subject })
   return { subject, html }
 }

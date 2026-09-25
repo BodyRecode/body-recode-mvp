@@ -10,6 +10,7 @@ import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 import { buildProgressReadEmail } from '@/lib/progress-read-email'
 import { logClientCommunication } from '@/lib/client-communications'
+import { coachEmailIdentity } from './coach-identity'
 
 export const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
 
@@ -55,10 +56,16 @@ export async function notifyProgressRead(admin: SupabaseClient, readId: string):
   if (!client.onboarding_token) return { ok: false, status: 400, error: 'Client has no portal token.' }
 
   const portalUrl = `${appUrl()}/portal/${client.onboarding_token}/progress-read`
-  const { subject, html } = buildProgressReadEmail({ firstName: client.name?.split(' ')[0] ?? 'there', portalUrl })
+  // Their own coach's name on it, and replies to their own coach.
+  const who = await coachEmailIdentity(admin, client.id)
+  const { subject, html } = buildProgressReadEmail({
+    firstName: client.name?.split(' ')[0] ?? 'there',
+    portalUrl,
+    signature: who.signature,
+  })
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({ from: fromCoach(), to: client.email, bcc: COACH_BCC, subject, html })
+    await resend.emails.send({ from: who.from, replyTo: who.replyTo, to: client.email, bcc: COACH_BCC, subject, html })
   } catch (err) {
     return { ok: false, status: 500, error: `Send failed: ${err instanceof Error ? err.message : String(err)}` }
   }
