@@ -113,6 +113,12 @@ export default function LoginForm({ redirect }: { redirect: string }) {
           <p className="text-[#6E747D] text-[13.5px] leading-relaxed">
             We sent a 6-digit code to <span className="text-[#0F1115] font-medium">{email.toLowerCase()}</span>.
           </p>
+          {/* Beside every "check your email", always. A code that landed in junk
+              and a code that never arrived look identical from here, and the
+              client's next move is to message their coach. */}
+          <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed mt-2">
+            If it is not there in a minute, check your junk or spam folder.
+          </p>
         </div>
 
         <div>
@@ -138,7 +144,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
         <button
           type="submit"
           disabled={submitting || code.length !== 6}
-          className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:bg-[#E4E4E0] disabled:text-[#9CA2AB] text-white font-bold text-[13.5px] rounded-2xl transition-colors"
+          className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:opacity-60 text-[#FAFAF8] font-bold text-[13.5px] rounded-2xl transition-colors"
         >
           {submitting ? 'Signing in...' : 'Sign in'}
         </button>
@@ -174,13 +180,22 @@ export default function LoginForm({ redirect }: { redirect: string }) {
         </div>
       )}
 
+      {/* IT USED TO ARRIVE GREY. The button was disabled until something was
+          typed, so the first thing a client saw on the sign-in page was the
+          only action on it, looking switched off. Now it is the button it will
+          be, and an empty box is caught by the field's own required check.
+          25 Sep 2026. */}
       <button
         type="submit"
-        disabled={submitting || !email.trim()}
-        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:bg-[#E4E4E0] disabled:text-[#9CA2AB] text-white font-bold text-[13.5px] rounded-2xl transition-colors"
+        disabled={submitting}
+        className="w-full py-3.5 bg-[#0F1115] hover:bg-[#000000] disabled:opacity-60 text-[#FAFAF8] font-bold text-[13.5px] rounded-2xl transition-colors"
       >
-        {submitting ? 'Sending...' : 'Send sign-in code'}
+        {submitting ? 'Sending…' : 'Email me a sign-in code'}
       </button>
+
+      <p className="text-[12.5px] text-[#9CA2AB] leading-relaxed text-center">
+        No password. We email you a six-digit code each time.
+      </p>
     </form>
   )
 }
