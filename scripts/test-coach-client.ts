@@ -4,7 +4,9 @@
  *
  * Run:
  *   npm run coach:test-client          create her
- *   npm run coach:test-client -- wipe  remove her and everything she has
+ *   npm run coach:test-client -- onboard  agreement, health, baseline, bloods done
+ *   npm run coach:test-client -- signin   a link that signs you in AS HER
+ *   npm run coach:test-client -- wipe     remove her and everything she has
  *
  * WHY SHE IS INVENTED RATHER THAN COPIED. The obvious shortcut is to duplicate
  * a real client's intake. That would move a real woman's health information to
@@ -203,5 +205,76 @@ async function wipe() {
   console.log(`\nRemoved ${client.name}: ${result.rowsAffected} records, ${result.filesAffected} files.\n`)
 }
 
-const run = process.argv[2] === 'wipe' ? wipe : create
+
+/**
+ * Everything after the intake, so the portal a real client LIVES in can be
+ * looked at rather than only the day-one checklist.
+ *
+ * Kade, 25 Sep 2026, on why this had to exist: every seeded test client sat
+ * forever on "Coaching Agreement, step 1 of 5", so the ongoing portal — months
+ * of it, for every client — had never been seen by anybody, including me.
+ */
+async function onboard() {
+  const { data: client } = await admin
+    .from('clients').select('id, name, onboarding_token').eq('email', CLIENT_EMAIL).maybeSingle()
+  if (!client) { console.log('\nShe does not exist yet. Run npm run coach:test-client first.\n'); return }
+
+  const when = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
+
+  await admin.from('clients').update({
+    agreement_accepted_at: when,
+    agreement_accepted_name: CLIENT_NAME,
+    health_declaration_submitted_at: when,
+    bloodwork_arranged_at: when,
+  }).eq('id', client.id)
+
+  const { data: inv } = await admin.from('intake_invitations')
+    .select('id').eq('client_id', client.id).eq('kind', 'foundational').maybeSingle()
+  if (inv) await admin.from('intake_invitations').update({ status: 'complete' }).eq('id', inv.id)
+  else await admin.from('intake_invitations').insert({
+    client_id: client.id, kind: 'foundational', status: 'complete', token: randomUUID(), created_at: when,
+  })
+
+  const { count } = await admin.from('baselines').select('id', { count: 'exact', head: true }).eq('client_id', client.id)
+  if (!count) await admin.from('baselines').insert({ client_id: client.id, created_at: when })
+
+  console.log(`\n${client.name} is past onboarding.`)
+  console.log(`Her portal: /portal/${client.onboarding_token}\n`)
+}
+
+/**
+ * A one-time link that signs you in AS HER.
+ *
+ * The portal signs in by emailing a code, and testclient@bodyrecode.au is not a
+ * mailbox anybody reads, so there is otherwise no way in. Viewing her portal as
+ * a COACH is not the same thing: the page knows who is looking and a coach is
+ * shown things she is not.
+ */
+async function signin() {
+  const { data: client } = await admin
+    .from('clients').select('id, name, onboarding_token').eq('email', CLIENT_EMAIL).maybeSingle()
+  if (!client) { console.log('\nShe does not exist yet. Run npm run coach:test-client first.\n'); return }
+
+  const { data: user } = await admin.auth.admin.listUsers()
+  const exists = user?.users?.some(u => (u.email ?? '').toLowerCase() === CLIENT_EMAIL)
+  if (!exists) {
+    await admin.auth.admin.createUser({ email: CLIENT_EMAIL, email_confirm: true })
+  }
+
+  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+  const { data: link, error } = await admin.auth.admin.generateLink({
+    type: 'magiclink',
+    email: CLIENT_EMAIL,
+    options: { redirectTo: `${site}/portal/${client.onboarding_token}` },
+  })
+  if (error || !link?.properties) { console.log(`\nCould not make a link: ${error?.message}\n`); return }
+
+  console.log(`\nSigned-in link for ${client.name} (single use, expires in an hour):\n`)
+  console.log(link.properties.action_link)
+  console.log(`\nHer portal afterwards: ${site}/portal/${client.onboarding_token}`)
+  console.log(`Run this again any time for a fresh link.\n`)
+}
+
+const mode = process.argv[2]
+const run = mode === 'wipe' ? wipe : mode === 'onboard' ? onboard : mode === 'signin' ? signin : create
 run().catch(e => { console.error(e); process.exit(1) })

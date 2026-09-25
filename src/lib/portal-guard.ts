@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsClient } from './coach-scope'
 
 /**
  * The single gate for every portal page that shows a client anything personal.
@@ -77,7 +78,25 @@ export async function requirePortalClient(
 
   const c = client as unknown as PortalClient
   const userEmail = (user.email ?? '').toLowerCase()
-  const viewedByCoach = isCoachEmail(userEmail)
+
+  /* A COACH MAY OPEN THEIR OWN CLIENT'S PORTAL.
+   *
+   * Until 25 Sep 2026 this allowed the client themselves and KADE, and nobody
+   * else. A pilot coach opening their own client's portal was told they were
+   * the wrong account — so the one person responsible for that client could not
+   * see what that client sees. Found the moment Kade tried it while signed in
+   * as the test coach.
+   *
+   * It matters more for a pilot coach than it does for Kade. When a client says
+   * "I cannot find my read", the coach has no way to look. They cannot sign in
+   * as the client, and they should not be asking for the client's password.
+   *
+   * Ownership is the same question the dashboard already asks, so it is the
+   * same function answering it.
+   */
+  const viewedByCoach =
+    isCoachEmail(userEmail) ||
+    (await coachOwnsClient(c.id, user.id, user.email ?? null))
 
   // Signed in as someone else entirely.
   if (userEmail !== (c.email ?? '').toLowerCase() && !viewedByCoach) {

@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { portalFeaturesForClient } from '@/lib/portal-features'
+import { coachOwnsClient } from '@/lib/coach-scope'
 
 /**
  * One gate over every page in a client's portal.
@@ -93,7 +94,12 @@ export default async function PortalLayout({
   if (client?.ended_at || client?.frozen_at) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    const viewedByCoach = isCoachEmail(user?.email)
+    // Same rule as the portal guard: a coach may open their OWN client's
+    // portal, not only Kade. Two copies of "who counts as the coach here" is
+    // how one of them ends up stricter than the other.
+    const viewedByCoach =
+      isCoachEmail(user?.email) ||
+      (!!user && await coachOwnsClient(client.id as string, user.id, user.email ?? null))
     if (!viewedByCoach) {
       redirect(client.ended_at ? '/portal/ended' : '/portal/frozen')
     }
